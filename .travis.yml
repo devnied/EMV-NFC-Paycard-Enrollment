@@ -5,13 +5,13 @@ jdk:
   - openjdk7
 before_install:
   # download the latest android sdk and unzip
-  - wget http://dl.google.com/android/android-sdk_r18-linux.tgz
-  - tar -zxf android-sdk_r18-linux.tgz
-  - export ANDROID_HOME=`pwd`/android-sdk-linux
+  - wget http://dl.google.com/android/android-sdk_r22.6.2-linux.tgz
+  - tar xzf android-sdk_r22.6.2-linux.tgz
+  - export ANDROID_HOME=$PWD/android-sdk-linux
   - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
-  # only update the sdk for the tools and platform-tools (1,2) and whatever api level
-  # you are building for android (run "android list sdk" to get the full list.  9 = 2.3.3 or API level 10
-  - android list sdk
-  - android update sdk --filter 1,2,9 --no-ui --force
+  - echo "sdk.dir=$ANDROID_HOME" > local.properties
+  - echo yes | android update sdk -t tools,platform-tools,android-19,build-tools-19.0.3 --force --no-ui
+  # verify files exist in right paths
+  - find $ANDROID_HOME/build-tools
 after_success:
   - mvn clean cobertura:cobertura coveralls:cobertura
