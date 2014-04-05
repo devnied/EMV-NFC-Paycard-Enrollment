@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.github.devnied.emvnfccard"
+    android:versionCode="2"
+    android:versionName="1.0.1" >
+
+    <uses-sdk android:minSdkVersion="15" android:targetSdkVersion="19"/>
+    <uses-permission android:name="android.permission.NFC"/>
+    <uses-feature android:name="android.hardware.nfc" android:required="true"/>
+
+    <application
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:clearTaskOnLaunch="true" 
+        android:alwaysRetainTaskState="true" 
+        android:finishOnTaskLaunch="true"
+        android:theme="@style/MyTheme"
+        android:name="com.github.devnied.emvnfccard.EmvApplication"
+         >
+
+        <activity
+            android:name=".activity.HomeActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+             >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:label="@string/activity_About" android:name=".activity.AboutActivity" android:screenOrientation="portrait"></activity>
+        <activity android:label="@string/activity_Event" android:name=".activity.ListEventActivity" android:screenOrientation="portrait"></activity>
+    </application>
+    
+</manifest>

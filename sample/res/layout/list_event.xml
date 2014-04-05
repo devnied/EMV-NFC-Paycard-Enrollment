@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ListView android:id="@+id/list_event"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:dividerHeight="1dp"
+		android:divider="@android:color/black"
+		android:footerDividersEnabled="false"
+		android:listSelector="@android:color/transparent"
+		android:cacheColorHint="@android:color/transparent"
+		android:layout_gravity="center"
+        >
+    </ListView>
+    
+    
+    <LinearLayout
+        android:id="@+id/emptyView_event"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:text="Event log empty">
+
+        </TextView>
+        
+    </LinearLayout>
+
+</LinearLayout>
