@@ -1,14 +1,44 @@
 ## EMV NFC Paycard Enrollment [![Build Status](https://travis-ci.org/devnied/EMV-NFC-Paycard-Enrollment.png?branch=master)](https://travis-ci.org/devnied/EMV-NFC-Paycard-Enrollment) [![Coverage Status](https://coveralls.io/repos/devnied/EMV-NFC-Paycard-Enrollment/badge.png?branch=master)](https://coveralls.io/r/devnied/EMV-NFC-Paycard-Enrollment?branch=master)
 
-###Description
+### Description
 
-Java library used to read and extract EMV data from NFC paycard.
+Java library used to read and extract data from NFC EMV paycard.
 
 Sample app available on the [Play Store](https://play.google.com/store/apps/details?id=com.github.devnied.emvnfccard)
+
+### Getting started
+
+First you need to create a custom Provider to exchange APDU to NFC EMV card.
+```java
+public class YourProvider implements IProvider {
+
+  @Override
+  public byte[] transceive(final byte[] pCommand) {
+	 // implement this
+  }
+}
+```
+After that, create an instance of a parser and read the card.
+```java
+IProvider prov = new YourProvider();
+// Create parser
+EMVParser parser = new EMVParser(prov, true);
+// Read card
+EMVCard card = parser.readEmvCard();
+```
+card object contains all data read (Aid, card number, expiration date, card type, payments history)
 
 ### Screens
 
 [![Sample demo](https://raw.githubusercontent.com/devnied/EMV-NFC-Paycard-Enrollment/master/images/demo.gif)](https://raw.githubusercontent.com/devnied/EMV-NFC-Paycard-Enrollment/master/images/demo.gif)
+
+## Dependencies
+
+If you are not using Maven or some other dependency management tool that can understand Maven repositories, the list below is what you need to run bit-lib4j.
+
+**Runtime Dependencies**
+* commons-lang3 3.1
+* bit-lib4j 1.4.5
 
 ## Bugs
 
