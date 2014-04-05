@@ -1,4 +1,15 @@
 
+## EMV NFC Paycard Enrollment
+
+###Description
+
+Java library used to read and extract EMV data from NFC paycard.
+
+Sample app available on the [Play Store](https://play.google.com/store/apps/details?id=com.github.devnied.emvnfccard)
+
+### Screens
+
+
 
 ## Bugs
 
@@ -15,7 +26,7 @@ Forks and Pull Requests are also welcome.
 
 ## Copyright and license
 
-Copyright 2013 Millau Julien.
+Copyright 2014 Millau Julien.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this work except in compliance with the License.
