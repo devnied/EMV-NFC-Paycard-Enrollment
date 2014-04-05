@@ -7,7 +7,7 @@ import com.github.devnied.emvnfccard.model.enums.IKeyEnum;
  * 
  * @author julien Millau
  */
-public abstract class EnumUtils {
+public final class EnumUtils {
 
 	/**
 	 * Get the value of and enum from his key
@@ -25,5 +25,11 @@ public abstract class EnumUtils {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Private constructor
+	 */
+	private EnumUtils() {
 	}
 }

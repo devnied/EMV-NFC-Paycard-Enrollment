@@ -68,7 +68,7 @@ public class EMVParser {
 	 */
 	public EMVCard readEmvCard() {
 		// use PSE first
-		EMVCard card = selectPSE(contactLess);
+		EMVCard card = selectPSE();
 		// Find with AID
 		if (card == null) {
 			card = findWithAID();
@@ -82,22 +82,32 @@ public class EMVParser {
 	/**
 	 * Select AID with PSE directory
 	 * 
-	 * @param pContactLess
-	 *            boolean to indicate contact less mode
 	 * @return card read
 	 */
-	private EMVCard selectPSE(final boolean pContactLess) {
+	private EMVCard selectPSE() {
 		EMVCard card = null;
 		// Select the PPSE or PSE directory
-		byte[] data = provider.transceive(new CommandApdu(CommandEnum.SELECT, pContactLess ? PPSE : PSE, 0).toBytes());
+		byte[] data = provider.transceive(new CommandApdu(CommandEnum.SELECT, contactLess ? PPSE : PSE, 0).toBytes());
 		if (ResponseApdu.isSucceed(data)) {
 
-			if (contactLess) {
-				// Parse PPSE data
-				String label = null;
+			if (contactLess) { // Select PPSE
 				// Extract label
 				String val = StringUtils.substringAfter(BytesUtils.bytesToStringNoSpace(data), "BF0C");
 				data = BytesUtils.fromString(val);
+
+			} else { // Select PSE
+				// Extract SFI
+				int sfi = TLVUtils.getIntValue(data, TLVUtils.SFI);
+				// Get the PSE record
+				data = provider.transceive(new CommandApdu(CommandEnum.READ_RECORD, sfi, sfi << 3 | 4, 0).toBytes());
+				if (data[data.length - 2] == (byte) 0x6C) {
+					data = provider.transceive(new CommandApdu(CommandEnum.READ_RECORD, sfi, sfi << 3 | 4, data[data.length - 1])
+							.toBytes());
+				}
+			}
+			// Extract Aid and contactless
+			if (contactLess || !contactLess && ResponseApdu.isSucceed(data)) {
+				String label = null;
 				byte[] labelByte = TLVUtils.getArrayValue(data, TLVUtils.APPLICATION_LABEL);
 				if (labelByte != null) {
 					label = new String(labelByte);
@@ -105,8 +115,9 @@ public class EMVParser {
 				// Get Card
 				card = getCard(TLVUtils.getHexaValue(data, TLVUtils.AID), label);
 			}
+
 		} else if (LOGGER.isDebugEnabled()) {
-			if (pContactLess) {
+			if (contactLess) {
 				LOGGER.debug("PPSE not found -> Use kown AID");
 			} else {
 				LOGGER.debug("PSE not found -> Use kown AID");

@@ -60,7 +60,7 @@ public class CardAdapter extends BaseAdapter {
 		EMVCard card = (EMVCard) getItem(position);
 
 		// Add card number
-		cardNumber.setText(CardUtils.formatCardNumber(card.getCardNumber()));
+		cardNumber.setText(CardUtils.formatCardNumber(card.getCardNumber(), card.getType()));
 
 		// format date
 		SimpleDateFormat format = new SimpleDateFormat("MM/yy");

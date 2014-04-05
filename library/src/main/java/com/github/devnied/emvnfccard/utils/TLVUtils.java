@@ -11,7 +11,7 @@ import fr.devnied.bitlib.BytesUtils;
  * @author julien Millau
  * 
  */
-public abstract class TLVUtils {
+public final class TLVUtils {
 
 	/**
 	 * SFi Tag
@@ -99,6 +99,12 @@ public abstract class TLVUtils {
 		}
 
 		return ret;
+	}
+
+	/**
+	 * Private constructor
+	 */
+	private TLVUtils() {
 	}
 
 }

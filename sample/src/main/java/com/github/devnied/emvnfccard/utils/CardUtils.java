@@ -18,13 +18,23 @@ public final class CardUtils {
 	 * 
 	 * @param pCardNumber
 	 *            card number to display
+	 * @param pType
+	 *            card type
+	 * 
 	 * @return the card number formated
 	 */
-	public static String formatCardNumber(final String pCardNumber) {
-		if (StringUtils.isBlank(pCardNumber)) {
-			return StringUtils.EMPTY;
+	public static String formatCardNumber(final String pCardNumber, final EMVCardTypeEnum pType) {
+		String ret = StringUtils.EMPTY;
+		if (StringUtils.isNotBlank(pCardNumber)) {
+			// format amex
+			if (pType != null && pType == EMVCardTypeEnum.AMERICAN_EXPRESS) {
+				ret = StringUtils.deleteWhitespace(pCardNumber).replaceFirst("\\d{4}", "$0 ").replaceFirst("\\d{6}", "$0 ")
+						.replaceFirst("\\d{5}", "$0").trim();
+			} else {
+				ret = StringUtils.deleteWhitespace(pCardNumber).replaceAll("\\d{4}", "$0 ").trim();
+			}
 		}
-		return StringUtils.deleteWhitespace(pCardNumber).replaceAll("\\d{4}", "$0 ").trim();
+		return ret;
 	}
 
 	/**

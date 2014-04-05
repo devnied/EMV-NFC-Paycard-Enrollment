@@ -7,9 +7,9 @@ import com.github.devnied.emvnfccard.parser.IProvider;
 
 import fr.devnied.bitlib.BytesUtils;
 
-public class ProviderTest implements IProvider {
+public class ProviderAidTest implements IProvider {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ProviderTest.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProviderAidTest.class);
 
 	private int step;
 
