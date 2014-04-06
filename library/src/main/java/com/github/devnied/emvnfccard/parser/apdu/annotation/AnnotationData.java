@@ -91,32 +91,12 @@ public class AnnotationData implements Comparable<AnnotationData> {
 	}
 
 	/**
-	 * Setter for the field index
-	 * 
-	 * @param index
-	 *            the index to set
-	 */
-	public void setIndex(final int index) {
-		this.index = index;
-	}
-
-	/**
 	 * Method used to get the field readHexa
 	 * 
 	 * @return the readHexa
 	 */
 	public boolean isReadHexa() {
 		return readHexa;
-	}
-
-	/**
-	 * Setter for the field readHexa
-	 * 
-	 * @param readHexa
-	 *            the readHexa to set
-	 */
-	public void setReadHexa(final boolean readHexa) {
-		this.readHexa = readHexa;
 	}
 
 	/**
@@ -129,32 +109,12 @@ public class AnnotationData implements Comparable<AnnotationData> {
 	}
 
 	/**
-	 * Setter for the field field
-	 * 
-	 * @param field
-	 *            the field to set
-	 */
-	public void setField(final Field field) {
-		this.field = field;
-	}
-
-	/**
 	 * Method used to get the field dateStandard
 	 * 
 	 * @return the dateStandard
 	 */
 	public int getDateStandard() {
 		return dateStandard;
-	}
-
-	/**
-	 * Setter for the field dateStandard
-	 * 
-	 * @param dateStandard
-	 *            the dateStandard to set
-	 */
-	public void setDateStandard(final int dateStandard) {
-		this.dateStandard = dateStandard;
 	}
 
 	/**
@@ -167,13 +127,13 @@ public class AnnotationData implements Comparable<AnnotationData> {
 	}
 
 	/**
-	 * Setter for the field format
+	 * Setter for the field field
 	 * 
-	 * @param format
-	 *            the format to set
+	 * @param field
+	 *            the field to set
 	 */
-	public void setFormat(final String format) {
-		this.format = format;
+	public void setField(final Field field) {
+		this.field = field;
 	}
 
 	/**

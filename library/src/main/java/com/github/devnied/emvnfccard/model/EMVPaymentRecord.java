@@ -73,32 +73,12 @@ public class EMVPaymentRecord extends AbstractByteBean<EMVPaymentRecord> impleme
 	}
 
 	/**
-	 * Setter for the field amount
-	 * 
-	 * @param amount
-	 *            the amount to set
-	 */
-	public void setAmount(final Float amount) {
-		this.amount = amount;
-	}
-
-	/**
 	 * Method used to get the field cyptogramData
 	 * 
 	 * @return the cyptogramData
 	 */
 	public String getCyptogramData() {
 		return cyptogramData;
-	}
-
-	/**
-	 * Setter for the field cyptogramData
-	 * 
-	 * @param cyptogramData
-	 *            the cyptogramData to set
-	 */
-	public void setCyptogramData(final String cyptogramData) {
-		this.cyptogramData = cyptogramData;
 	}
 
 	/**
@@ -111,32 +91,12 @@ public class EMVPaymentRecord extends AbstractByteBean<EMVPaymentRecord> impleme
 	}
 
 	/**
-	 * Setter for the field currency
-	 * 
-	 * @param currency
-	 *            the currency to set
-	 */
-	public void setCurrency(final CurrencyEnum currency) {
-		this.currency = currency;
-	}
-
-	/**
 	 * Method used to get the field transactionDate
 	 * 
 	 * @return the transactionDate
 	 */
 	public Date getTransactionDate() {
 		return transactionDate;
-	}
-
-	/**
-	 * Setter for the field transactionDate
-	 * 
-	 * @param transactionDate
-	 *            the transactionDate to set
-	 */
-	public void setTransactionDate(final Date transactionDate) {
-		this.transactionDate = transactionDate;
 	}
 
 	/**
@@ -149,32 +109,12 @@ public class EMVPaymentRecord extends AbstractByteBean<EMVPaymentRecord> impleme
 	}
 
 	/**
-	 * Setter for the field transactionType
-	 * 
-	 * @param transactionType
-	 *            the transactionType to set
-	 */
-	public void setTransactionType(final Integer transactionType) {
-		this.transactionType = transactionType;
-	}
-
-	/**
 	 * Method used to get the field terminalCountry
 	 * 
 	 * @return the terminalCountry
 	 */
 	public CountryCodeEnum getTerminalCountry() {
 		return terminalCountry;
-	}
-
-	/**
-	 * Setter for the field terminalCountry
-	 * 
-	 * @param terminalCountry
-	 *            the terminalCountry to set
-	 */
-	public void setTerminalCountry(final CountryCodeEnum terminalCountry) {
-		this.terminalCountry = terminalCountry;
 	}
 
 	@Override
