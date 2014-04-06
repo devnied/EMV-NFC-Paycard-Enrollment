@@ -117,6 +117,66 @@ public class EMVPaymentRecord extends AbstractByteBean<EMVPaymentRecord> impleme
 		return terminalCountry;
 	}
 
+	/**
+	 * Setter for the field amount
+	 * 
+	 * @param amount
+	 *            the amount to set
+	 */
+	public void setAmount(final Float amount) {
+		this.amount = amount;
+	}
+
+	/**
+	 * Setter for the field cyptogramData
+	 * 
+	 * @param cyptogramData
+	 *            the cyptogramData to set
+	 */
+	public void setCyptogramData(final String cyptogramData) {
+		this.cyptogramData = cyptogramData;
+	}
+
+	/**
+	 * Setter for the field terminalCountry
+	 * 
+	 * @param terminalCountry
+	 *            the terminalCountry to set
+	 */
+	public void setTerminalCountry(final CountryCodeEnum terminalCountry) {
+		this.terminalCountry = terminalCountry;
+	}
+
+	/**
+	 * Setter for the field currency
+	 * 
+	 * @param currency
+	 *            the currency to set
+	 */
+	public void setCurrency(final CurrencyEnum currency) {
+		this.currency = currency;
+	}
+
+	/**
+	 * Setter for the field transactionDate
+	 * 
+	 * @param transactionDate
+	 *            the transactionDate to set
+	 */
+	public void setTransactionDate(final Date transactionDate) {
+		this.transactionDate = transactionDate;
+	}
+
+	/**
+	 * Setter for the field transactionType
+	 * 
+	 * @param transactionType
+	 *            the transactionType to set
+	 */
+	public void setTransactionType(final Integer transactionType) {
+		this.transactionType = transactionType;
+	}
+
 	@Override
 	public int getDefaultSize() {
 		return DEFAULT_SIZE;
