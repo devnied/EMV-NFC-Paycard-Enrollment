@@ -5,7 +5,7 @@
 	<artifactId>parent</artifactId>
 	<packaging>pom</packaging>
 	<version>1.0.0-SNAPSHOT</version>
-	<name>NFC Paycard Enrollment</name>
+	<name>EMV Paycard Enrollment</name>
 
 	<parent>
 		<groupId>org.sonatype.oss</groupId>
@@ -15,10 +15,10 @@
 
 	<inceptionYear>2013</inceptionYear>
 	<description>
-	 	A Java library used to read and extract EMV data from NFC paycard.
+	 	A Java library used to read and extract data from EMV paycard.
 	</description>
 
-	<url>https://github.com/devnied/NFC-paycard-enrollment</url>
+	<url>https://github.com/devnied/EMV-NFC-Paycard-Enrollment</url>
 	<developers>
 		<developer>
 			<name>MILLAU Julien</name>
@@ -39,9 +39,9 @@
 	</licenses>
 
 	<scm>
-		<connection>scm:git:git@github.com/devnied/NFC-paycard-enrollment.git</connection>
-		<developerConnection>scm:git:git@github.com/devnied/NFC-paycard-enrollment.git</developerConnection>
-		<url>scm:git:git@github.com/devnied/NFC-paycard-enrollment.git</url>
+		<connection>scm:git:git@github.com/devnied/EMV-NFC-Paycard-Enrollment.git</connection>
+		<developerConnection>scm:git:git@github.com/devnied/EMV-NFC-Paycard-Enrollment.git</developerConnection>
+		<url>scm:git:git@github.com/devnied/EMV-NFC-Paycard-Enrollment.git</url>
 		<tag>HEAD</tag>
 	</scm>
 
@@ -184,6 +184,8 @@
 					<configuration>
 						<format>xml</format>
 						<maxmem>256m</maxmem>
+						<!-- aggregated reports for multi-module projects -->
+        				<aggregate>true</aggregate>
 					</configuration>
 				</plugin>
 			</plugins>

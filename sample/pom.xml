@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>sample</artifactId>
 	<packaging>apk</packaging>
-	<name>EMV NFC android card reader</name>
+	<name>EMV NFC android paycard reader</name>
 
 	<parent>
 		<groupId>com.github.devnied.emvnfccard</groupId>

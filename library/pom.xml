@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>library</artifactId>
 	<packaging>jar</packaging>
-	<name>EMV NFC Card library</name>
+	<name>EMV paycard library</name>
 
 	<parent>
 		<groupId>com.github.devnied.emvnfccard</groupId>
