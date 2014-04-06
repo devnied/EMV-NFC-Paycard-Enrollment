@@ -33,29 +33,6 @@ public class EMVParserTest {
 	private static final Logger LOGGER = LoggerFactory.getLogger(EMVParserTest.class);
 
 	@Test
-	public void test() {
-
-		IProvider prov = new ProviderAidTest();
-
-		EMVParser parser = new EMVParser(prov, true);
-		EMVCard card = parser.readEmvCard();
-
-		if (card != null) {
-			LOGGER.debug(card.toString());
-		}
-		Assertions.assertThat(card).isNotNull();
-		Assertions.assertThat(card.getAid()).isEqualTo("A0000000031010");
-		Assertions.assertThat(card.getCardNumber()).isEqualTo("5772829193253472");
-		Assertions.assertThat(card.getType()).isEqualTo(EMVCardTypeEnum.VISA);
-		Assertions.assertThat(card.getCardLabel()).isEqualTo("VISA");
-		Assertions.assertThat(card.getFisrtName()).isEqualTo(null);
-		Assertions.assertThat(card.getLastName()).isEqualTo(null);
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
-		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("08/2014");
-
-	}
-
-	@Test
 	public void testPPSE() {
 
 		IProvider prov = new PpseProviderTest();
@@ -105,6 +82,29 @@ public class EMVParserTest {
 		Assertions.assertThat(record.getCurrency()).isEqualTo(CurrencyEnum.EUR);
 		Assertions.assertThat(record.getTerminalCountry()).isEqualTo(CountryCodeEnum.FR);
 		Assertions.assertThat(record.getTransactionDate()).isNotNull();
+	}
+
+	@Test
+	public void testAid() {
+
+		IProvider prov = new ProviderAidTest();
+
+		EMVParser parser = new EMVParser(prov, true);
+		EMVCard card = parser.readEmvCard();
+
+		if (card != null) {
+			LOGGER.debug(card.toString());
+		}
+		Assertions.assertThat(card).isNotNull();
+		Assertions.assertThat(card.getAid()).isEqualTo("A0000000031010");
+		Assertions.assertThat(card.getCardNumber()).isEqualTo("5772829193253472");
+		Assertions.assertThat(card.getType()).isEqualTo(EMVCardTypeEnum.VISA);
+		Assertions.assertThat(card.getCardLabel()).isEqualTo("VISA");
+		Assertions.assertThat(card.getFisrtName()).isEqualTo(null);
+		Assertions.assertThat(card.getLastName()).isEqualTo(null);
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
+		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("08/2014");
+
 	}
 
 	@Test

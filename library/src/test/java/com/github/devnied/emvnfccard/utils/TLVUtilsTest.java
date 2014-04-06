@@ -8,7 +8,7 @@ import fr.devnied.bitlib.BytesUtils;
 public class TLVUtilsTest {
 
 	@Test
-	public void test() {
+	public void testTlv() {
 
 		// GetIntValue
 		Assertions.assertThat(TLVUtils.getIntValue(BytesUtils.fromString("6F 1A 84 08 88 01 01 6E"), TLVUtils.SFI)).isEqualTo(1);
