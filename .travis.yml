@@ -21,4 +21,4 @@ before_install:
   - unzip -qq build-tools_r19-linux.zip -d $ANDROID_HOME/build-tools/
   - mv $ANDROID_HOME/build-tools/android-4.4 $ANDROID_HOME/build-tools/19
 after_success:
-  - mvn clean cobertura:cobertura coveralls:cobertura
+  - mvn cobertura:cobertura coveralls:cobertura
