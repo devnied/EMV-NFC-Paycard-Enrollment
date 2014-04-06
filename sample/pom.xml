@@ -44,6 +44,13 @@
 				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
 				<artifactId>android-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>cobertura-maven-plugin</artifactId>
+					<configuration>
+					    <skip>true</skip>
+					</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
