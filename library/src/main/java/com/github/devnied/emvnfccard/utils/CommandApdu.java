@@ -36,59 +36,12 @@ public class CommandApdu {
 
 	protected boolean mLeUsed = false;
 
-	public CommandApdu(final CommandEnum pEnum) {
-		mCla = pEnum.getCla();
-		mIns = pEnum.getIns();
-		mP1 = pEnum.getP1();
-		mP2 = pEnum.getP2();
-	}
-
-	public CommandApdu(final CommandEnum pEnum, final byte[] data) {
-		mCla = pEnum.getCla();
-		mIns = pEnum.getIns();
-		mP1 = pEnum.getP1();
-		mP2 = pEnum.getP2();
-		mLc = data.length;
-		mData = data;
-	}
-
 	public CommandApdu(final CommandEnum pEnum, final byte[] data, final int le) {
 		mCla = pEnum.getCla();
 		mIns = pEnum.getIns();
 		mP1 = pEnum.getP1();
 		mP2 = pEnum.getP2();
 		mLc = data.length;
-		mData = data;
-		mLe = le;
-		mLeUsed = true;
-	}
-
-	public CommandApdu(final CommandEnum pEnum, final int p1, final int p2) {
-		mCla = pEnum.getCla();
-		mIns = pEnum.getIns();
-		mP1 = p1;
-		mP2 = p2;
-	}
-
-	public CommandApdu() {
-
-	}
-
-	public CommandApdu(final CommandEnum pEnum, final int p1, final int p2, final byte[] data) {
-		mCla = pEnum.getCla();
-		mIns = pEnum.getIns();
-		mLc = data.length;
-		mP1 = p1;
-		mP2 = p2;
-		mData = data;
-	}
-
-	public CommandApdu(final CommandEnum pEnum, final int p1, final int p2, final byte[] data, final int le) {
-		mCla = pEnum.getCla();
-		mIns = pEnum.getIns();
-		mLc = data.length;
-		mP1 = p1;
-		mP2 = p2;
 		mData = data;
 		mLe = le;
 		mLeUsed = true;
@@ -101,44 +54,6 @@ public class CommandApdu {
 		mP2 = p2;
 		mLe = le;
 		mLeUsed = true;
-	}
-
-	public void setP1(final int p1) {
-		mP1 = p1;
-	}
-
-	public void setP2(final int p2) {
-		mP2 = p2;
-	}
-
-	public void setData(final byte[] data) {
-		mLc = data.length;
-		mData = data;
-	}
-
-	public void setLe(final int le) {
-		mLe = le;
-		mLeUsed = true;
-	}
-
-	public int getP1() {
-		return mP1;
-	}
-
-	public int getP2() {
-		return mP2;
-	}
-
-	public int getLc() {
-		return mLc;
-	}
-
-	public byte[] getData() {
-		return mData;
-	}
-
-	public int getLe() {
-		return mLe;
 	}
 
 	public byte[] toBytes() {
@@ -172,38 +87,6 @@ public class CommandApdu {
 			apdu[index] += (byte) mLe; // LE
 		}
 
-		return apdu;
-	}
-
-	public static boolean compareHeaders(final byte[] header1, final byte[] mask, final byte[] header2) {
-		if (header1.length < 4 || header2.length < 4) {
-			return false;
-		}
-		byte[] compHeader = new byte[4];
-		compHeader[0] = (byte) (header1[0] & mask[0]);
-		compHeader[1] = (byte) (header1[1] & mask[1]);
-		compHeader[2] = (byte) (header1[2] & mask[2]);
-		compHeader[3] = (byte) (header1[3] & mask[3]);
-
-		if (compHeader[0] == header2[0] && compHeader[1] == header2[1] && compHeader[2] == header2[2]
-				&& compHeader[3] == header2[3]) {
-			return true;
-		}
-		return false;
-	}
-
-	@Override
-	public CommandApdu clone() {
-		CommandApdu apdu = new CommandApdu();
-		apdu.mCla = mCla;
-		apdu.mIns = mIns;
-		apdu.mP1 = mP1;
-		apdu.mP2 = mP2;
-		apdu.mLc = mLc;
-		apdu.mData = new byte[mData.length];
-		System.arraycopy(mData, 0, apdu.mData, 0, mData.length);
-		apdu.mLe = mLe;
-		apdu.mLeUsed = mLeUsed;
 		return apdu;
 	}
 
