@@ -15,6 +15,9 @@ import org.slf4j.LoggerFactory;
 import com.github.devnied.emvnfccard.enums.EMVCardTypeEnum;
 import com.github.devnied.emvnfccard.model.Afl;
 import com.github.devnied.emvnfccard.model.EMVCard;
+import com.github.devnied.emvnfccard.model.EMVPaymentRecord;
+import com.github.devnied.emvnfccard.model.enums.CountryCodeEnum;
+import com.github.devnied.emvnfccard.model.enums.CurrencyEnum;
 import com.github.devnied.emvnfccard.parser.IProvider;
 import com.github.devnied.emvnfccard.parser.impl.DefaultEmvParser;
 import com.github.devnied.emvnfccard.provider.PpseProviderTest;
@@ -45,6 +48,8 @@ public class EMVParserTest {
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("5772829193253472");
 		Assertions.assertThat(card.getType()).isEqualTo(EMVCardTypeEnum.VISA);
 		Assertions.assertThat(card.getCardLabel()).isEqualTo("VISA");
+		Assertions.assertThat(card.getFisrtName()).isEqualTo(null);
+		Assertions.assertThat(card.getLastName()).isEqualTo(null);
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("08/2014");
 
@@ -65,6 +70,8 @@ public class EMVParserTest {
 		Assertions.assertThat(card.getAid()).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("4979670123453600");
 		Assertions.assertThat(card.getType()).isEqualTo(EMVCardTypeEnum.VISA);
+		Assertions.assertThat(card.getFisrtName()).isEqualTo(null);
+		Assertions.assertThat(card.getLastName()).isEqualTo(null);
 		Assertions.assertThat(card.getCardLabel()).isEqualTo("CB");
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("02/2016");
@@ -85,9 +92,19 @@ public class EMVParserTest {
 		Assertions.assertThat(card.getAid()).isEqualTo("A0000000031010");
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("4979670123453600");
 		Assertions.assertThat(card.getType()).isEqualTo(EMVCardTypeEnum.VISA);
+		Assertions.assertThat(card.getFisrtName()).isEqualTo(null);
+		Assertions.assertThat(card.getLastName()).isEqualTo(null);
 		Assertions.assertThat(card.getCardLabel()).isEqualTo("VISACREDIT");
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("02/2016");
+		Assertions.assertThat(card.getListPayment()).isNotNull();
+		EMVPaymentRecord record = card.getListPayment().get(0);
+		Assertions.assertThat(record.getAmount()).isEqualTo(17920);
+		Assertions.assertThat(record.getCyptogramData()).isEqualTo("40");
+		Assertions.assertThat(record.getTransactionType()).isEqualTo(144);
+		Assertions.assertThat(record.getCurrency()).isEqualTo(CurrencyEnum.EUR);
+		Assertions.assertThat(record.getTerminalCountry()).isEqualTo(CountryCodeEnum.FR);
+		Assertions.assertThat(record.getTransactionDate()).isNotNull();
 	}
 
 	@Test
