@@ -64,7 +64,11 @@ public class CardAdapter extends BaseAdapter {
 
 		// format date
 		SimpleDateFormat format = new SimpleDateFormat("MM/yy");
-		validity.setText(format.format(card.getExpireDate()));
+		if (card.getExpireDate() != null) {
+			validity.setText(format.format(card.getExpireDate()));
+		} else {
+			validity.setText("XX/XX");
+		}
 
 		// Set Image
 		cardType.setImageResource(CardUtils.getResourceIdCardType(card.getType()));
