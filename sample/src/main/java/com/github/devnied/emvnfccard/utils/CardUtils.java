@@ -33,6 +33,8 @@ public final class CardUtils {
 			} else {
 				ret = StringUtils.deleteWhitespace(pCardNumber).replaceAll("\\d{4}", "$0 ").trim();
 			}
+		} else {
+			ret = "0000 0000 0000 0000";
 		}
 		return ret;
 	}
@@ -46,20 +48,22 @@ public final class CardUtils {
 	 */
 	public static int getResourceIdCardType(final EMVCardTypeEnum pEnum) {
 		int ret = 0;
-		switch (pEnum) {
-		case AMERICAN_EXPRESS:
-			ret = R.drawable.amex;
-			break;
-		case MASTER_CARD1:
-		case MASTER_CARD2:
-			ret = R.drawable.mastercard;
-			break;
-		case VISA:
-			ret = R.drawable.visa;
-			break;
-		default:
-			break;
+		if (pEnum != null) {
+			switch (pEnum) {
+			case AMERICAN_EXPRESS:
+				ret = R.drawable.amex;
+				break;
+			case MASTER_CARD1:
+			case MASTER_CARD2:
+				ret = R.drawable.mastercard;
+				break;
+			case VISA:
+				ret = R.drawable.visa;
+				break;
+			default:
+				break;
 
+			}
 		}
 		return ret;
 	}
