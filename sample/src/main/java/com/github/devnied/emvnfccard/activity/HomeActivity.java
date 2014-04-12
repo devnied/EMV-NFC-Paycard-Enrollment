@@ -6,12 +6,16 @@ import java.util.Date;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.IsoDep;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
@@ -117,6 +121,29 @@ public class HomeActivity extends Activity implements OnItemClickListener {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		// Check NFC enable
+		if (!NFCUtils.isNfcEnable(getApplicationContext())) {
+			AlertDialog.Builder alertbox = new AlertDialog.Builder(this);
+			alertbox.setTitle(getString(R.string.msg_info));
+			alertbox.setMessage(getString(R.string.msg_nfc_disable));
+			alertbox.setPositiveButton(getString(R.string.msg_activate_nfc), new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(final DialogInterface dialog, final int which) {
+					Intent intent = null;
+					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+						intent = new Intent(Settings.ACTION_NFC_SETTINGS);
+					} else {
+						intent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+					}
+					dialog.dismiss();
+					startActivity(intent);
+				}
+			});
+			alertbox.setCancelable(false);
+			alertbox.show();
+		}
+
 		mNfcUtils.enableDispatch();
 	}
 
@@ -220,7 +247,7 @@ public class HomeActivity extends Activity implements OnItemClickListener {
 		if (success) {
 			color = 0xFF78B653;
 		}
-
+		Crouton.cancelAllCroutons();
 		Style style = new Style.Builder().setBackgroundColorValue(color) //
 				.setGravity(Gravity.CENTER) //
 				.setTextAppearance(R.style.Crouton_TextApparence) //

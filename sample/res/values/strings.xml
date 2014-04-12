@@ -6,6 +6,9 @@
     <string name="card_added">Card added</string>
     <string name="card_reading">Reading in progress...</string>
     <string name="card_reading_desc">Please do not remove card during reading.</string>
+    <string name="msg_nfc_disable">Please enable NFC and press back to return to this application.</string>
+    <string name="msg_activate_nfc">OK</string>
+    <string name="msg_info">Info</string>
     
     <!-- Error -->
     <string name="error_communication_nfc">NFC communication error</string>

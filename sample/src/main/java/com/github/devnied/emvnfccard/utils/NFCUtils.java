@@ -16,22 +16,6 @@ import android.nfc.NfcAdapter;
 public class NFCUtils {
 
 	/**
-	 * Check if the NFC Adapter is available
-	 * 
-	 * @return true if the NFCAdapter id available
-	 */
-	public static boolean isNfcAvailable(final Context pContext) {
-		boolean ret = true;
-		try {
-			NfcAdapter adpater = NfcAdapter.getDefaultAdapter(pContext);
-			ret = adpater != null;
-		} catch (UnsupportedOperationException e) {
-			ret = false;
-		}
-		return ret;
-	}
-
-	/**
 	 * Check if the NFCAdapter is enable
 	 * 
 	 * @return true if the NFCAdapter is available enable
