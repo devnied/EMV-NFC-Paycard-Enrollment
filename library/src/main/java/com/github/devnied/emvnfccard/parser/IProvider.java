@@ -1,5 +1,7 @@
 package com.github.devnied.emvnfccard.parser;
 
+import com.github.devnied.emvnfccard.exception.CommunicationException;
+
 /**
  * Interface for provider for transmit command to card
  * 
@@ -15,6 +17,6 @@ public interface IProvider {
 	 *            command to send to card
 	 * @return byte array returned by card
 	 */
-	byte[] transceive(byte[] pCommand);
+	byte[] transceive(byte[] pCommand) throws CommunicationException;
 
 }

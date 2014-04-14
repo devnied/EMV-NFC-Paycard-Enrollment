@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -173,6 +175,11 @@ public class HomeActivity extends Activity implements OnItemClickListener {
 			 */
 			private EMVCard mCard;
 
+			/**
+			 * Boolean to indicate exception
+			 */
+			private boolean mException;
+
 			@Override
 			protected void onPreExecute() {
 				super.onPreExecute();
@@ -206,6 +213,7 @@ public class HomeActivity extends Activity implements OnItemClickListener {
 
 				} catch (IOException e) {
 					display(getResources().getText(R.string.error_communication_nfc), false);
+					mException = true;
 				} finally {
 					// close tagcomm
 					if (mTagcomm != null) {
@@ -224,15 +232,17 @@ public class HomeActivity extends Activity implements OnItemClickListener {
 				if (mDialog != null) {
 					mDialog.cancel();
 				}
-				if (mCard == null) {
-					display(getText(R.string.error_card_unknown), false);
-				} else {
-					if (!mList.contains(mCard)) {
-						mList.add(mCard);
-						mAdapter.notifyDataSetChanged();
-						display(getText(R.string.card_added), true);
+				if (!mException) {
+					if (mCard != null && StringUtils.isNotBlank(mCard.getAid())) {
+						if (!mList.contains(mCard)) {
+							mList.add(mCard);
+							mAdapter.notifyDataSetChanged();
+							display(getText(R.string.card_added), true);
+						} else {
+							display(getText(R.string.error_card_already_added), false);
+						}
 					} else {
-						display(getText(R.string.error_card_already_added), false);
+						display(getText(R.string.error_card_unknown), false);
 					}
 				}
 			}

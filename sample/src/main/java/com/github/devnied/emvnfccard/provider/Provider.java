@@ -6,6 +6,7 @@ import android.nfc.tech.IsoDep;
 import android.util.Log;
 
 import com.github.devnied.emvnfccard.BuildConfig;
+import com.github.devnied.emvnfccard.exception.CommunicationException;
 import com.github.devnied.emvnfccard.parser.IProvider;
 
 import fr.devnied.bitlib.BytesUtils;
@@ -38,7 +39,7 @@ public class Provider implements IProvider {
 	}
 
 	@Override
-	public byte[] transceive(final byte[] pCommand) {
+	public byte[] transceive(final byte[] pCommand) throws CommunicationException {
 		if (BuildConfig.DEBUG) {
 			Log.d(TAG, "send: " + BytesUtils.bytesToString(pCommand));
 		}
@@ -48,7 +49,7 @@ public class Provider implements IProvider {
 			// send command to emv card
 			response = mTagCom.transceive(pCommand);
 		} catch (IOException e) {
-			Log.e(TAG, e.getMessage(), e);
+			throw new CommunicationException(e.getMessage());
 		}
 
 		if (BuildConfig.DEBUG) {

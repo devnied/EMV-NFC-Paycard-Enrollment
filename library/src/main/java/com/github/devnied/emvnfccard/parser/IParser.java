@@ -3,6 +3,7 @@
  */
 package com.github.devnied.emvnfccard.parser;
 
+import com.github.devnied.emvnfccard.exception.CommunicationException;
 import com.github.devnied.emvnfccard.model.EMVCard;
 
 /**
@@ -20,7 +21,8 @@ public interface IParser {
 	 * @param pProvider
 	 *            provider used to send other command to the card
 	 * @return EMVCard object containing data read from card
+	 * @throws CommunicationException
 	 */
-	EMVCard parse(byte[] pSelectResponse, IProvider pProvider);
+	EMVCard parse(byte[] pSelectResponse, IProvider pProvider) throws CommunicationException;
 
 }

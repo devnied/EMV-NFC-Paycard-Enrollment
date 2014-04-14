@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.fest.assertions.Assertions;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.devnied.emvnfccard.enums.EMVCardTypeEnum;
+import com.github.devnied.emvnfccard.exception.CommunicationException;
 import com.github.devnied.emvnfccard.model.Afl;
 import com.github.devnied.emvnfccard.model.EMVCard;
 import com.github.devnied.emvnfccard.model.EMVPaymentRecord;
@@ -20,6 +22,7 @@ import com.github.devnied.emvnfccard.model.enums.CountryCodeEnum;
 import com.github.devnied.emvnfccard.model.enums.CurrencyEnum;
 import com.github.devnied.emvnfccard.parser.IProvider;
 import com.github.devnied.emvnfccard.parser.impl.DefaultEmvParser;
+import com.github.devnied.emvnfccard.provider.ExceptionProviderTest;
 import com.github.devnied.emvnfccard.provider.PpseProviderTest;
 import com.github.devnied.emvnfccard.provider.ProviderAidTest;
 import com.github.devnied.emvnfccard.provider.PseProviderTest;
@@ -33,7 +36,7 @@ public class EMVParserTest {
 	private static final Logger LOGGER = LoggerFactory.getLogger(EMVParserTest.class);
 
 	@Test
-	public void testPPSE() {
+	public void testPPSE() throws CommunicationException {
 
 		IProvider prov = new PpseProviderTest();
 
@@ -55,7 +58,7 @@ public class EMVParserTest {
 	}
 
 	@Test
-	public void testPSE() {
+	public void testPSE() throws CommunicationException {
 
 		IProvider prov = new PseProviderTest();
 
@@ -85,7 +88,7 @@ public class EMVParserTest {
 	}
 
 	@Test
-	public void testAid() {
+	public void testAid() throws CommunicationException {
 
 		IProvider prov = new ProviderAidTest();
 
@@ -105,6 +108,20 @@ public class EMVParserTest {
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("08/2014");
 
+	}
+
+	@Test
+	public void testException() throws CommunicationException {
+
+		IProvider prov = new ExceptionProviderTest();
+
+		EMVParser parser = new EMVParser(prov, true);
+		try {
+			parser.readEmvCard();
+			Assert.fail();
+		} catch (CommunicationException e) {
+			Assert.assertTrue(true);
+		}
 	}
 
 	@Test

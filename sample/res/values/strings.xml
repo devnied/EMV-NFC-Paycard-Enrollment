@@ -11,9 +11,10 @@
     <string name="msg_info">Info</string>
     
     <!-- Error -->
-    <string name="error_communication_nfc">NFC communication error</string>
+    <string name="error_communication_nfc">NFC communication error. Please retry!</string>
     <string name="error_card_unknown">Unknown EMV card</string>
     <string name="error_card_already_added">Card already added</string>
+    <string name="error_reading_card">Error reading card</string>
     
     <!-- Activity -->
     <string name="activity_About">About</string>

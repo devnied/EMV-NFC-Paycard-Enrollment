@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.devnied.emvnfccard.enums.CommandEnum;
+import com.github.devnied.emvnfccard.exception.CommunicationException;
 import com.github.devnied.emvnfccard.model.Afl;
 import com.github.devnied.emvnfccard.model.EMVCard;
 import com.github.devnied.emvnfccard.model.EMVPaymentRecord;
@@ -55,7 +56,7 @@ public class DefaultEmvParser implements IParser {
 	 * Method used to parse EMV card
 	 */
 	@Override
-	public EMVCard parse(final byte[] pSelectResponse, final IProvider pProvider) {
+	public EMVCard parse(final byte[] pSelectResponse, final IProvider pProvider) throws CommunicationException {
 		EMVCard card = new EMVCard();
 		// Get TLV log entry
 		byte[] logEntry = TLVUtils.getArrayValue(pSelectResponse, TLVUtils.LOG_ENTRY);
@@ -89,7 +90,8 @@ public class DefaultEmvParser implements IParser {
 	 * @param pGpo
 	 *            global processing options response
 	 */
-	private void extractCommonsCardData(final IProvider pProvider, final EMVCard pCard, final byte[] pGpo) {
+	private void extractCommonsCardData(final IProvider pProvider, final EMVCard pCard, final byte[] pGpo)
+			throws CommunicationException {
 		// Get SFI
 		List<Afl> listAfl = extractAfl(pGpo);
 		boolean found = false;
@@ -131,7 +133,8 @@ public class DefaultEmvParser implements IParser {
 	 * @param pLogEntry
 	 *            log entry position
 	 */
-	private void extractLogEntry(final IProvider pProvider, final EMVCard pCard, final byte[] pLogEntry) {
+	private void extractLogEntry(final IProvider pProvider, final EMVCard pCard, final byte[] pLogEntry)
+			throws CommunicationException {
 		// If log entry is defined
 		if (pLogEntry != null) {
 			List<EMVPaymentRecord> listRecord = new ArrayList<EMVPaymentRecord>();
@@ -211,7 +214,7 @@ public class DefaultEmvParser implements IParser {
 	 *            provider
 	 * @return return data
 	 */
-	protected byte[] getGetProcessingOptions(final byte[] pPdol, final IProvider pProvider) {
+	protected byte[] getGetProcessingOptions(final byte[] pPdol, final IProvider pProvider) throws CommunicationException {
 		byte[] data = null;
 		// if PDOL Data
 		if (pPdol != null) {

@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import com.github.devnied.emvnfccard.enums.CommandEnum;
 import com.github.devnied.emvnfccard.enums.EMVCardTypeEnum;
+import com.github.devnied.emvnfccard.exception.CommunicationException;
 import com.github.devnied.emvnfccard.model.EMVCard;
 import com.github.devnied.emvnfccard.parser.IProvider;
 import com.github.devnied.emvnfccard.parser.impl.DefaultEmvParser;
@@ -66,7 +67,7 @@ public class EMVParser {
 	 *            provider to send command to the card
 	 * @return data read from card or null if any provider match the card type
 	 */
-	public EMVCard readEmvCard() {
+	public EMVCard readEmvCard() throws CommunicationException {
 		// use PSE first
 		EMVCard card = selectPSE();
 		// Find with AID
@@ -84,7 +85,7 @@ public class EMVParser {
 	 * 
 	 * @return card read
 	 */
-	private EMVCard selectPSE() {
+	private EMVCard selectPSE() throws CommunicationException {
 		EMVCard card = null;
 		// Select the PPSE or PSE directory
 		byte[] data = provider.transceive(new CommandApdu(CommandEnum.SELECT, contactLess ? PPSE : PSE, 0).toBytes());
@@ -132,7 +133,7 @@ public class EMVParser {
 	 * 
 	 * @return Card read
 	 */
-	private EMVCard findWithAID() {
+	private EMVCard findWithAID() throws CommunicationException {
 		EMVCard card = null;
 		// Get each card from enum
 		for (EMVCardTypeEnum type : EMVCardTypeEnum.values()) {
@@ -153,7 +154,7 @@ public class EMVParser {
 	 *            card scheme (Name)
 	 * @return card read or null
 	 */
-	private EMVCard getCard(final String pAid, final String pScheme) {
+	private EMVCard getCard(final String pAid, final String pScheme) throws CommunicationException {
 		EMVCard ret = null;
 		// Select AID
 		byte[] data = provider.transceive(new CommandApdu(CommandEnum.SELECT, BytesUtils.fromString(pAid), 0).toBytes());
