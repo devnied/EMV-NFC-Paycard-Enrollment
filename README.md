@@ -3,7 +3,12 @@
 
 Java library used to read and extract data from NFC EMV paycard.
 
-Sample app available on the [Play Store](https://play.google.com/store/apps/details?id=com.github.devnied.emvnfccard)
+Android qample app available on Play store.
+
+<a href="https://play.google.com/store/apps/details?id=com.github.devnied.emvnfccard">
+  <img alt="EMV NFC paycard reader Demo on Google Play"
+         src="http://developer.android.com/images/brand/en_generic_rgb_wo_60.png" />
+</a>
 
 ### Getting started
 
@@ -33,7 +38,7 @@ card object contains all data read (Aid, card number, expiration date, card type
 
 ## Dependencies
 
-If you are not using Maven or some other dependency management tool that can understand Maven repositories, the list below is what you need to run bit-lib4j.
+If you are not using Maven or some other dependency management tool that can understand Maven repositories, the list below is what you need to run EMV-NFC-Paycard-Enrollment.
 
 **Runtime Dependencies**
 * commons-lang3 3.1
