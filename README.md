@@ -3,7 +3,7 @@
 
 Java library used to read and extract data from NFC EMV paycard.
 
-Android qample app available on Play store.
+Android sample app available on Play store.
 
 <a href="https://play.google.com/store/apps/details?id=com.github.devnied.emvnfccard">
   <img alt="EMV NFC paycard reader Demo on Google Play"
