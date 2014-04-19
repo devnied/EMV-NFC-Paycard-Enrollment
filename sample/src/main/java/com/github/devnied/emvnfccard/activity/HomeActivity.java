@@ -200,6 +200,7 @@ public class HomeActivity extends Activity implements OnItemClickListener {
 					display(getText(R.string.error_communication_nfc), false);
 					return;
 				}
+				mException = false;
 
 				try {
 					// Open connection
@@ -212,7 +213,6 @@ public class HomeActivity extends Activity implements OnItemClickListener {
 					mCard = parser.readEmvCard();
 
 				} catch (IOException e) {
-					display(getResources().getText(R.string.error_communication_nfc), false);
 					mException = true;
 				} finally {
 					// close tagcomm
@@ -244,6 +244,8 @@ public class HomeActivity extends Activity implements OnItemClickListener {
 					} else {
 						display(getText(R.string.error_card_unknown), false);
 					}
+				} else {
+					display(getResources().getText(R.string.error_communication_nfc), false);
 				}
 			}
 
