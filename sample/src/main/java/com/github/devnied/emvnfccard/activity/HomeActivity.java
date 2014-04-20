@@ -232,6 +232,7 @@ public class HomeActivity extends Activity implements OnItemClickListener {
 				if (mDialog != null) {
 					mDialog.cancel();
 				}
+
 				if (!mException) {
 					if (mCard != null && StringUtils.isNotBlank(mCard.getAid())) {
 						if (!mList.contains(mCard)) {

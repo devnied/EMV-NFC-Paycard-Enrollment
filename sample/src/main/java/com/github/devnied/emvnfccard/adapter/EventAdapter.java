@@ -64,10 +64,14 @@ public class EventAdapter extends BaseAdapter {
 
 		// Add currency
 		Currency currency = Currency.getInstance(event.getCurrency().getCode());
-		symbol.setText(currency.getSymbol(Locale.getDefault()));
-
-		// Set amount
-		amount.setText(event.getCurrency().format(event.getAmount().longValue()));
+		if (currency != null) {
+			// Set symbol
+			symbol.setText(currency.getSymbol(Locale.getDefault()));
+			// Set amount
+			amount.setText(event.getCurrency().format(event.getAmount().longValue()));
+		} else {
+			amount.setText(String.valueOf(event.getAmount().longValue()));
+		}
 
 		// Apply faceType
 		ViewUtils.setTypeFace(EmvApplication.sTypeface, date, amount, symbol);
