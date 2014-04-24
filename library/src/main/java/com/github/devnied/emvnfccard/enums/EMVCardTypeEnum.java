@@ -101,7 +101,7 @@ public enum EMVCardTypeEnum {
 	 * 
 	 * @param pAid
 	 *            card AID
-	 * @return
+	 * @return CardType or null
 	 */
 	public static EMVCardTypeEnum getCardTypeByAid(final String pAid) {
 		EMVCardTypeEnum ret = null;

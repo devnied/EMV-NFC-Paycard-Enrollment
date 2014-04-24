@@ -54,6 +54,8 @@ public class EMVParser {
 	 * 
 	 * @param pProvider
 	 *            provider to launch command
+	 * @param pContactLess
+	 *            boolean to indicate if the EMV card is contact less or not
 	 */
 	public EMVParser(final IProvider pProvider, final boolean pContactLess) {
 		provider = pProvider;
@@ -63,8 +65,6 @@ public class EMVParser {
 	/**
 	 * Method used to read a EMV card
 	 * 
-	 * @param pProvider
-	 *            provider to send command to the card
 	 * @return data read from card or null if any provider match the card type
 	 */
 	public EMVCard readEmvCard() throws CommunicationException {

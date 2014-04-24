@@ -24,8 +24,7 @@ package com.github.devnied.emvnfccard.model.enums;
  * alpha-2</a> codes. There are instance methods to get the country name ({@link #getName()} ), the <a
  * href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3" >ISO 3166-1 alpha-3</a> code ({@link #getAlpha3()}) and the <a
  * href="http://en.wikipedia.org/wiki/ISO_3166-1_numeric">ISO 3166-1 numeric</a> code ({@link #getNumeric()}). In addition, there
- * are static methods to get a CountryCode instance that corresponds to a given alpha-2/alpha-3/numeric code (
- * {@link #getByCode(String)}, {@link #getByCode(int)}).
+ * are static methods to get a CountryCode instance that corresponds to a given alpha-2/alpha-3/numeric code.
  * </p>
  * 
  * <pre style="background-color: #EEEEEE; margin-left: 2em; margin-right: 2em; border: 1px solid black;">
