@@ -39,9 +39,9 @@
 	</licenses>
 
 	<scm>
-		<connection>scm:git:git@github.com/devnied/EMV-NFC-Paycard-Enrollment.git</connection>
-		<developerConnection>scm:git:git@github.com/devnied/EMV-NFC-Paycard-Enrollment.git</developerConnection>
-		<url>https://github.com/devnied/EMV-NFC-Paycard-Enrollment</url>
+		<connection>scm:git:git@github.com:devnied/EMV-NFC-Paycard-Enrollment.git</connection>
+		<developerConnection>scm:git:git@github.com:devnied/EMV-NFC-Paycard-Enrollment.git</developerConnection>
+		<url>scm:git:git@github.com:devnied/EMV-NFC-Paycard-Enrollment.git</url>
 		<tag>HEAD</tag>
 	</scm>
 
