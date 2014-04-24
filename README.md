@@ -1,8 +1,8 @@
 ## EMV NFC Paycard Enrollment [![Build Status](https://travis-ci.org/devnied/EMV-NFC-Paycard-Enrollment.png?branch=master)](https://travis-ci.org/devnied/EMV-NFC-Paycard-Enrollment) [![Coverage Status](https://coveralls.io/repos/devnied/EMV-NFC-Paycard-Enrollment/badge.png)](https://coveralls.io/r/devnied/EMV-NFC-Paycard-Enrollment)
 ### Description
-
-Java library used to read and extract data from NFC EMV paycard.
-
+Java library used to read and extract data from NFC EMV paycard.<br/>
+<b>Current version : 1.0.0</b><br/>
+<br/>
 Android sample app available on Play store.
 
 <a href="https://play.google.com/store/apps/details?id=com.github.devnied.emvnfccard">
@@ -35,6 +35,20 @@ card object contains all data read (Aid, card number, expiration date, card type
 ### Screens
 
 [![Sample demo](https://raw.githubusercontent.com/devnied/EMV-NFC-Paycard-Enrollment/master/images/demo.gif)](https://raw.githubusercontent.com/devnied/EMV-NFC-Paycard-Enrollment/master/images/demo.gif)
+
+## Download
+
+### Maven
+```xml
+<dependency>
+  <groupId>com.github.devnied.emvnfccard</groupId>
+  <artifactId>library</artifactId>
+  <version>1.0.0</version>
+</dependency>
+```
+
+### JAR
+You can download this library on [Maven central](http://search.maven.org/#search%7Cga%7C1%7Cemvnfccard).
 
 ## Dependencies
 
