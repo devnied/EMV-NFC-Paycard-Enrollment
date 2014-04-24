@@ -159,6 +159,13 @@
 						<mavenExecutorId>forked-path</mavenExecutorId>
 						<localCheckout>true</localCheckout>
 					</configuration>
+					 <dependencies>
+			            <dependency>
+			               <groupId>org.apache.maven.scm</groupId>
+			               <artifactId>maven-scm-provider-gitexe</artifactId>
+			               <version>1.9</version>
+			            </dependency>
+			         </dependencies>
 				</plugin>
 				<plugin>
 					<artifactId>maven-source-plugin</artifactId>
