@@ -234,7 +234,7 @@ public class HomeActivity extends Activity implements OnItemClickListener {
 				}
 
 				if (!mException) {
-					if (mCard != null && StringUtils.isNotBlank(mCard.getAid())) {
+					if (mCard != null && StringUtils.isNotBlank(mCard.getCardNumber())) {
 						if (!mList.contains(mCard)) {
 							mList.add(mCard);
 							mAdapter.notifyDataSetChanged();

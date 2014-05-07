@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.github.devnied.emvnfccard.EmvApplication;
 import com.github.devnied.emvnfccard.R;
 import com.github.devnied.emvnfccard.model.EMVPaymentRecord;
+import com.github.devnied.emvnfccard.model.enums.CurrencyEnum;
 import com.github.devnied.emvnfccard.utils.ViewHolder;
 import com.github.devnied.emvnfccard.utils.ViewUtils;
 
@@ -62,15 +63,19 @@ public class EventAdapter extends BaseAdapter {
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 		date.setText(format.format(event.getTransactionDate()));
 
-		// Add currency
-		Currency currency = Currency.getInstance(event.getCurrency().getCode());
-		if (currency != null) {
-			// Set symbol
-			symbol.setText(currency.getSymbol(Locale.getDefault()));
-			// Set amount
-			amount.setText(event.getCurrency().format(event.getAmount().longValue()));
+		if (event.getCurrency() != CurrencyEnum.XXX) {
+			// Add currency
+			Currency currency = Currency.getInstance(event.getCurrency().getCode());
+			if (currency != null) {
+				// Set symbol
+				symbol.setText(currency.getSymbol(Locale.getDefault()));
+				// Set amount
+				amount.setText(event.getCurrency().format(event.getAmount().longValue()));
+			} else {
+				amount.setText(String.valueOf(event.getAmount().longValue()));
+			}
 		} else {
-			amount.setText(String.valueOf(event.getAmount().longValue()));
+			amount.setText(event.getCurrency().format(event.getAmount().longValue()));
 		}
 
 		// Apply faceType

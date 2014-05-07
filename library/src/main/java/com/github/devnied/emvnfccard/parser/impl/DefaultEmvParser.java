@@ -16,6 +16,7 @@ import com.github.devnied.emvnfccard.exception.CommunicationException;
 import com.github.devnied.emvnfccard.model.Afl;
 import com.github.devnied.emvnfccard.model.EMVCard;
 import com.github.devnied.emvnfccard.model.EMVPaymentRecord;
+import com.github.devnied.emvnfccard.model.enums.CurrencyEnum;
 import com.github.devnied.emvnfccard.parser.IParser;
 import com.github.devnied.emvnfccard.parser.IProvider;
 import com.github.devnied.emvnfccard.utils.CommandApdu;
@@ -146,7 +147,13 @@ public class DefaultEmvParser implements IParser {
 				if (ResponseApdu.isSucceed(response) && response.length >= EMVPaymentRecord.DEFAULT_SIZE / BitUtils.BYTE_SIZE) {
 					EMVPaymentRecord record = new EMVPaymentRecord();
 					record.parse(response);
-					listRecord.add(record);
+					if (record != null) {
+						// Unknown currency
+						if (record.getCurrency() == null) {
+							record.setCurrency(CurrencyEnum.XXX);
+						}
+						listRecord.add(record);
+					}
 				}
 			}
 			// Add list of record
