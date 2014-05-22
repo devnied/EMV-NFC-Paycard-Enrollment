@@ -158,99 +158,98 @@ public class HomeActivity extends Activity implements OnItemClickListener {
 	@Override
 	protected void onNewIntent(final Intent intent) {
 		super.onNewIntent(intent);
+		final Tag mTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+		if (mTag != null) {
 
-		new SimpleAsyncTask() {
+			new SimpleAsyncTask() {
 
-			/**
-			 * Tag
-			 */
-			private Tag mTag;
-			/**
-			 * Tag comm
-			 */
-			private IsoDep mTagcomm;
+				/**
+				 * Tag comm
+				 */
+				private IsoDep mTagcomm;
 
-			/**
-			 * Emv Card
-			 */
-			private EMVCard mCard;
+				/**
+				 * Emv Card
+				 */
+				private EMVCard mCard;
 
-			/**
-			 * Boolean to indicate exception
-			 */
-			private boolean mException;
+				/**
+				 * Boolean to indicate exception
+				 */
+				private boolean mException;
 
-			@Override
-			protected void onPreExecute() {
-				super.onPreExecute();
-				// Show dialog
-				if (mDialog == null) {
-					mDialog = ProgressDialog.show(HomeActivity.this, getString(R.string.card_reading),
-							getString(R.string.card_reading_desc), true, false);
-				} else {
-					mDialog.show();
+				@Override
+				protected void onPreExecute() {
+					super.onPreExecute();
+					// Show dialog
+					if (mDialog == null) {
+						mDialog = ProgressDialog.show(HomeActivity.this, getString(R.string.card_reading),
+								getString(R.string.card_reading_desc), true, false);
+					} else {
+						mDialog.show();
+					}
 				}
-			}
 
-			@Override
-			protected void doInBackground() {
-				mTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-				mTagcomm = IsoDep.get(mTag);
-				if (mTagcomm == null) {
-					display(getText(R.string.error_communication_nfc), false);
-					return;
-				}
-				mException = false;
+				@Override
+				protected void doInBackground() {
 
-				try {
-					// Open connection
-					mTagcomm.connect();
+					mTagcomm = IsoDep.get(mTag);
+					if (mTagcomm == null) {
+						display(getText(R.string.error_communication_nfc), false);
+						return;
+					}
+					mException = false;
 
-					// Create provider
-					IProvider prov = new Provider(mTagcomm);
+					try {
+						// Open connection
+						mTagcomm.connect();
 
-					EMVParser parser = new EMVParser(prov, true);
-					mCard = parser.readEmvCard();
+						// Create provider
+						IProvider prov = new Provider(mTagcomm);
 
-				} catch (IOException e) {
-					mException = true;
-				} finally {
-					// close tagcomm
-					if (mTagcomm != null) {
-						try {
-							mTagcomm.close();
-						} catch (IOException e) {
-							// do nothing
+						EMVParser parser = new EMVParser(prov, true);
+						mCard = parser.readEmvCard();
+
+					} catch (IOException e) {
+						mException = true;
+					} finally {
+						// close tagcomm
+						if (mTagcomm != null) {
+							try {
+								mTagcomm.close();
+							} catch (IOException e) {
+								// do nothing
+							}
 						}
 					}
 				}
-			}
 
-			@Override
-			protected void onPostExecute(final Object result) {
-				// close dialog
-				if (mDialog != null) {
-					mDialog.cancel();
-				}
+				@Override
+				protected void onPostExecute(final Object result) {
+					// close dialog
+					if (mDialog != null) {
+						mDialog.cancel();
+					}
 
-				if (!mException) {
-					if (mCard != null && StringUtils.isNotBlank(mCard.getCardNumber())) {
-						if (!mList.contains(mCard)) {
-							mList.add(mCard);
-							mAdapter.notifyDataSetChanged();
-							display(getText(R.string.card_added), true);
+					if (!mException) {
+						if (mCard != null && StringUtils.isNotBlank(mCard.getCardNumber())) {
+							if (!mList.contains(mCard)) {
+								mList.add(mCard);
+								mAdapter.notifyDataSetChanged();
+								display(getText(R.string.card_added), true);
+							} else {
+								display(getText(R.string.error_card_already_added), false);
+							}
 						} else {
-							display(getText(R.string.error_card_already_added), false);
+							display(getText(R.string.error_card_unknown), false);
 						}
 					} else {
-						display(getText(R.string.error_card_unknown), false);
+						display(getResources().getText(R.string.error_communication_nfc), false);
 					}
-				} else {
-					display(getResources().getText(R.string.error_communication_nfc), false);
 				}
-			}
 
-		}.execute();
+			}.execute();
+		}
 
 	}
 
