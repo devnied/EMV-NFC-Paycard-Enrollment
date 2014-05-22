@@ -28,9 +28,9 @@ public class EMVPaymentRecord extends AbstractByteBean<EMVPaymentRecord> impleme
 	public final static int DEFAULT_SIZE = 128;
 
 	/**
-	 * Amount authorized
+	 * Amount authorized (Amount need to be formated with currency)
 	 */
-	@Data(index = 1, size = 48)
+	@Data(index = 1, size = 48, format = DataFactory.BCD_FORMAT)
 	private Float amount;
 
 	/**
@@ -58,7 +58,7 @@ public class EMVPaymentRecord extends AbstractByteBean<EMVPaymentRecord> impleme
 	private Date transactionDate;
 
 	/**
-	 * Transaction type
+	 * Transaction type (0:Payment, other:Withdrawal)
 	 */
 	@Data(index = 6, size = 16)
 	private Integer transactionType;

@@ -72,10 +72,10 @@ public class EventAdapter extends BaseAdapter {
 				// Set amount
 				amount.setText(event.getCurrency().format(event.getAmount().longValue()));
 			} else {
-				amount.setText(String.valueOf(event.getAmount().longValue()));
+				amount.setText(String.valueOf(event.getAmount().longValue() / 100));
 			}
 		} else {
-			amount.setText(event.getCurrency().format(event.getAmount().longValue()));
+			amount.setText(event.getCurrency().format(event.getAmount().longValue() / 100));
 		}
 
 		// Apply faceType

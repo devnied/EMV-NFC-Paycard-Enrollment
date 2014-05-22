@@ -101,7 +101,7 @@ public class HomeActivity extends Activity implements OnItemClickListener {
 
 			List<EMVPaymentRecord> list = new ArrayList<EMVPaymentRecord>();
 			EMVPaymentRecord payment = new EMVPaymentRecord();
-			payment.setAmount(new Float(234.698));
+			payment.setAmount(new Float(234));
 			payment.setCurrency(CurrencyEnum.EUR);
 			payment.setTransactionDate(new Date());
 			list.add(payment);

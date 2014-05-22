@@ -79,7 +79,7 @@ public class EMVParserTest {
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("02/2016");
 		Assertions.assertThat(card.getListPayment()).isNotNull();
 		EMVPaymentRecord record = card.getListPayment().get(0);
-		Assertions.assertThat(record.getAmount()).isEqualTo(17920);
+		Assertions.assertThat(record.getAmount()).isEqualTo(4600);
 		Assertions.assertThat(record.getCyptogramData()).isEqualTo("40");
 		Assertions.assertThat(record.getTransactionType()).isEqualTo(144);
 		Assertions.assertThat(record.getCurrency()).isEqualTo(CurrencyEnum.EUR);

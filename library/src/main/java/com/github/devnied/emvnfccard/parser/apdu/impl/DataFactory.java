@@ -36,6 +36,11 @@ public final class DataFactory {
 	public static final int HALF_BYTE_SIZE = 4;
 
 	/**
+	 * BCD format
+	 */
+	public static final String BCD_FORMAT = "BCD_Format";
+
+	/**
 	 * Method to get a date from the bytes table
 	 * 
 	 * @param pAnnotation
@@ -93,7 +98,7 @@ public final class DataFactory {
 		if (clazz.equals(Integer.class)) {
 			obj = getInteger(pAnnotation, pBit);
 		} else if (clazz.equals(Float.class)) {
-			obj = (float) getInteger(pAnnotation, pBit);
+			obj = getFloat(pAnnotation, pBit);
 		} else if (clazz.equals(String.class)) {
 			obj = getString(pAnnotation, pBit);
 		} else if (clazz.equals(Date.class)) {
@@ -104,6 +109,27 @@ public final class DataFactory {
 			obj = getEnum(pAnnotation, pBit);
 		}
 		return obj;
+	}
+
+	/**
+	 * Method use to get float
+	 * 
+	 * @param pAnnotation
+	 *            annotation
+	 * @param pBit
+	 *            bit utils
+	 * @return
+	 */
+	private static Float getFloat(final AnnotationData pAnnotation, final BitUtils pBit) {
+		Float ret = null;
+
+		if (BCD_FORMAT.equals(pAnnotation.getFormat())) {
+			ret = Float.parseFloat(pBit.getNextHexaString(pAnnotation.getSize()));
+		} else {
+			ret = (float) getInteger(pAnnotation, pBit);
+		}
+
+		return ret;
 	}
 
 	/**
