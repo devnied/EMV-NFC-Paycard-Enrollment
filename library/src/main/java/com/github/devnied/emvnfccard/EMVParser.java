@@ -11,7 +11,7 @@ import com.github.devnied.emvnfccard.model.EMVCard;
 import com.github.devnied.emvnfccard.parser.IProvider;
 import com.github.devnied.emvnfccard.parser.impl.DefaultEmvParser;
 import com.github.devnied.emvnfccard.utils.CommandApdu;
-import com.github.devnied.emvnfccard.utils.ResponseApdu;
+import com.github.devnied.emvnfccard.utils.ResponseUtils;
 import com.github.devnied.emvnfccard.utils.TLVUtils;
 
 import fr.devnied.bitlib.BytesUtils;
@@ -87,9 +87,14 @@ public class EMVParser {
 	 */
 	private EMVCard selectPSE() throws CommunicationException {
 		EMVCard card = null;
+		if (contactLess) {
+			LOGGER.info("Select PPSE");
+		} else {
+			LOGGER.info("Select PSE");
+		}
 		// Select the PPSE or PSE directory
 		byte[] data = provider.transceive(new CommandApdu(CommandEnum.SELECT, contactLess ? PPSE : PSE, 0).toBytes());
-		if (ResponseApdu.isSucceed(data)) {
+		if (ResponseUtils.isSucceed(data)) {
 
 			if (contactLess) { // Select PPSE
 				// Extract label
@@ -107,7 +112,7 @@ public class EMVParser {
 				}
 			}
 			// Extract Aid and contactless
-			if (contactLess || !contactLess && ResponseApdu.isSucceed(data)) {
+			if (contactLess || !contactLess && ResponseUtils.isSucceed(data)) {
 				String label = null;
 				byte[] labelByte = TLVUtils.getArrayValue(data, TLVUtils.APPLICATION_LABEL);
 				if (labelByte != null) {
@@ -135,6 +140,7 @@ public class EMVParser {
 	 */
 	private EMVCard findWithAID() throws CommunicationException {
 		EMVCard card = null;
+		LOGGER.info("Find with AID");
 		// Get each card from enum
 		for (EMVCardTypeEnum type : EMVCardTypeEnum.values()) {
 			card = getCard(type.getAid(), type.getScheme());
@@ -159,7 +165,7 @@ public class EMVParser {
 		// Select AID
 		byte[] data = provider.transceive(new CommandApdu(CommandEnum.SELECT, BytesUtils.fromString(pAid), 0).toBytes());
 		// check response
-		if (ResponseApdu.isSucceed(data)) {
+		if (ResponseUtils.isSucceed(data)) {
 			// Get AID
 			String aid = TLVUtils.getHexaValue(data, TLVUtils.DF_NAME);
 			if (LOGGER.isDebugEnabled()) {
@@ -176,6 +182,7 @@ public class EMVParser {
 				// Get real type for french card
 				if (type == EMVCardTypeEnum.CB) {
 					type = EMVCardTypeEnum.getCardTypeByCardNumber(ret.getCardNumber());
+					LOGGER.info("Find type by card number type:" + type.getScheme());
 				}
 				ret.setType(type);
 			}

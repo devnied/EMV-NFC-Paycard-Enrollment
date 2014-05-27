@@ -20,7 +20,7 @@ import com.github.devnied.emvnfccard.model.enums.CurrencyEnum;
 import com.github.devnied.emvnfccard.parser.IParser;
 import com.github.devnied.emvnfccard.parser.IProvider;
 import com.github.devnied.emvnfccard.utils.CommandApdu;
-import com.github.devnied.emvnfccard.utils.ResponseApdu;
+import com.github.devnied.emvnfccard.utils.ResponseUtils;
 import com.github.devnied.emvnfccard.utils.TLVUtils;
 
 import fr.devnied.bitlib.BitUtils;
@@ -68,7 +68,7 @@ public class DefaultEmvParser implements IParser {
 
 		// The value of the AFL is normally ‘08 01 01 00 10 01 01 01 18 01 02 00’ for PayPass
 		// see https://www.paypass.com/pdf/public_documents/Terminal%20Optimization%20v2-0.pdf
-		if (!ResponseApdu.isSucceed(gpo)) {
+		if (!ResponseUtils.isSucceed(gpo)) {
 			gpo = BytesUtils.fromString("08 01 01 00 10 01 01 01 18 01 02 00 20 01 02 00 90 00");
 		}
 
@@ -108,7 +108,7 @@ public class DefaultEmvParser implements IParser {
 				}
 
 				// Extract card data
-				if (ResponseApdu.isSucceed(info)) {
+				if (ResponseUtils.isSucceed(info)) {
 					try {
 						extractCardData(pCard, info);
 						found = true;
@@ -144,7 +144,7 @@ public class DefaultEmvParser implements IParser {
 				byte[] response = pProvider.transceive(new CommandApdu(CommandEnum.READ_RECORD, rec, pLogEntry[0] << 3 | 4, 0)
 						.toBytes());
 				// Extract data
-				if (ResponseApdu.isSucceed(response) && response.length >= EMVPaymentRecord.DEFAULT_SIZE / BitUtils.BYTE_SIZE) {
+				if (ResponseUtils.isSucceed(response) && response.length >= EMVPaymentRecord.DEFAULT_SIZE / BitUtils.BYTE_SIZE) {
 					EMVPaymentRecord record = new EMVPaymentRecord();
 					record.parse(response);
 					if (record != null) {
@@ -230,7 +230,7 @@ public class DefaultEmvParser implements IParser {
 			data[1] = (byte) pPdol.length;
 			System.arraycopy(pPdol, 0, data, 2, pPdol.length);
 		} else {
-			data = new byte[] { (byte) 0x83, 0x00 };
+			data = new byte[] { (byte) 0x83 };
 		}
 		return pProvider.transceive(new CommandApdu(CommandEnum.GPO, data, 0).toBytes());
 

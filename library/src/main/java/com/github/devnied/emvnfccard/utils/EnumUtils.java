@@ -1,5 +1,8 @@
 package com.github.devnied.emvnfccard.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.github.devnied.emvnfccard.model.enums.IKeyEnum;
 
 /**
@@ -8,6 +11,11 @@ import com.github.devnied.emvnfccard.model.enums.IKeyEnum;
  * @author julien Millau
  */
 public final class EnumUtils {
+
+	/**
+	 * Class logger
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(EnumUtils.class);
 
 	/**
 	 * Get the value of and enum from his key
@@ -24,6 +32,7 @@ public final class EnumUtils {
 				return val;
 			}
 		}
+		LOGGER.error("Unknow value:" + pKey + " for Enum:" + pClass.getName());
 		return null;
 	}
 
