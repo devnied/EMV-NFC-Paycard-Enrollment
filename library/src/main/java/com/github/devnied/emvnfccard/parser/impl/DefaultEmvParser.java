@@ -1,5 +1,7 @@
 package com.github.devnied.emvnfccard.parser.impl;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,6 +15,9 @@ import org.slf4j.LoggerFactory;
 
 import com.github.devnied.emvnfccard.enums.CommandEnum;
 import com.github.devnied.emvnfccard.exception.CommunicationException;
+import com.github.devnied.emvnfccard.iso7816emv.EMVTags;
+import com.github.devnied.emvnfccard.iso7816emv.TagAndLength;
+import com.github.devnied.emvnfccard.iso7816emv.TagValueFactory;
 import com.github.devnied.emvnfccard.model.Afl;
 import com.github.devnied.emvnfccard.model.EMVCard;
 import com.github.devnied.emvnfccard.model.EMVPaymentRecord;
@@ -21,10 +26,9 @@ import com.github.devnied.emvnfccard.parser.IParser;
 import com.github.devnied.emvnfccard.parser.IProvider;
 import com.github.devnied.emvnfccard.utils.CommandApdu;
 import com.github.devnied.emvnfccard.utils.ResponseUtils;
-import com.github.devnied.emvnfccard.utils.TLVUtils;
+import com.github.devnied.emvnfccard.utils.TLVUtil;
 
 import fr.devnied.bitlib.BitUtils;
-import fr.devnied.bitlib.BytesUtils;
 
 /**
  * Parser Implementation for EMV card
@@ -60,16 +64,15 @@ public class DefaultEmvParser implements IParser {
 	public EMVCard parse(final byte[] pSelectResponse, final IProvider pProvider) throws CommunicationException {
 		EMVCard card = new EMVCard();
 		// Get TLV log entry
-		byte[] logEntry = TLVUtils.getArrayValue(pSelectResponse, TLVUtils.LOG_ENTRY);
+		byte[] logEntry = TLVUtil.getValue(pSelectResponse, EMVTags.LOG_ENTRY);
 		// Get PDOL
-		byte[] pdol = TLVUtils.getArrayValue(pSelectResponse, TLVUtils.PDOL);
+		byte[] pdol = TLVUtil.getValue(pSelectResponse, EMVTags.PDOL);
 		// send GPO Command
 		byte[] gpo = getGetProcessingOptions(pdol, pProvider);
 
-		// The value of the AFL is normally ‘08 01 01 00 10 01 01 01 18 01 02 00’ for PayPass
-		// see https://www.paypass.com/pdf/public_documents/Terminal%20Optimization%20v2-0.pdf
+		// check empty PDOL
 		if (!ResponseUtils.isSucceed(gpo)) {
-			gpo = BytesUtils.fromString("08 01 01 00 10 01 01 01 18 01 02 00 20 01 02 00 90 00");
+			gpo = getGetProcessingOptions(null, pProvider);
 		}
 
 		// Extract commons card data (number, expire date, ...)
@@ -93,33 +96,49 @@ public class DefaultEmvParser implements IParser {
 	 */
 	private void extractCommonsCardData(final IProvider pProvider, final EMVCard pCard, final byte[] pGpo)
 			throws CommunicationException {
-		// Get SFI
-		List<Afl> listAfl = extractAfl(pGpo);
-		boolean found = false;
-		// for each Afl
-		for (Afl afl : listAfl) {
-			int sfi = afl.getSfi();
-			// check all records
-			for (int index = afl.getFirstRecord(); index <= afl.getLastRecord(); index++) {
-				byte[] info = pProvider.transceive(new CommandApdu(CommandEnum.READ_RECORD, sfi, index << 3 | 4, 0).toBytes());
-				if (info[info.length - 2] == (byte) 0x6C) {
-					info = pProvider.transceive(new CommandApdu(CommandEnum.READ_RECORD, sfi, index << 3 | 4,
-							info[info.length - 1]).toBytes());
-				}
 
-				// Extract card data
-				if (ResponseUtils.isSucceed(info)) {
-					try {
-						extractCardData(pCard, info);
-						found = true;
-						break;
-					} catch (Exception e) {
-						// do nothing
+		byte data[] = TLVUtil.getValue(pGpo, EMVTags.APPLICATION_FILE_LOCATOR);
+
+		if (TLVUtil.startWith(pGpo, EMVTags.RESPONSE_MESSAGE_TEMPLATE_1) || data != null) {
+			if (data == null) {
+				data = pGpo;
+			}
+			// Get SFI
+			List<Afl> listAfl = extractAfl(data);
+			boolean found = false;
+			// for each Afl
+			for (Afl afl : listAfl) {
+				int sfi = afl.getSfi();
+				// check all records
+				for (int index = afl.getFirstRecord(); index <= afl.getLastRecord(); index++) {
+					byte[] info = pProvider
+							.transceive(new CommandApdu(CommandEnum.READ_RECORD, sfi, index << 3 | 4, 0).toBytes());
+					if (info[info.length - 2] == (byte) 0x6C) {
+						info = pProvider.transceive(new CommandApdu(CommandEnum.READ_RECORD, sfi, index << 3 | 4,
+								info[info.length - 1]).toBytes());
+					}
+
+					// Extract card data
+					if (ResponseUtils.isSucceed(info)) {
+						try {
+							extractCardData(pCard, info);
+							found = true;
+							break;
+						} catch (Exception e) {
+							// do nothing
+						}
 					}
 				}
+				if (found) {
+					break;
+				}
 			}
-			if (found) {
-				break;
+
+		} else { // If Response Message Template Format 2. Extract data
+			try {
+				extractCardData(pCard, pGpo);
+			} catch (Exception e) {
+				// do nothing
 			}
 		}
 	}
@@ -191,7 +210,7 @@ public class DefaultEmvParser implements IParser {
 	 * @param pData
 	 */
 	protected void extractCardData(final EMVCard pCard, final byte[] pData) {
-		byte[] track2 = TLVUtils.getArrayValue(pData, TLVUtils.TRACK2);
+		byte[] track2 = TLVUtil.getValue(pData, EMVTags.TRACK_2_EQV_DATA);
 		if (track2 != null) {
 			BitUtils bit = new BitUtils(track2);
 			// Read card number
@@ -222,17 +241,20 @@ public class DefaultEmvParser implements IParser {
 	 * @return return data
 	 */
 	protected byte[] getGetProcessingOptions(final byte[] pPdol, final IProvider pProvider) throws CommunicationException {
-		byte[] data = null;
-		// if PDOL Data
-		if (pPdol != null) {
-			data = new byte[pPdol.length + 2];
-			data[0] = (byte) 0x83;
-			data[1] = (byte) pPdol.length;
-			System.arraycopy(pPdol, 0, data, 2, pPdol.length);
-		} else {
-			data = new byte[] { (byte) 0x83 };
+		List<TagAndLength> list = TLVUtil.parseTagAndLength(pPdol);
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		try {
+			out.write(EMVTags.COMMAND_TEMPLATE.getTagBytes()); // COMMAND TEMPLATE
+			out.write(TLVUtil.getLength(list)); // ADD total length
+			if (list != null) {
+				for (TagAndLength tl : list) {
+					out.write(TagValueFactory.constructValue(tl));
+				}
+			}
+		} catch (IOException ioe) {
+			LOGGER.error("Construct GPO Command:" + ioe.getMessage(), ioe);
 		}
-		return pProvider.transceive(new CommandApdu(CommandEnum.GPO, data, 0).toBytes());
+		return pProvider.transceive(new CommandApdu(CommandEnum.GPO, out.toByteArray(), 0).toBytes());
 
 	}
 

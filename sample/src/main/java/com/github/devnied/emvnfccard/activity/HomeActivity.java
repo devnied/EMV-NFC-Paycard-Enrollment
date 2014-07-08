@@ -239,6 +239,11 @@ public class HomeActivity extends Activity implements OnItemClickListener {
 								display(getText(R.string.card_added), true);
 							} else {
 								display(getText(R.string.error_card_already_added), false);
+								EMVCard card = mList.get(mList.indexOf(mCard));
+								if (card != null && card.getListPayment() != null) {
+									card.getListPayment().clear();
+									card.getListPayment().addAll(mCard.getListPayment());
+								}
 							}
 						} else {
 							display(getText(R.string.error_card_unknown), false);

@@ -8,6 +8,7 @@ import android.util.Log;
 import com.github.devnied.emvnfccard.BuildConfig;
 import com.github.devnied.emvnfccard.exception.CommunicationException;
 import com.github.devnied.emvnfccard.parser.IProvider;
+import com.github.devnied.emvnfccard.utils.TLVUtil;
 
 import fr.devnied.bitlib.BytesUtils;
 
@@ -23,6 +24,11 @@ public class Provider implements IProvider {
 	 * TAG for logger
 	 */
 	private static final String TAG = Provider.class.getName();
+
+	/**
+	 * Logger
+	 */
+	private StringBuilder log = new StringBuilder();
 
 	/**
 	 * Tag comm
@@ -43,6 +49,7 @@ public class Provider implements IProvider {
 		if (BuildConfig.DEBUG) {
 			Log.d(TAG, "send: " + BytesUtils.bytesToString(pCommand));
 		}
+		log.append("send: " + BytesUtils.bytesToString(pCommand)).append("\n");
 
 		byte[] response = null;
 		try {
@@ -53,9 +60,24 @@ public class Provider implements IProvider {
 		}
 
 		if (BuildConfig.DEBUG) {
+			log.append("resp: " + BytesUtils.bytesToString(response)).append("\n");
 			Log.d(TAG, "resp: " + BytesUtils.bytesToString(response));
+			try {
+				Log.d(TAG, "resp: " + TLVUtil.prettyPrintAPDUResponse(response));
+				log.append(TLVUtil.prettyPrintAPDUResponse(response)).append("\n");
+			} catch (Exception e) {
+			}
 		}
 		return response;
+	}
+
+	/**
+	 * Method used to get the field log
+	 * 
+	 * @return the log
+	 */
+	public StringBuilder getLog() {
+		return log;
 	}
 
 }

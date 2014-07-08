@@ -37,7 +37,7 @@ public class PseProviderTest implements IProvider {
 			response = "70 35 57 13 49 79 67 01 23 45 36 00 D1 60 22 01 73 39 97 58 30 00 0F 9F 1F 18 37 33 33 39 39 37 35 38 33 30 30 30 30 30 30 35 38 33 30 30 30 30 30 30 5F 20 02 20 2F 90 00";
 			break;
 		default:
-			response = "00 00 00 00 46 00 40 02 50 09 78 14 03 16 00 90 00";
+			response = "00 00 00 00 46 00 40 02 50 09 78 14 03 16 20 90 00";
 		}
 		LOGGER.debug("resp: " + response);
 		return BytesUtils.fromString(response);

@@ -20,10 +20,12 @@ import com.github.devnied.emvnfccard.model.EMVCard;
 import com.github.devnied.emvnfccard.model.EMVPaymentRecord;
 import com.github.devnied.emvnfccard.model.enums.CountryCodeEnum;
 import com.github.devnied.emvnfccard.model.enums.CurrencyEnum;
+import com.github.devnied.emvnfccard.model.enums.TransactionTypeEnum;
 import com.github.devnied.emvnfccard.parser.IProvider;
 import com.github.devnied.emvnfccard.parser.impl.DefaultEmvParser;
 import com.github.devnied.emvnfccard.provider.ExceptionProviderTest;
-import com.github.devnied.emvnfccard.provider.PpseProviderTest;
+import com.github.devnied.emvnfccard.provider.PpseProviderMasterCardTest;
+import com.github.devnied.emvnfccard.provider.PpseProviderVisaTest;
 import com.github.devnied.emvnfccard.provider.ProviderAidTest;
 import com.github.devnied.emvnfccard.provider.PseProviderTest;
 
@@ -36,9 +38,9 @@ public class EMVParserTest {
 	private static final Logger LOGGER = LoggerFactory.getLogger(EMVParserTest.class);
 
 	@Test
-	public void testPPSE() throws CommunicationException {
+	public void testPPSEVisa() throws CommunicationException {
 
-		IProvider prov = new PpseProviderTest();
+		IProvider prov = new PpseProviderVisaTest();
 
 		EMVParser parser = new EMVParser(prov, true);
 		EMVCard card = parser.readEmvCard();
@@ -48,13 +50,35 @@ public class EMVParserTest {
 		}
 		Assertions.assertThat(card).isNotNull();
 		Assertions.assertThat(card.getAid()).isEqualTo("A0000000421010");
-		Assertions.assertThat(card.getCardNumber()).isEqualTo("4979670123453600");
+		Assertions.assertThat(card.getCardNumber()).isEqualTo("4999999999999999");
 		Assertions.assertThat(card.getType()).isEqualTo(EMVCardTypeEnum.VISA);
 		Assertions.assertThat(card.getFisrtName()).isEqualTo(null);
 		Assertions.assertThat(card.getLastName()).isEqualTo(null);
 		Assertions.assertThat(card.getCardLabel()).isEqualTo("CB");
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
-		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("02/2016");
+		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2015");
+	}
+
+	@Test
+	public void testPPSEMasterCard() throws CommunicationException {
+
+		IProvider prov = new PpseProviderMasterCardTest();
+
+		EMVParser parser = new EMVParser(prov, true);
+		EMVCard card = parser.readEmvCard();
+
+		if (card != null) {
+			LOGGER.debug(card.toString());
+		}
+		Assertions.assertThat(card).isNotNull();
+		Assertions.assertThat(card.getAid()).isEqualTo("A0000000421010");
+		Assertions.assertThat(card.getCardNumber()).isEqualTo("5599999999999999");
+		Assertions.assertThat(card.getType()).isEqualTo(EMVCardTypeEnum.MASTER_CARD1);
+		Assertions.assertThat(card.getFisrtName()).isEqualTo(null);
+		Assertions.assertThat(card.getLastName()).isEqualTo(null);
+		Assertions.assertThat(card.getCardLabel()).isEqualTo("CB");
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
+		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2015");
 	}
 
 	@Test
@@ -81,7 +105,7 @@ public class EMVParserTest {
 		EMVPaymentRecord record = card.getListPayment().get(0);
 		Assertions.assertThat(record.getAmount()).isEqualTo(4600);
 		Assertions.assertThat(record.getCyptogramData()).isEqualTo("40");
-		Assertions.assertThat(record.getTransactionType()).isEqualTo(144);
+		Assertions.assertThat(record.getTransactionType()).isEqualTo(TransactionTypeEnum.REFUND);
 		Assertions.assertThat(record.getCurrency()).isEqualTo(CurrencyEnum.EUR);
 		Assertions.assertThat(record.getTerminalCountry()).isEqualTo(CountryCodeEnum.FR);
 		Assertions.assertThat(record.getTransactionDate()).isNotNull();

@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.github.devnied.emvnfccard.model.enums.CountryCodeEnum;
 import com.github.devnied.emvnfccard.model.enums.CurrencyEnum;
+import com.github.devnied.emvnfccard.model.enums.TransactionTypeEnum;
 import com.github.devnied.emvnfccard.parser.apdu.annotation.Data;
 import com.github.devnied.emvnfccard.parser.apdu.impl.AbstractByteBean;
 import com.github.devnied.emvnfccard.parser.apdu.impl.DataFactory;
@@ -60,8 +61,8 @@ public class EMVPaymentRecord extends AbstractByteBean<EMVPaymentRecord> impleme
 	/**
 	 * Transaction type (0:Payment, other:Withdrawal)
 	 */
-	@Data(index = 6, size = 16)
-	private Integer transactionType;
+	@Data(index = 6, size = 8, readHexa = true)
+	private TransactionTypeEnum transactionType;
 
 	/**
 	 * Method used to get the field amount
@@ -104,7 +105,7 @@ public class EMVPaymentRecord extends AbstractByteBean<EMVPaymentRecord> impleme
 	 * 
 	 * @return the transactionType
 	 */
-	public Integer getTransactionType() {
+	public TransactionTypeEnum getTransactionType() {
 		return transactionType;
 	}
 
@@ -173,7 +174,7 @@ public class EMVPaymentRecord extends AbstractByteBean<EMVPaymentRecord> impleme
 	 * @param transactionType
 	 *            the transactionType to set
 	 */
-	public void setTransactionType(final Integer transactionType) {
+	public void setTransactionType(final TransactionTypeEnum transactionType) {
 		this.transactionType = transactionType;
 	}
 

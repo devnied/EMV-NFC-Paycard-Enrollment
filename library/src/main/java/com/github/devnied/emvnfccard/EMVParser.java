@@ -1,18 +1,18 @@
 package com.github.devnied.emvnfccard;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.devnied.emvnfccard.enums.CommandEnum;
 import com.github.devnied.emvnfccard.enums.EMVCardTypeEnum;
 import com.github.devnied.emvnfccard.exception.CommunicationException;
+import com.github.devnied.emvnfccard.iso7816emv.EMVTags;
 import com.github.devnied.emvnfccard.model.EMVCard;
 import com.github.devnied.emvnfccard.parser.IProvider;
 import com.github.devnied.emvnfccard.parser.impl.DefaultEmvParser;
 import com.github.devnied.emvnfccard.utils.CommandApdu;
 import com.github.devnied.emvnfccard.utils.ResponseUtils;
-import com.github.devnied.emvnfccard.utils.TLVUtils;
+import com.github.devnied.emvnfccard.utils.TLVUtil;
 
 import fr.devnied.bitlib.BytesUtils;
 
@@ -69,7 +69,7 @@ public class EMVParser {
 	 */
 	public EMVCard readEmvCard() throws CommunicationException {
 		// use PSE first
-		EMVCard card = selectPSE();
+		EMVCard card = selectPSEPPSE();
 		// Find with AID
 		if (card == null) {
 			card = findWithAID();
@@ -81,11 +81,11 @@ public class EMVParser {
 	}
 
 	/**
-	 * Select AID with PSE directory
+	 * Select AID with PSE/PPSE directory
 	 * 
-	 * @return card read
+	 * @return read card
 	 */
-	private EMVCard selectPSE() throws CommunicationException {
+	private EMVCard selectPSEPPSE() throws CommunicationException {
 		EMVCard card = null;
 		if (contactLess) {
 			LOGGER.info("Select PPSE");
@@ -96,14 +96,9 @@ public class EMVParser {
 		byte[] data = provider.transceive(new CommandApdu(CommandEnum.SELECT, contactLess ? PPSE : PSE, 0).toBytes());
 		if (ResponseUtils.isSucceed(data)) {
 
-			if (contactLess) { // Select PPSE
-				// Extract label
-				String val = StringUtils.substringAfter(BytesUtils.bytesToStringNoSpace(data), "BF0C");
-				data = BytesUtils.fromString(val);
-
-			} else { // Select PSE
+			if (!contactLess) { // Select PSE
 				// Extract SFI
-				int sfi = TLVUtils.getIntValue(data, TLVUtils.SFI);
+				int sfi = BytesUtils.byteArrayToInt(TLVUtil.getValue(data, EMVTags.SFI));
 				// Get the PSE record
 				data = provider.transceive(new CommandApdu(CommandEnum.READ_RECORD, sfi, sfi << 3 | 4, 0).toBytes());
 				if (data[data.length - 2] == (byte) 0x6C) {
@@ -114,12 +109,12 @@ public class EMVParser {
 			// Extract Aid and contactless
 			if (contactLess || !contactLess && ResponseUtils.isSucceed(data)) {
 				String label = null;
-				byte[] labelByte = TLVUtils.getArrayValue(data, TLVUtils.APPLICATION_LABEL);
+				byte[] labelByte = TLVUtil.getValue(data, EMVTags.APPLICATION_LABEL);
 				if (labelByte != null) {
 					label = new String(labelByte);
 				}
 				// Get Card
-				card = getCard(TLVUtils.getHexaValue(data, TLVUtils.AID), label);
+				card = getCard(BytesUtils.bytesToStringNoSpace(TLVUtil.getValue(data, EMVTags.AID_CARD)), label);
 			}
 
 		} else if (LOGGER.isDebugEnabled()) {
@@ -167,7 +162,7 @@ public class EMVParser {
 		// check response
 		if (ResponseUtils.isSucceed(data)) {
 			// Get AID
-			String aid = TLVUtils.getHexaValue(data, TLVUtils.DF_NAME);
+			String aid = BytesUtils.bytesToStringNoSpace(TLVUtil.getValue(data, EMVTags.DEDICATED_FILE_NAME));
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("Card type :" + pScheme + " with Aid:" + aid);
 			}
@@ -182,7 +177,9 @@ public class EMVParser {
 				// Get real type for french card
 				if (type == EMVCardTypeEnum.CB) {
 					type = EMVCardTypeEnum.getCardTypeByCardNumber(ret.getCardNumber());
-					LOGGER.info("Find type by card number type:" + type.getScheme());
+					if (type != null) {
+						LOGGER.info("Find type by card number type:" + type.getScheme());
+					}
 				}
 				ret.setType(type);
 			}
