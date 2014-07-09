@@ -38,7 +38,7 @@ import fr.devnied.bitlib.BytesUtils;
  * @author Millau Julien
  * 
  */
-public class TLVUtil {
+public final class TLVUtil {
 
 	/**
 	 * Method used to find Tag with ID
@@ -480,6 +480,12 @@ public class TLVUtil {
 			}
 		}
 		return ret;
+	}
+
+	/**
+	 * Private constructor
+	 */
+	private TLVUtil() {
 	}
 
 }

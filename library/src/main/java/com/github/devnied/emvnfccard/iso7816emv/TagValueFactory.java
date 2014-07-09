@@ -51,4 +51,10 @@ public final class TagValueFactory {
 		return ret;
 	}
 
+	/**
+	 * Private Constructor
+	 */
+	private TagValueFactory() {
+	}
+
 }
