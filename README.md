@@ -1,4 +1,4 @@
-## EMV NFC Paycard Enrollment [![Build Status](https://travis-ci.org/devnied/EMV-NFC-Paycard-Enrollment.png?branch=master)](https://travis-ci.org/devnied/EMV-NFC-Paycard-Enrollment) [![Coverage Status](https://coveralls.io/repos/devnied/EMV-NFC-Paycard-Enrollment/badge.png)](https://coveralls.io/r/devnied/EMV-NFC-Paycard-Enrollment)
+## EMV NFC Paycard Enrollment (DEV Branch) [![Build Status](https://travis-ci.org/devnied/EMV-NFC-Paycard-Enrollment.svg?branch=dev)](https://github.com/devnied/EMV-NFC-Paycard-Enrollment/tree/dev) [![Coverage Status](https://coveralls.io/repos/devnied/EMV-NFC-Paycard-Enrollment/badge.png?branch=dev)](https://coveralls.io/r/devnied/EMV-NFC-Paycard-Enrollment?branch=dev)
 ### Description
 Java library used to read and extract data from NFC EMV paycard.<br/>
 <b>Current version : 1.1.0</b><br/>
