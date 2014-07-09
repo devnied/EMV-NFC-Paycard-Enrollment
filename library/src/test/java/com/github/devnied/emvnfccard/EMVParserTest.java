@@ -25,6 +25,7 @@ import com.github.devnied.emvnfccard.parser.IProvider;
 import com.github.devnied.emvnfccard.parser.impl.DefaultEmvParser;
 import com.github.devnied.emvnfccard.provider.ExceptionProviderTest;
 import com.github.devnied.emvnfccard.provider.PpseProviderMasterCardTest;
+import com.github.devnied.emvnfccard.provider.PpseProviderVisa2Test;
 import com.github.devnied.emvnfccard.provider.PpseProviderVisaTest;
 import com.github.devnied.emvnfccard.provider.ProviderAidTest;
 import com.github.devnied.emvnfccard.provider.PseProviderTest;
@@ -74,6 +75,28 @@ public class EMVParserTest {
 		Assertions.assertThat(card.getAid()).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("5599999999999999");
 		Assertions.assertThat(card.getType()).isEqualTo(EMVCardTypeEnum.MASTER_CARD1);
+		Assertions.assertThat(card.getFisrtName()).isEqualTo(null);
+		Assertions.assertThat(card.getLastName()).isEqualTo(null);
+		Assertions.assertThat(card.getCardLabel()).isEqualTo("CB");
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
+		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2015");
+	}
+
+	@Test
+	public void testPPSEVisa2() throws CommunicationException {
+
+		IProvider prov = new PpseProviderVisa2Test();
+
+		EMVParser parser = new EMVParser(prov, true);
+		EMVCard card = parser.readEmvCard();
+
+		if (card != null) {
+			LOGGER.debug(card.toString());
+		}
+		Assertions.assertThat(card).isNotNull();
+		Assertions.assertThat(card.getAid()).isEqualTo("A0000000421010");
+		Assertions.assertThat(card.getCardNumber()).isEqualTo("4999999999999999");
+		Assertions.assertThat(card.getType()).isEqualTo(EMVCardTypeEnum.VISA);
 		Assertions.assertThat(card.getFisrtName()).isEqualTo(null);
 		Assertions.assertThat(card.getLastName()).isEqualTo(null);
 		Assertions.assertThat(card.getCardLabel()).isEqualTo("CB");
@@ -148,27 +171,25 @@ public class EMVParserTest {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testAfl() throws Exception {
 
-		@SuppressWarnings("unchecked")
 		List<Afl> list = (List<Afl>) Whitebox.invokeMethod(DefaultEmvParser.getInstance(), DefaultEmvParser.class, "extractAfl",
-				BytesUtils.fromString("80 0E 7C 00 08 01 01 00 10 01 05 00 18 01 02 01"));
-
+				BytesUtils.fromString("10020301 18010500 20010200"));
 		Assertions.assertThat(list.size()).isEqualTo(3);
-		Assertions.assertThat(list.get(0).getSfi()).isEqualTo(1);
-		Assertions.assertThat(list.get(0).getFirstRecord()).isEqualTo(1);
-		Assertions.assertThat(list.get(0).getLastRecord()).isEqualTo(1);
-		Assertions.assertThat(list.get(0).isOfflineAuthentication()).isEqualTo(false);
-		Assertions.assertThat(list.get(1).getSfi()).isEqualTo(2);
+		Assertions.assertThat(list.get(0).getSfi()).isEqualTo(2);
+		Assertions.assertThat(list.get(0).getFirstRecord()).isEqualTo(2);
+		Assertions.assertThat(list.get(0).getLastRecord()).isEqualTo(3);
+		Assertions.assertThat(list.get(0).isOfflineAuthentication()).isEqualTo(true);
+		Assertions.assertThat(list.get(1).getSfi()).isEqualTo(3);
 		Assertions.assertThat(list.get(1).getFirstRecord()).isEqualTo(1);
 		Assertions.assertThat(list.get(1).getLastRecord()).isEqualTo(5);
 		Assertions.assertThat(list.get(1).isOfflineAuthentication()).isEqualTo(false);
-		Assertions.assertThat(list.get(2).getSfi()).isEqualTo(3);
+		Assertions.assertThat(list.get(2).getSfi()).isEqualTo(4);
 		Assertions.assertThat(list.get(2).getFirstRecord()).isEqualTo(1);
 		Assertions.assertThat(list.get(2).getLastRecord()).isEqualTo(2);
-		Assertions.assertThat(list.get(2).isOfflineAuthentication()).isEqualTo(true);
-
+		Assertions.assertThat(list.get(2).isOfflineAuthentication()).isEqualTo(false);
 	}
 
 	@Test
@@ -177,6 +198,7 @@ public class EMVParserTest {
 		Assertions.assertThat(EMVCardTypeEnum.getCardTypeByCardNumber("5000000000000000"))
 				.isEqualTo(EMVCardTypeEnum.MASTER_CARD1);
 		Assertions.assertThat(EMVCardTypeEnum.getCardTypeByCardNumber("6200000000000000")).isEqualTo(EMVCardTypeEnum.UNIONPAY);
+		Assertions.assertThat(EMVCardTypeEnum.getCardTypeByCardNumber(null)).isEqualTo(null);
 	}
 
 }

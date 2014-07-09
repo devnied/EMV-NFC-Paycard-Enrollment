@@ -1,5 +1,6 @@
 package com.github.devnied.emvnfccard.parser.impl;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
@@ -9,6 +10,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,34 +98,35 @@ public class DefaultEmvParser implements IParser {
 	 */
 	private void extractCommonsCardData(final IProvider pProvider, final EMVCard pCard, final byte[] pGpo)
 			throws CommunicationException {
+		// Extract data from Message Template 1
+		byte data[] = TLVUtil.getValue(pGpo, EMVTags.RESPONSE_MESSAGE_TEMPLATE_1);
+		if (data != null) {
+			data = ArrayUtils.subarray(data, 2, data.length);
+		} else { // Extract AFL data from Message template 2
+			data = TLVUtil.getValue(pGpo, EMVTags.APPLICATION_FILE_LOCATOR);
+		}
 
-		byte data[] = TLVUtil.getValue(pGpo, EMVTags.APPLICATION_FILE_LOCATOR);
-
-		if (TLVUtil.startWith(pGpo, EMVTags.RESPONSE_MESSAGE_TEMPLATE_1) || data != null) {
-			if (data == null) {
-				data = pGpo;
-			}
+		if (data != null) {
 			// Get SFI
 			List<Afl> listAfl = extractAfl(data);
 			boolean found = false;
 			// for each Afl
 			for (Afl afl : listAfl) {
-				int sfi = afl.getSfi();
 				// check all records
 				for (int index = afl.getFirstRecord(); index <= afl.getLastRecord(); index++) {
-					byte[] info = pProvider
-							.transceive(new CommandApdu(CommandEnum.READ_RECORD, sfi, index << 3 | 4, 0).toBytes());
+					byte[] info = pProvider.transceive(new CommandApdu(CommandEnum.READ_RECORD, index, afl.getSfi() << 3 | 4, 0)
+							.toBytes());
 					if (info[info.length - 2] == (byte) 0x6C) {
-						info = pProvider.transceive(new CommandApdu(CommandEnum.READ_RECORD, sfi, index << 3 | 4,
+						info = pProvider.transceive(new CommandApdu(CommandEnum.READ_RECORD, index, afl.getSfi() << 3 | 4,
 								info[info.length - 1]).toBytes());
 					}
 
 					// Extract card data
 					if (ResponseUtils.isSucceed(info)) {
 						try {
-							extractCardData(pCard, info);
-							found = true;
-							break;
+							if (found = extractCardData(pCard, info)) {
+								break;
+							}
 						} catch (Exception e) {
 							// do nothing
 						}
@@ -181,23 +184,22 @@ public class DefaultEmvParser implements IParser {
 	}
 
 	/**
-	 * Extract list of application file locator from GPO response
+	 * Extract list of application file locator from Afl response
 	 * 
-	 * @param pGpo
-	 *            GPO response
+	 * @param pAfl
+	 *            AFL data
 	 * @return list of AFL
 	 */
-	protected List<Afl> extractAfl(final byte[] pGpo) {
+	protected List<Afl> extractAfl(final byte[] pAfl) {
 		List<Afl> list = new ArrayList<Afl>();
-		if (pGpo.length - 4 > 0) {
-			for (int i = 0; i < (pGpo.length - 4) / 4; i++) {
-				Afl afl = new Afl();
-				afl.setSfi(pGpo[4 + i * 4] >> 3);
-				afl.setFirstRecord(pGpo[5 + i * 4]);
-				afl.setLastRecord(pGpo[6 + i * 4]);
-				afl.setOfflineAuthentication(pGpo[7 + i * 4] == 1);
-				list.add(afl);
-			}
+		ByteArrayInputStream bai = new ByteArrayInputStream(pAfl);
+		while (bai.available() >= 4) {
+			Afl afl = new Afl();
+			afl.setSfi(bai.read() >> 3);
+			afl.setFirstRecord(bai.read());
+			afl.setLastRecord(bai.read());
+			afl.setOfflineAuthentication(bai.read() == 1);
+			list.add(afl);
 		}
 		return list;
 	}
@@ -209,7 +211,8 @@ public class DefaultEmvParser implements IParser {
 	 *            card object
 	 * @param pData
 	 */
-	protected void extractCardData(final EMVCard pCard, final byte[] pData) {
+	protected boolean extractCardData(final EMVCard pCard, final byte[] pData) {
+		boolean ret = false;
 		byte[] track2 = TLVUtil.getValue(pData, EMVTags.TRACK_2_EQV_DATA);
 		if (track2 != null) {
 			BitUtils bit = new BitUtils(track2);
@@ -224,11 +227,12 @@ public class DefaultEmvParser implements IParser {
 					date = date.substring(0, 5);
 				}
 				pCard.setExpireDate(DateUtils.truncate(sdf.parse(date), Calendar.MONTH));
+				ret = true;
 			} catch (ParseException e) {
 				LOGGER.error("Unparsable expire card date");
 			}
 		}
-
+		return ret;
 	}
 
 	/**

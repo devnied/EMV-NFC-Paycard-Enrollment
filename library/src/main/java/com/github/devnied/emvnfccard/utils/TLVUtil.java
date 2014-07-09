@@ -33,8 +33,10 @@ import com.github.devnied.emvnfccard.iso7816emv.TagAndLength;
 import fr.devnied.bitlib.BytesUtils;
 
 /**
+ * List of utils methods to manipulate TLV
  * 
- * @author sasc
+ * @author Millau Julien
+ * 
  */
 public class TLVUtil {
 
@@ -267,6 +269,8 @@ public class TLVUtil {
 		case DOL:
 			buf.append("");
 			break;
+		default:
+			break;
 		}
 
 		return buf.toString();
@@ -462,19 +466,12 @@ public class TLVUtil {
 	}
 
 	/**
-	 * Method used to check if data start with specified Tag value
+	 * Method used to get length of all Tags
 	 * 
-	 * @param pData
-	 *            data
-	 * @param pTag
-	 *            tag to find
-	 * @return true if the tag corresponding to the parameter tag or false otherwise
+	 * @param pList
+	 *            tag length list
+	 * @return the sum of tag length
 	 */
-	public static boolean startWith(final byte[] pData, final ITag pTag) {
-		TLV tlv = getNextTLV(new ByteArrayInputStream(pData));
-		return tlv != null && tlv.getTag() == pTag;
-	}
-
 	public static int getLength(final List<TagAndLength> pList) {
 		int ret = 0;
 		if (pList != null) {
