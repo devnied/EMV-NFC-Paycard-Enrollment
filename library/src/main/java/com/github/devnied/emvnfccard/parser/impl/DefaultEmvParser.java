@@ -70,11 +70,11 @@ public class DefaultEmvParser implements IParser {
 		// Get PDOL
 		byte[] pdol = TLVUtil.getValue(pSelectResponse, EMVTags.PDOL);
 		// send GPO Command
-		byte[] gpo = getGetProcessingOptions(pdol, pProvider);
+		byte[] gpo = getGetProcessingOptions(null, pProvider);
 
 		// check empty PDOL
 		if (!ResponseUtils.isSucceed(gpo)) {
-			gpo = getGetProcessingOptions(null, pProvider);
+			gpo = getGetProcessingOptions(pdol, pProvider);
 		}
 
 		// Extract commons card data (number, expire date, ...)
@@ -124,7 +124,8 @@ public class DefaultEmvParser implements IParser {
 					// Extract card data
 					if (ResponseUtils.isSucceed(info)) {
 						try {
-							if (found = extractCardData(pCard, info)) {
+							found = extractCardData(pCard, info);
+							if (found) {
 								break;
 							}
 						} catch (Exception e) {
@@ -162,7 +163,7 @@ public class DefaultEmvParser implements IParser {
 		if (pLogEntry != null) {
 			List<EMVPaymentRecord> listRecord = new ArrayList<EMVPaymentRecord>();
 			// read all records
-			for (int rec = 1; rec < pLogEntry[1]; rec++) {
+			for (int rec = 1; rec <= pLogEntry[1]; rec++) {
 				byte[] response = pProvider.transceive(new CommandApdu(CommandEnum.READ_RECORD, rec, pLogEntry[0] << 3 | 4, 0)
 						.toBytes());
 				// Extract data
