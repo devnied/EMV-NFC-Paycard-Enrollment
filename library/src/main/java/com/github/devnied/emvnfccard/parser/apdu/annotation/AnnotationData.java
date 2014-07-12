@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 /**
  * Bean which manage all annotation data
  * 
- * @author julien Millau
+ * @author MILLAU Julien
  * 
  */
 public class AnnotationData implements Comparable<AnnotationData> {

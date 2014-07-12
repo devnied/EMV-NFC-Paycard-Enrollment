@@ -8,7 +8,7 @@ import com.github.devnied.emvnfccard.enums.SWEnum;
 /**
  * Method used to manipulate response from APDU command
  * 
- * @author julien Millau
+ * @author MILLAU Julien
  * 
  */
 public final class ResponseUtils {

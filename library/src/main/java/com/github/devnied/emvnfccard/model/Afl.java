@@ -3,7 +3,7 @@ package com.github.devnied.emvnfccard.model;
 /**
  * Class used to describe Application file locator
  * 
- * @author julien MILLAU
+ * @author MILLAU Julien
  * 
  */
 public class Afl {

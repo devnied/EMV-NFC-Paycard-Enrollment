@@ -5,7 +5,7 @@ import com.github.devnied.emvnfccard.exception.CommunicationException;
 /**
  * Interface for provider for transmit command to card
  * 
- * @author julien Millau
+ * @author MILLAU Julien
  * 
  */
 public interface IProvider {

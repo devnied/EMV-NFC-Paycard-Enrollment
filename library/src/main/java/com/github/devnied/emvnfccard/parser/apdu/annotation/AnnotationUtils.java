@@ -12,7 +12,7 @@ import com.github.devnied.emvnfccard.parser.apdu.IFile;
 /**
  * Class used to manage all annotation
  * 
- * @author julien Millau
+ * @author MILLAU Julien
  * 
  */
 public final class AnnotationUtils {

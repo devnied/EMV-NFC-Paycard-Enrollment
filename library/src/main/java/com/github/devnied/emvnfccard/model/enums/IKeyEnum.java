@@ -3,7 +3,7 @@ package com.github.devnied.emvnfccard.model.enums;
 /**
  * Interface for Key enum
  * 
- * @author julien Millau
+ * @author MILLAU Julien
  * 
  */
 public interface IKeyEnum {

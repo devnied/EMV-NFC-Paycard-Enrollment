@@ -3,12 +3,12 @@ package com.github.devnied.emvnfccard.model;
 import java.util.Date;
 import java.util.List;
 
-import com.github.devnied.emvnfccard.enums.EMVCardTypeEnum;
+import com.github.devnied.emvnfccard.enums.EMVCardScheme;
 
 /**
  * Bean used to describe data in EMV card
  * 
- * @author julien MILLAU
+ * @author MILLAU Julien
  * 
  */
 public class EMVCard extends AbstractData {
@@ -46,7 +46,7 @@ public class EMVCard extends AbstractData {
 	/**
 	 * Card type
 	 */
-	private EMVCardTypeEnum type;
+	private EMVCardScheme type;
 
 	/**
 	 * Card label
@@ -177,7 +177,7 @@ public class EMVCard extends AbstractData {
 	 * 
 	 * @return the type
 	 */
-	public EMVCardTypeEnum getType() {
+	public EMVCardScheme getType() {
 		return type;
 	}
 
@@ -187,7 +187,7 @@ public class EMVCard extends AbstractData {
 	 * @param type
 	 *            the type to set
 	 */
-	public void setType(final EMVCardTypeEnum type) {
+	public void setType(final EMVCardScheme type) {
 		this.type = type;
 	}
 

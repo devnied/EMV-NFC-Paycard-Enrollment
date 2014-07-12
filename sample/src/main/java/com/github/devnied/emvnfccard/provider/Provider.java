@@ -6,6 +6,7 @@ import android.nfc.tech.IsoDep;
 import android.util.Log;
 
 import com.github.devnied.emvnfccard.BuildConfig;
+import com.github.devnied.emvnfccard.enums.SWEnum;
 import com.github.devnied.emvnfccard.exception.CommunicationException;
 import com.github.devnied.emvnfccard.parser.IProvider;
 import com.github.devnied.emvnfccard.utils.TLVUtil;
@@ -64,6 +65,10 @@ public class Provider implements IProvider {
 			Log.d(TAG, "resp: " + BytesUtils.bytesToString(response));
 			try {
 				Log.d(TAG, "resp: " + TLVUtil.prettyPrintAPDUResponse(response));
+				SWEnum val = SWEnum.getSW(response);
+				if (val != null) {
+					Log.d(TAG, "resp: " + val.getDetail());
+				}
 				log.append(TLVUtil.prettyPrintAPDUResponse(response)).append("\n");
 			} catch (Exception e) {
 			}

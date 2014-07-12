@@ -3,7 +3,7 @@ package com.github.devnied.emvnfccard.enums;
 /**
  * Enum which define all EMV apdu
  * 
- * @author julien Millau
+ * @author MILLAU Julien
  * 
  */
 public enum CommandEnum {

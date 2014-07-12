@@ -35,7 +35,7 @@ import fr.devnied.bitlib.BytesUtils;
 /**
  * List of utils methods to manipulate TLV
  * 
- * @author Millau Julien
+ * @author MILLAU Julien
  * 
  */
 public final class TLVUtil {

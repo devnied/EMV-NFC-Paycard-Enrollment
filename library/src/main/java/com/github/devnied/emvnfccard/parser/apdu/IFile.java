@@ -3,7 +3,7 @@ package com.github.devnied.emvnfccard.parser.apdu;
 /**
  * Interface for File to parse
  * 
- * @author julien Millau
+ * @author MILLAU Julien
  * 
  */
 public interface IFile {

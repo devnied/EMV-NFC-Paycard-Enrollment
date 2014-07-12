@@ -2,7 +2,6 @@ package com.github.devnied.emvnfccard.activity;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -18,7 +17,6 @@ import android.nfc.tech.IsoDep;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,21 +24,17 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
-import com.github.devnied.emvnfccard.BuildConfig;
-import com.github.devnied.emvnfccard.EMVParser;
 import com.github.devnied.emvnfccard.R;
 import com.github.devnied.emvnfccard.adapter.CardAdapter;
-import com.github.devnied.emvnfccard.enums.EMVCardTypeEnum;
 import com.github.devnied.emvnfccard.model.EMVCard;
-import com.github.devnied.emvnfccard.model.EMVPaymentRecord;
-import com.github.devnied.emvnfccard.model.enums.CurrencyEnum;
+import com.github.devnied.emvnfccard.parser.EMVParser;
 import com.github.devnied.emvnfccard.parser.IProvider;
 import com.github.devnied.emvnfccard.provider.Provider;
+import com.github.devnied.emvnfccard.utils.CroutonUtils;
 import com.github.devnied.emvnfccard.utils.NFCUtils;
 import com.github.devnied.emvnfccard.utils.SimpleAsyncTask;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
 
 /**
  * First Activity for EMV card reader
@@ -89,35 +83,6 @@ public class HomeActivity extends Activity implements OnItemClickListener {
 		mListView.setAdapter(mAdapter);
 		mListView.setEmptyView(findViewById(R.id.emptyView));
 		mListView.setOnItemClickListener(this);
-	}
-
-	@Override
-	public void onBackPressed() {
-		if (BuildConfig.DEBUG) {
-			EMVCard card = new EMVCard();
-			card.setCardNumber("1234567891880782");
-			card.setExpireDate(new Date());
-			card.setType(EMVCardTypeEnum.VISA);
-
-			List<EMVPaymentRecord> list = new ArrayList<EMVPaymentRecord>();
-			EMVPaymentRecord payment = new EMVPaymentRecord();
-			payment.setAmount(new Float(234));
-			payment.setCurrency(CurrencyEnum.EUR);
-			payment.setTransactionDate(new Date());
-			list.add(payment);
-			payment = new EMVPaymentRecord();
-			payment.setAmount(new Float(2398));
-			payment.setCurrency(CurrencyEnum.USD);
-			payment.setTransactionDate(new Date());
-
-			list.add(payment);
-			card.setListPayment(list);
-			mList.add(card);
-			mAdapter.notifyDataSetChanged();
-			display("Card added", true);
-		} else {
-			super.onBackPressed();
-		}
 	}
 
 	@Override
@@ -195,7 +160,7 @@ public class HomeActivity extends Activity implements OnItemClickListener {
 
 					mTagcomm = IsoDep.get(mTag);
 					if (mTagcomm == null) {
-						display(getText(R.string.error_communication_nfc), false);
+						CroutonUtils.display(HomeActivity.this, getText(R.string.error_communication_nfc), false);
 						return;
 					}
 					mException = false;
@@ -236,9 +201,9 @@ public class HomeActivity extends Activity implements OnItemClickListener {
 							if (!mList.contains(mCard)) {
 								mList.add(mCard);
 								mAdapter.notifyDataSetChanged();
-								display(getText(R.string.card_added), true);
+								CroutonUtils.display(HomeActivity.this, getText(R.string.card_added), true);
 							} else {
-								display(getText(R.string.error_card_already_added), false);
+								CroutonUtils.display(HomeActivity.this, getText(R.string.error_card_already_added), false);
 								EMVCard card = mList.get(mList.indexOf(mCard));
 								if (card != null && card.getListPayment() != null) {
 									card.getListPayment().clear();
@@ -246,30 +211,16 @@ public class HomeActivity extends Activity implements OnItemClickListener {
 								}
 							}
 						} else {
-							display(getText(R.string.error_card_unknown), false);
+							CroutonUtils.display(HomeActivity.this, getText(R.string.error_card_unknown), false);
 						}
 					} else {
-						display(getResources().getText(R.string.error_communication_nfc), false);
+						CroutonUtils.display(HomeActivity.this, getResources().getText(R.string.error_communication_nfc), false);
 					}
 				}
 
 			}.execute();
 		}
 
-	}
-
-	protected void display(final CharSequence msg, final boolean success) {
-
-		int color = 0xFF656464;
-		if (success) {
-			color = 0xFF78B653;
-		}
-		Crouton.cancelAllCroutons();
-		Style style = new Style.Builder().setBackgroundColorValue(color) //
-				.setGravity(Gravity.CENTER) //
-				.setTextAppearance(R.style.Crouton_TextApparence) //
-				.build();
-		Crouton.showText(this, msg, style);
 	}
 
 	@Override

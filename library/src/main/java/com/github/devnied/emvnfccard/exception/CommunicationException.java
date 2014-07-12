@@ -5,7 +5,7 @@ import java.io.IOException;
 /**
  * Exception during communication with EMV card
  * 
- * @author Millau Julien
+ * @author MILLAU Julien
  * 
  */
 public class CommunicationException extends IOException {

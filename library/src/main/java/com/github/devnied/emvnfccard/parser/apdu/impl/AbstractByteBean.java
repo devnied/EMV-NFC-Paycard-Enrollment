@@ -17,7 +17,7 @@ import fr.devnied.bitlib.BitUtils;
 /**
  * Abstract class for all object to parse
  * 
- * @author julien Millau
+ * @author MILLAU Julien
  */
 public abstract class AbstractByteBean<T> extends AbstractData implements IFile {
 

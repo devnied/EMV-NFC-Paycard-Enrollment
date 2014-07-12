@@ -8,8 +8,6 @@ import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.devnied.emvnfccard.enums.TagTypeEnum;
 import com.github.devnied.emvnfccard.enums.TagValueTypeEnum;
@@ -20,8 +18,6 @@ import fr.devnied.bitlib.BytesUtils;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ TLVUtil.class })
 public class TLVUtilTest {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(TLVUtilTest.class);
 
 	private static final byte[] DATA = BytesUtils.fromString("70 63 61 13 4f 09 a0 00 00 03 15 10 10 05 28 50"
 			+ "03 50 49 4e 87 01 01 61 15 4f 07 a0 00 00 00 04 30 60 50 07 4d 41 45 53 54 52 4f 87 01 02 61 1d"

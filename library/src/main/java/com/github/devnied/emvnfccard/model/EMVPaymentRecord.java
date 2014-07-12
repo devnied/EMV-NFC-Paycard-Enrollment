@@ -13,7 +13,7 @@ import com.github.devnied.emvnfccard.parser.apdu.impl.DataFactory;
 /**
  * Bean used to describe EMV payment record
  * 
- * @author julien MILLAU
+ * @author MILLAU Julien
  * 
  */
 public class EMVPaymentRecord extends AbstractByteBean<EMVPaymentRecord> implements Serializable {

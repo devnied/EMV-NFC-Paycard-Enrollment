@@ -16,7 +16,7 @@ import fr.devnied.bitlib.BitUtils;
 /**
  * Factory to parse data
  * 
- * @author julien Millau
+ * @author MILLAU Julien
  */
 public final class DataFactory {
 

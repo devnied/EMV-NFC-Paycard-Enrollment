@@ -3,7 +3,7 @@ package com.github.devnied.emvnfccard.exception;
 /**
  * Exception during TLV reading
  * 
- * @author julien
+ * @author MILLAU Julien
  * 
  */
 public class TLVException extends RuntimeException {
