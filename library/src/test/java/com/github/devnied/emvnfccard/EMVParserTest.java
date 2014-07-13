@@ -28,6 +28,7 @@ import com.github.devnied.emvnfccard.provider.PpseProviderMasterCardTest;
 import com.github.devnied.emvnfccard.provider.PpseProviderVisa2Test;
 import com.github.devnied.emvnfccard.provider.PpseProviderVisaTest;
 import com.github.devnied.emvnfccard.provider.ProviderAidTest;
+import com.github.devnied.emvnfccard.provider.ProviderSelectPaymentEnvTest;
 import com.github.devnied.emvnfccard.provider.PseProviderTest;
 
 import fr.devnied.bitlib.BytesUtils;
@@ -193,11 +194,37 @@ public class EMVParserTest {
 	}
 
 	@Test
-	public void tesCardType() throws Exception {
-		Assertions.assertThat(EMVCardScheme.getCardTypeByCardNumber("4000000000000000")).isEqualTo(EMVCardScheme.VISA);
-		Assertions.assertThat(EMVCardScheme.getCardTypeByCardNumber("5000000000000000")).isEqualTo(EMVCardScheme.MASTER_CARD1);
-		Assertions.assertThat(EMVCardScheme.getCardTypeByCardNumber("6200000000000000")).isEqualTo(EMVCardScheme.UNIONPAY);
-		Assertions.assertThat(EMVCardScheme.getCardTypeByCardNumber(null)).isEqualTo(null);
+	public void testSelectPaymentEnvironment() throws Exception {
+		ProviderSelectPaymentEnvTest prov = new ProviderSelectPaymentEnvTest();
+		prov.setExpectedData("00A404000E325041592E5359532E444446303100");
+		Whitebox.invokeMethod(new EMVParser(prov, true), EMVParser.class, "selectPaymentEnvironment");
+		prov.setExpectedData("00A404000E315041592E5359532E444446303100");
+		Whitebox.invokeMethod(new EMVParser(prov, false), EMVParser.class, "selectPaymentEnvironment");
+	}
+
+	@Test
+	public void testExtractApplicationLabel() throws Exception {
+		ProviderSelectPaymentEnvTest prov = new ProviderSelectPaymentEnvTest();
+		String value = (String) Whitebox
+				.invokeMethod(
+						new EMVParser(prov, true),
+						EMVParser.class,
+						"extractApplicationLabel",
+						BytesUtils
+								.fromString("6F 3B 84 0E 32 50 41 59 2E 53 59 53 2E 44 44 46 30 31 A5 29 BF 0C 26 61 10 4F 07 A0 00 00 00 42 10 10 50 02 43 42 87 01 01 61 12 4F 07 A0 00 00 00 03 10 10 50 04 56 49 53 41 87 01 02 90 00"));
+		Assertions.assertThat(value).isEqualTo("CB");
+		value = (String) Whitebox.invokeMethod(new EMVParser(prov, true), EMVParser.class, "extractApplicationLabel",
+				(byte[]) null);
+		Assertions.assertThat(value).isEqualTo(null);
+	}
+
+	@Test
+	public void testSelectAID() throws Exception {
+		ProviderSelectPaymentEnvTest prov = new ProviderSelectPaymentEnvTest();
+		prov.setExpectedData("00A4040007A000000042101000");
+		Whitebox.invokeMethod(new EMVParser(prov, true), EMVParser.class, "selectAID", BytesUtils.fromString("A0000000421010"));
+		prov.setExpectedData("00A4040000");
+		Whitebox.invokeMethod(new EMVParser(prov, true), EMVParser.class, "selectAID", (byte[]) null);
 	}
 
 }

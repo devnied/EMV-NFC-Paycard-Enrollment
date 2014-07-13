@@ -334,21 +334,32 @@ public final class TLVUtil {
 		return list;
 	}
 
+	/**
+	 * Method used to get Tag value
+	 * 
+	 * @param pData
+	 *            data
+	 * @param pTag
+	 *            tag to find
+	 * @return tag value or null
+	 */
 	public static byte[] getValue(final byte[] pData, final ITag pTag) {
 
 		byte[] ret = null;
 
-		ByteArrayInputStream stream = new ByteArrayInputStream(pData);
+		if (pData != null) {
+			ByteArrayInputStream stream = new ByteArrayInputStream(pData);
 
-		while (stream.available() > 0) {
+			while (stream.available() > 0) {
 
-			TLV tlv = TLVUtil.getNextTLV(stream);
-			if (tlv.getTag() == pTag) {
-				return tlv.getValueBytes();
-			} else if (tlv.getTag().isConstructed()) {
-				ret = TLVUtil.getValue(tlv.getValueBytes(), pTag);
-				if (ret != null) {
-					break;
+				TLV tlv = TLVUtil.getNextTLV(stream);
+				if (tlv.getTag() == pTag) {
+					return tlv.getValueBytes();
+				} else if (tlv.getTag().isConstructed()) {
+					ret = TLVUtil.getValue(tlv.getValueBytes(), pTag);
+					if (ret != null) {
+						break;
+					}
 				}
 			}
 		}
