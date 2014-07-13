@@ -17,11 +17,10 @@ public class ResponseUtilsTest {
 
 		Assertions.assertThat(SWEnum.getSW(new byte[] {})).isEqualTo(null);
 		Assertions.assertThat(SWEnum.getSW(null)).isEqualTo(null);
-		Assertions.assertThat(SWEnum.getSW(new byte[] { (byte) 0x90, 0 })).isEqualTo(SWEnum.SW_SUCCESS);
-		Assertions.assertThat(SWEnum.getSW(new byte[] { (byte) 0x65, (byte) 0x81 })).isEqualTo(SWEnum.SW_MEMORY_ERROR);
-		Assertions.assertThat(SWEnum.getSW(new byte[] { 0x45, 0x45, (byte) 0x90, 0 })).isEqualTo(SWEnum.SW_SUCCESS);
-		Assertions.assertThat(SWEnum.getSW(new byte[] { 0x45, 0x45, (byte) 0x65, (byte) 0x81 }))
-				.isEqualTo(SWEnum.SW_MEMORY_ERROR);
-
+		Assertions.assertThat(SWEnum.getSW(new byte[] { (byte) 0x90, 0 })).isEqualTo(SWEnum.SW_9000);
+		Assertions.assertThat(SWEnum.getSW(new byte[] { (byte) 0x65, (byte) 0x81 })).isEqualTo(SWEnum.SW_6581);
+		Assertions.assertThat(SWEnum.getSW(new byte[] { 0x45, 0x45, (byte) 0x90, 0 })).isEqualTo(SWEnum.SW_9000);
+		Assertions.assertThat(SWEnum.getSW(new byte[] { 0x45, 0x45, (byte) 0x65, (byte) 0x81 })).isEqualTo(SWEnum.SW_6581);
+		Assertions.assertThat(SWEnum.getSW(new byte[] { 0x45, 0x45, (byte) 0x62, (byte) 0xFF })).isEqualTo(SWEnum.SW_62);
 	}
 }

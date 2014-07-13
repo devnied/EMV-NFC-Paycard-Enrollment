@@ -30,7 +30,7 @@ public final class ResponseUtils {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Response Status : " + (val != null ? val.getDetail() : "Unknow"));
 		}
-		return val != null && val == SWEnum.SW_SUCCESS;
+		return val != null && val == SWEnum.SW_9000;
 	}
 
 	/**

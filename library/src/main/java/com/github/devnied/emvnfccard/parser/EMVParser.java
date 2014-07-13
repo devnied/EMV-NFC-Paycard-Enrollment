@@ -279,11 +279,11 @@ public class EMVParser {
 		// Get PDOL
 		byte[] pdol = TLVUtil.getValue(pSelectResponse, EMVTags.PDOL);
 		// Send GPO Command
-		byte[] gpo = getGetProcessingOptions(null, pProvider);
+		byte[] gpo = getGetProcessingOptions(pdol, pProvider);
 
 		// Check empty PDOL
 		if (!ResponseUtils.isSucceed(gpo)) {
-			gpo = getGetProcessingOptions(pdol, pProvider);
+			gpo = getGetProcessingOptions(null, pProvider);
 		}
 
 		// Extract commons card data (number, expire date, ...)
