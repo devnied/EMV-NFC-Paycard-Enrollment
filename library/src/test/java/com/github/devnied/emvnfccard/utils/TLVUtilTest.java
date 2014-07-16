@@ -1,6 +1,8 @@
-package com.github.devnied.emvnfccard.iso7816emv;
+package com.github.devnied.emvnfccard.utils;
 
 import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.fest.assertions.Assertions;
 import org.junit.Test;
@@ -11,7 +13,9 @@ import org.powermock.reflect.Whitebox;
 
 import com.github.devnied.emvnfccard.enums.TagTypeEnum;
 import com.github.devnied.emvnfccard.enums.TagValueTypeEnum;
-import com.github.devnied.emvnfccard.utils.TLVUtil;
+import com.github.devnied.emvnfccard.iso7816emv.EMVTags;
+import com.github.devnied.emvnfccard.iso7816emv.ITag;
+import com.github.devnied.emvnfccard.iso7816emv.TagAndLength;
 
 import fr.devnied.bitlib.BytesUtils;
 
@@ -114,5 +118,20 @@ public class TLVUtilTest {
 		Assertions.assertThat(TLVUtil.getlistTLV(DATA, EMVTags.APPLICATION_TEMPLATE, false).size()).isEqualTo(12);
 		Assertions.assertThat(TLVUtil.getlistTLV(DATA, EMVTags.RECORD_TEMPLATE, false).size()).isEqualTo(4);
 		Assertions.assertThat(TLVUtil.getlistTLV(DATA, EMVTags.TRANSACTION_CURRENCY_CODE, false).size()).isEqualTo(0);
+	}
+
+	@Test
+	public void testParseTagAndLength() throws Exception {
+		Assertions.assertThat(TLVUtil.parseTagAndLength(null)).isEqualTo(new ArrayList<TagAndLength>());
+	}
+
+	@Test
+	public void testGetLength() throws Exception {
+		Assertions.assertThat(TLVUtil.getLength(null)).isEqualTo(0);
+		Assertions.assertThat(TLVUtil.getLength(new ArrayList<TagAndLength>())).isEqualTo(0);
+		List<TagAndLength> list = new ArrayList<TagAndLength>();
+		list.add(new TagAndLength(EMVTags.AID_CARD, 12));
+		list.add(new TagAndLength(EMVTags.AID_TERMINAL, 2));
+		Assertions.assertThat(TLVUtil.getLength(list)).isEqualTo(14);
 	}
 }

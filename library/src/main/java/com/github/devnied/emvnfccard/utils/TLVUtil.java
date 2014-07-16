@@ -276,6 +276,13 @@ public final class TLVUtil {
 		return buf.toString();
 	}
 
+	/**
+	 * Method used to parser Tag and length
+	 * 
+	 * @param data
+	 *            data to parse
+	 * @return list of tag and length
+	 */
 	public static List<TagAndLength> parseTagAndLength(final byte[] data) {
 		List<TagAndLength> tagAndLengthList = new ArrayList<TagAndLength>();
 		if (data != null) {

@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import com.github.devnied.emvnfccard.enums.EMVCardScheme;
 import com.github.devnied.emvnfccard.exception.CommunicationException;
+import com.github.devnied.emvnfccard.iso7816emv.TagAndLength;
 import com.github.devnied.emvnfccard.model.Afl;
 import com.github.devnied.emvnfccard.model.EMVCard;
 import com.github.devnied.emvnfccard.model.EMVPaymentRecord;
@@ -225,6 +226,40 @@ public class EMVParserTest {
 		Whitebox.invokeMethod(new EMVParser(prov, true), EMVParser.class, "selectAID", BytesUtils.fromString("A0000000421010"));
 		prov.setExpectedData("00A4040000");
 		Whitebox.invokeMethod(new EMVParser(prov, true), EMVParser.class, "selectAID", (byte[]) null);
+	}
+
+	@Test
+	public void testgetLeftPinTry() throws Exception {
+		ProviderSelectPaymentEnvTest prov = new ProviderSelectPaymentEnvTest();
+		prov.setExpectedData("80CA9F1700");
+		prov.setReturnedData("9F 17 01 03 90 00");
+		int val = Whitebox.invokeMethod(new EMVParser(prov, true), EMVParser.class, "getLeftPinTry");
+		Assertions.assertThat(val).isEqualTo(3);
+
+		prov.setExpectedData("80CA9F1700");
+		prov.setReturnedData("90 00");
+		val = Whitebox.invokeMethod(new EMVParser(prov, true), EMVParser.class, "getLeftPinTry");
+		Assertions.assertThat(val).isEqualTo(EMVParser.UNKNOW);
+	}
+
+	@Test
+	public void testgetLogFormat() throws Exception {
+		ProviderSelectPaymentEnvTest prov = new ProviderSelectPaymentEnvTest();
+		prov.setExpectedData("80CA9F4F00");
+		prov.setReturnedData("9F 4F 10 9F 02 06 9F 27 01 9F 1A 02 5F 2A 02 9A 03 9C 01 90 00");
+		List<TagAndLength> list = Whitebox.invokeMethod(new EMVParser(prov, true), EMVParser.class, "getLogFormat");
+		Assertions.assertThat(list.size()).isEqualTo(6);
+
+		prov.setExpectedData("80CA9F4F00");
+		prov.setReturnedData("0000");
+		list = Whitebox.invokeMethod(new EMVParser(prov, true), EMVParser.class, "getLogFormat");
+		Assertions.assertThat(list.size()).isEqualTo(0);
+
+		prov.setExpectedData("80CA9F4F00");
+		prov.setReturnedData("9000");
+		list = Whitebox.invokeMethod(new EMVParser(prov, true), EMVParser.class, "getLogFormat");
+		Assertions.assertThat(list.size()).isEqualTo(0);
+
 	}
 
 }

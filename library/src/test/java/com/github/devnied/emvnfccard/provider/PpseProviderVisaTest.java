@@ -31,9 +31,17 @@ public class PpseProviderVisaTest implements IProvider {
 		case 3:
 			response = "77 38 9F 10 07 06 01 1A 23 80 40 04 57 13 49 99 99 99 99 99 99 99 D1 50 92 FF FF FF FF FF FF FF 0F 82 02 20 00 9F 36 02 02 8F 9F 26 08 FF FF FF FF FF FF FF FF 9F 6C 02 10 00 90 00";
 			break;
+		case 4:
+			response = "9F 4F 10 9F 02 06 9F 27 01 9F 1A 02 5F 2A 02 9A 03 9C 01 90 00";
+			break;
 		default:
 			response = "00 00 00 00 46 00 40 02 50 09 78 14 03 16 20 90 00";
 		}
+
+		if (BytesUtils.bytesToStringNoSpace(pCommand).equals("80CA9F1700")) {
+			response = "9F 17 01 03 90 00";
+		}
+
 		LOGGER.debug("resp: " + response);
 		return BytesUtils.fromString(response);
 	}

@@ -49,6 +49,11 @@ public class EMVCard extends AbstractData {
 	private EMVCardScheme type;
 
 	/**
+	 * Left PIN try
+	 */
+	private int leftPinTry;
+
+	/**
 	 * Card label
 	 */
 	private String cardLabel;
@@ -214,4 +219,24 @@ public class EMVCard extends AbstractData {
 	public boolean equals(final Object arg0) {
 		return arg0 instanceof EMVCard && cardNumber != null && cardNumber.equals(((EMVCard) arg0).getCardNumber());
 	}
+
+	/**
+	 * Method used to get the field leftPinTry
+	 * 
+	 * @return the leftPinTry
+	 */
+	public int getLeftPinTry() {
+		return leftPinTry;
+	}
+
+	/**
+	 * Setter for the field leftPinTry
+	 * 
+	 * @param leftPinTry
+	 *            the leftPinTry to set
+	 */
+	public void setLeftPinTry(final int leftPinTry) {
+		this.leftPinTry = leftPinTry;
+	}
+
 }

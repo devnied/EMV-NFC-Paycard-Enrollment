@@ -33,9 +33,17 @@ public class ProviderAidTest implements IProvider {
 		case 4:
 			response = "70 35 57 13 57 72 82 91 93 25 34 72 D1 40 82 01 74 12 57 75 80 00 0F 9F 1F 18 37 34 31 32 35 37 37 35 38 30 30 30 30 30 30 37 35 38 30 30 30 30 30 30 5F 20 02 20 2F 90 00";
 			break;
+		case 5:
+			response = "9F 4F 10 9F 02 06 9F 27 01 9F 1A 02 5F 2A 02 9A 03 9C 01 90 00";
+			break;
 		default:
 			response = "00 00 00 00 71 35 40 02 50 09 78 13 12 22 20 90 00";
 		}
+
+		if (BytesUtils.bytesToStringNoSpace(pCommand).equals("80CA9F1700")) {
+			response = "9F 17 01 03 90 00";
+		}
+
 		LOGGER.debug("resp: " + response);
 		return BytesUtils.fromString(response);
 	}

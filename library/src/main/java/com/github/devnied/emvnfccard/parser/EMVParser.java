@@ -57,6 +57,11 @@ public class EMVParser {
 	private static final byte[] PSE = BytesUtils.fromString("31 50 41 59 2e 53 59 53 2e 44 44 46 30 31");
 
 	/**
+	 * Unknow response
+	 */
+	public static final int UNKNOW = -1;
+
+	/**
 	 * Provider
 	 */
 	private IProvider provider;
@@ -109,6 +114,29 @@ public class EMVParser {
 	}
 
 	/**
+	 * Method used to get the number of pin try left
+	 * 
+	 * @return the number of pin try left
+	 * @throws CommunicationException
+	 */
+	protected int getLeftPinTry() throws CommunicationException {
+		int ret = UNKNOW;
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.info("Get Left PIN try");
+		}
+		// Left PIN try command
+		byte[] data = provider.transceive(new CommandApdu(CommandEnum.GET_DATA, 0x9F, 0x17, 0).toBytes());
+		if (data != null) {
+			// Extract PIN try counter
+			byte[] val = TLVUtil.getValue(data, EMVTags.PIN_TRY_COUNTER);
+			if (val != null) {
+				ret = BytesUtils.byteArrayToInt(val);
+			}
+		}
+		return ret;
+	}
+
+	/**
 	 * Method used to parse FCI Proprietary Template
 	 * 
 	 * @param pData
@@ -146,6 +174,9 @@ public class EMVParser {
 	 * @return decoded application label or null
 	 */
 	protected String extractApplicationLabel(final byte[] pData) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Extract Application label");
+		}
 		String label = null;
 		byte[] labelByte = TLVUtil.getValue(pData, EMVTags.APPLICATION_LABEL);
 		if (labelByte != null) {
@@ -243,6 +274,7 @@ public class EMVParser {
 				ret.setAid(aid);
 				ret.setCardLabel(pScheme);
 				ret.setType(findCardScheme(aid, ret.getCardNumber()));
+				ret.setLeftPinTry(getLeftPinTry());
 			}
 		}
 		return ret;
@@ -347,6 +379,25 @@ public class EMVParser {
 	}
 
 	/**
+	 * Method used to get log format
+	 * 
+	 * @return list of tag and length for the log format
+	 * @throws CommunicationException
+	 */
+	protected List<TagAndLength> getLogFormat() throws CommunicationException {
+		List<TagAndLength> ret = new ArrayList<TagAndLength>();
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.info("GET log format");
+		}
+		// Get log format
+		byte[] data = provider.transceive(new CommandApdu(CommandEnum.GET_DATA, 0x9F, 0x4F, 0).toBytes());
+		if (ResponseUtils.isSucceed(data)) {
+			ret = TLVUtil.parseTagAndLength(TLVUtil.getValue(data, EMVTags.LOG_FORMAT));
+		}
+		return ret;
+	}
+
+	/**
 	 * Method used to extract log entry from card
 	 * 
 	 * @param pLogEntry
@@ -356,15 +407,15 @@ public class EMVParser {
 		List<EMVPaymentRecord> listRecord = new ArrayList<EMVPaymentRecord>();
 		// If log entry is defined
 		if (pLogEntry != null) {
-
+			List<TagAndLength> tals = getLogFormat();
 			// read all records
 			for (int rec = 1; rec <= pLogEntry[1]; rec++) {
 				byte[] response = provider.transceive(new CommandApdu(CommandEnum.READ_RECORD, rec, pLogEntry[0] << 3 | 4, 0)
 						.toBytes());
 				// Extract data
-				if (ResponseUtils.isSucceed(response) && response.length >= EMVPaymentRecord.DEFAULT_SIZE / BitUtils.BYTE_SIZE) {
+				if (ResponseUtils.isSucceed(response)) {
 					EMVPaymentRecord record = new EMVPaymentRecord();
-					record.parse(response);
+					record.parse(response, tals);
 					if (record != null) {
 						// Unknown currency
 						if (record.getCurrency() == null) {

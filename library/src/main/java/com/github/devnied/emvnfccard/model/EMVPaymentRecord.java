@@ -31,37 +31,37 @@ public class EMVPaymentRecord extends AbstractByteBean<EMVPaymentRecord> impleme
 	/**
 	 * Amount authorized (Amount need to be formated with currency)
 	 */
-	@Data(index = 1, size = 48, format = DataFactory.BCD_FORMAT)
+	@Data(index = 1, size = 48, format = DataFactory.BCD_FORMAT, tag = "9f02")
 	private Float amount;
 
 	/**
 	 * Cryptogram information data
 	 */
-	@Data(index = 2, size = 8, readHexa = true)
+	@Data(index = 2, size = 8, readHexa = true, tag = "9f27")
 	private String cyptogramData;
 
 	/**
 	 * Terminal country code
 	 */
-	@Data(index = 3, size = 16)
+	@Data(index = 3, size = 16, tag = "9f1a")
 	private CountryCodeEnum terminalCountry;
 
 	/**
 	 * Currency
 	 */
-	@Data(index = 4, size = 16)
+	@Data(index = 4, size = 16, tag = "5f2a")
 	private CurrencyEnum currency;
 
 	/**
 	 * Transaction date
 	 */
-	@Data(index = 5, size = 24, dateStandard = DataFactory.BCD_DATE, format = "yyMMdd")
+	@Data(index = 5, size = 24, dateStandard = DataFactory.BCD_DATE, format = "yyMMdd", tag = "9a")
 	private Date transactionDate;
 
 	/**
 	 * Transaction type (0:Payment, other:Withdrawal)
 	 */
-	@Data(index = 6, size = 8, readHexa = true)
+	@Data(index = 6, size = 8, readHexa = true, tag = "9c")
 	private TransactionTypeEnum transactionType;
 
 	/**

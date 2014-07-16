@@ -21,7 +21,6 @@ import java.util.Arrays;
 import com.github.devnied.emvnfccard.enums.TagTypeEnum;
 import com.github.devnied.emvnfccard.enums.TagValueTypeEnum;
 import com.github.devnied.emvnfccard.iso7816emv.ITag;
-import com.github.devnied.emvnfccard.iso7816emv.ITag.Class;
 
 import fr.devnied.bitlib.BytesUtils;
 
@@ -29,25 +28,20 @@ import fr.devnied.bitlib.BytesUtils;
  * 
  * @author sasc
  */
-public class TagImpl implements ITag {
+public final class TagImpl implements ITag {
 
-	private byte[] idBytes;
-	private String name;
-	private String description;
-	private TagValueTypeEnum tagValueType;
-	private Class tagClass;
-
-	private TagTypeEnum type;
+	private final byte[] idBytes;
+	public final String name;
+	private final String description;
+	private final TagValueTypeEnum tagValueType;
+	private final Class tagClass;
+	private final TagTypeEnum type;
 
 	public TagImpl(final String id, final TagValueTypeEnum tagValueType, final String name, final String description) {
-		build(BytesUtils.fromString(id), tagValueType, name, description);
+		this(BytesUtils.fromString(id), tagValueType, name, description);
 	}
 
 	public TagImpl(final byte[] idBytes, final TagValueTypeEnum tagValueType, final String name, final String description) {
-		build(idBytes, tagValueType, name, description);
-	}
-
-	private void build(final byte[] idBytes, final TagValueTypeEnum tagValueType, final String name, final String description) {
 		if (idBytes == null) {
 			throw new IllegalArgumentException("Param id cannot be null");
 		}

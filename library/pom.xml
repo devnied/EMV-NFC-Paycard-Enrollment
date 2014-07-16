@@ -54,12 +54,6 @@
 	</dependencies>
 	<build>
 		<plugins>
-		    <plugin>
-		        <artifactId>maven-surefire-plugin</artifactId>
-		        <configuration>
-		            <forkMode>pertest</forkMode> 
-		        </configuration>
-			</plugin>
 			<plugin>
 				<groupId>org.eluder.coveralls</groupId>
 				<artifactId>coveralls-maven-plugin</artifactId>

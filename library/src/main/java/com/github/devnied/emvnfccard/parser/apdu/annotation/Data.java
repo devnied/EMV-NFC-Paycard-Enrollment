@@ -42,4 +42,8 @@ public @interface Data {
 	 */
 	int size();
 
+	/**
+	 * Tag Name
+	 */
+	String tag();
 }

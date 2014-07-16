@@ -26,7 +26,7 @@ public enum CommandEnum {
 	/**
 	 * GPO Command
 	 */
-	EXTRA(0x80, 0xCA, 0x00, 0x00);
+	GET_DATA(0x80, 0xCA, 0x00, 0x00);
 
 	/**
 	 * Class byte
