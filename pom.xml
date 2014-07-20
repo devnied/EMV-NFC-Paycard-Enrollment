@@ -48,6 +48,7 @@
 	<modules>
 		<module>library</module>
 		<module>sample</module>
+		<module>sample-pcsc</module>
 	</modules>
 
 	<properties>

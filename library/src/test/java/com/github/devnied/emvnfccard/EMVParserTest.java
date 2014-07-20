@@ -118,19 +118,20 @@ public class EMVParserTest {
 			LOGGER.debug(card.toString());
 		}
 		Assertions.assertThat(card).isNotNull();
-		Assertions.assertThat(card.getAid()).isEqualTo("A0000000031010");
+		Assertions.assertThat(card.getAid()).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("4979670123453600");
 		Assertions.assertThat(card.getType()).isEqualTo(EMVCardScheme.VISA);
 		Assertions.assertThat(card.getFisrtName()).isEqualTo(null);
 		Assertions.assertThat(card.getLastName()).isEqualTo(null);
-		Assertions.assertThat(card.getCardLabel()).isEqualTo("VISACREDIT");
+		Assertions.assertThat(card.getCardLabel()).isEqualTo("CB");
+		Assertions.assertThat(card.getLeftPinTry()).isEqualTo(3);
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("02/2016");
 		Assertions.assertThat(card.getListPayment()).isNotNull();
 		EMVPaymentRecord record = card.getListPayment().get(0);
-		Assertions.assertThat(record.getAmount()).isEqualTo(4600);
-		Assertions.assertThat(record.getCyptogramData()).isEqualTo("40");
-		Assertions.assertThat(record.getTransactionType()).isEqualTo(TransactionTypeEnum.REFUND);
+		Assertions.assertThat(record.getAmount()).isEqualTo(4000);
+		Assertions.assertThat(record.getCyptogramData()).isEqualTo("80");
+		Assertions.assertThat(record.getTransactionType()).isEqualTo(TransactionTypeEnum.PURCHASE);
 		Assertions.assertThat(record.getCurrency()).isEqualTo(CurrencyEnum.EUR);
 		Assertions.assertThat(record.getTerminalCountry()).isEqualTo(CountryCodeEnum.FR);
 		Assertions.assertThat(record.getTransactionDate()).isNotNull();
