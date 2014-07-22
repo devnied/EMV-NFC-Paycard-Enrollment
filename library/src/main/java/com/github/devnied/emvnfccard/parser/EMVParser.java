@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import com.github.devnied.emvnfccard.enums.CommandEnum;
 import com.github.devnied.emvnfccard.enums.EMVCardScheme;
+import com.github.devnied.emvnfccard.enums.SWEnum;
 import com.github.devnied.emvnfccard.exception.CommunicationException;
 import com.github.devnied.emvnfccard.iso7816emv.EMVTags;
 import com.github.devnied.emvnfccard.iso7816emv.TagAndLength;
@@ -423,6 +424,8 @@ public class EMVParser {
 						}
 						listRecord.add(record);
 					}
+				} else if (SWEnum.getSW(response) == SWEnum.SW_6A83) { // No more transaction log
+					break;
 				}
 			}
 		}

@@ -58,6 +58,7 @@ public class EMVParserTest {
 		Assertions.assertThat(card.getFisrtName()).isEqualTo(null);
 		Assertions.assertThat(card.getLastName()).isEqualTo(null);
 		Assertions.assertThat(card.getCardLabel()).isEqualTo("CB");
+		Assertions.assertThat(card.getListPayment().size()).isEqualTo(30);
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2015");
 	}
@@ -80,6 +81,7 @@ public class EMVParserTest {
 		Assertions.assertThat(card.getFisrtName()).isEqualTo(null);
 		Assertions.assertThat(card.getLastName()).isEqualTo(null);
 		Assertions.assertThat(card.getCardLabel()).isEqualTo("CB");
+		Assertions.assertThat(card.getListPayment()).isEmpty();
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2015");
 	}
@@ -128,6 +130,7 @@ public class EMVParserTest {
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("02/2016");
 		Assertions.assertThat(card.getListPayment()).isNotNull();
+		Assertions.assertThat(card.getListPayment().size()).isEqualTo(30);
 		EMVPaymentRecord record = card.getListPayment().get(0);
 		Assertions.assertThat(record.getAmount()).isEqualTo(4000);
 		Assertions.assertThat(record.getCyptogramData()).isEqualTo("80");
