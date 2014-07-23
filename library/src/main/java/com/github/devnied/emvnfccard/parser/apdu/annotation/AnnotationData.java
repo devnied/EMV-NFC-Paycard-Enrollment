@@ -2,13 +2,18 @@ package com.github.devnied.emvnfccard.parser.apdu.annotation;
 
 import java.lang.reflect.Field;
 
+import com.github.devnied.emvnfccard.iso7816emv.EMVTags;
+import com.github.devnied.emvnfccard.iso7816emv.ITag;
+
+import fr.devnied.bitlib.BytesUtils;
+
 /**
  * Bean which manage all annotation data
  * 
- * @author julien Millau
+ * @author MILLAU Julien
  * 
  */
-public class AnnotationData implements Comparable<AnnotationData> {
+public class AnnotationData implements Comparable<AnnotationData>, Cloneable {
 
 	/**
 	 * The size of the field
@@ -39,6 +44,11 @@ public class AnnotationData implements Comparable<AnnotationData> {
 	 * Date format
 	 */
 	private String format;
+
+	/**
+	 * Tag
+	 */
+	private ITag tag;
 
 	/**
 	 * Comparable method {@inheritDoc}
@@ -137,6 +147,15 @@ public class AnnotationData implements Comparable<AnnotationData> {
 	}
 
 	/**
+	 * Method used to get the field tag
+	 * 
+	 * @return the tag
+	 */
+	public ITag getTag() {
+		return tag;
+	}
+
+	/**
 	 * Initialization from annotation
 	 * 
 	 * @param pData
@@ -148,6 +167,22 @@ public class AnnotationData implements Comparable<AnnotationData> {
 		index = pData.index();
 		readHexa = pData.readHexa();
 		size = pData.size();
+		if (pData.tag() != null) {
+			tag = EMVTags.find(BytesUtils.fromString(pData.tag()));
+		}
+	}
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		AnnotationData data = new AnnotationData();
+		data.dateStandard = dateStandard;
+		data.field = field;
+		data.format = new String(format);
+		data.index = index;
+		data.readHexa = readHexa;
+		data.size = size;
+		data.tag = tag;
+		return data;
 	}
 
 }

@@ -41,7 +41,7 @@ public class CommandApdu {
 		mIns = pEnum.getIns();
 		mP1 = pEnum.getP1();
 		mP2 = pEnum.getP2();
-		mLc = data.length;
+		mLc = data == null ? 0 : data.length;
 		mData = data;
 		mLe = le;
 		mLeUsed = true;
@@ -56,9 +56,17 @@ public class CommandApdu {
 		mLeUsed = true;
 	}
 
+	public CommandApdu(final CommandEnum pEnum, final int p1, final int p2) {
+		mCla = pEnum.getCla();
+		mIns = pEnum.getIns();
+		mP1 = p1;
+		mP2 = p2;
+		mLeUsed = false;
+	}
+
 	public byte[] toBytes() {
 		int length = 4; // CLA, INS, P1, P2
-		if (mData.length != 0) {
+		if (mData != null && mData.length != 0) {
 			length += 1; // LC
 			length += mData.length; // DATA
 		}
@@ -77,7 +85,7 @@ public class CommandApdu {
 		index++;
 		apdu[index] = (byte) mP2;
 		index++;
-		if (mData.length != 0) {
+		if (mData != null && mData.length != 0) {
 			apdu[index] = (byte) mLc;
 			index++;
 			System.arraycopy(mData, 0, apdu, index, mData.length);

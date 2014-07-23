@@ -215,7 +215,7 @@ public enum CurrencyEnum implements IKeyEnum {
 	XPF(953, Digits.DIGITS_0, "CFP franc", new CountryCodeEnum[] { CountryCodeEnum.PF, CountryCodeEnum.NC, CountryCodeEnum.WF }),
 	XPT(962, Digits.DIGITS_NO, "Platinum (one troy ounce)", new CountryCodeEnum[] {}),
 	XTS(963, Digits.DIGITS_NO, "Code reserved for testing purposes", new CountryCodeEnum[] {}),
-	XXX(999, Digits.DIGITS_NO, "No currency", new CountryCodeEnum[] {}),
+	XXX(0, Digits.DIGITS_NO, "No currency", new CountryCodeEnum[] {}),
 	YER(886, Digits.DIGITS_2, "Yemeni rial", new CountryCodeEnum[] { CountryCodeEnum.YE }),
 	ZAR(710, Digits.DIGITS_2, "South African rand", new CountryCodeEnum[] { CountryCodeEnum.ZA }),
 	ZMK(894, Digits.DIGITS_2, "Zambian kwacha", new CountryCodeEnum[] { CountryCodeEnum.ZM });

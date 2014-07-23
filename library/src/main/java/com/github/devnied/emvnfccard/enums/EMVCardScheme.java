@@ -4,13 +4,15 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
+import fr.devnied.bitlib.BytesUtils;
+
 /**
  * Class used to define all supported NFC EMV paycard. <link>http://en.wikipedia.org/wiki/Europay_Mastercard_Visa</link>
  * 
- * @author julien Millau
+ * @author MILLAU Julien
  * 
  */
-public enum EMVCardTypeEnum {
+public enum EMVCardScheme {
 
 	VISA("A0 00 00 00 03", "VISA", "^4[0-9]{12,15}"), //
 	MASTER_CARD1("A0 00 00 00 04", "Master card 1", "^5[0-5][0-9]{14}"), //
@@ -39,9 +41,14 @@ public enum EMVCardTypeEnum {
 	private final String aid;
 
 	/**
+	 * Aid in byte
+	 */
+	private final byte[] aidByte;
+
+	/**
 	 * Card scheme (card number IIN ranges)
 	 */
-	private final String scheme;
+	private final String name;
 
 	/**
 	 * Card number regex
@@ -58,9 +65,10 @@ public enum EMVCardTypeEnum {
 	 * @param pRegex
 	 *            Card regex
 	 */
-	private EMVCardTypeEnum(final String pAid, final String pScheme, final String pRegex) {
+	private EMVCardScheme(final String pAid, final String pScheme, final String pRegex) {
 		aid = pAid;
-		scheme = pScheme;
+		aidByte = BytesUtils.fromString(pAid);
+		name = pScheme;
 		regex = pRegex;
 	}
 
@@ -72,9 +80,10 @@ public enum EMVCardTypeEnum {
 	 * @param pScheme
 	 *            scheme name
 	 */
-	private EMVCardTypeEnum(final String pAid, final String pScheme) {
+	private EMVCardScheme(final String pAid, final String pScheme) {
 		aid = pAid;
-		scheme = pScheme;
+		aidByte = BytesUtils.fromString(pAid);
+		name = pScheme;
 		regex = null;
 	}
 
@@ -88,12 +97,12 @@ public enum EMVCardTypeEnum {
 	}
 
 	/**
-	 * Method used to get the field scheme
+	 * Method used to get the field name
 	 * 
-	 * @return the scheme
+	 * @return the name
 	 */
-	public String getScheme() {
-		return scheme;
+	public String getName() {
+		return name;
 	}
 
 	/**
@@ -103,10 +112,10 @@ public enum EMVCardTypeEnum {
 	 *            card AID
 	 * @return CardType or null
 	 */
-	public static EMVCardTypeEnum getCardTypeByAid(final String pAid) {
-		EMVCardTypeEnum ret = null;
+	public static EMVCardScheme getCardTypeByAid(final String pAid) {
+		EMVCardScheme ret = null;
 		if (pAid != null) {
-			for (EMVCardTypeEnum val : EMVCardTypeEnum.values()) {
+			for (EMVCardScheme val : EMVCardScheme.values()) {
 				if (pAid.startsWith(StringUtils.deleteWhitespace(val.getAid()))) {
 					ret = val;
 					break;
@@ -123,10 +132,10 @@ public enum EMVCardTypeEnum {
 	 *            card number
 	 * @return the type of the card using regex
 	 */
-	public static EMVCardTypeEnum getCardTypeByCardNumber(final String pCardNumber) {
-		EMVCardTypeEnum ret = null;
+	public static EMVCardScheme getCardTypeByCardNumber(final String pCardNumber) {
+		EMVCardScheme ret = null;
 		if (pCardNumber != null) {
-			for (EMVCardTypeEnum val : EMVCardTypeEnum.values()) {
+			for (EMVCardScheme val : EMVCardScheme.values()) {
 				if (val.regex != null && Pattern.matches(val.regex, StringUtils.deleteWhitespace(pCardNumber))) {
 					ret = val;
 					break;
@@ -134,6 +143,15 @@ public enum EMVCardTypeEnum {
 			}
 		}
 		return ret;
+	}
+
+	/**
+	 * Method used to get the field aidByte
+	 * 
+	 * @return the aidByte
+	 */
+	public byte[] getAidByte() {
+		return aidByte;
 	}
 
 }

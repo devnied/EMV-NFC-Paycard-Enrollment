@@ -1,12 +1,17 @@
 package com.github.devnied.emvnfccard.parser.apdu.impl;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.github.devnied.emvnfccard.iso7816emv.ITag;
+import com.github.devnied.emvnfccard.iso7816emv.TagAndLength;
 import com.github.devnied.emvnfccard.model.AbstractData;
 import com.github.devnied.emvnfccard.parser.apdu.IFile;
 import com.github.devnied.emvnfccard.parser.apdu.annotation.AnnotationData;
@@ -17,7 +22,7 @@ import fr.devnied.bitlib.BitUtils;
 /**
  * Abstract class for all object to parse
  * 
- * @author julien Millau
+ * @author MILLAU Julien
  */
 public abstract class AbstractByteBean<T> extends AbstractData implements IFile {
 
@@ -36,8 +41,20 @@ public abstract class AbstractByteBean<T> extends AbstractData implements IFile 
 	 * 
 	 * @return An annotation set which contain all annotation data
 	 */
-	private Set<AnnotationData> getAnnotationSet() {
-		return AnnotationUtils.getInstance().getMap().get(getClass().getName());
+	private Collection<AnnotationData> getAnnotationSet(final List<TagAndLength> pTags) {
+		Collection<AnnotationData> ret = null;
+		if (pTags != null) {
+			Map<ITag, AnnotationData> data = AnnotationUtils.getInstance().getMap().get(getClass().getName());
+			ret = new ArrayList<AnnotationData>(data.size());
+			for (TagAndLength tal : pTags) {
+				AnnotationData ann = data.get(tal.getTag());
+				ann.setSize(tal.getLength() * BitUtils.BYTE_SIZE);
+				ret.add(ann);
+			}
+		} else {
+			ret = AnnotationUtils.getInstance().getMapSet().get(getClass().getName());
+		}
+		return ret;
 	}
 
 	/**
@@ -45,13 +62,11 @@ public abstract class AbstractByteBean<T> extends AbstractData implements IFile 
 	 * 
 	 * @param pData
 	 *            byte to parse
+	 * @param pTags
 	 */
 	@Override
-	public void parse(final byte[] pData) {
-		if (pData.length < getDefaultSize() / 8) {
-			throw new IllegalArgumentException("Wrong byte Size");
-		}
-		Set<AnnotationData> set = getAnnotationSet();
+	public void parse(final byte[] pData, final List<TagAndLength> pTags) {
+		Collection<AnnotationData> set = getAnnotationSet(pTags);
 		BitUtils bit = new BitUtils(pData);
 		Iterator<AnnotationData> it = set.iterator();
 		while (it.hasNext()) {

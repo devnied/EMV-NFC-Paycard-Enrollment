@@ -6,13 +6,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.github.devnied.emvnfccard.iso7816emv.ITag;
 import com.github.devnied.emvnfccard.model.EMVPaymentRecord;
 import com.github.devnied.emvnfccard.parser.apdu.IFile;
 
 /**
  * Class used to manage all annotation
  * 
- * @author julien Millau
+ * @author MILLAU Julien
  * 
  */
 public final class AnnotationUtils {
@@ -40,13 +41,15 @@ public final class AnnotationUtils {
 	/**
 	 * Map which contain
 	 */
-	private final Map<String, Set<AnnotationData>> map;
+	private final Map<String, Map<ITag, AnnotationData>> map;
+	private final Map<String, Set<AnnotationData>> mapSet;
 
 	/**
 	 * Private default constructor
 	 */
 	private AnnotationUtils() {
-		map = new HashMap<String, Set<AnnotationData>>();
+		map = new HashMap<String, Map<ITag, AnnotationData>>();
+		mapSet = new HashMap<String, Set<AnnotationData>>();
 		extractAnnotation();
 	}
 
@@ -56,6 +59,7 @@ public final class AnnotationUtils {
 	private void extractAnnotation() {
 		for (Class<? extends IFile> clazz : LISTE_CLASS) {
 
+			Map<ITag, AnnotationData> maps = new HashMap<ITag, AnnotationData>();
 			Set<AnnotationData> set = new TreeSet<AnnotationData>();
 
 			Field[] fields = clazz.getDeclaredFields();
@@ -66,11 +70,26 @@ public final class AnnotationUtils {
 				Data annotation = field.getAnnotation(Data.class);
 				if (annotation != null) {
 					param.initFromAnnotation(annotation);
-					set.add(param);
+					maps.put(param.getTag(), param);
+					try {
+						set.add((AnnotationData) param.clone());
+					} catch (CloneNotSupportedException e) {
+						// do nothing
+					}
 				}
 			}
-			map.put(clazz.getName(), set);
+			mapSet.put(clazz.getName(), set);
+			map.put(clazz.getName(), maps);
 		}
+	}
+
+	/**
+	 * Getter map set
+	 * 
+	 * @return the map
+	 */
+	public Map<String, Set<AnnotationData>> getMapSet() {
+		return mapSet;
 	}
 
 	/**
@@ -78,7 +97,7 @@ public final class AnnotationUtils {
 	 * 
 	 * @return the map
 	 */
-	public Map<String, Set<AnnotationData>> getMap() {
+	public Map<String, Map<ITag, AnnotationData>> getMap() {
 		return map;
 	}
 

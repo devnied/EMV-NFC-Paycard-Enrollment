@@ -3,7 +3,7 @@ package com.github.devnied.emvnfccard.enums;
 /**
  * Enum which define all EMV apdu
  * 
- * @author julien Millau
+ * @author MILLAU Julien
  * 
  */
 public enum CommandEnum {
@@ -26,7 +26,7 @@ public enum CommandEnum {
 	/**
 	 * GPO Command
 	 */
-	EXTRA(0x80, 0xCA, 0x00, 0x00);
+	GET_DATA(0x80, 0xCA, 0x00, 0x00);
 
 	/**
 	 * Class byte

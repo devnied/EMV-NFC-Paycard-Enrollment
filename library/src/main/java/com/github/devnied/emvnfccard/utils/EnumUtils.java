@@ -8,7 +8,7 @@ import com.github.devnied.emvnfccard.model.enums.IKeyEnum;
 /**
  * Utils class which provided methods to manipulate Enum
  * 
- * @author julien Millau
+ * @author MILLAU Julien
  */
 public final class EnumUtils {
 

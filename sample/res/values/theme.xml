@@ -3,6 +3,7 @@
 
     <!-- the theme applied to the application or activity -->
     <style name="MyTheme" parent="@android:style/Theme.Holo.Light">
+<!--         <item name="android:windowFullscreen">true</item> -->
         <item name="android:actionBarStyle">@style/MyTheme.ActionBar</item>
         <item name="android:actionMenuTextColor">@android:color/white</item>
     </style>

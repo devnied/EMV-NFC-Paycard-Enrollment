@@ -3,12 +3,12 @@ package com.github.devnied.emvnfccard.model;
 import java.util.Date;
 import java.util.List;
 
-import com.github.devnied.emvnfccard.enums.EMVCardTypeEnum;
+import com.github.devnied.emvnfccard.enums.EMVCardScheme;
 
 /**
  * Bean used to describe data in EMV card
  * 
- * @author julien MILLAU
+ * @author MILLAU Julien
  * 
  */
 public class EMVCard extends AbstractData {
@@ -46,7 +46,12 @@ public class EMVCard extends AbstractData {
 	/**
 	 * Card type
 	 */
-	private EMVCardTypeEnum type;
+	private EMVCardScheme type;
+
+	/**
+	 * Left PIN try
+	 */
+	private int leftPinTry;
 
 	/**
 	 * Card label
@@ -177,7 +182,7 @@ public class EMVCard extends AbstractData {
 	 * 
 	 * @return the type
 	 */
-	public EMVCardTypeEnum getType() {
+	public EMVCardScheme getType() {
 		return type;
 	}
 
@@ -187,7 +192,7 @@ public class EMVCard extends AbstractData {
 	 * @param type
 	 *            the type to set
 	 */
-	public void setType(final EMVCardTypeEnum type) {
+	public void setType(final EMVCardScheme type) {
 		this.type = type;
 	}
 
@@ -214,4 +219,24 @@ public class EMVCard extends AbstractData {
 	public boolean equals(final Object arg0) {
 		return arg0 instanceof EMVCard && cardNumber != null && cardNumber.equals(((EMVCard) arg0).getCardNumber());
 	}
+
+	/**
+	 * Method used to get the field leftPinTry
+	 * 
+	 * @return the leftPinTry
+	 */
+	public int getLeftPinTry() {
+		return leftPinTry;
+	}
+
+	/**
+	 * Setter for the field leftPinTry
+	 * 
+	 * @param leftPinTry
+	 *            the leftPinTry to set
+	 */
+	public void setLeftPinTry(final int leftPinTry) {
+		this.leftPinTry = leftPinTry;
+	}
+
 }

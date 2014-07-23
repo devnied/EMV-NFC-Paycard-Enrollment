@@ -16,7 +16,7 @@ import fr.devnied.bitlib.BitUtils;
 /**
  * Factory to parse data
  * 
- * @author julien Millau
+ * @author MILLAU Julien
  */
 public final class DataFactory {
 
@@ -142,7 +142,12 @@ public final class DataFactory {
 	 */
 	@SuppressWarnings("unchecked")
 	private static IKeyEnum getEnum(final AnnotationData pAnnotation, final BitUtils pBit) {
-		int val = Integer.parseInt(pBit.getNextHexaString(pAnnotation.getSize()));
+		int val = 0;
+		try {
+			val = Integer.parseInt(pBit.getNextHexaString(pAnnotation.getSize()), pAnnotation.isReadHexa() ? 16 : 10);
+		} catch (NumberFormatException nfe) {
+			// do nothing
+		}
 		return EnumUtils.getValue(val, (Class<? extends IKeyEnum>) pAnnotation.getField().getType());
 	}
 

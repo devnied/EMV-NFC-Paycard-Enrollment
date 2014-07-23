@@ -7,7 +7,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 /**
  * Abstract class used to provide some commons methods to bean
  * 
- * @author julien Millau
+ * @author MILLAU Julien
  * 
  */
 public abstract class AbstractData implements Serializable {

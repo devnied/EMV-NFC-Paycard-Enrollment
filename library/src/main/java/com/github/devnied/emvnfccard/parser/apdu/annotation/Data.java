@@ -10,7 +10,7 @@ import fr.devnied.bitlib.BitUtils;
 /**
  * Annotation to describe field information
  * 
- * @author julien Millau
+ * @author MILLAU Julien
  * 
  */
 @Target(ElementType.FIELD)
@@ -42,4 +42,8 @@ public @interface Data {
 	 */
 	int size();
 
+	/**
+	 * Tag Name
+	 */
+	String tag();
 }

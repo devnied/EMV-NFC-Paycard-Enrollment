@@ -15,6 +15,7 @@
     <string name="error_card_unknown">Unknown EMV card</string>
     <string name="error_card_already_added">Card already added</string>
     <string name="error_reading_card">Error reading card</string>
+    <string name="error_link">No web browser found</string>
     
     <!-- Activity -->
     <string name="activity_About">About</string>

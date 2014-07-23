@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import com.github.devnied.emvnfccard.model.enums.CountryCodeEnum;
 import com.github.devnied.emvnfccard.model.enums.CurrencyEnum;
+import com.github.devnied.emvnfccard.model.enums.TransactionTypeEnum;
 
 public class EmvPaymentCardTest {
 
@@ -18,12 +19,12 @@ public class EmvPaymentCardTest {
 		payment.setCyptogramData("12");
 		payment.setTerminalCountry(CountryCodeEnum.FR);
 		payment.setTransactionDate(new Date());
-		payment.setTransactionType(10);
+		payment.setTransactionType(TransactionTypeEnum.CASHBACK);
 
 		Assertions.assertThat(payment.getAmount()).isEqualTo(100);
 		Assertions.assertThat(payment.getCurrency()).isEqualTo(CurrencyEnum.EUR);
 		Assertions.assertThat(payment.getCyptogramData()).isEqualTo("12");
 		Assertions.assertThat(payment.getTerminalCountry()).isEqualTo(CountryCodeEnum.FR);
-		Assertions.assertThat(payment.getTransactionType()).isEqualTo(10);
+		Assertions.assertThat(payment.getTransactionType()).isEqualTo(TransactionTypeEnum.CASHBACK);
 	}
 }

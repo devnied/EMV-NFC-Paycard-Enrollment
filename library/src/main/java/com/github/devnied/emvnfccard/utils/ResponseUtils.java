@@ -8,7 +8,7 @@ import com.github.devnied.emvnfccard.enums.SWEnum;
 /**
  * Method used to manipulate response from APDU command
  * 
- * @author julien Millau
+ * @author MILLAU Julien
  * 
  */
 public final class ResponseUtils {
@@ -30,7 +30,7 @@ public final class ResponseUtils {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Response Status : " + (val != null ? val.getDetail() : "Unknow"));
 		}
-		return val != null && val == SWEnum.SW_SUCCESS;
+		return val != null && val == SWEnum.SW_9000;
 	}
 
 	/**
