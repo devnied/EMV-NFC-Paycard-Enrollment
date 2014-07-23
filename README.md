@@ -1,4 +1,4 @@
-## EMV NFC Paycard Enrollment [![Build Status](https://travis-ci.org/devnied/EMV-NFC-Paycard-Enrollment.png?branch=master)](https://travis-ci.org/devnied/EMV-NFC-Paycard-Enrollment) [![Coverage Status](https://coveralls.io/repos/devnied/EMV-NFC-Paycard-Enrollment/badge.png)](https://coveralls.io/r/devnied/EMV-NFC-Paycard-Enrollment)
+## EMV NFC Paycard Enrollment [![Build Status](https://travis-ci.org/devnied/EMV-NFC-Paycard-Enrollment.png)](https://travis-ci.org/devnied/EMV-NFC-Paycard-Enrollment) [![Coverage Status](https://coveralls.io/repos/devnied/EMV-NFC-Paycard-Enrollment/badge.png)](https://coveralls.io/r/devnied/EMV-NFC-Paycard-Enrollment)
 ### Description
 Java library used to read and extract data from NFC EMV paycard.<br/>
 <b>Current version : 1.1.0</b><br/>
@@ -55,8 +55,8 @@ You can download this library on [Maven central](http://search.maven.org/#search
 If you are not using Maven or some other dependency management tool that can understand Maven repositories, the list below is what you need to run EMV-NFC-Paycard-Enrollment.
 
 **Runtime Dependencies**
-* commons-lang3 3.1
-* bit-lib4j 1.4.5
+* commons-lang3 3.3.2
+* bit-lib4j 1.4.10
 
 ## Bugs
 
