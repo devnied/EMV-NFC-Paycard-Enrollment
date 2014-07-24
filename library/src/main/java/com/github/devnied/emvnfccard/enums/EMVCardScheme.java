@@ -115,8 +115,9 @@ public enum EMVCardScheme {
 	public static EMVCardScheme getCardTypeByAid(final String pAid) {
 		EMVCardScheme ret = null;
 		if (pAid != null) {
+			String aid = StringUtils.deleteWhitespace(pAid);
 			for (EMVCardScheme val : EMVCardScheme.values()) {
-				if (pAid.startsWith(StringUtils.deleteWhitespace(val.getAid()))) {
+				if (aid.startsWith(StringUtils.deleteWhitespace(val.getAid()))) {
 					ret = val;
 					break;
 				}

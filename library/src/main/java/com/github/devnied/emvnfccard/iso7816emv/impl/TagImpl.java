@@ -52,8 +52,8 @@ public final class TagImpl implements ITag {
 			throw new IllegalArgumentException("Param tagValueType cannot be null");
 		}
 		this.idBytes = idBytes;
-		this.name = name != null ? name : "";
-		this.description = description != null ? description : "";
+		this.name = name;
+		this.description = description;
 		this.tagValueType = tagValueType;
 
 		if (BytesUtils.matchBitByBitIndex(this.idBytes[0], 5)) {
@@ -68,9 +68,6 @@ public final class TagImpl implements ITag {
 		// The value 11 indicates a data object of the private class.
 		byte classValue = (byte) (this.idBytes[0] >>> 6 & 0x03);
 		switch (classValue) {
-		case (byte) 0x00:
-			tagClass = Class.UNIVERSAL;
-			break;
 		case (byte) 0x01:
 			tagClass = Class.APPLICATION;
 			break;
@@ -81,8 +78,8 @@ public final class TagImpl implements ITag {
 			tagClass = Class.PRIVATE;
 			break;
 		default:
-			throw new RuntimeException("UNEXPECTED TAG CLASS: " + BytesUtils.toBinary(new byte[] { classValue }) + " "
-					+ BytesUtils.bytesToString(this.idBytes) + " " + name);
+			tagClass = Class.UNIVERSAL;
+			break;
 		}
 
 	}

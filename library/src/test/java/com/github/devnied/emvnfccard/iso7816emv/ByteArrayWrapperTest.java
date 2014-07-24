@@ -16,6 +16,7 @@ public class ByteArrayWrapperTest {
 		Assertions.assertThat(baw.hashCode()).isEqualTo(baw2.hashCode());
 		Assertions.assertThat(baw.equals(baw3)).isFalse();
 		Assertions.assertThat(baw2.equals(baw3)).isFalse();
+		Assertions.assertThat(baw2.equals(null)).isFalse();
 
 		try {
 			ByteArrayWrapper.wrapperAround(null);

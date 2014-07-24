@@ -1,7 +1,5 @@
 package com.github.devnied.emvnfccard.parser.apdu.impl;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.slf4j.Logger;
@@ -52,16 +50,7 @@ public final class DataFactory {
 	private static Date getDate(final AnnotationData pAnnotation, final BitUtils pBit) {
 		Date date = null;
 		if (pAnnotation.getDateStandard() == BCD_DATE) {
-			SimpleDateFormat sdf = new SimpleDateFormat(pAnnotation.getFormat());
-			StringBuffer buff = new StringBuffer();
-			for (int i = 0; i < pAnnotation.getSize(); i += HALF_BYTE_SIZE) {
-				buff.append(pBit.getNextInteger(HALF_BYTE_SIZE));
-			}
-			try {
-				date = sdf.parse(buff.toString());
-			} catch (ParseException e) {
-				LOGGER.error("Start date invalid" + e.getMessage(), e);
-			}
+			date = pBit.getNextDate(pAnnotation.getSize(), pAnnotation.getFormat(), true);
 		} else {
 			date = pBit.getNextDate(pAnnotation.getSize(), pAnnotation.getFormat());
 		}

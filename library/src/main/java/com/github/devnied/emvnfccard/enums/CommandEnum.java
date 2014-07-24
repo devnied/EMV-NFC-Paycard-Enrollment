@@ -31,22 +31,22 @@ public enum CommandEnum {
 	/**
 	 * Class byte
 	 */
-	private int cla = 0x00;
+	private final int cla;
 
 	/**
 	 * Instruction byte
 	 */
-	private int ins = 0x00;
+	private final int ins;
 
 	/**
 	 * Parameter 1 byte
 	 */
-	private int p1 = 0x00;
+	private final int p1;
 
 	/**
 	 * Parameter 2 byte
 	 */
-	private int p2 = 0x00;
+	private final int p2;
 
 	/**
 	 * Constructor using field
@@ -77,32 +77,12 @@ public enum CommandEnum {
 	}
 
 	/**
-	 * Setter for the field cla
-	 * 
-	 * @param cla
-	 *            the cla to set
-	 */
-	public void setCla(final int cla) {
-		this.cla = cla;
-	}
-
-	/**
 	 * Method used to get the field ins
 	 * 
 	 * @return the ins
 	 */
 	public int getIns() {
 		return ins;
-	}
-
-	/**
-	 * Setter for the field ins
-	 * 
-	 * @param ins
-	 *            the ins to set
-	 */
-	public void setIns(final int ins) {
-		this.ins = ins;
 	}
 
 	/**
@@ -115,32 +95,12 @@ public enum CommandEnum {
 	}
 
 	/**
-	 * Setter for the field p1
-	 * 
-	 * @param p1
-	 *            the p1 to set
-	 */
-	public void setP1(final int p1) {
-		this.p1 = p1;
-	}
-
-	/**
 	 * Method used to get the field p2
 	 * 
 	 * @return the p2
 	 */
 	public int getP2() {
 		return p2;
-	}
-
-	/**
-	 * Setter for the field p2
-	 * 
-	 * @param p2
-	 *            the p2 to set
-	 */
-	public void setP2(final int p2) {
-		this.p2 = p2;
 	}
 
 }
