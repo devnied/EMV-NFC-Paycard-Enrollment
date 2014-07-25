@@ -50,12 +50,12 @@ public class EMVParser {
 	/**
 	 * PPSE directory "2PAY.SYS.DDF01"
 	 */
-	private static final byte[] PPSE = BytesUtils.fromString("32 50 41 59 2e 53 59 53 2e 44 44 46 30 31");
+	private static final byte[] PPSE = "2PAY.SYS.DDF01".getBytes();
 
 	/**
 	 * PSE directory "1PAY.SYS.DDF01"
 	 */
-	private static final byte[] PSE = BytesUtils.fromString("31 50 41 59 2e 53 59 53 2e 44 44 46 30 31");
+	private static final byte[] PSE = "1PAY.SYS.DDF01".getBytes();
 
 	/**
 	 * Unknow response
