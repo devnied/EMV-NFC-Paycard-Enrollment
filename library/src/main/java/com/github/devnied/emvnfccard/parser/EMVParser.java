@@ -21,7 +21,7 @@ import com.github.devnied.emvnfccard.enums.SWEnum;
 import com.github.devnied.emvnfccard.exception.CommunicationException;
 import com.github.devnied.emvnfccard.iso7816emv.EMVTags;
 import com.github.devnied.emvnfccard.iso7816emv.TagAndLength;
-import com.github.devnied.emvnfccard.iso7816emv.TagValueFactory;
+import com.github.devnied.emvnfccard.iso7816emv.EMVTerminal;
 import com.github.devnied.emvnfccard.model.Afl;
 import com.github.devnied.emvnfccard.model.EMVCard;
 import com.github.devnied.emvnfccard.model.EMVPaymentRecord;
@@ -501,7 +501,7 @@ public class EMVParser {
 			out.write(TLVUtil.getLength(list)); // ADD total length
 			if (list != null) {
 				for (TagAndLength tl : list) {
-					out.write(TagValueFactory.constructValue(tl));
+					out.write(EMVTerminal.constructValue(tl));
 				}
 			}
 		} catch (IOException ioe) {

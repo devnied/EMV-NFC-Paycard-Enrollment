@@ -1,5 +1,6 @@
 package com.github.devnied.emvnfccard.iso7816emv;
 
+import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -7,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.github.devnied.emvnfccard.model.enums.CountryCodeEnum;
 import com.github.devnied.emvnfccard.model.enums.CurrencyEnum;
+import com.github.devnied.emvnfccard.model.enums.TransactionTypeEnum;
 
 import fr.devnied.bitlib.BytesUtils;
 
@@ -16,7 +18,12 @@ import fr.devnied.bitlib.BytesUtils;
  * @author Millau Julien
  * 
  */
-public final class TagValueFactory {
+public final class EMVTerminal {
+
+	/**
+	 * Random
+	 */
+	private static final SecureRandom random = new SecureRandom();
 
 	/**
 	 * Method used to construct value from tag and length
@@ -40,9 +47,11 @@ public final class TagValueFactory {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
 			val = BytesUtils.fromString(sdf.format(new Date()));
 		} else if (pTagAndLength.getTag() == EMVTags.TRANSACTION_TYPE) {
-			val = BytesUtils.fromString("00");
+			val = new byte[] { (byte) TransactionTypeEnum.PURCHASE.getKey() };
 		} else if (pTagAndLength.getTag() == EMVTags.AMOUNT_AUTHORISED_NUMERIC) {
-			val = BytesUtils.fromString("00");
+			val = BytesUtils.fromString("01");
+		} else if (pTagAndLength.getTag() == EMVTags.UNPREDICTABLE_NUMBER) {
+			random.nextBytes(ret);
 		}
 		if (val != null) {
 			System.arraycopy(val, Math.max(0, val.length - ret.length), ret, Math.max(ret.length - val.length, 0),
@@ -54,7 +63,7 @@ public final class TagValueFactory {
 	/**
 	 * Private Constructor
 	 */
-	private TagValueFactory() {
+	private EMVTerminal() {
 	}
 
 }
