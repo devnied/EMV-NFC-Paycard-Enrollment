@@ -47,6 +47,23 @@ public class EMVPaymentRecordTest {
 		Assertions.assertThat(record.getTerminalCountry()).isEqualTo(CountryCodeEnum.FR);
 		Assertions.assertThat(record.getTransactionDate()).isNotNull();
 
+		record = new EMVPaymentRecord();
+		record.parse(BytesUtils.fromString("00 00 00 00 20 00 40 02 50 09 78 13 11 22 01 90 00"), null);
+		Assertions.assertThat(record.getAmount()).isEqualTo(2000);
+		Assertions.assertThat(record.getCyptogramData()).isEqualTo("40");
+		Assertions.assertThat(record.getTransactionType()).isEqualTo(TransactionTypeEnum.CASH_ADVANCE);
+		Assertions.assertThat(record.getCurrency()).isEqualTo(CurrencyEnum.EUR);
+		Assertions.assertThat(record.getTerminalCountry()).isEqualTo(CountryCodeEnum.FR);
+		Assertions.assertThat(record.getTransactionDate()).isNotNull();
+
+		record = new EMVPaymentRecord();
+		record.parse(BytesUtils.fromString("00 00 00 01 71 00 40 07 92 09 49 13 08 05 00 90 00"), null);
+		Assertions.assertThat(record.getAmount()).isEqualTo(17100);
+		Assertions.assertThat(record.getCyptogramData()).isEqualTo("40");
+		Assertions.assertThat(record.getTransactionType()).isEqualTo(TransactionTypeEnum.PURCHASE);
+		Assertions.assertThat(record.getCurrency()).isEqualTo(CurrencyEnum.TRY);
+		Assertions.assertThat(record.getTerminalCountry()).isEqualTo(CountryCodeEnum.TR);
+		Assertions.assertThat(record.getTransactionDate()).isNotNull();
 	}
 
 }
