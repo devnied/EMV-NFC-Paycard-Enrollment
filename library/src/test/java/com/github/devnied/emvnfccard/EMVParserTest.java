@@ -244,6 +244,10 @@ public class EMVParserTest {
 		prov.setReturnedData("90 00");
 		val = Whitebox.invokeMethod(new EMVParser(prov, true), EMVParser.class, "getLeftPinTry");
 		Assertions.assertThat(val).isEqualTo(EMVParser.UNKNOW);
+
+		prov.setReturnedData(null);
+		val = Whitebox.invokeMethod(new EMVParser(prov, true), EMVParser.class, "getLeftPinTry");
+		Assertions.assertThat(val).isEqualTo(EMVParser.UNKNOW);
 	}
 
 	@Test

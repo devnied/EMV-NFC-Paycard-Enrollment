@@ -22,7 +22,7 @@ public class ProviderSelectPaymentEnvTest implements IProvider {
 	@Override
 	public byte[] transceive(final byte[] pCommand) {
 		Assertions.assertThat(BytesUtils.bytesToStringNoSpace(pCommand)).isEqualTo(expectedData);
-		return BytesUtils.fromString(returnedData);
+		return returnedData != null ? BytesUtils.fromString(returnedData) : null;
 	}
 
 	/**

@@ -24,11 +24,6 @@ public class EMVPaymentRecord extends AbstractByteBean<EMVPaymentRecord> impleme
 	private static final long serialVersionUID = -7050737312961921452L;
 
 	/**
-	 * Default size
-	 */
-	public final static int DEFAULT_SIZE = 128;
-
-	/**
 	 * Amount authorized (Amount need to be formated with currency)
 	 */
 	@Data(index = 1, size = 48, format = DataFactory.BCD_FORMAT, tag = "9f02")
@@ -176,11 +171,6 @@ public class EMVPaymentRecord extends AbstractByteBean<EMVPaymentRecord> impleme
 	 */
 	public void setTransactionType(final TransactionTypeEnum transactionType) {
 		this.transactionType = transactionType;
-	}
-
-	@Override
-	public int getDefaultSize() {
-		return DEFAULT_SIZE;
 	}
 
 }

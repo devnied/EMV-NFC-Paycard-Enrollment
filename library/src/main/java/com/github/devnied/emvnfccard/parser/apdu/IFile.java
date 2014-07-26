@@ -22,11 +22,4 @@ public interface IFile {
 	 */
 	void parse(final byte[] pData, final List<TagAndLength> pList);
 
-	/**
-	 * Get default size
-	 * 
-	 * @return the size of the file
-	 */
-	int getDefaultSize();
-
 }

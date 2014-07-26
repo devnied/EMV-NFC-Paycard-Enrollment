@@ -33,7 +33,7 @@ public class TLV {
 	 * @param valueBytes
 	 */
 	public TLV(final ITag tag, final int length, final byte[] rawEncodedLengthBytes, final byte[] valueBytes) {
-		if (length != valueBytes.length) {
+		if (valueBytes == null || length != valueBytes.length) {
 			// Assert
 			throw new IllegalArgumentException("length != bytes.length");
 		}
