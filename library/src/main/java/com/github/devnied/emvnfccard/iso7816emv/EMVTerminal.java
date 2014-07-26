@@ -49,7 +49,7 @@ public final class EMVTerminal {
 		} else if (pTagAndLength.getTag() == EMVTags.TRANSACTION_TYPE) {
 			val = new byte[] { (byte) TransactionTypeEnum.PURCHASE.getKey() };
 		} else if (pTagAndLength.getTag() == EMVTags.AMOUNT_AUTHORISED_NUMERIC) {
-			val = BytesUtils.fromString("01");
+			val = BytesUtils.fromString("00");
 		} else if (pTagAndLength.getTag() == EMVTags.UNPREDICTABLE_NUMBER) {
 			random.nextBytes(ret);
 		}

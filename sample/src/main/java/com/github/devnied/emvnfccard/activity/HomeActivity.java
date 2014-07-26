@@ -69,6 +69,11 @@ public class HomeActivity extends Activity implements OnItemClickListener {
 	 */
 	private ProgressDialog mDialog;
 
+	/**
+	 * Alert dialog
+	 */
+	private AlertDialog mAlertDialog;
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
@@ -87,7 +92,11 @@ public class HomeActivity extends Activity implements OnItemClickListener {
 
 	@Override
 	protected void onResume() {
-		super.onResume();
+		mNfcUtils.enableDispatch();
+		// Close
+		if (mAlertDialog != null && mAlertDialog.isShowing()) {
+			mAlertDialog.cancel();
+		}
 		// Check NFC enable
 		if (!NFCUtils.isNfcEnable(getApplicationContext())) {
 			AlertDialog.Builder alertbox = new AlertDialog.Builder(this);
@@ -108,10 +117,9 @@ public class HomeActivity extends Activity implements OnItemClickListener {
 				}
 			});
 			alertbox.setCancelable(false);
-			alertbox.show();
+			mAlertDialog = alertbox.show();
 		}
-
-		mNfcUtils.enableDispatch();
+		super.onResume();
 	}
 
 	@Override

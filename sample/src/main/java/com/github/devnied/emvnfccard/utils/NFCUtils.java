@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.nfc.NfcAdapter;
+import android.nfc.tech.IsoDep;
 
 /**
  * 
@@ -34,16 +36,26 @@ public class NFCUtils {
 	/**
 	 * NFC adapter
 	 */
-	private NfcAdapter mNfcAdapter;
+	private final NfcAdapter mNfcAdapter;
 	/**
 	 * Intent sent
 	 */
-	private PendingIntent mPendingIntent;
+	private final PendingIntent mPendingIntent;
 
 	/**
 	 * Parent Activity
 	 */
 	private final Activity mActivity;
+
+	/**
+	 * Inetnt filter
+	 */
+	private static final IntentFilter[] INTENT_FILTER = new IntentFilter[] { new IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED) };
+
+	/**
+	 * Tech List
+	 */
+	private static final String[][] TECH_LIST = new String[][] { { IsoDep.class.getName() } };
 
 	/**
 	 * Constructor of this class
@@ -53,7 +65,7 @@ public class NFCUtils {
 	 */
 	public NFCUtils(final Activity pActivity) {
 		mActivity = pActivity;
-		mNfcAdapter = NfcAdapter.getDefaultAdapter(pActivity);
+		mNfcAdapter = NfcAdapter.getDefaultAdapter(mActivity);
 		mPendingIntent = PendingIntent.getActivity(mActivity, 0,
 				new Intent(mActivity, mActivity.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
 	}
@@ -72,7 +84,7 @@ public class NFCUtils {
 	 */
 	public void enableDispatch() {
 		if (mNfcAdapter != null) {
-			mNfcAdapter.enableForegroundDispatch(mActivity, mPendingIntent, null, null);
+			mNfcAdapter.enableForegroundDispatch(mActivity, mPendingIntent, INTENT_FILTER, TECH_LIST);
 		}
 	}
 

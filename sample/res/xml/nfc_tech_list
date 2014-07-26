@@ -2,12 +2,6 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <tech-list>
-        <tech>android.nfc.tech.IsoDep</tech>
-        <tech>android.nfc.tech.NfcA</tech>
-    </tech-list>
-
-    <tech-list>
     	<tech>android.nfc.tech.IsoDep</tech>
-        <tech>android.nfc.tech.NfcB</tech>
     </tech-list>
 </resources>
