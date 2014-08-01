@@ -64,6 +64,11 @@ public class EMVCard extends AbstractData {
 	private List<EMVPaymentRecord> listPayment;
 
 	/**
+	 * List of Atr description
+	 */
+	private List<String> atrDescription;
+
+	/**
 	 * Method used to get the field aid
 	 * 
 	 * @return the aid
@@ -237,6 +242,25 @@ public class EMVCard extends AbstractData {
 	 */
 	public void setLeftPinTry(final int leftPinTry) {
 		this.leftPinTry = leftPinTry;
+	}
+
+	/**
+	 * Method used to get the field atrDescription
+	 * 
+	 * @return the atrDescription
+	 */
+	public List<String> getAtrDescription() {
+		return atrDescription;
+	}
+
+	/**
+	 * Setter for the field atrDescription
+	 * 
+	 * @param atrDescription
+	 *            the atrDescription to set
+	 */
+	public void setAtrDescription(final List<String> atrDescription) {
+		this.atrDescription = atrDescription;
 	}
 
 }
