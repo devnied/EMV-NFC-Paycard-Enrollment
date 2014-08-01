@@ -134,4 +134,24 @@ public class TLVUtilTest {
 		list.add(new TagAndLength(EMVTags.AID_TERMINAL, 2));
 		Assertions.assertThat(TLVUtil.getLength(list)).isEqualTo(14);
 	}
+
+	@Test
+	public void testGetTagValueAsString() throws Exception {
+		Assertions
+				.assertThat(
+						(String) Whitebox.invokeMethod(TLVUtil.class, "getTagValueAsString", EMVTags.ACQUIRER_IDENTIFIER,
+								"56".getBytes())).isEqualTo("NUMERIC");
+		Assertions.assertThat(
+				(String) Whitebox.invokeMethod(TLVUtil.class, "getTagValueAsString", EMVTags.ISSUER_COUNTRY_CODE_ALPHA3,
+						"56".getBytes())).isEqualTo("=56");
+		Assertions.assertThat(
+				(String) Whitebox.invokeMethod(TLVUtil.class, "getTagValueAsString", EMVTags.APP_DISCRETIONARY_DATA,
+						"56".getBytes())).isEqualTo("BINARY");
+		Assertions.assertThat(
+				(String) Whitebox.invokeMethod(TLVUtil.class, "getTagValueAsString", EMVTags.BANK_IDENTIFIER_CODE,
+						"56".getBytes())).isEqualTo("=56");
+		Assertions
+				.assertThat((String) Whitebox.invokeMethod(TLVUtil.class, "getTagValueAsString", EMVTags.DDOL, "56".getBytes()))
+				.isEqualTo("");
+	}
 }

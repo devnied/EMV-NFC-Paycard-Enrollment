@@ -337,54 +337,54 @@ public enum CurrencyEnum implements IKeyEnum {
 	/**
 	 * Returns the currency for the inputed CountryCodeEnum.
 	 * 
-	 * @param CountryCodeEnum
+	 * @param pCountryCodeEnum
 	 *            The CountryCodeEnum.
 	 * @return The currency or null if multiply currencies or no currencies exist.
 	 */
-	public static CurrencyEnum find(final CountryCodeEnum CountryCodeEnum) {
+	public static CurrencyEnum find(final CountryCodeEnum pCountryCodeEnum) {
+		CurrencyEnum currency = null;
 		// use some default rules for countries with multiple currencies (should
 		// go into CountryCodeEnum.java!)
-		switch (CountryCodeEnum) {
-		case BO: {
-			return CurrencyEnum.BOB;
-		}
-		case CH: {
-			return CurrencyEnum.CHF;
-		}
-		case CL: {
-			return CurrencyEnum.CLP;
-		}
-		case MX: {
-			return CurrencyEnum.MXN;
-		}
-		case US: {
-			return CurrencyEnum.USD;
-		}
-		case UY: {
-			return CurrencyEnum.UYU;
-		}
-		default: {
-			// if default rules don't apply, let's see if we can resolve
-			// otherwise!
-			CurrencyEnum currency = null;
-			for (int i = 0; i < values().length; i++) {
-				CountryCodeEnum[] countries = values()[i].getCountries();
-				for (CountryCodeEnum countrie : countries) {
-					if (countrie == CountryCodeEnum) {
-						if (currency != null) {
-							// more than one currency!
-							return null;
-						} else {
-							currency = values()[i];
+		if (pCountryCodeEnum != null) {
+			switch (pCountryCodeEnum) {
+			case BO: {
+				return CurrencyEnum.BOB;
+			}
+			case CH: {
+				return CurrencyEnum.CHF;
+			}
+			case CL: {
+				return CurrencyEnum.CLP;
+			}
+			case MX: {
+				return CurrencyEnum.MXN;
+			}
+			case US: {
+				return CurrencyEnum.USD;
+			}
+			case UY: {
+				return CurrencyEnum.UYU;
+			}
+			default:
+				// if default rules don't apply, let's see if we can resolve
+				// otherwise!
+				for (int i = 0; i < values().length; i++) {
+					CountryCodeEnum[] countries = values()[i].getCountries();
+					for (CountryCodeEnum countrie : countries) {
+						if (countrie == pCountryCodeEnum) {
+							if (currency != null) {
+								// more than one currency!
+								return null;
+							} else {
+								currency = values()[i];
+							}
 						}
 					}
 				}
 			}
-
-			// return the currency
-			return currency;
 		}
-		}
+		// return the currency
+		return currency;
 	}
 
 	/**
