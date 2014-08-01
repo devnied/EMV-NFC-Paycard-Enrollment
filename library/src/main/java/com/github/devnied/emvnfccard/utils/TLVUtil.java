@@ -248,6 +248,15 @@ public final class TLVUtil {
 		return new TLV(tag, length, lengthBytes, valueBytes);
 	}
 
+	/**
+	 * Method used get Tag value as String
+	 * 
+	 * @param tag
+	 *            tag type
+	 * @param value
+	 *            tag value
+	 * @return
+	 */
 	private static String getTagValueAsString(final ITag tag, final byte[] value) {
 		StringBuilder buf = new StringBuilder();
 

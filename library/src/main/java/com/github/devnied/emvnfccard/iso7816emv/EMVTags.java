@@ -352,7 +352,7 @@ public final class EMVTags {
 	public static final ITag FCI_ISSUER_DISCRETIONARY_DATA = new TagImpl("bf0c", TagValueTypeEnum.BINARY,
 			"File Control Information (FCI) Issuer Discretionary Data",
 			"Issuer discretionary part of the FCI (e.g. O/S Manufacturer proprietary data)");
-
+	public static final ITag VISA_LOG_ENTRY = new TagImpl("df60", TagValueTypeEnum.BINARY, "VISA Log Entry", "");
 	// '9F50' to '9F7F' are reserved for the payment systems (proprietary)
 
 	// The following tags are specified in EMV Contactless (Book A)

@@ -303,12 +303,28 @@ public class EMVParser {
 	}
 
 	/**
+	 * Method used to extract Log Entry from Select response
+	 * 
+	 * @param pSelectResponse
+	 *            select response
+	 * @return byte array
+	 */
+	protected byte[] getLogEntry(final byte[] pSelectResponse) {
+		byte[] ret = TLVUtil.getValue(pSelectResponse, EMVTags.LOG_ENTRY);
+		// Find Visa specific log entry
+		if (ret == null) {
+			ret = TLVUtil.getValue(pSelectResponse, EMVTags.VISA_LOG_ENTRY);
+		}
+		return ret;
+	}
+
+	/**
 	 * Method used to parse EMV card
 	 */
 	public EMVCard parse(final byte[] pSelectResponse, final IProvider pProvider) throws CommunicationException {
 		EMVCard card = null;
 		// Get TLV log entry
-		byte[] logEntry = TLVUtil.getValue(pSelectResponse, EMVTags.LOG_ENTRY);
+		byte[] logEntry = getLogEntry(pSelectResponse);
 		// Get PDOL
 		byte[] pdol = TLVUtil.getValue(pSelectResponse, EMVTags.PDOL);
 		// Send GPO Command

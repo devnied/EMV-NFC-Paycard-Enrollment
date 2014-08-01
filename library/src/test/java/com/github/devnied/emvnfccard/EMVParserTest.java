@@ -267,7 +267,18 @@ public class EMVParserTest {
 		prov.setReturnedData("9000");
 		list = Whitebox.invokeMethod(new EMVParser(prov, true), EMVParser.class, "getLogFormat");
 		Assertions.assertThat(list.size()).isEqualTo(0);
-
 	}
 
+	@Test
+	public void testGetLogEntry() throws Exception {
+		byte[] selectResponse = BytesUtils
+				.fromString("6F 37 84 07 A0 00 00 00 42 10 10 A5 2C 9F 38 18 9F 66 04 9F 02 06 9F 03 06 9F 1A 02 95 05 5F 2A 02 9A 03 9C 01 9F 37 04 BF 0C 0E DF 60 02 0B 1E DF 61 01 03 9F 4D 02 0B 11 90 00");
+		byte[] data = Whitebox.invokeMethod(new EMVParser(null, true), EMVParser.class, "getLogEntry", selectResponse);
+
+		Assertions.assertThat(BytesUtils.bytesToString(data)).isEqualTo("0B 11");
+		selectResponse = BytesUtils
+				.fromString("6F 32 84 07 A0 00 00 00 42 10 10 A5 27 9F 38 18 9F 66 04 9F 02 06 9F 03 06 9F 1A 02 95 05 5F 2A 02 9A 03 9C 01 9F 37 04 BF 0C 09 DF 60 02 0B 1E DF 61 01 03 90 00");
+		data = Whitebox.invokeMethod(new EMVParser(null, true), EMVParser.class, "getLogEntry", selectResponse);
+		Assertions.assertThat(BytesUtils.bytesToString(data)).isEqualTo("0B 1E");
+	}
 }
