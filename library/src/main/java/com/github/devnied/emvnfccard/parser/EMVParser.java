@@ -319,12 +319,14 @@ public class EMVParser {
 			gpo = getGetProcessingOptions(null, pProvider);
 		}
 
-		// Extract commons card data (number, expire date, ...)
-		card = extractCommonsCardData(gpo);
+		if (ResponseUtils.isSucceed(gpo)) {
+			// Extract commons card data (number, expire date, ...)
+			card = extractCommonsCardData(gpo);
 
-		// Extract log entry
-		if (card != null) {
-			card.setListPayment(extractLogEntry(logEntry));
+			// Extract log entry
+			if (card != null) {
+				card.setListPayment(extractLogEntry(logEntry));
+			}
 		}
 
 		return card;
