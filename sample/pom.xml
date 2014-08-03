@@ -18,15 +18,28 @@
 		</dependency>
 
 		<dependency>
+		  <groupId>android.support</groupId>
+		  <artifactId>compatibility-v13</artifactId>
+		  <version>20.0.0</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>com.github.devnied.emvnfccard</groupId>
 			<artifactId>library</artifactId>
 			<version>1.1.1-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>com.github.gabrielemariotti.cards</groupId>
+		    <artifactId>library</artifactId>
+		    <version>1.8.0</version>
+		    <type>aar</type>
 		</dependency>
 
 		<dependency>
 			<artifactId>crouton</artifactId>
 			<groupId>de.keyboardsurfer.android.widget</groupId>
-			<version>1.8.4</version>
+			<version>1.8.5</version>
 			<exclusions>
 				<exclusion>
 					<groupId>com.android.support</groupId>

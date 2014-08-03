@@ -14,7 +14,7 @@
         android:layout_alignParentTop="true"
         android:background="@drawable/card_border"
         android:scaleType="centerCrop"
-        android:src="@drawable/card_background" />
+        android:src="@drawable/emv_card_background" />
     
     <TextView
         android:layout_width="wrap_content"

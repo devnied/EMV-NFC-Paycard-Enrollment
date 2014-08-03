@@ -40,16 +40,6 @@
                 android:name="android.nfc.action.TECH_DISCOVERED"
                 android:resource="@xml/nfc_tech_list" />
         </activity>
-        <activity
-            android:name=".activity.AboutActivity"
-            android:label="@string/activity_About"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name=".activity.ListEventActivity"
-            android:label="@string/activity_Event"
-            android:screenOrientation="portrait" >
-        </activity>
     </application>
 
 </manifest>

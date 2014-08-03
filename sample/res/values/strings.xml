@@ -27,5 +27,19 @@
     <!-- About -->
     <string name="about_content">Application written by <a href="http://julien-millau.fr">Julien Millau</a>.\n\nSource Code and documentation available on <a href="https://github.com/devnied/EMV-NFC-Paycard-Enrollment">Github</a>.</string>
     
+    <!-- Navigation drawable -->
+    <string name="navigation_menu_open">Navigation menu open</string>
+    <string name="navigation_menu_close">Navigation menu close</string>
+    <string-array name="navigation_items">
+        <item>Cards details</item>
+        <item>Configuration</item>
+        <item>About</item>
+    </string-array>
+    
+    <!-- Preferences -->
+    <string name="general_category">General Preferences</string>
+    <string name="pref_save_read_card">Save card</string>
+    <string name="pref_sum_save_card">Save detail on file system</string>
+    <string name="pref_remove_all_stored_cards">Remove all stored cards</string>
 
 </resources>

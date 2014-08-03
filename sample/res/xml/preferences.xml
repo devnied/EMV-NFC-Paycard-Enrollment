@@ -1,0 +1,17 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/general_category" >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="save_read_card"
+            android:summary="@string/pref_sum_save_card"
+            android:title="@string/pref_save_read_card" />
+        
+        <Preference 
+            android:key="clear_card" 
+            android:dependency="save_read_card"
+            android:title="@string/pref_remove_all_stored_cards"/>
+        
+    </PreferenceCategory>
+
+</PreferenceScreen>
