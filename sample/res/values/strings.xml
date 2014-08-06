@@ -3,7 +3,7 @@
     <string name="app_name">EMV Paycard Reader</string>
     
     <!-- Msg -->
-    <string name="card_added">Card added</string>
+    <string name="card_read">Card read</string>
     <string name="card_reading">Reading in progress...</string>
     <string name="card_reading_desc">Please do not remove or move card during reading.</string>
     <string name="msg_nfc_disable">Please enable NFC and press back to return to this application.</string>
@@ -13,16 +13,12 @@
     <!-- Error -->
     <string name="error_communication_nfc">NFC communication error. Please retry!</string>
     <string name="error_card_unknown">Unknown EMV card</string>
-    <string name="error_card_already_added">Card already added</string>
     <string name="error_reading_card">Error reading card</string>
     <string name="error_link">No web browser found</string>
     
     <!-- Activity -->
-    <string name="activity_About">About</string>
-    <string name="activity_Event">Event Log</string>
-    
-    <!-- Menu -->
-    <string name="menu_about">About</string>
+    <string name="viewpager_log">Log</string>
+    <string name="viewpager_carddetail">Card detail</string>
     
     <!-- About -->
     <string name="about_content">Application written by <a href="http://julien-millau.fr">Julien Millau</a>.\n\nSource Code and documentation available on <a href="https://github.com/devnied/EMV-NFC-Paycard-Enrollment">Github</a>.</string>

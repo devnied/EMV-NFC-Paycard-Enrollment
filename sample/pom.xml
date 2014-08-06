@@ -28,13 +28,6 @@
 			<artifactId>library</artifactId>
 			<version>1.1.1-SNAPSHOT</version>
 		</dependency>
-		
-		<dependency>
-		    <groupId>com.github.gabrielemariotti.cards</groupId>
-		    <artifactId>library</artifactId>
-		    <version>1.8.0</version>
-		    <type>aar</type>
-		</dependency>
 
 		<dependency>
 			<artifactId>crouton</artifactId>

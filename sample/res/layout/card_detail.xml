@@ -3,14 +3,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
+
+    <ScrollView
+        android:id="@+id/card_detail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:visibility="gone" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <include layout="@layout/card_item" />
+        </LinearLayout>
+    </ScrollView>
+
     <LinearLayout
         android:id="@+id/emptyView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="10dp"
+        android:background="#FFF"
         android:gravity="center"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:padding="10dp" >
 
         <ImageView
             android:id="@+id/contactLessImg"
@@ -23,13 +42,11 @@
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="17sp"
             android:gravity="center"
-            android:textStyle="bold"
-            android:text="Tap your NFC card \n to the back of your phone">
-
+            android:text="Tap your NFC card \n to the back of your phone"
+            android:textSize="17sp"
+            android:textStyle="bold" >
         </TextView>
-        
     </LinearLayout>
 
 </LinearLayout>

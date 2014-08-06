@@ -1,9 +1,24 @@
 package com.github.devnied.emvnfccard.activity;
 
+import java.io.IOException;
+import java.lang.ref.WeakReference;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.nfc.NfcAdapter;
+import android.nfc.Tag;
+import android.nfc.tech.IsoDep;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
@@ -12,12 +27,20 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.github.devnied.emvnfccard.BuildConfig;
 import com.github.devnied.emvnfccard.R;
 import com.github.devnied.emvnfccard.adapter.MenuAdapter;
 import com.github.devnied.emvnfccard.fragment.AboutFragment;
 import com.github.devnied.emvnfccard.fragment.ConfigurationFragment;
+import com.github.devnied.emvnfccard.fragment.IRefreshable;
 import com.github.devnied.emvnfccard.fragment.ViewPagerFragment;
+import com.github.devnied.emvnfccard.model.EMVCard;
+import com.github.devnied.emvnfccard.parser.EMVParser;
+import com.github.devnied.emvnfccard.provider.Provider;
 import com.github.devnied.emvnfccard.utils.ConstantUtils;
+import com.github.devnied.emvnfccard.utils.CroutonUtils;
+import com.github.devnied.emvnfccard.utils.NFCUtils;
+import com.github.devnied.emvnfccard.utils.SimpleAsyncTask;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
@@ -27,7 +50,22 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
  * @author MILLAU Julien
  * 
  */
-public class HomeActivity extends Activity implements OnItemClickListener {
+public class HomeActivity extends Activity implements OnItemClickListener, IContentActivity {
+
+	/**
+	 * Nfc utils
+	 */
+	private NFCUtils mNfcUtils;
+
+	/**
+	 * Waiting Dialog
+	 */
+	private ProgressDialog mDialog;
+
+	/**
+	 * Alert dialog
+	 */
+	private AlertDialog mAlertDialog;
 
 	/**
 	 * Drawer layout
@@ -47,11 +85,34 @@ public class HomeActivity extends Activity implements OnItemClickListener {
 	 */
 	private MenuAdapter mMenuAdapter;
 
+	/**
+	 * IsoDep provider
+	 */
+	private Provider mProvider = new Provider();
+
+	/**
+	 * Emv card
+	 */
+	private EMVCard mReadCard;
+
+	/**
+	 * Reference for refreshable content
+	 */
+	private WeakReference<IRefreshable> mRefreshableContent;
+
+	/**
+	 * last selected Menu
+	 */
+	private int mLastSelectedMenu = -1;
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+
+		// init NfcUtils
+		mNfcUtils = new NFCUtils(this);
 
 		// get ListView defined in activity_main.xml
 		mDrawerListView = (ListView) findViewById(R.id.left_drawer);
@@ -71,17 +132,187 @@ public class HomeActivity extends Activity implements OnItemClickListener {
 		R.drawable.ic_drawer, /* nav drawer icon to replace 'Up' caret */
 		R.string.navigation_menu_open, /* "open drawer" description */
 		R.string.navigation_menu_close /* "close drawer" description */
-		);
+		) {
+
+		};
 
 		// 2.2 Set actionBarDrawerToggle as the DrawerListener
 		mDrawerLayout.setDrawerListener(mActionBarDrawerToggle);
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
+		getActionBar().setDisplayShowHomeEnabled(false);
+		getActionBar().setDisplayUseLogoEnabled(false);
 
-		// default fragment layout
-		getFragmentManager().beginTransaction().replace(R.id.content_frame, new ViewPagerFragment()).commit();
-		mDrawerListView.setItemChecked(0, true);
+		// Display home screen
+		backToHomeScreen();
+
+		// Read card on launch
+		if (getIntent().getAction() == NfcAdapter.ACTION_TECH_DISCOVERED) {
+			onNewIntent(getIntent());
+		}
+	}
+
+	/**
+	 * Method used to back to home screen
+	 */
+	private void backToHomeScreen() {
+		// Select first menu
+		mDrawerListView.performItemClick(mDrawerListView, 0, mDrawerListView.getItemIdAtPosition(0));
+		// Close Drawer
+		mDrawerLayout.closeDrawer(mDrawerListView);
+	}
+
+	@Override
+	protected void onResume() {
+		mNfcUtils.enableDispatch();
+		// Close
+		if (mAlertDialog != null && mAlertDialog.isShowing()) {
+			mAlertDialog.cancel();
+		}
+		// Check NFC enable
+		if (!NFCUtils.isNfcEnable(getApplicationContext()) && !BuildConfig.DEBUG) {
+			backToHomeScreen();
+
+			AlertDialog.Builder alertbox = new AlertDialog.Builder(this);
+			alertbox.setTitle(getString(R.string.msg_info));
+			alertbox.setMessage(getString(R.string.msg_nfc_disable));
+			alertbox.setPositiveButton(getString(R.string.msg_activate_nfc), new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(final DialogInterface dialog, final int which) {
+					Intent intent = null;
+					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+						intent = new Intent(Settings.ACTION_NFC_SETTINGS);
+					} else {
+						intent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+					}
+					dialog.dismiss();
+					startActivity(intent);
+				}
+			});
+			alertbox.setCancelable(false);
+			mAlertDialog = alertbox.show();
+		}
+		super.onResume();
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		mNfcUtils.disableDispatch();
+	}
+
+	@Override
+	protected void onNewIntent(final Intent intent) {
+		super.onNewIntent(intent);
+		final Tag mTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+		if (mTag != null) {
+
+			new SimpleAsyncTask() {
+
+				/**
+				 * Tag comm
+				 */
+				private IsoDep mTagcomm;
+
+				/**
+				 * Emv Card
+				 */
+				private EMVCard mCard;
+
+				/**
+				 * Boolean to indicate exception
+				 */
+				private boolean mException;
+
+				@Override
+				protected void onPreExecute() {
+					super.onPreExecute();
+
+					backToHomeScreen();
+					mProvider.getLog().setLength(0);
+					// Show dialog
+					if (mDialog == null) {
+						mDialog = ProgressDialog.show(HomeActivity.this, getString(R.string.card_reading),
+								getString(R.string.card_reading_desc), true, false);
+					} else {
+						mDialog.show();
+					}
+				}
+
+				@Override
+				protected void doInBackground() {
+
+					mTagcomm = IsoDep.get(mTag);
+					if (mTagcomm == null) {
+						CroutonUtils.display(HomeActivity.this, getText(R.string.error_communication_nfc), false);
+						return;
+					}
+					mException = false;
+
+					try {
+						// Open connection
+						mTagcomm.connect();
+
+						mProvider.setmTagCom(mTagcomm);
+
+						EMVParser parser = new EMVParser(mProvider, true);
+						mCard = parser.readEmvCard();
+
+					} catch (IOException e) {
+						mException = true;
+					} finally {
+						// close tagcomm
+						IOUtils.closeQuietly(mTagcomm);
+					}
+				}
+
+				@Override
+				protected void onPostExecute(final Object result) {
+					// close dialog
+					if (mDialog != null) {
+						mDialog.cancel();
+					}
+
+					if (!mException) {
+						if (mCard != null && StringUtils.isNotBlank(mCard.getCardNumber())) {
+							CroutonUtils.display(HomeActivity.this, getText(R.string.card_read), true);
+							mReadCard = mCard;
+						} else {
+							CroutonUtils.display(HomeActivity.this, getText(R.string.error_card_unknown), false);
+						}
+					} else {
+						CroutonUtils.display(HomeActivity.this, getResources().getText(R.string.error_communication_nfc), false);
+					}
+
+					refreshContent();
+				}
+
+			}.execute();
+		}
+
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (BuildConfig.DEBUG) {
+			StringBuffer buff = mProvider.getLog();
+			for (int i = 0; i < 6000; i++) {
+				buff.append("=============<br/>");
+			}
+			mReadCard = new EMVCard();
+			refreshContent();
+			CroutonUtils.display(HomeActivity.this, getText(R.string.error_communication_nfc), false);
+		} else {
+			super.onBackPressed();
+		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		Crouton.cancelAllCroutons();
+		super.onDestroy();
 	}
 
 	@Override
@@ -97,13 +328,19 @@ public class HomeActivity extends Activity implements OnItemClickListener {
 		mActionBarDrawerToggle.onConfigurationChanged(newConfig);
 	}
 
+	private void refreshContent() {
+		if (mRefreshableContent.get() != null) {
+			mRefreshableContent.get().update();
+		}
+	}
+
 	@Override
 	public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
-		if (!view.isActivated()) {
+		if (mLastSelectedMenu != position) {
 			Fragment fragment = null;
 			switch (position) {
 			case ConstantUtils.CARDS_DETAILS:
-				fragment = new ViewPagerFragment();
+				fragment = new ViewPagerFragment(this);
 				break;
 			case ConstantUtils.CONFIGURATION:
 				fragment = new ConfigurationFragment();
@@ -117,7 +354,9 @@ public class HomeActivity extends Activity implements OnItemClickListener {
 			if (fragment != null) {
 				getFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
 			}
+			mLastSelectedMenu = position;
 		}
+		refreshContent();
 		mDrawerLayout.closeDrawer(mDrawerListView);
 	}
 
@@ -128,5 +367,20 @@ public class HomeActivity extends Activity implements OnItemClickListener {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public StringBuffer getLog() {
+		return mProvider.getLog();
+	}
+
+	@Override
+	public EMVCard getCard() {
+		return mReadCard;
+	}
+
+	@Override
+	public void setRefreshableContent(final IRefreshable pRefreshable) {
+		mRefreshableContent = new WeakReference<IRefreshable>(pRefreshable);
 	}
 }

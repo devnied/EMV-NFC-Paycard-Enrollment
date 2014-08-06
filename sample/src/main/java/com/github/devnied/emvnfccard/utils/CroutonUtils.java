@@ -36,9 +36,10 @@ public final class CroutonUtils {
 		Style style = new Style.Builder().setBackgroundColorValue(color) //
 				.setGravity(Gravity.CENTER) //
 				.setTextAppearance(R.style.Crouton_TextApparence) //
+				.setHeight((int) (26 * pActivity.getResources().getDisplayMetrics().density)) //
 				.build();
 
-		Crouton.showText(pActivity, msg, style);
+		Crouton.showText(pActivity, msg, style, R.id.couton);
 	}
 
 	/**

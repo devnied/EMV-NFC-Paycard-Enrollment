@@ -29,28 +29,20 @@ public class Provider implements IProvider {
 	/**
 	 * Logger
 	 */
-	private StringBuilder log = new StringBuilder();
+	private StringBuffer log = new StringBuffer();
 
 	/**
 	 * Tag comm
 	 */
 	private IsoDep mTagCom;
 
-	/**
-	 * Constructor
-	 * 
-	 * @param pTagCom
-	 */
-	public Provider(final IsoDep pTagCom) {
-		mTagCom = pTagCom;
-	}
-
 	@Override
 	public byte[] transceive(final byte[] pCommand) throws CommunicationException {
 		if (BuildConfig.DEBUG) {
 			Log.d(TAG, "send: " + BytesUtils.bytesToString(pCommand));
 		}
-		log.append("send: " + BytesUtils.bytesToString(pCommand)).append("\n");
+		log.append("=================<br/>");
+		log.append("<font color='green'><b>send:</b> " + BytesUtils.bytesToString(pCommand)).append("</font><br/>");
 
 		byte[] response = null;
 		try {
@@ -61,7 +53,7 @@ public class Provider implements IProvider {
 		}
 
 		if (BuildConfig.DEBUG) {
-			log.append("resp: " + BytesUtils.bytesToString(response)).append("\n");
+			log.append("<font color='blue'><b>resp:</b> " + BytesUtils.bytesToString(response)).append("</font><br/>");
 			Log.d(TAG, "resp: " + BytesUtils.bytesToString(response));
 			try {
 				Log.d(TAG, "resp: " + TLVUtil.prettyPrintAPDUResponse(response));
@@ -69,7 +61,9 @@ public class Provider implements IProvider {
 				if (val != null) {
 					Log.d(TAG, "resp: " + val.getDetail());
 				}
-				log.append(TLVUtil.prettyPrintAPDUResponse(response)).append("\n");
+				log.append("<pre>")
+						.append(TLVUtil.prettyPrintAPDUResponse(response).replace("\n", "<br/>").replace(" ", "&nbsp;"))
+						.append("</pre><br/>");
 			} catch (Exception e) {
 			}
 		}
@@ -77,11 +71,21 @@ public class Provider implements IProvider {
 	}
 
 	/**
+	 * Setter for the field mTagCom
+	 * 
+	 * @param mTagCom
+	 *            the mTagCom to set
+	 */
+	public void setmTagCom(final IsoDep mTagCom) {
+		this.mTagCom = mTagCom;
+	}
+
+	/**
 	 * Method used to get the field log
 	 * 
 	 * @return the log
 	 */
-	public StringBuilder getLog() {
+	public StringBuffer getLog() {
 		return log;
 	}
 

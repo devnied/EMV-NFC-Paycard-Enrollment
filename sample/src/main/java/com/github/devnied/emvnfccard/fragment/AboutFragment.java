@@ -42,14 +42,15 @@ public class AboutFragment extends Fragment {
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.about, container, false);
+		return inflater.inflate(R.layout.about, container, false);
+	}
 
+	@Override
+	public void onViewCreated(final View view, final Bundle savedInstanceState) {
 		TextView content = (TextView) view.findViewById(R.id.about_content);
 		if (content != null) {
 			content.setMovementMethod(new MovementCheck());
 		}
-
-		return view;
 	}
 
 }
