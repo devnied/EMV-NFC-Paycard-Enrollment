@@ -24,7 +24,7 @@ import com.github.devnied.emvnfccard.iso7816emv.EMVTerminal;
 import com.github.devnied.emvnfccard.iso7816emv.TagAndLength;
 import com.github.devnied.emvnfccard.model.Afl;
 import com.github.devnied.emvnfccard.model.EMVCard;
-import com.github.devnied.emvnfccard.model.EMVPaymentRecord;
+import com.github.devnied.emvnfccard.model.EMVTransactionRecord;
 import com.github.devnied.emvnfccard.model.enums.CurrencyEnum;
 import com.github.devnied.emvnfccard.utils.CommandApdu;
 import com.github.devnied.emvnfccard.utils.ResponseUtils;
@@ -254,11 +254,11 @@ public class EMVParser {
 	 * 
 	 * @param pAid
 	 *            card AID in bytes
-	 * @param pScheme
-	 *            card scheme (Name)
+	 * @param pApplicationLabel
+	 *            application scheme (Application label)
 	 * @return card read or null
 	 */
-	protected EMVCard extractPublicData(final byte[] pAid, final String pScheme) throws CommunicationException {
+	protected EMVCard extractPublicData(final byte[] pAid, final String pApplicationLabel) throws CommunicationException {
 		EMVCard ret = null;
 		// Select AID
 		byte[] data = selectAID(pAid);
@@ -270,11 +270,11 @@ public class EMVParser {
 				// Get AID
 				String aid = BytesUtils.bytesToStringNoSpace(TLVUtil.getValue(data, EMVTags.DEDICATED_FILE_NAME));
 				if (LOGGER.isDebugEnabled()) {
-					LOGGER.debug("Card type :" + pScheme + " with Aid:" + aid);
+					LOGGER.debug("Application label:" + pApplicationLabel + " with Aid:" + aid);
 				}
 				ret.setAid(aid);
-				ret.setCardLabel(pScheme);
 				ret.setType(findCardScheme(aid, ret.getCardNumber()));
+				ret.setApplicationLabel(pApplicationLabel);
 				ret.setLeftPinTry(getLeftPinTry());
 			}
 		}
@@ -424,8 +424,8 @@ public class EMVParser {
 	 * @param pLogEntry
 	 *            log entry position
 	 */
-	private List<EMVPaymentRecord> extractLogEntry(final byte[] pLogEntry) throws CommunicationException {
-		List<EMVPaymentRecord> listRecord = new ArrayList<EMVPaymentRecord>();
+	private List<EMVTransactionRecord> extractLogEntry(final byte[] pLogEntry) throws CommunicationException {
+		List<EMVTransactionRecord> listRecord = new ArrayList<EMVTransactionRecord>();
 		// If log entry is defined
 		if (pLogEntry != null) {
 			List<TagAndLength> tals = getLogFormat();
@@ -435,7 +435,7 @@ public class EMVParser {
 						.toBytes());
 				// Extract data
 				if (ResponseUtils.isSucceed(response)) {
-					EMVPaymentRecord record = new EMVPaymentRecord();
+					EMVTransactionRecord record = new EMVTransactionRecord();
 					record.parse(response, tals);
 					if (record != null) {
 						// Unknown currency

@@ -16,7 +16,7 @@ import com.github.devnied.emvnfccard.parser.apdu.impl.DataFactory;
  * @author MILLAU Julien
  * 
  */
-public class EMVPaymentRecord extends AbstractByteBean<EMVPaymentRecord> implements Serializable {
+public class EMVTransactionRecord extends AbstractByteBean<EMVTransactionRecord> implements Serializable {
 
 	/**
 	 * Generated serial UID

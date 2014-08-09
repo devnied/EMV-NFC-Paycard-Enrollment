@@ -6,7 +6,7 @@ import org.fest.assertions.Assertions;
 import org.junit.Test;
 
 import com.github.devnied.emvnfccard.iso7816emv.TagAndLength;
-import com.github.devnied.emvnfccard.model.EMVPaymentRecord;
+import com.github.devnied.emvnfccard.model.EMVTransactionRecord;
 import com.github.devnied.emvnfccard.model.enums.CountryCodeEnum;
 import com.github.devnied.emvnfccard.model.enums.CurrencyEnum;
 import com.github.devnied.emvnfccard.model.enums.TransactionTypeEnum;
@@ -18,7 +18,7 @@ public class EMVPaymentRecordTest {
 
 	@Test
 	public void test() {
-		EMVPaymentRecord record = new EMVPaymentRecord();
+		EMVTransactionRecord record = new EMVTransactionRecord();
 		record.parse(BytesUtils.fromString("00 00 00 00 00 00 80 02 50 09 78 14 07 14 00 90 00"), null);
 		Assertions.assertThat(record.getAmount()).isEqualTo(0);
 		Assertions.assertThat(record.getCyptogramData()).isEqualTo("80");
@@ -29,7 +29,7 @@ public class EMVPaymentRecordTest {
 
 		List<TagAndLength> list = TLVUtil.parseTagAndLength(BytesUtils.fromString("9F 02 05 5F 2A 02"));
 
-		record = new EMVPaymentRecord();
+		record = new EMVTransactionRecord();
 		record.parse(BytesUtils.fromString("00 00 00 00 00 09 78 00 90 00"), list);
 		Assertions.assertThat(record.getAmount()).isEqualTo(0);
 		Assertions.assertThat(record.getCyptogramData()).isNull();
@@ -38,7 +38,7 @@ public class EMVPaymentRecordTest {
 		Assertions.assertThat(record.getTerminalCountry()).isNull();
 		Assertions.assertThat(record.getTransactionDate()).isNull();
 
-		record = new EMVPaymentRecord();
+		record = new EMVTransactionRecord();
 		record.parse(BytesUtils.fromString("00 00 00 00 00 00 80 02 50 09 78 14 07 14 00 90 00"), null);
 		Assertions.assertThat(record.getAmount()).isEqualTo(0);
 		Assertions.assertThat(record.getCyptogramData()).isEqualTo("80");
@@ -47,7 +47,7 @@ public class EMVPaymentRecordTest {
 		Assertions.assertThat(record.getTerminalCountry()).isEqualTo(CountryCodeEnum.FR);
 		Assertions.assertThat(record.getTransactionDate()).isNotNull();
 
-		record = new EMVPaymentRecord();
+		record = new EMVTransactionRecord();
 		record.parse(BytesUtils.fromString("00 00 00 00 20 00 40 02 50 09 78 13 11 22 01 90 00"), null);
 		Assertions.assertThat(record.getAmount()).isEqualTo(2000);
 		Assertions.assertThat(record.getCyptogramData()).isEqualTo("40");
@@ -56,7 +56,7 @@ public class EMVPaymentRecordTest {
 		Assertions.assertThat(record.getTerminalCountry()).isEqualTo(CountryCodeEnum.FR);
 		Assertions.assertThat(record.getTransactionDate()).isNotNull();
 
-		record = new EMVPaymentRecord();
+		record = new EMVTransactionRecord();
 		record.parse(BytesUtils.fromString("00 00 00 01 71 00 40 07 92 09 49 13 08 05 00 90 00"), null);
 		Assertions.assertThat(record.getAmount()).isEqualTo(17100);
 		Assertions.assertThat(record.getCyptogramData()).isEqualTo("40");

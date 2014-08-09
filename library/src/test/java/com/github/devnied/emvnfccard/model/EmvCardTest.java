@@ -11,7 +11,7 @@ public class EmvCardTest {
 	public void testCard() {
 		EMVCard card = new EMVCard();
 		card.setAid("0000");
-		card.setCardLabel("VISA");
+		card.setApplicationLabel("VISA");
 		card.setCardNumber("12345678");
 		card.setFisrtName("Test");
 		card.setLastName("lastname");

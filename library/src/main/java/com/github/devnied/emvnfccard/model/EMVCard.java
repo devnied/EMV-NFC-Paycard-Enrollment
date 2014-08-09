@@ -54,14 +54,14 @@ public class EMVCard extends AbstractData {
 	private int leftPinTry;
 
 	/**
-	 * Card label
+	 * Application label
 	 */
-	private String cardLabel;
+	private String applicationLabel;
 
 	/**
 	 * List of issued payment
 	 */
-	private List<EMVPaymentRecord> listPayment;
+	private List<EMVTransactionRecord> listPayment;
 
 	/**
 	 * List of Atr description
@@ -168,7 +168,7 @@ public class EMVCard extends AbstractData {
 	 * 
 	 * @return the listPayment
 	 */
-	public List<EMVPaymentRecord> getListPayment() {
+	public List<EMVTransactionRecord> getListPayment() {
 		return listPayment;
 	}
 
@@ -178,7 +178,7 @@ public class EMVCard extends AbstractData {
 	 * @param listPayment
 	 *            the listPayment to set
 	 */
-	public void setListPayment(final List<EMVPaymentRecord> listPayment) {
+	public void setListPayment(final List<EMVTransactionRecord> listPayment) {
 		this.listPayment = listPayment;
 	}
 
@@ -202,22 +202,22 @@ public class EMVCard extends AbstractData {
 	}
 
 	/**
-	 * Method used to get the field cardLabel
+	 * Method used to get the field applicationLabel
 	 * 
-	 * @return the cardLabel
+	 * @return the applicationLabel
 	 */
-	public String getCardLabel() {
-		return cardLabel;
+	public String getApplicationLabel() {
+		return applicationLabel;
 	}
 
 	/**
-	 * Setter for the field cardLabel
+	 * Setter for the field applicationLabel
 	 * 
-	 * @param cardLabel
-	 *            the cardLabel to set
+	 * @param applicationLabel
+	 *            the applicationLabel to set
 	 */
-	public void setCardLabel(final String cardLabel) {
-		this.cardLabel = cardLabel;
+	public void setApplicationLabel(final String applicationLabel) {
+		this.applicationLabel = applicationLabel;
 	}
 
 	@Override

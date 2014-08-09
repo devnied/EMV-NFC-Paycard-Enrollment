@@ -13,7 +13,7 @@ public class EmvPaymentCardTest {
 
 	@Test
 	public void testPayment() {
-		EMVPaymentRecord payment = new EMVPaymentRecord();
+		EMVTransactionRecord payment = new EMVTransactionRecord();
 		payment.setAmount((float) 100.0);
 		payment.setCurrency(CurrencyEnum.EUR);
 		payment.setCyptogramData("12");
