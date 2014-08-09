@@ -26,9 +26,9 @@ public final class CroutonUtils {
 	 */
 	public static void display(final Activity pActivity, final CharSequence msg, final boolean success) {
 
-		int color = 0xFF656464;
+		int color = pActivity.getResources().getColor(R.color.black_error);
 		if (success) {
-			color = 0xFF78B653;
+			color = pActivity.getResources().getColor(R.color.green_success);
 		}
 		// Remove all previous crouton
 		Crouton.cancelAllCroutons();

@@ -61,7 +61,7 @@ public class EMVCard extends AbstractData {
 	/**
 	 * List of issued payment
 	 */
-	private List<EMVTransactionRecord> listPayment;
+	private List<EMVTransactionRecord> listTransactions;
 
 	/**
 	 * List of Atr description
@@ -164,22 +164,22 @@ public class EMVCard extends AbstractData {
 	}
 
 	/**
-	 * Method used to get the field listPayment
+	 * Method used to get the field listTransactions
 	 * 
-	 * @return the listPayment
+	 * @return the listTransactions
 	 */
-	public List<EMVTransactionRecord> getListPayment() {
-		return listPayment;
+	public List<EMVTransactionRecord> getListTransactions() {
+		return listTransactions;
 	}
 
 	/**
-	 * Setter for the field listPayment
+	 * Setter for the field listTransactions
 	 * 
-	 * @param listPayment
-	 *            the listPayment to set
+	 * @param listTransactions
+	 *            the listTransactions to set
 	 */
-	public void setListPayment(final List<EMVTransactionRecord> listPayment) {
-		this.listPayment = listPayment;
+	public void setListPayment(final List<EMVTransactionRecord> listTransactions) {
+		this.listTransactions = listTransactions;
 	}
 
 	/**
