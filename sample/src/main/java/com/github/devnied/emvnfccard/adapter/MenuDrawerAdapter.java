@@ -24,13 +24,13 @@ import com.github.devnied.emvnfccard.utils.ViewUtils;
  * @author julien
  * 
  */
-public class MenuAdapter extends BaseAdapter {
+public class MenuDrawerAdapter extends BaseAdapter {
 
 	public List<Entry<Integer, String>> mData = new ArrayList<Map.Entry<Integer, String>>(3);
 
 	private Context mContext;
 
-	public MenuAdapter(final Context pContext) {
+	public MenuDrawerAdapter(final Context pContext) {
 		mContext = pContext;
 		mData.add(new AbstractMap.SimpleImmutableEntry<Integer, String>(R.drawable.ic_fa_credit_card, pContext.getResources()
 				.getStringArray(R.array.navigation_items)[0]));

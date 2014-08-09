@@ -40,6 +40,21 @@ public final class CardUtils {
 	}
 
 	/**
+	 * Method used to format AID
+	 * 
+	 * @param pAid
+	 *            card aid
+	 * @return formated AID
+	 */
+	public static String formatAid(final String pAid) {
+		String ret = StringUtils.EMPTY;
+		if (StringUtils.isNotBlank(pAid)) {
+			ret = StringUtils.deleteWhitespace(pAid).replaceAll("[A-F0-9]{2}", "$0 ").trim();
+		}
+		return ret;
+	}
+
+	/**
 	 * Method used to get the resource Id for card type
 	 * 
 	 * @param pEnum

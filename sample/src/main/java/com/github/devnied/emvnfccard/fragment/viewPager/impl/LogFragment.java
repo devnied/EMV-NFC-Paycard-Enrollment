@@ -11,6 +11,12 @@ import android.widget.TextView;
 import com.github.devnied.emvnfccard.R;
 import com.github.devnied.emvnfccard.fragment.viewPager.AbstractFragment;
 
+/**
+ * View pager fragment used to display card log
+ * 
+ * @author Millau Julien
+ * 
+ */
 public class LogFragment extends AbstractFragment {
 
 	/**

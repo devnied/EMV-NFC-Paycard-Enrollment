@@ -17,6 +17,8 @@ import com.github.devnied.emvnfccard.adapter.ViewPagerAdapter;
 import com.github.devnied.emvnfccard.fragment.viewPager.IFragment;
 import com.github.devnied.emvnfccard.fragment.viewPager.impl.CardDetailFragment;
 import com.github.devnied.emvnfccard.fragment.viewPager.impl.LogFragment;
+import com.github.devnied.emvnfccard.fragment.viewPager.impl.TransactionHistoryFragment;
+import com.github.devnied.emvnfccard.model.EMVTransactionRecord;
 import com.github.devnied.emvnfccard.view.SlidingTabLayout;
 
 /**
@@ -44,7 +46,7 @@ public class ViewPagerFragment extends Fragment implements IRefreshable {
 	/**
 	 * Fragment list
 	 */
-	private List<IFragment> fragments = new ArrayList<IFragment>();
+	private List<IFragment> fragments = new ArrayList<IFragment>(3);
 
 	/**
 	 * Content activity
@@ -58,8 +60,15 @@ public class ViewPagerFragment extends Fragment implements IRefreshable {
 
 	@Override
 	public void onViewCreated(final View view, final Bundle savedInstanceState) {
+		List<EMVTransactionRecord> transactions = null;
+		if (mContentActivity.getCard() != null) {
+			transactions = mContentActivity.getCard().getListTransactions();
+		}
+
 		// Add fragments
 		fragments.add(new CardDetailFragment(mContentActivity.getCard(), getString(R.string.viewpager_carddetail)));
+		fragments.add(new TransactionHistoryFragment(transactions, getString(R.string.viewpager_transactions),
+				transactions != null));
 		fragments.add(new LogFragment(mContentActivity.getLog(), getString(R.string.viewpager_log)));
 		// View pager
 		mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
@@ -101,6 +110,9 @@ public class ViewPagerFragment extends Fragment implements IRefreshable {
 				((LogFragment) frag).updateLog(mContentActivity.getLog());
 			} else if (frag instanceof CardDetailFragment) {
 				((CardDetailFragment) frag).update(mContentActivity.getCard());
+			} else if (frag instanceof TransactionHistoryFragment) {
+				((TransactionHistoryFragment) frag).update(mContentActivity.getCard() != null ? mContentActivity.getCard()
+						.getListTransactions() : null);
 			}
 		}
 		if (mViewPagerAdapter != null) {

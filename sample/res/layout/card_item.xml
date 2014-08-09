@@ -2,31 +2,33 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="15dp"
-    android:gravity="center"
-    android:background="@drawable/cardui"
     android:layout_gravity="center_horizontal"
-    android:orientation="vertical" >
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingBottom="15dp" >
 
     <ImageView
         android:id="@+id/card"
         android:layout_width="280dp"
         android:layout_height="160dp"
-        android:layout_alignParentTop="true"
         android:background="@drawable/card_border"
+        android:gravity="center"
         android:scaleType="centerCrop"
         android:src="@drawable/emv_card_background" />
-    
+
     <TextView
+        android:id="@+id/bankName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/card"
-        android:layout_marginTop="25dp"
         android:layout_marginLeft="25dp"
+        android:layout_marginTop="25dp"
         android:gravity="center"
         android:text="Bank"
-        android:textScaleX="1"
         android:textColor="#999999"
+        android:textScaleX="1"
         android:textSize="25sp"
         android:textStyle="bold" >
     </TextView>
@@ -78,16 +80,15 @@
             android:textStyle="bold" >
         </TextView>
     </LinearLayout>
-    
-    
-   <ImageView
+
+    <ImageView
         android:id="@+id/type"
         android:layout_width="70dp"
         android:layout_height="34dp"
         android:layout_alignBottom="@+id/card"
         android:layout_alignRight="@+id/card"
-        android:layout_marginRight="10dp"
         android:layout_marginBottom="15dp"
+        android:layout_marginRight="10dp"
         android:scaleType="fitCenter" />
 
 </RelativeLayout>

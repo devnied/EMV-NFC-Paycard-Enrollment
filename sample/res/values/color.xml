@@ -2,4 +2,10 @@
 <resources>
     <color name="menu_back_black">#333</color>
     <color name="menu_back_selected">#666</color>
+    
+    
+    <!-- Material color -->
+    <color name="black_error">#ff616161</color>
+    <color name="green_success">#ff8bc34a</color>
+    
 </resources>

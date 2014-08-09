@@ -16,9 +16,22 @@
     <string name="error_reading_card">Error reading card</string>
     <string name="error_link">No web browser found</string>
     
-    <!-- Activity -->
-    <string name="viewpager_log">Log</string>
+    <!-- Tabs -->
     <string name="viewpager_carddetail">Card detail</string>
+    <string name="viewpager_transactions">Transactions</string>
+    <string name="viewpager_log">Log</string>
+    
+    <!-- Card Detail -->
+    <string name="paycard_back_text">Tap your NFC paycard \n to the back of your phone</string>
+    <string name="extended_card_detail_title">Extended card details</string>
+    <string name="card_representation_title">Card Representation</string>
+    
+    <string name="extended_title_AID">Card AID :</string>
+    <string name="extended_title_application_label">Application :</string>
+    <string name="extended_title_pin_try">Pin try left :</string>
+    <string name="extended_title_card_type">Card type :</string>
+    <string name="extended_title_possible_bank">Card issuer :\n(possible)</string>
+    <string name="extended_title_times"> Time(s)</string>
     
     <!-- About -->
     <string name="about_content">Application written by <a href="http://julien-millau.fr">Julien Millau</a>.\n\nSource Code and documentation available on <a href="https://github.com/devnied/EMV-NFC-Paycard-Enrollment">Github</a>.</string>

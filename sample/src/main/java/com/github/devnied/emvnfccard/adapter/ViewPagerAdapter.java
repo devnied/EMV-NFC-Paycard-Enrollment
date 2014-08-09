@@ -35,7 +35,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 	public Fragment getItem(final int position) {
 		int val = 0;
 		for (IFragment f : mFragments) {
-			if (val++ == position) {
+			if (f.isEnable() && val++ == position) {
 				return (Fragment) f;
 			}
 		}

@@ -2,6 +2,10 @@ package com.github.devnied.emvnfccard.activity;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -29,12 +33,14 @@ import android.widget.ListView;
 
 import com.github.devnied.emvnfccard.BuildConfig;
 import com.github.devnied.emvnfccard.R;
-import com.github.devnied.emvnfccard.adapter.MenuAdapter;
+import com.github.devnied.emvnfccard.adapter.MenuDrawerAdapter;
+import com.github.devnied.emvnfccard.enums.EMVCardScheme;
 import com.github.devnied.emvnfccard.fragment.AboutFragment;
 import com.github.devnied.emvnfccard.fragment.ConfigurationFragment;
 import com.github.devnied.emvnfccard.fragment.IRefreshable;
 import com.github.devnied.emvnfccard.fragment.ViewPagerFragment;
 import com.github.devnied.emvnfccard.model.EMVCard;
+import com.github.devnied.emvnfccard.model.EMVTransactionRecord;
 import com.github.devnied.emvnfccard.parser.EMVParser;
 import com.github.devnied.emvnfccard.provider.Provider;
 import com.github.devnied.emvnfccard.utils.ConstantUtils;
@@ -83,7 +89,7 @@ public class HomeActivity extends Activity implements OnItemClickListener, ICont
 	/**
 	 * Menu adapter
 	 */
-	private MenuAdapter mMenuAdapter;
+	private MenuDrawerAdapter mMenuAdapter;
 
 	/**
 	 * IsoDep provider
@@ -118,7 +124,7 @@ public class HomeActivity extends Activity implements OnItemClickListener, ICont
 		mDrawerListView = (ListView) findViewById(R.id.left_drawer);
 
 		// Set the adapter for the list view
-		mMenuAdapter = new MenuAdapter(this);
+		mMenuAdapter = new MenuDrawerAdapter(this);
 		mDrawerListView.setAdapter(mMenuAdapter);
 		mDrawerListView.setOnItemClickListener(this);
 
@@ -302,8 +308,19 @@ public class HomeActivity extends Activity implements OnItemClickListener, ICont
 				buff.append("=============<br/>");
 			}
 			mReadCard = new EMVCard();
+			mReadCard.setCardNumber("4123456789012345");
+			mReadCard.setAid("A0 00 00 000310 10");
+			mReadCard.setLeftPinTry(3);
+			mReadCard.setAtrDescription(Arrays.asList("German Health Insurance Card",
+					"LogCard from concept2.com (a indoor rower manufacturer)", "I2C card"));
+			mReadCard.setApplicationLabel("CB");
+			mReadCard.setExpireDate(new Date());
+			mReadCard.setType(EMVCardScheme.VISA);
+			List<EMVTransactionRecord> records = new ArrayList<EMVTransactionRecord>();
+			records.add(new EMVTransactionRecord());
+			mReadCard.setListPayment(records);
 			refreshContent();
-			CroutonUtils.display(HomeActivity.this, getText(R.string.error_communication_nfc), false);
+			CroutonUtils.display(HomeActivity.this, getText(R.string.card_read), true);
 		} else {
 			super.onBackPressed();
 		}

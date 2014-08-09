@@ -1,0 +1,27 @@
+<TableRow
+     xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:layout_marginBottom="5dp"
+      >
+     
+     <TextView
+       android:id="@+id/extended_raw_title"
+	   android:layout_width="wrap_content"
+	   android:layout_height="wrap_content"
+	   android:text="key :"
+	   android:textColor="#222"
+	   android:textSize="13sp"
+	   android:textStyle="bold" />
+     
+     
+     <TextView
+       android:id="@+id/extended_raw_content"
+	   android:layout_width="wrap_content"
+	   android:layout_height="wrap_content"
+	   android:paddingLeft="7dp"
+	   android:text=" value"
+	   android:textColor="#222"
+	   android:textSize="12sp" />
+     
+</TableRow>
