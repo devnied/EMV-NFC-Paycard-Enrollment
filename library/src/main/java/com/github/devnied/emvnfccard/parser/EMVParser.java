@@ -507,7 +507,7 @@ public class EmvParser {
 			// Extract Card Holder name (if exist)
 			byte[] cardHolderByte = TlvUtil.getValue(pData, EmvTags.CARDHOLDER_NAME);
 			if (cardHolderByte != null) {
-				card.setHolderName(new String(cardHolderByte));
+				card.setHolderName(new String(cardHolderByte).trim());
 			}
 		}
 		return card;

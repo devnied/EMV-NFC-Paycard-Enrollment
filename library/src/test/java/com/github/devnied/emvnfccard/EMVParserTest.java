@@ -121,7 +121,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getAid()).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("4979670123453600");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.VISA);
-		Assertions.assertThat(card.getHolderName()).isEqualTo(" /");
+		Assertions.assertThat(card.getHolderName()).isEqualTo("/");
 		Assertions.assertThat(card.getApplicationLabel()).isEqualTo("CB");
 		Assertions.assertThat(card.getLeftPinTry()).isEqualTo(3);
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
@@ -153,7 +153,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("5772829193253472");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.VISA);
 		Assertions.assertThat(card.getApplicationLabel()).isEqualTo("VISA");
-		Assertions.assertThat(card.getHolderName()).isEqualTo(" /");
+		Assertions.assertThat(card.getHolderName()).isEqualTo("/");
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("08/2014");
 
