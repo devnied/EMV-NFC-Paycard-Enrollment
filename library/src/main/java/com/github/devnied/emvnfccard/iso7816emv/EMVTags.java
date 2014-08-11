@@ -31,7 +31,7 @@ import com.github.devnied.emvnfccard.iso7816emv.impl.TagImpl;
  * 
  * @author sasc
  */
-public final class EMVTags {
+public final class EmvTags {
 
 	private static LinkedHashMap<ByteArrayWrapper, ITag> tags = new LinkedHashMap<ByteArrayWrapper, ITag>();
 	// One byte tags
@@ -455,7 +455,7 @@ public final class EMVTags {
 	static {
 		Field[] fields;
 
-		fields = EMVTags.class.getFields();
+		fields = EmvTags.class.getFields();
 		for (Field f : fields) {
 			if (f.getType() == ITag.class) {
 				try {
@@ -471,6 +471,6 @@ public final class EMVTags {
 	/**
 	 * Private constructor
 	 */
-	private EMVTags() {
+	private EmvTags() {
 	}
 }

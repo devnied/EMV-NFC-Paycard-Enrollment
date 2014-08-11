@@ -3,30 +3,30 @@ package com.github.devnied.emvnfccard.enums;
 import org.fest.assertions.Assertions;
 import org.junit.Test;
 
-public class EMVCardSchemeTest {
+public class EmvCardSchemeTest {
 
 	@Test
 	public void testCardType() throws Exception {
-		Assertions.assertThat(EMVCardScheme.getCardTypeByCardNumber("4000000000000000")).isEqualTo(EMVCardScheme.VISA);
-		Assertions.assertThat(EMVCardScheme.getCardTypeByCardNumber("5000000000000000")).isEqualTo(EMVCardScheme.MASTER_CARD1);
-		Assertions.assertThat(EMVCardScheme.getCardTypeByCardNumber("6200000000000000")).isEqualTo(EMVCardScheme.UNIONPAY);
-		Assertions.assertThat(EMVCardScheme.getCardTypeByCardNumber(null)).isEqualTo(null);
+		Assertions.assertThat(EmvCardScheme.getCardTypeByCardNumber("4000000000000000")).isEqualTo(EmvCardScheme.VISA);
+		Assertions.assertThat(EmvCardScheme.getCardTypeByCardNumber("5000000000000000")).isEqualTo(EmvCardScheme.MASTER_CARD1);
+		Assertions.assertThat(EmvCardScheme.getCardTypeByCardNumber("6200000000000000")).isEqualTo(EmvCardScheme.UNIONPAY);
+		Assertions.assertThat(EmvCardScheme.getCardTypeByCardNumber(null)).isEqualTo(null);
 	}
 
 	@Test
 	public void testAid() throws Exception {
-		Assertions.assertThat(EMVCardScheme.getCardTypeByAid("A0 00 00 00 03 ")).isEqualTo(EMVCardScheme.VISA);
-		Assertions.assertThat(EMVCardScheme.getCardTypeByAid("A0 00 00 00 03 9989")).isEqualTo(EMVCardScheme.VISA);
-		Assertions.assertThat(EMVCardScheme.getCardTypeByAid("A0 00 00 00 04")).isEqualTo(EMVCardScheme.MASTER_CARD1);
-		Assertions.assertThat(EMVCardScheme.getCardTypeByAid("A0 00 00 03 33")).isEqualTo(EMVCardScheme.UNIONPAY);
-		Assertions.assertThat(EMVCardScheme.getCardTypeByAid(null)).isEqualTo(null);
+		Assertions.assertThat(EmvCardScheme.getCardTypeByAid("A0 00 00 00 03 ")).isEqualTo(EmvCardScheme.VISA);
+		Assertions.assertThat(EmvCardScheme.getCardTypeByAid("A0 00 00 00 03 9989")).isEqualTo(EmvCardScheme.VISA);
+		Assertions.assertThat(EmvCardScheme.getCardTypeByAid("A0 00 00 00 04")).isEqualTo(EmvCardScheme.MASTER_CARD1);
+		Assertions.assertThat(EmvCardScheme.getCardTypeByAid("A0 00 00 03 33")).isEqualTo(EmvCardScheme.UNIONPAY);
+		Assertions.assertThat(EmvCardScheme.getCardTypeByAid(null)).isEqualTo(null);
 	}
 
 	@Test
 	public void testMethod() throws Exception {
-		Assertions.assertThat(EMVCardScheme.VISA.getAid()).isEqualTo("A0 00 00 00 03");
-		Assertions.assertThat(EMVCardScheme.VISA.getAidByte()).isEqualTo(new byte[] { (byte) 0xA0, 0, 0, 0, 0x03 });
-		Assertions.assertThat(EMVCardScheme.VISA.getName()).isEqualTo("VISA");
+		Assertions.assertThat(EmvCardScheme.VISA.getAid()).isEqualTo("A0 00 00 00 03");
+		Assertions.assertThat(EmvCardScheme.VISA.getAidByte()).isEqualTo(new byte[] { (byte) 0xA0, 0, 0, 0, 0x03 });
+		Assertions.assertThat(EmvCardScheme.VISA.getName()).isEqualTo("VISA");
 	}
 
 }

@@ -6,7 +6,7 @@ package com.github.devnied.emvnfccard.exception;
  * @author MILLAU Julien
  * 
  */
-public class TLVException extends RuntimeException {
+public class TlvException extends RuntimeException {
 
 	/**
 	 * Generated serial ID
@@ -19,7 +19,7 @@ public class TLVException extends RuntimeException {
 	 * @param pCause
 	 *            cause
 	 */
-	public TLVException(final String pCause) {
+	public TlvException(final String pCause) {
 		super(pCause);
 	}
 

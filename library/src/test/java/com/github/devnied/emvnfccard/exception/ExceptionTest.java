@@ -17,8 +17,8 @@ public class ExceptionTest {
 	@Test
 	public void testTLVException() {
 		try {
-			throw new TLVException("test");
-		} catch (TLVException e) {
+			throw new TlvException("test");
+		} catch (TlvException e) {
 			Assertions.assertThat(e.getMessage()).isEqualTo("test");
 		}
 	}

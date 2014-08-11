@@ -18,7 +18,7 @@ import fr.devnied.bitlib.BytesUtils;
  * @author Millau Julien
  * 
  */
-public final class EMVTerminal {
+public final class EmvTerminal {
 
 	/**
 	 * Random
@@ -35,22 +35,22 @@ public final class EMVTerminal {
 	public static byte[] constructValue(final TagAndLength pTagAndLength) {
 		byte ret[] = new byte[pTagAndLength.getLength()];
 		byte val[] = null;
-		if (pTagAndLength.getTag() == EMVTags.TERMINAL_TRANSACTION_QUALIFIERS) {
+		if (pTagAndLength.getTag() == EmvTags.TERMINAL_TRANSACTION_QUALIFIERS) {
 			TerminalTransactionQualifiers terminalQual = new TerminalTransactionQualifiers();
 			terminalQual.setContactlessEMVmodeSupported(true);
 			ret = terminalQual.getBytes();
-		} else if (pTagAndLength.getTag() == EMVTags.TERMINAL_COUNTRY_CODE) {
+		} else if (pTagAndLength.getTag() == EmvTags.TERMINAL_COUNTRY_CODE) {
 			val = BytesUtils.fromString(StringUtils.leftPad(String.valueOf(CountryCodeEnum.FR.getNumeric()), 4, "0"));
-		} else if (pTagAndLength.getTag() == EMVTags.TRANSACTION_CURRENCY_CODE) {
+		} else if (pTagAndLength.getTag() == EmvTags.TRANSACTION_CURRENCY_CODE) {
 			val = BytesUtils.fromString(StringUtils.leftPad(String.valueOf(CurrencyEnum.EUR.getISOCodeNumeric()), 4, "0"));
-		} else if (pTagAndLength.getTag() == EMVTags.TRANSACTION_DATE) {
+		} else if (pTagAndLength.getTag() == EmvTags.TRANSACTION_DATE) {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
 			val = BytesUtils.fromString(sdf.format(new Date()));
-		} else if (pTagAndLength.getTag() == EMVTags.TRANSACTION_TYPE) {
+		} else if (pTagAndLength.getTag() == EmvTags.TRANSACTION_TYPE) {
 			val = new byte[] { (byte) TransactionTypeEnum.PURCHASE.getKey() };
-		} else if (pTagAndLength.getTag() == EMVTags.AMOUNT_AUTHORISED_NUMERIC) {
+		} else if (pTagAndLength.getTag() == EmvTags.AMOUNT_AUTHORISED_NUMERIC) {
 			val = BytesUtils.fromString("00");
-		} else if (pTagAndLength.getTag() == EMVTags.UNPREDICTABLE_NUMBER) {
+		} else if (pTagAndLength.getTag() == EmvTags.UNPREDICTABLE_NUMBER) {
 			random.nextBytes(ret);
 		}
 		if (val != null) {
@@ -63,7 +63,7 @@ public final class EMVTerminal {
 	/**
 	 * Private Constructor
 	 */
-	private EMVTerminal() {
+	private EmvTerminal() {
 	}
 
 }

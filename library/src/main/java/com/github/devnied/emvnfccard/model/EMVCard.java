@@ -3,7 +3,7 @@ package com.github.devnied.emvnfccard.model;
 import java.util.Date;
 import java.util.List;
 
-import com.github.devnied.emvnfccard.enums.EMVCardScheme;
+import com.github.devnied.emvnfccard.enums.EmvCardScheme;
 
 /**
  * Bean used to describe data in EMV card
@@ -11,7 +11,7 @@ import com.github.devnied.emvnfccard.enums.EMVCardScheme;
  * @author MILLAU Julien
  * 
  */
-public class EMVCard extends AbstractData {
+public class EmvCard extends AbstractData {
 
 	/**
 	 * Generated serial UID
@@ -46,7 +46,7 @@ public class EMVCard extends AbstractData {
 	/**
 	 * Card type
 	 */
-	private EMVCardScheme type;
+	private EmvCardScheme type;
 
 	/**
 	 * Left PIN try
@@ -61,7 +61,7 @@ public class EMVCard extends AbstractData {
 	/**
 	 * List of issued payment
 	 */
-	private List<EMVTransactionRecord> listTransactions;
+	private List<EmvTransactionRecord> listTransactions;
 
 	/**
 	 * List of Atr description
@@ -168,7 +168,7 @@ public class EMVCard extends AbstractData {
 	 * 
 	 * @return the listTransactions
 	 */
-	public List<EMVTransactionRecord> getListTransactions() {
+	public List<EmvTransactionRecord> getListTransactions() {
 		return listTransactions;
 	}
 
@@ -178,7 +178,7 @@ public class EMVCard extends AbstractData {
 	 * @param listTransactions
 	 *            the listTransactions to set
 	 */
-	public void setListPayment(final List<EMVTransactionRecord> listTransactions) {
+	public void setListPayment(final List<EmvTransactionRecord> listTransactions) {
 		this.listTransactions = listTransactions;
 	}
 
@@ -187,7 +187,7 @@ public class EMVCard extends AbstractData {
 	 * 
 	 * @return the type
 	 */
-	public EMVCardScheme getType() {
+	public EmvCardScheme getType() {
 		return type;
 	}
 
@@ -197,7 +197,7 @@ public class EMVCard extends AbstractData {
 	 * @param type
 	 *            the type to set
 	 */
-	public void setType(final EMVCardScheme type) {
+	public void setType(final EmvCardScheme type) {
 		this.type = type;
 	}
 
@@ -222,7 +222,7 @@ public class EMVCard extends AbstractData {
 
 	@Override
 	public boolean equals(final Object arg0) {
-		return arg0 instanceof EMVCard && cardNumber != null && cardNumber.equals(((EMVCard) arg0).getCardNumber());
+		return arg0 instanceof EmvCard && cardNumber != null && cardNumber.equals(((EmvCard) arg0).getCardNumber());
 	}
 
 	/**

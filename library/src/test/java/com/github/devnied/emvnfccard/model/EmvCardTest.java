@@ -9,7 +9,7 @@ public class EmvCardTest {
 
 	@Test
 	public void testCard() {
-		EMVCard card = new EMVCard();
+		EmvCard card = new EmvCard();
 		card.setAid("0000");
 		card.setApplicationLabel("VISA");
 		card.setCardNumber("12345678");
@@ -19,7 +19,7 @@ public class EmvCardTest {
 
 		Assertions.assertThat(card.getAtrDescription()).isEqualTo(Arrays.asList("test", "ok"));
 
-		EMVCard card2 = new EMVCard();
+		EmvCard card2 = new EmvCard();
 		card2.setCardNumber("12345678");
 
 		// Check equals

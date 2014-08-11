@@ -12,7 +12,7 @@ import fr.devnied.bitlib.BytesUtils;
  * @author MILLAU Julien
  * 
  */
-public enum EMVCardScheme {
+public enum EmvCardScheme {
 
 	VISA("A0 00 00 00 03", "VISA", "^4[0-9]{12,15}"), //
 	MASTER_CARD1("A0 00 00 00 04", "Master card 1", "^5[0-5][0-9]{14}"), //
@@ -65,7 +65,7 @@ public enum EMVCardScheme {
 	 * @param pRegex
 	 *            Card regex
 	 */
-	private EMVCardScheme(final String pAid, final String pScheme, final String pRegex) {
+	private EmvCardScheme(final String pAid, final String pScheme, final String pRegex) {
 		aid = pAid;
 		aidByte = BytesUtils.fromString(pAid);
 		name = pScheme;
@@ -80,7 +80,7 @@ public enum EMVCardScheme {
 	 * @param pScheme
 	 *            scheme name
 	 */
-	private EMVCardScheme(final String pAid, final String pScheme) {
+	private EmvCardScheme(final String pAid, final String pScheme) {
 		aid = pAid;
 		aidByte = BytesUtils.fromString(pAid);
 		name = pScheme;
@@ -112,11 +112,11 @@ public enum EMVCardScheme {
 	 *            card AID
 	 * @return CardType or null
 	 */
-	public static EMVCardScheme getCardTypeByAid(final String pAid) {
-		EMVCardScheme ret = null;
+	public static EmvCardScheme getCardTypeByAid(final String pAid) {
+		EmvCardScheme ret = null;
 		if (pAid != null) {
 			String aid = StringUtils.deleteWhitespace(pAid);
-			for (EMVCardScheme val : EMVCardScheme.values()) {
+			for (EmvCardScheme val : EmvCardScheme.values()) {
 				if (aid.startsWith(StringUtils.deleteWhitespace(val.getAid()))) {
 					ret = val;
 					break;
@@ -133,10 +133,10 @@ public enum EMVCardScheme {
 	 *            card number
 	 * @return the type of the card using regex
 	 */
-	public static EMVCardScheme getCardTypeByCardNumber(final String pCardNumber) {
-		EMVCardScheme ret = null;
+	public static EmvCardScheme getCardTypeByCardNumber(final String pCardNumber) {
+		EmvCardScheme ret = null;
 		if (pCardNumber != null) {
-			for (EMVCardScheme val : EMVCardScheme.values()) {
+			for (EmvCardScheme val : EmvCardScheme.values()) {
 				if (val.regex != null && Pattern.matches(val.regex, StringUtils.deleteWhitespace(pCardNumber))) {
 					ret = val;
 					break;

@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.github.devnied.emvnfccard.iso7816emv.ITag;
-import com.github.devnied.emvnfccard.model.EMVTransactionRecord;
+import com.github.devnied.emvnfccard.model.EmvTransactionRecord;
 import com.github.devnied.emvnfccard.parser.apdu.IFile;
 
 /**
@@ -22,7 +22,7 @@ public final class AnnotationUtils {
 	 * List of annoted class
 	 */
 	@SuppressWarnings("unchecked")
-	private static final Class<? extends IFile>[] LISTE_CLASS = new Class[] { EMVTransactionRecord.class };
+	private static final Class<? extends IFile>[] LISTE_CLASS = new Class[] { EmvTransactionRecord.class };
 
 	/**
 	 * AnnotationUtils singleton

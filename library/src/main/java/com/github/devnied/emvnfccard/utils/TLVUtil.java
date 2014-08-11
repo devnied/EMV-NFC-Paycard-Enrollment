@@ -24,8 +24,8 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import com.github.devnied.emvnfccard.enums.TagValueTypeEnum;
-import com.github.devnied.emvnfccard.exception.TLVException;
-import com.github.devnied.emvnfccard.iso7816emv.EMVTags;
+import com.github.devnied.emvnfccard.exception.TlvException;
+import com.github.devnied.emvnfccard.iso7816emv.EmvTags;
 import com.github.devnied.emvnfccard.iso7816emv.ITag;
 import com.github.devnied.emvnfccard.iso7816emv.TLV;
 import com.github.devnied.emvnfccard.iso7816emv.TagAndLength;
@@ -38,7 +38,7 @@ import fr.devnied.bitlib.BytesUtils;
  * @author MILLAU Julien
  * 
  */
-public final class TLVUtil {
+public final class TlvUtil {
 
 	/**
 	 * Method used to find Tag with ID
@@ -48,7 +48,7 @@ public final class TLVUtil {
 	 * @return the tag found
 	 */
 	private static ITag searchTagById(final byte[] tagIdBytes) {
-		return EMVTags.getNotNull(tagIdBytes); // TODO take app (IIN or RID) into consideration
+		return EmvTags.getNotNull(tagIdBytes); // TODO take app (IIN or RID) into consideration
 	}
 
 	/**
@@ -59,7 +59,7 @@ public final class TLVUtil {
 	 * @return Tag found
 	 */
 	private static ITag searchTagById(final ByteArrayInputStream stream) {
-		return searchTagById(TLVUtil.readTagIdBytes(stream));
+		return searchTagById(TlvUtil.readTagIdBytes(stream));
 	}
 
 	// This is just a list of Tag And Lengths (eg DOLs)
@@ -78,7 +78,7 @@ public final class TLVUtil {
 			buf.append(indent);
 
 			ITag tag = searchTagById(stream);
-			int length = TLVUtil.readTagLength(stream);
+			int length = TlvUtil.readTagLength(stream);
 
 			buf.append(prettyPrintHex(tag.getTagBytes()));
 			buf.append(" ");
@@ -122,7 +122,7 @@ public final class TLVUtil {
 		int tmpLength = stream.read();
 
 		if (tmpLength < 0) {
-			throw new TLVException("Negative length: " + tmpLength);
+			throw new TlvException("Negative length: " + tmpLength);
 		}
 
 		if (tmpLength <= 127) { // 0111 1111
@@ -139,7 +139,7 @@ public final class TLVUtil {
 			for (int i = 0; i < numberOfLengthOctets; i++) {
 				int nextLengthOctet = stream.read();
 				if (nextLengthOctet < 0) {
-					throw new TLVException("EOS when reading length bytes");
+					throw new TlvException("EOS when reading length bytes");
 				}
 				tmpLength <<= 8;
 				tmpLength |= nextLengthOctet;
@@ -151,7 +151,7 @@ public final class TLVUtil {
 
 	public static TLV getNextTLV(final ByteArrayInputStream stream) {
 		if (stream.available() < 2) {
-			throw new TLVException("Error parsing data. Available bytes < 2 . Length=" + stream.available());
+			throw new TlvException("Error parsing data. Available bytes < 2 . Length=" + stream.available());
 		}
 
 		// ISO/IEC 7816 uses neither '00' nor 'FF' as tag value.
@@ -171,10 +171,10 @@ public final class TLVUtil {
 		stream.reset(); // Reset back to the last known position without 0x00 or 0xFF
 
 		if (stream.available() < 2) {
-			throw new TLVException("Error parsing data. Available bytes < 2 . Length=" + stream.available());
+			throw new TlvException("Error parsing data. Available bytes < 2 . Length=" + stream.available());
 		}
 
-		byte[] tagIdBytes = TLVUtil.readTagIdBytes(stream);
+		byte[] tagIdBytes = TlvUtil.readTagIdBytes(stream);
 
 		// We need to get the raw length bytes.
 		// Use quick and dirty workaround
@@ -182,14 +182,14 @@ public final class TLVUtil {
 		int posBefore = stream.available();
 		// Now parse the lengthbyte(s)
 		// This method will read all length bytes. We can then find out how many bytes was read.
-		int length = TLVUtil.readTagLength(stream); // Decoded
+		int length = TlvUtil.readTagLength(stream); // Decoded
 		// Now find the raw (encoded) length bytes
 		int posAfter = stream.available();
 		stream.reset();
 		byte[] lengthBytes = new byte[posBefore - posAfter];
 
 		if (lengthBytes.length < 1 || lengthBytes.length > 4) {
-			throw new TLVException("Number of length bytes must be from 1 to 4. Found " + lengthBytes.length);
+			throw new TlvException("Number of length bytes must be from 1 to 4. Found " + lengthBytes.length);
 		}
 
 		stream.read(lengthBytes, 0, lengthBytes.length);
@@ -211,7 +211,7 @@ public final class TLVUtil {
 				len++;
 				curOctet = stream.read();
 				if (curOctet < 0) {
-					throw new TLVException("Error parsing data. TLV " + "length byte indicated indefinite length, but EOS "
+					throw new TlvException("Error parsing data. TLV " + "length byte indicated indefinite length, but EOS "
 							+ "was reached before 0x0000 was found" + stream.available());
 				}
 				if (prevOctet == 0 && curOctet == 0) {
@@ -226,7 +226,7 @@ public final class TLVUtil {
 			length = len;
 		} else {
 			if (stream.available() < length) {
-				throw new TLVException("Length byte(s) indicated " + length + " value bytes, but only " + stream.available()
+				throw new TlvException("Length byte(s) indicated " + length + " value bytes, but only " + stream.available()
 						+ " " + (stream.available() > 1 ? "are" : "is") + " available");
 			}
 			// definite form
@@ -299,11 +299,11 @@ public final class TLVUtil {
 
 			while (stream.available() > 0) {
 				if (stream.available() < 2) {
-					throw new TLVException("Data length < 2 : " + stream.available());
+					throw new TlvException("Data length < 2 : " + stream.available());
 				}
 
-				ITag tag = searchTagById(TLVUtil.readTagIdBytes(stream));
-				int tagValueLength = TLVUtil.readTagLength(stream);
+				ITag tag = searchTagById(TlvUtil.readTagIdBytes(stream));
+				int tagValueLength = TlvUtil.readTagLength(stream);
 
 				tagAndLengthList.add(new TagAndLength(tag, tagValueLength));
 			}
@@ -339,11 +339,11 @@ public final class TLVUtil {
 
 		while (stream.available() > 0) {
 
-			TLV tlv = TLVUtil.getNextTLV(stream);
+			TLV tlv = TlvUtil.getNextTLV(stream);
 			if (pAdd) {
 				list.add(tlv);
 			} else if (tlv.getTag().isConstructed()) {
-				list.addAll(TLVUtil.getlistTLV(tlv.getValueBytes(), pTag, tlv.getTag() == pTag));
+				list.addAll(TlvUtil.getlistTLV(tlv.getValueBytes(), pTag, tlv.getTag() == pTag));
 			}
 		}
 
@@ -368,11 +368,11 @@ public final class TLVUtil {
 
 			while (stream.available() > 0) {
 
-				TLV tlv = TLVUtil.getNextTLV(stream);
+				TLV tlv = TlvUtil.getNextTLV(stream);
 				if (tlv.getTag() == pTag) {
 					return tlv.getValueBytes();
 				} else if (tlv.getTag().isConstructed()) {
-					ret = TLVUtil.getValue(tlv.getValueBytes(), pTag);
+					ret = TlvUtil.getValue(tlv.getValueBytes(), pTag);
 					if (ret != null) {
 						break;
 					}
@@ -393,7 +393,7 @@ public final class TLVUtil {
 
 			buf.append(getSpaces(indentLength));
 
-			TLV tlv = TLVUtil.getNextTLV(stream);
+			TLV tlv = TlvUtil.getNextTLV(stream);
 
 			byte[] tagBytes = tlv.getTagBytes();
 			byte[] lengthBytes = tlv.getRawEncodedLengthBytes();
@@ -416,12 +416,12 @@ public final class TLVUtil {
 			} else {
 				buf.append("\n");
 				if (tag.getTagValueType() == TagValueTypeEnum.DOL) {
-					buf.append(TLVUtil.getFormattedTagAndLength(valueBytes, indentLength + extraIndent));
+					buf.append(TlvUtil.getFormattedTagAndLength(valueBytes, indentLength + extraIndent));
 				} else {
 					buf.append(getSpaces(indentLength + extraIndent));
 					buf.append(prettyPrintHex(BytesUtils.bytesToStringNoSpace(valueBytes), indentLength + extraIndent));
 					buf.append(" (");
-					buf.append(TLVUtil.getTagValueAsString(tag, valueBytes));
+					buf.append(TlvUtil.getTagValueAsString(tag, valueBytes));
 					buf.append(")");
 				}
 			}
@@ -512,7 +512,7 @@ public final class TLVUtil {
 	/**
 	 * Private constructor
 	 */
-	private TLVUtil() {
+	private TlvUtil() {
 	}
 
 }

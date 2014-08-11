@@ -2,7 +2,7 @@ package com.github.devnied.emvnfccard.parser.apdu.annotation;
 
 import java.lang.reflect.Field;
 
-import com.github.devnied.emvnfccard.iso7816emv.EMVTags;
+import com.github.devnied.emvnfccard.iso7816emv.EmvTags;
 import com.github.devnied.emvnfccard.iso7816emv.ITag;
 
 import fr.devnied.bitlib.BytesUtils;
@@ -168,7 +168,7 @@ public class AnnotationData implements Comparable<AnnotationData>, Cloneable {
 		readHexa = pData.readHexa();
 		size = pData.size();
 		if (pData.tag() != null) {
-			tag = EMVTags.find(BytesUtils.fromString(pData.tag()));
+			tag = EmvTags.find(BytesUtils.fromString(pData.tag()));
 		}
 	}
 

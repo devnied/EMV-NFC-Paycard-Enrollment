@@ -20,12 +20,12 @@ import org.slf4j.LoggerFactory;
  * @author Millau Julien
  * 
  */
-public final class ATRUtils {
+public final class AtrUtils {
 
 	/**
 	 * Class logger
 	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(ATRUtils.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AtrUtils.class);
 
 	/**
 	 * MultiMap containing ATR
@@ -38,7 +38,7 @@ public final class ATRUtils {
 		BufferedReader br = null;
 
 		try {
-			is = ATRUtils.class.getResourceAsStream("/smartcard_list.txt");
+			is = AtrUtils.class.getResourceAsStream("/smartcard_list.txt");
 			isr = new InputStreamReader(is, CharEncoding.UTF_8);
 			br = new BufferedReader(isr);
 
@@ -92,7 +92,7 @@ public final class ATRUtils {
 	/**
 	 * Private constrcutor
 	 */
-	private ATRUtils() {
+	private AtrUtils() {
 	}
 
 }

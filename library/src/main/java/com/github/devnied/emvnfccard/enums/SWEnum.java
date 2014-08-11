@@ -9,7 +9,7 @@ import fr.devnied.bitlib.BytesUtils;
  * @author MILLAU Julien
  * 
  */
-public enum SWEnum {
+public enum SwEnum {
 
 	SW_61("61", "Command successfully executed; 'XX' bytes of data are available and can be requested using GET RESPONSE"),
 	SW_6200("6200", "No information given (NV-Ram not changed)"),
@@ -201,7 +201,7 @@ public enum SWEnum {
 	 * @param pStatus
 	 *            status word
 	 */
-	private SWEnum(final String pStatus, final String pDetail) {
+	private SwEnum(final String pStatus, final String pDetail) {
 		status = BytesUtils.fromString(pStatus);
 		detail = pDetail;
 	}
@@ -231,10 +231,10 @@ public enum SWEnum {
 	 *            bytes array
 	 * @return the status word
 	 */
-	public static SWEnum getSW(final byte[] pData) {
-		SWEnum ret = null;
+	public static SwEnum getSW(final byte[] pData) {
+		SwEnum ret = null;
 		if (pData != null && pData.length >= 2) {
-			for (SWEnum val : values()) {
+			for (SwEnum val : values()) {
 				if (val.status.length == 1 && pData[pData.length - 2] == val.status[0]
 						|| pData[pData.length - 2] == val.status[0] && pData[pData.length - 1] == val.status[1]) {
 					ret = val;

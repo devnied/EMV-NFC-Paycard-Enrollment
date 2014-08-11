@@ -16,19 +16,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.devnied.emvnfccard.enums.CommandEnum;
-import com.github.devnied.emvnfccard.enums.EMVCardScheme;
-import com.github.devnied.emvnfccard.enums.SWEnum;
+import com.github.devnied.emvnfccard.enums.EmvCardScheme;
+import com.github.devnied.emvnfccard.enums.SwEnum;
 import com.github.devnied.emvnfccard.exception.CommunicationException;
-import com.github.devnied.emvnfccard.iso7816emv.EMVTags;
-import com.github.devnied.emvnfccard.iso7816emv.EMVTerminal;
+import com.github.devnied.emvnfccard.iso7816emv.EmvTags;
+import com.github.devnied.emvnfccard.iso7816emv.EmvTerminal;
 import com.github.devnied.emvnfccard.iso7816emv.TagAndLength;
 import com.github.devnied.emvnfccard.model.Afl;
-import com.github.devnied.emvnfccard.model.EMVCard;
-import com.github.devnied.emvnfccard.model.EMVTransactionRecord;
+import com.github.devnied.emvnfccard.model.EmvCard;
+import com.github.devnied.emvnfccard.model.EmvTransactionRecord;
 import com.github.devnied.emvnfccard.model.enums.CurrencyEnum;
 import com.github.devnied.emvnfccard.utils.CommandApdu;
 import com.github.devnied.emvnfccard.utils.ResponseUtils;
-import com.github.devnied.emvnfccard.utils.TLVUtil;
+import com.github.devnied.emvnfccard.utils.TlvUtil;
 
 import fr.devnied.bitlib.BitUtils;
 import fr.devnied.bitlib.BytesUtils;
@@ -40,12 +40,12 @@ import fr.devnied.bitlib.BytesUtils;
  * @author MILLAU Julien
  * 
  */
-public class EMVParser {
+public class EmvParser {
 
 	/**
 	 * Class Logger
 	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(EMVParser.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(EmvParser.class);
 
 	/**
 	 * PPSE directory "2PAY.SYS.DDF01"
@@ -80,7 +80,7 @@ public class EMVParser {
 	 * @param pContactLess
 	 *            boolean to indicate if the EMV card is contact less or not
 	 */
-	public EMVParser(final IProvider pProvider, final boolean pContactLess) {
+	public EmvParser(final IProvider pProvider, final boolean pContactLess) {
 		provider = pProvider;
 		contactLess = pContactLess;
 	}
@@ -90,9 +90,9 @@ public class EMVParser {
 	 * 
 	 * @return data read from card or null if any provider match the card type
 	 */
-	public EMVCard readEmvCard() throws CommunicationException {
+	public EmvCard readEmvCard() throws CommunicationException {
 		// use PSE first
-		EMVCard card = readWithPSE();
+		EmvCard card = readWithPSE();
 		// Find with AID
 		if (card == null) {
 			card = readWithAID();
@@ -129,7 +129,7 @@ public class EMVParser {
 		byte[] data = provider.transceive(new CommandApdu(CommandEnum.GET_DATA, 0x9F, 0x17, 0).toBytes());
 		if (data != null) {
 			// Extract PIN try counter
-			byte[] val = TLVUtil.getValue(data, EMVTags.PIN_TRY_COUNTER);
+			byte[] val = TlvUtil.getValue(data, EmvTags.PIN_TRY_COUNTER);
 			if (val != null) {
 				ret = BytesUtils.byteArrayToInt(val);
 			}
@@ -147,7 +147,7 @@ public class EMVParser {
 	 */
 	protected byte[] parseFCIProprietaryTemplate(final byte[] pData) throws CommunicationException {
 		// Get SFI
-		byte[] data = TLVUtil.getValue(pData, EMVTags.SFI);
+		byte[] data = TlvUtil.getValue(pData, EmvTags.SFI);
 
 		// Check SFI
 		if (data != null) {
@@ -179,7 +179,7 @@ public class EMVParser {
 			LOGGER.debug("Extract Application label");
 		}
 		String label = null;
-		byte[] labelByte = TLVUtil.getValue(pData, EMVTags.APPLICATION_LABEL);
+		byte[] labelByte = TlvUtil.getValue(pData, EmvTags.APPLICATION_LABEL);
 		if (labelByte != null) {
 			label = new String(labelByte);
 		}
@@ -191,11 +191,11 @@ public class EMVParser {
 	 * 
 	 * @return Read card
 	 */
-	protected EMVCard readWithPSE() throws CommunicationException {
+	protected EmvCard readWithPSE() throws CommunicationException {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Try to read card with Payment System Environment");
 		}
-		EMVCard card = null;
+		EmvCard card = null;
 		// Select the PPSE or PSE directory
 		byte[] data = selectPaymentEnvironment();
 		if (ResponseUtils.isSucceed(data)) {
@@ -205,7 +205,7 @@ public class EMVParser {
 			if (ResponseUtils.isSucceed(data)) {
 				String label = extractApplicationLabel(data);
 				// Get Card
-				card = extractPublicData(TLVUtil.getValue(data, EMVTags.AID_CARD), label);
+				card = extractPublicData(TlvUtil.getValue(data, EmvTags.AID_CARD), label);
 			}
 		} else if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug((contactLess ? "PPSE" : "PSE") + " not found -> Use kown AID");
@@ -219,13 +219,13 @@ public class EMVParser {
 	 * 
 	 * @return Card read
 	 */
-	protected EMVCard readWithAID() throws CommunicationException {
-		EMVCard card = null;
+	protected EmvCard readWithAID() throws CommunicationException {
+		EmvCard card = null;
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Try to read card with AID");
 		}
 		// Test each card from know EMV AID
-		for (EMVCardScheme type : EMVCardScheme.values()) {
+		for (EmvCardScheme type : EmvCardScheme.values()) {
 			card = extractPublicData(type.getAidByte(), type.getName());
 			if (card != null) {
 				break;
@@ -258,8 +258,8 @@ public class EMVParser {
 	 *            application scheme (Application label)
 	 * @return card read or null
 	 */
-	protected EMVCard extractPublicData(final byte[] pAid, final String pApplicationLabel) throws CommunicationException {
-		EMVCard ret = null;
+	protected EmvCard extractPublicData(final byte[] pAid, final String pApplicationLabel) throws CommunicationException {
+		EmvCard ret = null;
 		// Select AID
 		byte[] data = selectAID(pAid);
 		// check response
@@ -268,7 +268,7 @@ public class EMVParser {
 			ret = parse(data, provider);
 			if (ret != null) {
 				// Get AID
-				String aid = BytesUtils.bytesToStringNoSpace(TLVUtil.getValue(data, EMVTags.DEDICATED_FILE_NAME));
+				String aid = BytesUtils.bytesToStringNoSpace(TlvUtil.getValue(data, EmvTags.DEDICATED_FILE_NAME));
 				if (LOGGER.isDebugEnabled()) {
 					LOGGER.debug("Application label:" + pApplicationLabel + " with Aid:" + aid);
 				}
@@ -290,11 +290,11 @@ public class EMVParser {
 	 *            card number
 	 * @return card scheme
 	 */
-	protected EMVCardScheme findCardScheme(final String pAid, final String pCardNumber) {
-		EMVCardScheme type = EMVCardScheme.getCardTypeByAid(pAid);
+	protected EmvCardScheme findCardScheme(final String pAid, final String pCardNumber) {
+		EmvCardScheme type = EmvCardScheme.getCardTypeByAid(pAid);
 		// Get real type for french card
-		if (type == EMVCardScheme.CB) {
-			type = EMVCardScheme.getCardTypeByCardNumber(pCardNumber);
+		if (type == EmvCardScheme.CB) {
+			type = EmvCardScheme.getCardTypeByCardNumber(pCardNumber);
 			if (type != null) {
 				LOGGER.info("Real type:" + type.getName());
 			}
@@ -310,10 +310,10 @@ public class EMVParser {
 	 * @return byte array
 	 */
 	protected byte[] getLogEntry(final byte[] pSelectResponse) {
-		byte[] ret = TLVUtil.getValue(pSelectResponse, EMVTags.LOG_ENTRY);
+		byte[] ret = TlvUtil.getValue(pSelectResponse, EmvTags.LOG_ENTRY);
 		// Find Visa specific log entry
 		if (ret == null) {
-			ret = TLVUtil.getValue(pSelectResponse, EMVTags.VISA_LOG_ENTRY);
+			ret = TlvUtil.getValue(pSelectResponse, EmvTags.VISA_LOG_ENTRY);
 		}
 		return ret;
 	}
@@ -321,12 +321,12 @@ public class EMVParser {
 	/**
 	 * Method used to parse EMV card
 	 */
-	public EMVCard parse(final byte[] pSelectResponse, final IProvider pProvider) throws CommunicationException {
-		EMVCard card = null;
+	public EmvCard parse(final byte[] pSelectResponse, final IProvider pProvider) throws CommunicationException {
+		EmvCard card = null;
 		// Get TLV log entry
 		byte[] logEntry = getLogEntry(pSelectResponse);
 		// Get PDOL
-		byte[] pdol = TLVUtil.getValue(pSelectResponse, EMVTags.PDOL);
+		byte[] pdol = TlvUtil.getValue(pSelectResponse, EmvTags.PDOL);
 		// Send GPO Command
 		byte[] gpo = getGetProcessingOptions(pdol, pProvider);
 
@@ -356,14 +356,14 @@ public class EMVParser {
 	 * @param pGpo
 	 *            global processing options response
 	 */
-	protected EMVCard extractCommonsCardData(final byte[] pGpo) throws CommunicationException {
-		EMVCard card = null;
+	protected EmvCard extractCommonsCardData(final byte[] pGpo) throws CommunicationException {
+		EmvCard card = null;
 		// Extract data from Message Template 1
-		byte data[] = TLVUtil.getValue(pGpo, EMVTags.RESPONSE_MESSAGE_TEMPLATE_1);
+		byte data[] = TlvUtil.getValue(pGpo, EmvTags.RESPONSE_MESSAGE_TEMPLATE_1);
 		if (data != null) {
 			data = ArrayUtils.subarray(data, 2, data.length);
 		} else { // Extract AFL data from Message template 2
-			data = TLVUtil.getValue(pGpo, EMVTags.APPLICATION_FILE_LOCATOR);
+			data = TlvUtil.getValue(pGpo, EmvTags.APPLICATION_FILE_LOCATOR);
 		}
 
 		if (data != null) {
@@ -413,7 +413,7 @@ public class EMVParser {
 		// Get log format
 		byte[] data = provider.transceive(new CommandApdu(CommandEnum.GET_DATA, 0x9F, 0x4F, 0).toBytes());
 		if (ResponseUtils.isSucceed(data)) {
-			ret = TLVUtil.parseTagAndLength(TLVUtil.getValue(data, EMVTags.LOG_FORMAT));
+			ret = TlvUtil.parseTagAndLength(TlvUtil.getValue(data, EmvTags.LOG_FORMAT));
 		}
 		return ret;
 	}
@@ -424,8 +424,8 @@ public class EMVParser {
 	 * @param pLogEntry
 	 *            log entry position
 	 */
-	private List<EMVTransactionRecord> extractLogEntry(final byte[] pLogEntry) throws CommunicationException {
-		List<EMVTransactionRecord> listRecord = new ArrayList<EMVTransactionRecord>();
+	private List<EmvTransactionRecord> extractLogEntry(final byte[] pLogEntry) throws CommunicationException {
+		List<EmvTransactionRecord> listRecord = new ArrayList<EmvTransactionRecord>();
 		// If log entry is defined
 		if (pLogEntry != null) {
 			List<TagAndLength> tals = getLogFormat();
@@ -435,7 +435,7 @@ public class EMVParser {
 						.toBytes());
 				// Extract data
 				if (ResponseUtils.isSucceed(response)) {
-					EMVTransactionRecord record = new EMVTransactionRecord();
+					EmvTransactionRecord record = new EmvTransactionRecord();
 					record.parse(response, tals);
 					if (record != null) {
 						// Unknown currency
@@ -444,7 +444,7 @@ public class EMVParser {
 						}
 						listRecord.add(record);
 					}
-				} else if (SWEnum.getSW(response) == SWEnum.SW_6A83) { // No more transaction log
+				} else if (SwEnum.getSW(response) == SwEnum.SW_6A83) { // No more transaction log
 					break;
 				}
 			}
@@ -479,11 +479,11 @@ public class EMVParser {
 	 * @param pData
 	 *            data
 	 */
-	protected EMVCard extractTrack2Data(final byte[] pData) {
-		EMVCard card = null;
-		byte[] track2 = TLVUtil.getValue(pData, EMVTags.TRACK_2_EQV_DATA);
+	protected EmvCard extractTrack2Data(final byte[] pData) {
+		EmvCard card = null;
+		byte[] track2 = TlvUtil.getValue(pData, EmvTags.TRACK_2_EQV_DATA);
 		if (track2 != null) {
-			card = new EMVCard();
+			card = new EmvCard();
 			BitUtils bit = new BitUtils(track2);
 			// Read card number
 			card.setCardNumber(bit.getNextHexaString(64));
@@ -514,14 +514,14 @@ public class EMVParser {
 	 */
 	protected byte[] getGetProcessingOptions(final byte[] pPdol, final IProvider pProvider) throws CommunicationException {
 		// List Tag and length from PDOL
-		List<TagAndLength> list = TLVUtil.parseTagAndLength(pPdol);
+		List<TagAndLength> list = TlvUtil.parseTagAndLength(pPdol);
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		try {
-			out.write(EMVTags.COMMAND_TEMPLATE.getTagBytes()); // COMMAND TEMPLATE
-			out.write(TLVUtil.getLength(list)); // ADD total length
+			out.write(EmvTags.COMMAND_TEMPLATE.getTagBytes()); // COMMAND TEMPLATE
+			out.write(TlvUtil.getLength(list)); // ADD total length
 			if (list != null) {
 				for (TagAndLength tl : list) {
-					out.write(EMVTerminal.constructValue(tl));
+					out.write(EmvTerminal.constructValue(tl));
 				}
 			}
 		} catch (IOException ioe) {

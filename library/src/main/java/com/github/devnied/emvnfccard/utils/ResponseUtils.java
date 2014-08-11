@@ -3,7 +3,7 @@ package com.github.devnied.emvnfccard.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.devnied.emvnfccard.enums.SWEnum;
+import com.github.devnied.emvnfccard.enums.SwEnum;
 
 /**
  * Method used to manipulate response from APDU command
@@ -26,11 +26,11 @@ public final class ResponseUtils {
 	 * @return true if the status is 9000 false otherwise
 	 */
 	public static boolean isSucceed(final byte[] pByte) {
-		SWEnum val = SWEnum.getSW(pByte);
+		SwEnum val = SwEnum.getSW(pByte);
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Response Status : " + (val != null ? val.getDetail() : "Unknow"));
 		}
-		return val != null && val == SWEnum.SW_9000;
+		return val != null && val == SwEnum.SW_9000;
 	}
 
 	/**

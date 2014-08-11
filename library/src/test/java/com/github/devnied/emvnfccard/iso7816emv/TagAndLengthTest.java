@@ -10,11 +10,11 @@ public class TagAndLengthTest {
 	@Test
 	public void testMethod() {
 
-		TagAndLength tal = new TagAndLength(EMVTags.AID_CARD, 2);
+		TagAndLength tal = new TagAndLength(EmvTags.AID_CARD, 2);
 
 		Assertions.assertThat(tal.getBytes()).isEqualTo(BytesUtils.fromString("4F02"));
 		Assertions.assertThat(tal.getLength()).isEqualTo(2);
-		Assertions.assertThat(tal.getTag()).isEqualTo(EMVTags.AID_CARD);
+		Assertions.assertThat(tal.getTag()).isEqualTo(EmvTags.AID_CARD);
 
 		Assertions
 				.assertThat(tal.toString())
