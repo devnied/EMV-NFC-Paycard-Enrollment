@@ -326,7 +326,7 @@ public class EmvParser {
 	/**
 	 * Method used to parse EMV card
 	 */
-	public EmvCard parse(final byte[] pSelectResponse, final IProvider pProvider) throws CommunicationException {
+	protected EmvCard parse(final byte[] pSelectResponse, final IProvider pProvider) throws CommunicationException {
 		EmvCard card = null;
 		// Get TLV log entry
 		byte[] logEntry = getLogEntry(pSelectResponse);
@@ -429,7 +429,7 @@ public class EmvParser {
 	 * @param pLogEntry
 	 *            log entry position
 	 */
-	private List<EmvTransactionRecord> extractLogEntry(final byte[] pLogEntry) throws CommunicationException {
+	protected List<EmvTransactionRecord> extractLogEntry(final byte[] pLogEntry) throws CommunicationException {
 		List<EmvTransactionRecord> listRecord = new ArrayList<EmvTransactionRecord>();
 		// If log entry is defined
 		if (pLogEntry != null) {
@@ -442,6 +442,10 @@ public class EmvParser {
 				if (ResponseUtils.isSucceed(response)) {
 					EmvTransactionRecord record = new EmvTransactionRecord();
 					record.parse(response, tals);
+					// Skip transaction with nul amount
+					if (record.getAmount() == null || record.getAmount() == 0) {
+						continue;
+					}
 					if (record != null) {
 						// Unknown currency
 						if (record.getCurrency() == null) {
