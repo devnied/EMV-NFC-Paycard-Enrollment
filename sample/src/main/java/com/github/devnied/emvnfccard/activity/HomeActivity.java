@@ -433,4 +433,16 @@ public class HomeActivity extends Activity implements OnItemClickListener, ICont
 	public void setRefreshableContent(final IRefreshable pRefreshable) {
 		mRefreshableContent = new WeakReference<IRefreshable>(pRefreshable);
 	}
+
+	/**
+	 * Method used to clear data
+	 */
+	public void clear() {
+		mReadCard = null;
+		mProvider.getLog().setLength(0);
+		IRefreshable content = mRefreshableContent.get();
+		if (content != null) {
+			content.update();
+		}
+	}
 }

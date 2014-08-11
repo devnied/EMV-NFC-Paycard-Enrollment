@@ -30,7 +30,7 @@ EMVParser parser = new EMVParser(prov, true);
 // Read card
 EMVCard card = parser.readEmvCard();
 ```
-card object contains all data read (Aid, card number, expiration date, card type, payments history)
+card object contains all data read (Aid, card number, expiration date, card type, transactions history)
 
 ### Screens
 
@@ -57,6 +57,8 @@ If you are not using Maven or some other dependency management tool that can und
 **Runtime Dependencies**
 * commons-lang3 3.3.2
 * bit-lib4j 1.4.10
+* commons-io 2.4
+* commons-collections4 4.0
 
 ## Bugs
 
