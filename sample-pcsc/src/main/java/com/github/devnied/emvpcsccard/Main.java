@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.devnied.emvnfccard.exception.CommunicationException;
-import com.github.devnied.emvnfccard.parser.EMVParser;
+import com.github.devnied.emvnfccard.parser.EmvParser;
 
 public class Main {
 
@@ -37,7 +37,7 @@ public class Main {
 			CardChannel channel = card.getBasicChannel();
 
 			PcscProvider provider = new PcscProvider(channel);
-			EMVParser parser = new EMVParser(provider, false);
+			EmvParser parser = new EmvParser(provider, false);
 			parser.readEmvCard();
 
 			// Disconnect the card

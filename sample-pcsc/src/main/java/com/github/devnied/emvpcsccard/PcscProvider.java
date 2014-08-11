@@ -8,10 +8,10 @@ import javax.smartcardio.CardException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.devnied.emvnfccard.enums.SWEnum;
+import com.github.devnied.emvnfccard.enums.SwEnum;
 import com.github.devnied.emvnfccard.exception.CommunicationException;
 import com.github.devnied.emvnfccard.parser.IProvider;
-import com.github.devnied.emvnfccard.utils.TLVUtil;
+import com.github.devnied.emvnfccard.utils.TlvUtil;
 
 import fr.devnied.bitlib.BytesUtils;
 
@@ -60,8 +60,8 @@ public class PcscProvider implements IProvider {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("resp: " + BytesUtils.bytesToString(ret));
 			try {
-				LOGGER.debug("resp: " + TLVUtil.prettyPrintAPDUResponse(ret));
-				SWEnum val = SWEnum.getSW(ret);
+				LOGGER.debug("resp: " + TlvUtil.prettyPrintAPDUResponse(ret));
+				SwEnum val = SwEnum.getSW(ret);
 				if (val != null) {
 					LOGGER.debug("resp: " + val.getDetail());
 				}
