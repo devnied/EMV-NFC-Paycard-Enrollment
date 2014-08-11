@@ -226,7 +226,12 @@ public class EmvParser {
 		}
 		// Test each card from know EMV AID
 		for (EmvCardScheme type : EmvCardScheme.values()) {
-			card = extractPublicData(type.getAidByte(), type.getName());
+			for (byte[] aid : type.getAidByte()) {
+				card = extractPublicData(aid, type.getName());
+				if (card != null) {
+					break;
+				}
+			}
 			if (card != null) {
 				break;
 			}
@@ -341,7 +346,7 @@ public class EmvParser {
 
 			// Extract log entry
 			if (card != null) {
-				card.setListPayment(extractLogEntry(logEntry));
+				card.setListTransactions(extractLogEntry(logEntry));
 			}
 		}
 
@@ -498,6 +503,11 @@ public class EmvParser {
 				card.setExpireDate(DateUtils.truncate(sdf.parse(date), Calendar.MONTH));
 			} catch (ParseException e) {
 				LOGGER.error("Unparsable expire card date");
+			}
+			// Extract Card Holder name (if exist)
+			byte[] cardHolderByte = TlvUtil.getValue(pData, EmvTags.CARDHOLDER_NAME);
+			if (cardHolderByte != null) {
+				card.setHolderName(new String(cardHolderByte));
 			}
 		}
 		return card;

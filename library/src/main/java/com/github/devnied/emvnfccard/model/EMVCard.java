@@ -24,14 +24,9 @@ public class EmvCard extends AbstractData {
 	private String aid;
 
 	/**
-	 * Holder first name
+	 * Holder Name
 	 */
-	private String fisrtName;
-
-	/**
-	 * Holder last Name
-	 */
-	private String lastName;
+	private String holderName;
 
 	/**
 	 * Card number
@@ -88,41 +83,22 @@ public class EmvCard extends AbstractData {
 	}
 
 	/**
-	 * Method used to get the field fisrtName
+	 * Method used to get the field holderName
 	 * 
-	 * @return the fisrtName
+	 * @return the holderName
 	 */
-	public String getFisrtName() {
-		return fisrtName;
+	public String getHolderName() {
+		return holderName;
 	}
 
 	/**
-	 * Setter for the field fisrtName
+	 * Setter for the field holderName
 	 * 
-	 * @param fisrtName
-	 *            the fisrtName to set
+	 * @param holderName
+	 *            the holderName to set
 	 */
-	public void setFisrtName(final String fisrtName) {
-		this.fisrtName = fisrtName;
-	}
-
-	/**
-	 * Method used to get the field lastName
-	 * 
-	 * @return the lastName
-	 */
-	public String getLastName() {
-		return lastName;
-	}
-
-	/**
-	 * Setter for the field lastName
-	 * 
-	 * @param lastName
-	 *            the lastName to set
-	 */
-	public void setLastName(final String lastName) {
-		this.lastName = lastName;
+	public void setHolderName(final String holderName) {
+		this.holderName = holderName;
 	}
 
 	/**
@@ -178,7 +154,7 @@ public class EmvCard extends AbstractData {
 	 * @param listTransactions
 	 *            the listTransactions to set
 	 */
-	public void setListPayment(final List<EmvTransactionRecord> listTransactions) {
+	public void setListTransactions(final List<EmvTransactionRecord> listTransactions) {
 		this.listTransactions = listTransactions;
 	}
 

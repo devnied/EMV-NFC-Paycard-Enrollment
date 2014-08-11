@@ -30,6 +30,7 @@ import com.github.devnied.emvnfccard.provider.PpseProviderVisa2Test;
 import com.github.devnied.emvnfccard.provider.PpseProviderVisaTest;
 import com.github.devnied.emvnfccard.provider.ProviderAidTest;
 import com.github.devnied.emvnfccard.provider.ProviderSelectPaymentEnvTest;
+import com.github.devnied.emvnfccard.provider.ProviderVisaCardAidTest;
 import com.github.devnied.emvnfccard.provider.PseProviderTest;
 
 import fr.devnied.bitlib.BytesUtils;
@@ -55,8 +56,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getAid()).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("4999999999999999");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.VISA);
-		Assertions.assertThat(card.getFisrtName()).isEqualTo(null);
-		Assertions.assertThat(card.getLastName()).isEqualTo(null);
+		Assertions.assertThat(card.getHolderName()).isEqualTo(null);
 		Assertions.assertThat(card.getApplicationLabel()).isEqualTo("CB");
 		Assertions.assertThat(card.getListTransactions().size()).isEqualTo(30);
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
@@ -77,9 +77,8 @@ public class EmvParserTest {
 		Assertions.assertThat(card).isNotNull();
 		Assertions.assertThat(card.getAid()).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("5599999999999999");
-		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.MASTER_CARD1);
-		Assertions.assertThat(card.getFisrtName()).isEqualTo(null);
-		Assertions.assertThat(card.getLastName()).isEqualTo(null);
+		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.MASTER_CARD);
+		Assertions.assertThat(card.getHolderName()).isEqualTo(null);
 		Assertions.assertThat(card.getApplicationLabel()).isEqualTo("CB");
 		Assertions.assertThat(card.getListTransactions()).isEmpty();
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
@@ -101,8 +100,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getAid()).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("4999999999999999");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.VISA);
-		Assertions.assertThat(card.getFisrtName()).isEqualTo(null);
-		Assertions.assertThat(card.getLastName()).isEqualTo(null);
+		Assertions.assertThat(card.getHolderName()).isEqualTo(null);
 		Assertions.assertThat(card.getApplicationLabel()).isEqualTo("CB");
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2015");
@@ -123,8 +121,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getAid()).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("4979670123453600");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.VISA);
-		Assertions.assertThat(card.getFisrtName()).isEqualTo(null);
-		Assertions.assertThat(card.getLastName()).isEqualTo(null);
+		Assertions.assertThat(card.getHolderName()).isEqualTo(" /");
 		Assertions.assertThat(card.getApplicationLabel()).isEqualTo("CB");
 		Assertions.assertThat(card.getLeftPinTry()).isEqualTo(3);
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
@@ -156,8 +153,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("5772829193253472");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.VISA);
 		Assertions.assertThat(card.getApplicationLabel()).isEqualTo("VISA");
-		Assertions.assertThat(card.getFisrtName()).isEqualTo(null);
-		Assertions.assertThat(card.getLastName()).isEqualTo(null);
+		Assertions.assertThat(card.getHolderName()).isEqualTo(" /");
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("08/2014");
 
@@ -280,5 +276,17 @@ public class EmvParserTest {
 				.fromString("6F 32 84 07 A0 00 00 00 42 10 10 A5 27 9F 38 18 9F 66 04 9F 02 06 9F 03 06 9F 1A 02 95 05 5F 2A 02 9A 03 9C 01 9F 37 04 BF 0C 09 DF 60 02 0B 1E DF 61 01 03 90 00");
 		data = Whitebox.invokeMethod(new EmvParser(null, true), EmvParser.class, "getLogEntry", selectResponse);
 		Assertions.assertThat(BytesUtils.bytesToString(data)).isEqualTo("0B 1E");
+	}
+
+	@Test
+	public void testReadWithAid() throws Exception {
+		IProvider prov = new ProviderVisaCardAidTest();
+		EmvCard card = (EmvCard) Whitebox.invokeMethod(new EmvParser(prov, true), EmvParser.class, "readWithAID");
+
+		if (card != null) {
+			LOGGER.debug(card.toString());
+		}
+		Assertions.assertThat(card).isNotNull();
+		// TODO complete TEST
 	}
 }

@@ -14,36 +14,35 @@ import fr.devnied.bitlib.BytesUtils;
  */
 public enum EmvCardScheme {
 
-	VISA("A0 00 00 00 03", "VISA", "^4[0-9]{12,15}"), //
-	MASTER_CARD1("A0 00 00 00 04", "Master card 1", "^5[0-5][0-9]{14}"), //
-	MASTER_CARD2("A0 00 00 00 05", "Master card 2", "^5[0-5][0-9]{14}"), //
-	AMERICAN_EXPRESS("A0 00 00 00 25", "American express", "^3[47][0-9]{13}"), //
-	CB("A0 00 00 00 42", "CB"), //
-	LINK("A0 00 00 00 29", "LINK"), //
-	JCB("A0 00 00 00 65", "JCB", "^35[0-9]{14}"), //
-	DANKORT("A0 00 00 01 21", "Dankort"), //
-	COGEBAN("A0 00 00 01 41", "CoGeBan"), //
-	DISCOVER("A0 00 00 01 52", "Discover", "(6011|65|64[4-9]|622)[0-9]*"), //
-	BANRISUL("A0 00 00 01 54", "Banrisul"), //
-	SPAN("A0 00 00 02 28", "Saudi Payments Network"), //
-	INTERAC("A0 00 00 02 77", "Interac"), //
-	ZIP("A0 00 00 03 24", "Discover Card"), //
-	UNIONPAY("A0 00 00 03 33", "UnionPay", "^62[0-9]{14,17}"), //
-	EAPS("A0 00 00 03 59", "Euro Alliance of Payment Schemes"), //
-	VERVE("A0 00 00 03 71", "Verve"), //
-	TENN("A0 00 00 04 39", "The Exchange Network ATM Network"), //
-	RUPAY("A0 00 00 05 24", "Rupay"), //
-	ПРО100("A0 00 00 04 32", "ПРО100");
+	VISA("VISA", "^4[0-9]{12,15}", "A0 00 00 00 03"), //
+	MASTER_CARD("Master card", "^5[0-5][0-9]{14}", "A0 00 00 00 04", "A0 00 00 00 05"), //
+	AMERICAN_EXPRESS("American express", "^3[47][0-9]{13}", "A0 00 00 00 25"), //
+	CB("CB", null, "A0 00 00 00 42"), //
+	LINK("LINK", null, "A0 00 00 00 29"), //
+	JCB("JCB", "^35[0-9]{14}", "A0 00 00 00 65"), //
+	DANKORT("Dankort", null, "A0 00 00 01 21"), //
+	COGEBAN("CoGeBan", null, "A0 00 00 01 41"), //
+	DISCOVER("Discover", "(6011|65|64[4-9]|622)[0-9]*", "A0 00 00 01 52"), //
+	BANRISUL("Banrisul", null, "A0 00 00 01 54"), //
+	SPAN("Saudi Payments Network", null, "A0 00 00 02 28"), //
+	INTERAC("Interac", null, "A0 00 00 02 77"), //
+	ZIP("Discover Card", null, "A0 00 00 03 24"), //
+	UNIONPAY("UnionPay", "^62[0-9]{14,17}", "A0 00 00 03 33"), //
+	EAPS("Euro Alliance of Payment Schemes", null, "A0 00 00 03 59"), //
+	VERVE("Verve", null, "A0 00 00 03 71"), //
+	TENN("The Exchange Network ATM Network", null, "A0 00 00 04 39"), //
+	RUPAY("Rupay", null, "A0 00 00 05 24"), //
+	ПРО100("ПРО100", null, "A0 00 00 04 32");
 
 	/**
-	 * Card AID or partial AID (RID)
+	 * array of Card AID or partial AID (RID)
 	 */
-	private final String aid;
+	private final String[] aids;
 
 	/**
-	 * Aid in byte
+	 * array of Aid in byte
 	 */
-	private final byte[] aidByte;
+	private final byte[][] aidsByte;
 
 	/**
 	 * Card scheme (card number IIN ranges)
@@ -65,26 +64,14 @@ public enum EmvCardScheme {
 	 * @param pRegex
 	 *            Card regex
 	 */
-	private EmvCardScheme(final String pAid, final String pScheme, final String pRegex) {
-		aid = pAid;
-		aidByte = BytesUtils.fromString(pAid);
+	private EmvCardScheme(final String pScheme, final String pRegex, final String... pAids) {
+		aids = pAids;
+		aidsByte = new byte[pAids.length][];
+		for (int i = 0; i < aids.length; i++) {
+			aidsByte[i] = BytesUtils.fromString(pAids[i]);
+		}
 		name = pScheme;
 		regex = pRegex;
-	}
-
-	/**
-	 * Constructor using fields
-	 * 
-	 * @param pAid
-	 *            Card AID or RID
-	 * @param pScheme
-	 *            scheme name
-	 */
-	private EmvCardScheme(final String pAid, final String pScheme) {
-		aid = pAid;
-		aidByte = BytesUtils.fromString(pAid);
-		name = pScheme;
-		regex = null;
 	}
 
 	/**
@@ -92,8 +79,8 @@ public enum EmvCardScheme {
 	 * 
 	 * @return the aid
 	 */
-	public String getAid() {
-		return aid;
+	public String[] getAid() {
+		return aids;
 	}
 
 	/**
@@ -117,9 +104,11 @@ public enum EmvCardScheme {
 		if (pAid != null) {
 			String aid = StringUtils.deleteWhitespace(pAid);
 			for (EmvCardScheme val : EmvCardScheme.values()) {
-				if (aid.startsWith(StringUtils.deleteWhitespace(val.getAid()))) {
-					ret = val;
-					break;
+				for (String schemeAid : val.getAid()) {
+					if (aid.startsWith(StringUtils.deleteWhitespace(schemeAid))) {
+						ret = val;
+						break;
+					}
 				}
 			}
 		}
@@ -151,8 +140,8 @@ public enum EmvCardScheme {
 	 * 
 	 * @return the aidByte
 	 */
-	public byte[] getAidByte() {
-		return aidByte;
+	public byte[][] getAidByte() {
+		return aidsByte;
 	}
 
 }

@@ -13,8 +13,7 @@ public class EmvCardTest {
 		card.setAid("0000");
 		card.setApplicationLabel("VISA");
 		card.setCardNumber("12345678");
-		card.setFisrtName("Test");
-		card.setLastName("lastname");
+		card.setHolderName("Test");
 		card.setAtrDescription(Arrays.asList("test", "ok"));
 
 		Assertions.assertThat(card.getAtrDescription()).isEqualTo(Arrays.asList("test", "ok"));

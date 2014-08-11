@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.devnied.emvnfccard.parser.IProvider;
+import com.github.devnied.emvnfccard.utils.TlvUtil;
 
 import fr.devnied.bitlib.BytesUtils;
 
@@ -43,7 +44,11 @@ public class PpseProviderMasterCardTest implements IProvider {
 		}
 
 		LOGGER.debug("resp: " + response);
-		return BytesUtils.fromString(response);
+		byte[] ret = BytesUtils.fromString(response);
+		try {
+			LOGGER.debug(TlvUtil.prettyPrintAPDUResponse(ret));
+		} catch (Exception e) {
+		}
+		return ret;
 	}
-
 }
