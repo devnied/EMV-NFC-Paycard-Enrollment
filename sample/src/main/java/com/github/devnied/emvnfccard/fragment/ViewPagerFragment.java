@@ -18,7 +18,7 @@ import com.github.devnied.emvnfccard.fragment.viewPager.IFragment;
 import com.github.devnied.emvnfccard.fragment.viewPager.impl.CardDetailFragment;
 import com.github.devnied.emvnfccard.fragment.viewPager.impl.LogFragment;
 import com.github.devnied.emvnfccard.fragment.viewPager.impl.TransactionHistoryFragment;
-import com.github.devnied.emvnfccard.model.EMVTransactionRecord;
+import com.github.devnied.emvnfccard.model.EmvTransactionRecord;
 import com.github.devnied.emvnfccard.view.SlidingTabLayout;
 
 /**
@@ -60,7 +60,7 @@ public class ViewPagerFragment extends Fragment implements IRefreshable {
 
 	@Override
 	public void onViewCreated(final View view, final Bundle savedInstanceState) {
-		List<EMVTransactionRecord> transactions = null;
+		List<EmvTransactionRecord> transactions = null;
 		if (mContentActivity.getCard() != null) {
 			transactions = mContentActivity.getCard().getListTransactions();
 		}
@@ -68,7 +68,7 @@ public class ViewPagerFragment extends Fragment implements IRefreshable {
 		// Add fragments
 		fragments.add(new CardDetailFragment(mContentActivity.getCard(), getString(R.string.viewpager_carddetail)));
 		fragments.add(new TransactionHistoryFragment(transactions, getString(R.string.viewpager_transactions),
-				transactions != null));
+				transactions != null && !transactions.isEmpty()));
 		fragments.add(new LogFragment(mContentActivity.getLog(), getString(R.string.viewpager_log)));
 		// View pager
 		mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
@@ -82,7 +82,7 @@ public class ViewPagerFragment extends Fragment implements IRefreshable {
 
 			@Override
 			public int getIndicatorColor(final int position) {
-				return Color.parseColor("#80d8ff");
+				return Color.parseColor("#b3e5fc");
 			}
 
 			@Override

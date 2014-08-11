@@ -9,11 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
 
 import com.github.devnied.emvnfccard.R;
 import com.github.devnied.emvnfccard.adapter.TransactionsAdapter;
 import com.github.devnied.emvnfccard.fragment.viewPager.AbstractFragment;
-import com.github.devnied.emvnfccard.model.EMVTransactionRecord;
+import com.github.devnied.emvnfccard.model.EmvTransactionRecord;
 
 /**
  * View pager fragment used to display transaction history
@@ -21,12 +22,12 @@ import com.github.devnied.emvnfccard.model.EMVTransactionRecord;
  * @author Millau Julien
  * 
  */
-public class TransactionHistoryFragment extends AbstractFragment {
+public class TransactionHistoryFragment extends AbstractFragment implements OnChildClickListener {
 
 	/**
 	 * Transaction list
 	 */
-	private List<EMVTransactionRecord> mTransactionList = new ArrayList<EMVTransactionRecord>();
+	private List<EmvTransactionRecord> mTransactionList = new ArrayList<EmvTransactionRecord>();
 
 	/**
 	 * List adapter
@@ -48,7 +49,7 @@ public class TransactionHistoryFragment extends AbstractFragment {
 	 * @param pEnable
 	 *            boolean to enable or disable fragment
 	 */
-	public TransactionHistoryFragment(final List<EMVTransactionRecord> pTransactionList, final String pTitle,
+	public TransactionHistoryFragment(final List<EmvTransactionRecord> pTransactionList, final String pTitle,
 			final boolean pEnable) {
 		super(pTitle, pEnable);
 		if (pTransactionList != null && !pTransactionList.isEmpty()) {
@@ -58,14 +59,14 @@ public class TransactionHistoryFragment extends AbstractFragment {
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.list_transaction_history, container, false);
+		return inflater.inflate(R.layout.transaction_list_history, container, false);
 	}
 
 	@Override
 	public void onViewCreated(final View view, final Bundle savedInstanceState) {
 		mExpandableListView = (ExpandableListView) view.findViewById(R.id.list_event);
 		mAdapter = new TransactionsAdapter(mTransactionList);
-		mExpandableListView.setEmptyView(view.findViewById(R.id.emptyView_event));
+		mExpandableListView.setOnChildClickListener(this);
 		mExpandableListView.setAdapter(mAdapter);
 	}
 
@@ -74,7 +75,7 @@ public class TransactionHistoryFragment extends AbstractFragment {
 	 * 
 	 * @param pBuff
 	 */
-	public void update(final List<EMVTransactionRecord> pTransactionRecords) {
+	public void update(final List<EmvTransactionRecord> pTransactionRecords) {
 		mTransactionList.clear();
 		if (pTransactionRecords != null && !pTransactionRecords.isEmpty()) {
 			mTransactionList.addAll(pTransactionRecords);
@@ -83,6 +84,13 @@ public class TransactionHistoryFragment extends AbstractFragment {
 		if (mAdapter != null) {
 			mAdapter.notifyDataSetChanged();
 		}
+	}
+
+	@Override
+	public boolean onChildClick(final ExpandableListView parent, final View v, final int groupPosition, final int childPosition,
+			final long id) {
+		parent.collapseGroup(groupPosition);
+		return true;
 	}
 
 }

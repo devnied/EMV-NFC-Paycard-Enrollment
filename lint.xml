@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="ContentDescription" severity="ignore" />
+    <issue id="InlinedApi">
+        <ignore path="sample/src/main/java/com/github/devnied/emvnfccard/activity/HomeActivity.java" />
+    </issue>
+    <issue id="SuspiciousImport" severity="ignore" />
+</lint>

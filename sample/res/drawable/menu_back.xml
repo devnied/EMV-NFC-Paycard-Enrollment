@@ -5,10 +5,6 @@
         android:drawable="@color/menu_back_selected"/>
     
     <item 
-        android:state_pressed="true"
-        android:drawable="@color/menu_back_selected"/>
-    
-    <item 
         android:state_activated="true"
         android:drawable="@color/menu_back_selected"/>
     

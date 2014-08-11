@@ -3,7 +3,7 @@ package com.github.devnied.emvnfccard.utils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.github.devnied.emvnfccard.R;
-import com.github.devnied.emvnfccard.enums.EMVCardScheme;
+import com.github.devnied.emvnfccard.enums.EmvCardScheme;
 
 /**
  * Utils class for card
@@ -23,11 +23,11 @@ public final class CardUtils {
 	 * 
 	 * @return the card number formated
 	 */
-	public static String formatCardNumber(final String pCardNumber, final EMVCardScheme pType) {
+	public static String formatCardNumber(final String pCardNumber, final EmvCardScheme pType) {
 		String ret = StringUtils.EMPTY;
 		if (StringUtils.isNotBlank(pCardNumber)) {
 			// format amex
-			if (pType != null && pType == EMVCardScheme.AMERICAN_EXPRESS) {
+			if (pType != null && pType == EmvCardScheme.AMERICAN_EXPRESS) {
 				ret = StringUtils.deleteWhitespace(pCardNumber).replaceFirst("\\d{4}", "$0 ").replaceFirst("\\d{6}", "$0 ")
 						.replaceFirst("\\d{5}", "$0").trim();
 			} else {
@@ -61,15 +61,14 @@ public final class CardUtils {
 	 *            card enum
 	 * @return resource id
 	 */
-	public static int getResourceIdCardType(final EMVCardScheme pEnum) {
+	public static int getResourceIdCardType(final EmvCardScheme pEnum) {
 		int ret = 0;
 		if (pEnum != null) {
 			switch (pEnum) {
 			case AMERICAN_EXPRESS:
 				ret = R.drawable.amex;
 				break;
-			case MASTER_CARD1:
-			case MASTER_CARD2:
+			case MASTER_CARD:
 				ret = R.drawable.mastercard;
 				break;
 			case VISA:

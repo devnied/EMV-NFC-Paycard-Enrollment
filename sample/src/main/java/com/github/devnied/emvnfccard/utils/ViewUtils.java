@@ -47,6 +47,19 @@ public final class ViewUtils {
 	}
 
 	/**
+	 * This method is used to get a String ressources by name
+	 * 
+	 * @param pContext
+	 *            application context
+	 * @param pName
+	 *            resource name
+	 * @return
+	 */
+	public static int getStringRessourceByName(final Context pContext, final String pName) {
+		return pContext.getResources().getIdentifier(pName, "string", pContext.getPackageName());
+	}
+
+	/**
 	 * Private constructor
 	 */
 	private ViewUtils() {

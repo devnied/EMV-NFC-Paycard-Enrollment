@@ -10,6 +10,7 @@ import java.util.List;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -34,14 +35,17 @@ import android.widget.ListView;
 import com.github.devnied.emvnfccard.BuildConfig;
 import com.github.devnied.emvnfccard.R;
 import com.github.devnied.emvnfccard.adapter.MenuDrawerAdapter;
-import com.github.devnied.emvnfccard.enums.EMVCardScheme;
+import com.github.devnied.emvnfccard.enums.EmvCardScheme;
 import com.github.devnied.emvnfccard.fragment.AboutFragment;
 import com.github.devnied.emvnfccard.fragment.ConfigurationFragment;
 import com.github.devnied.emvnfccard.fragment.IRefreshable;
 import com.github.devnied.emvnfccard.fragment.ViewPagerFragment;
-import com.github.devnied.emvnfccard.model.EMVCard;
-import com.github.devnied.emvnfccard.model.EMVTransactionRecord;
-import com.github.devnied.emvnfccard.parser.EMVParser;
+import com.github.devnied.emvnfccard.model.EmvCard;
+import com.github.devnied.emvnfccard.model.EmvTransactionRecord;
+import com.github.devnied.emvnfccard.model.enums.CountryCodeEnum;
+import com.github.devnied.emvnfccard.model.enums.CurrencyEnum;
+import com.github.devnied.emvnfccard.model.enums.TransactionTypeEnum;
+import com.github.devnied.emvnfccard.parser.EmvParser;
 import com.github.devnied.emvnfccard.provider.Provider;
 import com.github.devnied.emvnfccard.utils.ConstantUtils;
 import com.github.devnied.emvnfccard.utils.CroutonUtils;
@@ -56,6 +60,7 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
  * @author MILLAU Julien
  * 
  */
+@SuppressLint("InlinedApi")
 public class HomeActivity extends Activity implements OnItemClickListener, IContentActivity {
 
 	/**
@@ -99,7 +104,7 @@ public class HomeActivity extends Activity implements OnItemClickListener, ICont
 	/**
 	 * Emv card
 	 */
-	private EMVCard mReadCard;
+	private EmvCard mReadCard;
 
 	/**
 	 * Reference for refreshable content
@@ -225,7 +230,7 @@ public class HomeActivity extends Activity implements OnItemClickListener, ICont
 				/**
 				 * Emv Card
 				 */
-				private EMVCard mCard;
+				private EmvCard mCard;
 
 				/**
 				 * Boolean to indicate exception
@@ -263,7 +268,7 @@ public class HomeActivity extends Activity implements OnItemClickListener, ICont
 
 						mProvider.setmTagCom(mTagcomm);
 
-						EMVParser parser = new EMVParser(mProvider, true);
+						EmvParser parser = new EmvParser(mProvider, true);
 						mCard = parser.readEmvCard();
 
 					} catch (IOException e) {
@@ -307,18 +312,46 @@ public class HomeActivity extends Activity implements OnItemClickListener, ICont
 			for (int i = 0; i < 6000; i++) {
 				buff.append("=============<br/>");
 			}
-			mReadCard = new EMVCard();
+			mReadCard = new EmvCard();
 			mReadCard.setCardNumber("4123456789012345");
 			mReadCard.setAid("A0 00 00 000310 10");
 			mReadCard.setLeftPinTry(3);
 			mReadCard.setAtrDescription(Arrays.asList("German Health Insurance Card",
 					"LogCard from concept2.com (a indoor rower manufacturer)", "I2C card"));
 			mReadCard.setApplicationLabel("CB");
+			mReadCard.setHolderName("test test");
 			mReadCard.setExpireDate(new Date());
-			mReadCard.setType(EMVCardScheme.VISA);
-			List<EMVTransactionRecord> records = new ArrayList<EMVTransactionRecord>();
-			records.add(new EMVTransactionRecord());
-			mReadCard.setListPayment(records);
+			mReadCard.setType(EmvCardScheme.VISA);
+			List<EmvTransactionRecord> records = new ArrayList<EmvTransactionRecord>();
+			// payment
+			EmvTransactionRecord payment = new EmvTransactionRecord();
+			payment.setAmount((float) 100.0);
+			payment.setCurrency(CurrencyEnum.EUR);
+			payment.setCyptogramData("12");
+			payment.setTerminalCountry(CountryCodeEnum.FR);
+			payment.setTransactionDate(new Date());
+			payment.setTransactionType(TransactionTypeEnum.REFUND);
+			records.add(payment);
+
+			payment = new EmvTransactionRecord();
+			payment.setAmount((float) 12.0);
+			payment.setCurrency(CurrencyEnum.USD);
+			payment.setCyptogramData("40");
+			payment.setTerminalCountry(CountryCodeEnum.US);
+			payment.setTransactionDate(new Date());
+			payment.setTransactionType(TransactionTypeEnum.PURCHASE);
+			records.add(payment);
+
+			payment = new EmvTransactionRecord();
+			payment.setAmount((float) 120.0);
+			payment.setCurrency(CurrencyEnum.USD);
+			payment.setCyptogramData("40");
+			payment.setTerminalCountry(CountryCodeEnum.US);
+			payment.setTransactionDate(new Date());
+			payment.setTransactionType(TransactionTypeEnum.PURCHASE);
+			records.add(payment);
+
+			mReadCard.setListTransactions(records);
 			refreshContent();
 			CroutonUtils.display(HomeActivity.this, getText(R.string.card_read), true);
 		} else {
@@ -392,7 +425,7 @@ public class HomeActivity extends Activity implements OnItemClickListener, ICont
 	}
 
 	@Override
-	public EMVCard getCard() {
+	public EmvCard getCard() {
 		return mReadCard;
 	}
 

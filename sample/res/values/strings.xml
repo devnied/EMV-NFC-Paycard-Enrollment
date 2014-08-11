@@ -4,7 +4,7 @@
     
     <!-- Msg -->
     <string name="card_read">Card read</string>
-    <string name="card_reading">Reading in progress...</string>
+    <string name="card_reading">Reading in progress&#8230;</string>
     <string name="card_reading_desc">Please do not remove or move card during reading.</string>
     <string name="msg_nfc_disable">Please enable NFC and press back to return to this application.</string>
     <string name="msg_activate_nfc">OK</string>
@@ -30,8 +30,22 @@
     <string name="extended_title_application_label">Application :</string>
     <string name="extended_title_pin_try">Pin try left :</string>
     <string name="extended_title_card_type">Card type :</string>
+    <string name="extended_card_holder_name">Holder name :</string>
     <string name="extended_title_possible_bank">Card issuer :\n(possible)</string>
-    <string name="extended_title_times"> Time(s)</string>
+    <string name="extended_title_times">Time(s)</string>
+    
+    <!-- Transaction detail -->
+    <string name="transaction_type">Transaction type :</string>
+    <string name="transaction_cryptogram">Cryptogram :</string>
+    <string name="transaction_country">Terminal Country :</string>
+    <string name="transaction_unknown">Unknown</string>
+    
+    <!-- Transaction type -->
+    <string name="transaction_type_0">Purchase</string>
+    <string name="transaction_type_1">Cash advance</string>
+    <string name="transaction_type_9">Cash back</string>
+    <string name="transaction_type_32">Refund</string>
+    
     
     <!-- About -->
     <string name="about_content">Application written by <a href="http://julien-millau.fr">Julien Millau</a>.\n\nSource Code and documentation available on <a href="https://github.com/devnied/EMV-NFC-Paycard-Enrollment">Github</a>.</string>

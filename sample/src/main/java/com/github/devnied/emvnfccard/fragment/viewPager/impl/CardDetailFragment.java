@@ -1,6 +1,7 @@
 package com.github.devnied.emvnfccard.fragment.viewPager.impl;
 
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -17,7 +18,7 @@ import android.widget.TextView;
 import com.github.devnied.emvnfccard.EmvApplication;
 import com.github.devnied.emvnfccard.R;
 import com.github.devnied.emvnfccard.fragment.viewPager.AbstractFragment;
-import com.github.devnied.emvnfccard.model.EMVCard;
+import com.github.devnied.emvnfccard.model.EmvCard;
 import com.github.devnied.emvnfccard.utils.CardUtils;
 import com.github.devnied.emvnfccard.utils.ViewUtils;
 
@@ -32,7 +33,7 @@ public class CardDetailFragment extends AbstractFragment {
 	/**
 	 * Card to display
 	 */
-	private EMVCard mCard;
+	private EmvCard mCard;
 
 	/**
 	 * Empty view
@@ -72,7 +73,7 @@ public class CardDetailFragment extends AbstractFragment {
 	 * @param pEnable
 	 *            fragment visibility
 	 */
-	public CardDetailFragment(final EMVCard pCard, final String pTitle) {
+	public CardDetailFragment(final EmvCard pCard, final String pTitle) {
 		super(pTitle, true);
 		mCard = pCard;
 	}
@@ -106,7 +107,7 @@ public class CardDetailFragment extends AbstractFragment {
 			mScrollView.setVisibility(View.VISIBLE);
 			// Update content
 			mCardNumber.setText(CardUtils.formatCardNumber(mCard.getCardNumber(), mCard.getType()));
-			SimpleDateFormat format = new SimpleDateFormat("MM/yy");
+			SimpleDateFormat format = new SimpleDateFormat("MM/yy", Locale.getDefault());
 			mCardValidity.setText(format.format(mCard.getExpireDate()));
 			mImageView.setImageResource(CardUtils.getResourceIdCardType(mCard.getType()));
 
@@ -114,6 +115,12 @@ public class CardDetailFragment extends AbstractFragment {
 
 			// Remove all existing view
 			mExtendedLayout.removeAllViews();
+
+			// Card holder name
+			if (mCard.getHolderName() != null && mCard.getHolderName().length() > 1) {
+				createRaw(getString(R.string.extended_card_holder_name), mCard.getHolderName());
+			}
+
 			// card AID
 			if (StringUtils.isNotEmpty(mCard.getAid())) {
 				createRaw(getString(R.string.extended_title_AID), CardUtils.formatAid(mCard.getAid()));
@@ -153,7 +160,7 @@ public class CardDetailFragment extends AbstractFragment {
 	 *            key value
 	 */
 	private void createRaw(final String pKeyName, final String pValue) {
-		View v = View.inflate(getActivity(), R.layout.extended_card_detail_raw, null);
+		View v = View.inflate(getActivity(), R.layout.tablelayout_raw, null);
 		TextView title = (TextView) v.findViewById(R.id.extended_raw_title);
 		title.setText(pKeyName);
 		TextView content = (TextView) v.findViewById(R.id.extended_raw_content);
@@ -161,7 +168,7 @@ public class CardDetailFragment extends AbstractFragment {
 		mExtendedLayout.addView(v);
 	}
 
-	public void update(final EMVCard pCard) {
+	public void update(final EmvCard pCard) {
 		mCard = pCard;
 		updateContent();
 	}

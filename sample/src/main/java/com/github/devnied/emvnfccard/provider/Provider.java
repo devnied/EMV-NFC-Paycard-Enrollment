@@ -6,10 +6,10 @@ import android.nfc.tech.IsoDep;
 import android.util.Log;
 
 import com.github.devnied.emvnfccard.BuildConfig;
-import com.github.devnied.emvnfccard.enums.SWEnum;
+import com.github.devnied.emvnfccard.enums.SwEnum;
 import com.github.devnied.emvnfccard.exception.CommunicationException;
 import com.github.devnied.emvnfccard.parser.IProvider;
-import com.github.devnied.emvnfccard.utils.TLVUtil;
+import com.github.devnied.emvnfccard.utils.TlvUtil;
 
 import fr.devnied.bitlib.BytesUtils;
 
@@ -56,13 +56,13 @@ public class Provider implements IProvider {
 			log.append("<font color='blue'><b>resp:</b> " + BytesUtils.bytesToString(response)).append("</font><br/>");
 			Log.d(TAG, "resp: " + BytesUtils.bytesToString(response));
 			try {
-				Log.d(TAG, "resp: " + TLVUtil.prettyPrintAPDUResponse(response));
-				SWEnum val = SWEnum.getSW(response);
+				Log.d(TAG, "resp: " + TlvUtil.prettyPrintAPDUResponse(response));
+				SwEnum val = SwEnum.getSW(response);
 				if (val != null) {
 					Log.d(TAG, "resp: " + val.getDetail());
 				}
 				log.append("<pre>")
-						.append(TLVUtil.prettyPrintAPDUResponse(response).replace("\n", "<br/>").replace(" ", "&nbsp;"))
+						.append(TlvUtil.prettyPrintAPDUResponse(response).replace("\n", "<br/>").replace(" ", "&nbsp;"))
 						.append("</pre><br/>");
 			} catch (Exception e) {
 			}

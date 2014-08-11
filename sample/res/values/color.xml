@@ -6,6 +6,6 @@
     
     <!-- Material color -->
     <color name="black_error">#ff616161</color>
-    <color name="green_success">#ff8bc34a</color>
+    <color name="green_success">#ff9ccc65</color>
     
 </resources>

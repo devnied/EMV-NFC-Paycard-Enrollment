@@ -8,10 +8,11 @@
 		</shape>
 	</item>
 
-	<item android:bottom="2dp">
+	<item>
 		<shape android:shape="rectangle"
 			android:dither="true">
-			<corners android:radius="2dp" />
+			<corners android:bottomRightRadius="0dp" android:bottomLeftRadius="0dp" 
+     android:topLeftRadius="2dp" android:topRightRadius="2dp"/>
 			<solid android:color="@android:color/white" />
 			<padding android:bottom="13dp"
 				android:left="13dp"

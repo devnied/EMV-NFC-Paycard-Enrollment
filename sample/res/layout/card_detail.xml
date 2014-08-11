@@ -38,7 +38,7 @@
                     android:textSize="13sp"
                     android:textStyle="bold" />
 
-                <include layout="@layout/card_item" />
+                <include layout="@layout/card_representation" />
             </LinearLayout>
 
             <LinearLayout

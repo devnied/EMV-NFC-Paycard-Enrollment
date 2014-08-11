@@ -1,7 +1,7 @@
 package com.github.devnied.emvnfccard.activity;
 
 import com.github.devnied.emvnfccard.fragment.IRefreshable;
-import com.github.devnied.emvnfccard.model.EMVCard;
+import com.github.devnied.emvnfccard.model.EmvCard;
 
 public interface IContentActivity {
 
@@ -17,7 +17,7 @@ public interface IContentActivity {
 	 * 
 	 * @return
 	 */
-	EMVCard getCard();
+	EmvCard getCard();
 
 	/**
 	 * Method to set refreshabe content
