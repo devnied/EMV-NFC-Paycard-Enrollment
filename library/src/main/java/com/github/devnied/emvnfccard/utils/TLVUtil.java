@@ -18,11 +18,13 @@ package com.github.devnied.emvnfccard.utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.github.devnied.emvnfccard.enums.SwEnum;
 import com.github.devnied.emvnfccard.enums.TagValueTypeEnum;
 import com.github.devnied.emvnfccard.exception.TlvException;
 import com.github.devnied.emvnfccard.iso7816emv.EmvTags;
@@ -65,7 +67,7 @@ public final class TlvUtil {
 	// This is just a list of Tag And Lengths (eg DOLs)
 	public static String getFormattedTagAndLength(final byte[] data, final int indentLength) {
 		StringBuilder buf = new StringBuilder();
-		String indent = StringUtils.leftPad(" ", indentLength);
+		String indent = getSpaces(indentLength);
 		ByteArrayInputStream stream = new ByteArrayInputStream(data);
 
 		boolean firstLine = true;
@@ -390,6 +392,22 @@ public final class TlvUtil {
 
 		while (stream.available() > 0) {
 			buf.append("\n");
+			if (stream.available() == 2) {
+				stream.mark(0);
+				byte[] value = new byte[2];
+				try {
+					stream.read(value);
+				} catch (IOException e) {
+				}
+				SwEnum sw = SwEnum.getSW(value);
+				if (sw != null) {
+					buf.append(getSpaces(0));
+					buf.append(BytesUtils.bytesToString(value)).append(" -- ");
+					buf.append(sw.getDetail());
+					continue;
+				}
+				stream.reset();
+			}
 
 			buf.append(getSpaces(indentLength));
 
@@ -407,7 +425,7 @@ public final class TlvUtil {
 			buf.append(" -- ");
 			buf.append(tag.getName());
 
-			int extraIndent = lengthBytes.length * 3 + tagBytes.length * 3;
+			int extraIndent = (lengthBytes.length + tagBytes.length) * 3;
 
 			if (tag.isConstructed()) {
 				// indentLength += extraIndent; //TODO check this
@@ -430,7 +448,7 @@ public final class TlvUtil {
 	}
 
 	public static String getSpaces(final int length) {
-		return StringUtils.leftPad(" ", length);
+		return StringUtils.leftPad(StringUtils.EMPTY, length);
 	}
 
 	public static String prettyPrintHex(final String in, final int indent) {

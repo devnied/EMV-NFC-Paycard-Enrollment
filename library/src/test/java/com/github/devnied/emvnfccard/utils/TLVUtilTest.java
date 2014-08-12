@@ -26,12 +26,13 @@ public class TlvUtilTest {
 	private static final byte[] DATA = BytesUtils.fromString("70 63 61 13 4f 09 a0 00 00 03 15 10 10 05 28 50"
 			+ "03 50 49 4e 87 01 01 61 15 4f 07 a0 00 00 00 04 30 60 50 07 4d 41 45 53 54 52 4f 87 01 02 61 1d"
 			+ "4f 07 a0 00 00 00 04 80 02 50 0f 53 65 63 75 72 65 43 6f 64 65 20 41 75 74 68 87 01 00 61 16 4f"
-			+ "07 a0 00 00 03 15 60 20 50 08 43 68 69 70 6b 6e 69 70 87 01 00");
+			+ "07 a0 00 00 03 15 60 20 50 08 43 68 69 70 6b 6e 69 70 87 01 00 90 00");
 
 	@Test
 	public void test() {
 
-		String expResult = "\n 70 63 -- Record Template (EMV Proprietary)\n" //
+		String expResult = "\n"//
+				+ "70 63 -- Record Template (EMV Proprietary)\n" //
 				+ "      61 13 -- Application Template\n" //
 				+ "            4F 09 -- Application Identifier (AID) - card\n" //
 				+ "                  A0 00 00 03 15 10 10 05 28 (BINARY)\n" //
@@ -59,7 +60,8 @@ public class TlvUtilTest {
 				+ "            50 08 -- Application Label\n"//
 				+ "                  43 68 69 70 6B 6E 69 70 (=Chipknip)\n"//
 				+ "            87 01 -- Application Priority Indicator\n" //
-				+ "                  00 (BINARY)";
+				+ "                  00 (BINARY)\n" //
+				+ "90 00 -- Command successfully executed (OK)";
 
 		Assertions.assertThat(TlvUtil.prettyPrintAPDUResponse(DATA)).isEqualTo(expResult);
 	}

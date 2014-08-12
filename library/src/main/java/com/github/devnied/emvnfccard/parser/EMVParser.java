@@ -338,16 +338,18 @@ public class EmvParser {
 		// Check empty PDOL
 		if (!ResponseUtils.isSucceed(gpo)) {
 			gpo = getGetProcessingOptions(null, pProvider);
+			// Check response
+			if (!ResponseUtils.isSucceed(gpo)) {
+				return null;
+			}
 		}
 
-		if (ResponseUtils.isSucceed(gpo)) {
-			// Extract commons card data (number, expire date, ...)
-			card = extractCommonsCardData(gpo);
+		// Extract commons card data (number, expire date, ...)
+		card = extractCommonsCardData(gpo);
 
-			// Extract log entry
-			if (card != null) {
-				card.setListTransactions(extractLogEntry(logEntry));
-			}
+		// Extract log entry
+		if (card != null) {
+			card.setListTransactions(extractLogEntry(logEntry));
 		}
 
 		return card;
