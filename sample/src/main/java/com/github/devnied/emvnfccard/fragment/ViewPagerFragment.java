@@ -72,7 +72,7 @@ public class ViewPagerFragment extends Fragment implements IRefreshable {
 		fragments.add(new LogFragment(mContentActivity.getLog(), getString(R.string.viewpager_log)));
 		// View pager
 		mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
-		mViewPagerAdapter = new ViewPagerAdapter(getFragmentManager(), fragments);
+		mViewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager(), fragments);
 		mViewPager.setAdapter(mViewPagerAdapter);
 
 		// Tab layout
@@ -101,6 +101,12 @@ public class ViewPagerFragment extends Fragment implements IRefreshable {
 	public ViewPagerFragment(final IContentActivity pContent) {
 		mContentActivity = pContent;
 		pContent.setRefreshableContent(this);
+	}
+
+	/**
+	 * Default constructor
+	 */
+	public ViewPagerFragment() {
 	}
 
 	@Override
