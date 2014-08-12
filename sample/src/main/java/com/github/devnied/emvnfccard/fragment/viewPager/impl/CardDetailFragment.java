@@ -99,55 +99,57 @@ public class CardDetailFragment extends AbstractFragment {
 	}
 
 	/**
-	 * Methos used to update card detail content
+	 * Method used to update card detail content
 	 */
 	private void updateContent() {
-		if (mCard != null) {
-			mEmptyView.setVisibility(View.GONE);
-			mScrollView.setVisibility(View.VISIBLE);
-			// Update content
-			mCardNumber.setText(CardUtils.formatCardNumber(mCard.getCardNumber(), mCard.getType()));
-			SimpleDateFormat format = new SimpleDateFormat("MM/yy", Locale.getDefault());
-			mCardValidity.setText(format.format(mCard.getExpireDate()));
-			mImageView.setImageResource(CardUtils.getResourceIdCardType(mCard.getType()));
+		if (getActivity() != null) {
+			if (mCard != null) {
+				mEmptyView.setVisibility(View.GONE);
+				mScrollView.setVisibility(View.VISIBLE);
+				// Update content
+				mCardNumber.setText(CardUtils.formatCardNumber(mCard.getCardNumber(), mCard.getType()));
+				SimpleDateFormat format = new SimpleDateFormat("MM/yy", Locale.getDefault());
+				mCardValidity.setText(format.format(mCard.getExpireDate()));
+				mImageView.setImageResource(CardUtils.getResourceIdCardType(mCard.getType()));
 
-			// Extended card data
+				// Extended card data
 
-			// Remove all existing view
-			mExtendedLayout.removeAllViews();
+				// Remove all existing view
+				mExtendedLayout.removeAllViews();
 
-			// Card holder name
-			if (mCard.getHolderName() != null && mCard.getHolderName().length() > 1) {
-				createRaw(getString(R.string.extended_card_holder_name), mCard.getHolderName());
+				// Card holder name
+				if (mCard.getHolderName() != null && mCard.getHolderName().length() > 1) {
+					createRaw(getString(R.string.extended_card_holder_name), mCard.getHolderName());
+				}
+
+				// card AID
+				if (StringUtils.isNotEmpty(mCard.getAid())) {
+					createRaw(getString(R.string.extended_title_AID), CardUtils.formatAid(mCard.getAid()));
+				}
+
+				// Card Application label
+				if (StringUtils.isNotEmpty(mCard.getApplicationLabel())) {
+					createRaw(getString(R.string.extended_title_application_label), mCard.getApplicationLabel());
+				}
+
+				// Card type
+				if (mCard.getType() != null) {
+					createRaw(getString(R.string.extended_title_card_type), mCard.getType().getName());
+				}
+
+				// Pin try left
+				createRaw(getString(R.string.extended_title_pin_try), mCard.getLeftPinTry() + " "
+						+ getString(R.string.extended_title_times));
+
+				// Atr desc
+				if (mCard.getAtrDescription() != null && !mCard.getAtrDescription().isEmpty()) {
+					createRaw(getString(R.string.extended_title_possible_bank), StringUtils.join(mCard.getAtrDescription(), "\n"));
+				}
+
+			} else {
+				mEmptyView.setVisibility(View.VISIBLE);
+				mScrollView.setVisibility(View.GONE);
 			}
-
-			// card AID
-			if (StringUtils.isNotEmpty(mCard.getAid())) {
-				createRaw(getString(R.string.extended_title_AID), CardUtils.formatAid(mCard.getAid()));
-			}
-
-			// Card Application label
-			if (StringUtils.isNotEmpty(mCard.getApplicationLabel())) {
-				createRaw(getString(R.string.extended_title_application_label), mCard.getApplicationLabel());
-			}
-
-			// Card type
-			if (mCard.getType() != null) {
-				createRaw(getString(R.string.extended_title_card_type), mCard.getType().getName());
-			}
-
-			// Pin try left
-			createRaw(getString(R.string.extended_title_pin_try), mCard.getLeftPinTry() + " "
-					+ getString(R.string.extended_title_times));
-
-			// Atr desc
-			if (mCard.getAtrDescription() != null && !mCard.getAtrDescription().isEmpty()) {
-				createRaw(getString(R.string.extended_title_possible_bank), StringUtils.join(mCard.getAtrDescription(), "\n"));
-			}
-
-		} else {
-			mEmptyView.setVisibility(View.VISIBLE);
-			mScrollView.setVisibility(View.GONE);
 		}
 	}
 
