@@ -1,5 +1,6 @@
 package com.github.devnied.emvnfccard.model;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -61,7 +62,7 @@ public class EmvCard extends AbstractData {
 	/**
 	 * List of Atr description
 	 */
-	private List<String> atrDescription;
+	private Collection<String> atrDescription;
 
 	/**
 	 * Method used to get the field aid
@@ -225,7 +226,7 @@ public class EmvCard extends AbstractData {
 	 * 
 	 * @return the atrDescription
 	 */
-	public List<String> getAtrDescription() {
+	public Collection<String> getAtrDescription() {
 		return atrDescription;
 	}
 
@@ -235,7 +236,7 @@ public class EmvCard extends AbstractData {
 	 * @param atrDescription
 	 *            the atrDescription to set
 	 */
-	public void setAtrDescription(final List<String> atrDescription) {
+	public void setAtrDescription(final Collection<String> atrDescription) {
 		this.atrDescription = atrDescription;
 	}
 

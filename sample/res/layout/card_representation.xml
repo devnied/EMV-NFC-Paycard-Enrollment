@@ -5,9 +5,7 @@
     android:layout_gravity="center_horizontal"
     android:gravity="center"
     android:orientation="vertical"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp"
-    android:paddingBottom="15dp" >
+    android:paddingBottom="5dp" >
 
     <ImageView
         android:id="@+id/card"

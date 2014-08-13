@@ -2,10 +2,7 @@ package com.github.devnied.emvnfccard.activity;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.Collection;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -32,27 +29,23 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.github.devnied.emvnfccard.BuildConfig;
 import com.github.devnied.emvnfccard.R;
 import com.github.devnied.emvnfccard.adapter.MenuDrawerAdapter;
-import com.github.devnied.emvnfccard.enums.EmvCardScheme;
 import com.github.devnied.emvnfccard.fragment.AboutFragment;
 import com.github.devnied.emvnfccard.fragment.ConfigurationFragment;
 import com.github.devnied.emvnfccard.fragment.IRefreshable;
 import com.github.devnied.emvnfccard.fragment.ViewPagerFragment;
 import com.github.devnied.emvnfccard.model.EmvCard;
-import com.github.devnied.emvnfccard.model.EmvTransactionRecord;
-import com.github.devnied.emvnfccard.model.enums.CountryCodeEnum;
-import com.github.devnied.emvnfccard.model.enums.CurrencyEnum;
-import com.github.devnied.emvnfccard.model.enums.TransactionTypeEnum;
 import com.github.devnied.emvnfccard.parser.EmvParser;
 import com.github.devnied.emvnfccard.provider.Provider;
+import com.github.devnied.emvnfccard.utils.AtrUtils;
 import com.github.devnied.emvnfccard.utils.ConstantUtils;
 import com.github.devnied.emvnfccard.utils.CroutonUtils;
 import com.github.devnied.emvnfccard.utils.NFCUtils;
 import com.github.devnied.emvnfccard.utils.SimpleAsyncTask;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
+import fr.devnied.bitlib.BytesUtils;
 
 /**
  * Main Activity
@@ -182,7 +175,7 @@ public class HomeActivity extends Activity implements OnItemClickListener, ICont
 			mAlertDialog.cancel();
 		}
 		// Check NFC enable
-		if (!NFCUtils.isNfcEnable(getApplicationContext()) && !BuildConfig.DEBUG) {
+		if (!NFCUtils.isNfcEnable(getApplicationContext())) {
 			backToHomeScreen();
 
 			AlertDialog.Builder alertbox = new AlertDialog.Builder(this);
@@ -265,11 +258,15 @@ public class HomeActivity extends Activity implements OnItemClickListener, ICont
 					try {
 						// Open connection
 						mTagcomm.connect();
+						Collection<String> desc = extractATR(mTagcomm);
 
 						mProvider.setmTagCom(mTagcomm);
 
 						EmvParser parser = new EmvParser(mProvider, true);
 						mCard = parser.readEmvCard();
+						if (mCard != null) {
+							mCard.setAtrDescription(desc);
+						}
 
 					} catch (IOException e) {
 						mException = true;
@@ -305,59 +302,81 @@ public class HomeActivity extends Activity implements OnItemClickListener, ICont
 
 	}
 
-	@Override
-	public void onBackPressed() {
-		if (BuildConfig.DEBUG) {
-			StringBuffer buff = mProvider.getLog();
-			for (int i = 0; i < 6000; i++) {
-				buff.append("=============<br/>");
+	/**
+	 * Method used to get historical byte
+	 * 
+	 * @param pIso
+	 */
+	public Collection<String> extractATR(final IsoDep pIso) {
+		Collection<String> ret = null;
+		if (pIso.isConnected()) {
+			// Extract ATS from NFC-A
+			byte[] atr = pIso.getHistoricalBytes();
+			if (atr == null) {
+				// Extract ATS from NFC-B
+				atr = pIso.getHiLayerResponse();
+				if (atr == null) {
+					return ret;
+				}
 			}
-			mReadCard = new EmvCard();
-			mReadCard.setCardNumber("4123456789012345");
-			mReadCard.setAid("A0 00 00 000310 10");
-			mReadCard.setLeftPinTry(3);
-			mReadCard.setAtrDescription(Arrays.asList("German Health Insurance Card",
-					"LogCard from concept2.com (a indoor rower manufacturer)", "I2C card"));
-			mReadCard.setApplicationLabel("CB");
-			mReadCard.setHolderName("test test");
-			mReadCard.setExpireDate(new Date());
-			mReadCard.setType(EmvCardScheme.VISA);
-			List<EmvTransactionRecord> records = new ArrayList<EmvTransactionRecord>();
-			// payment
-			EmvTransactionRecord payment = new EmvTransactionRecord();
-			payment.setAmount((float) 100.0);
-			payment.setCurrency(CurrencyEnum.EUR);
-			payment.setCyptogramData("12");
-			payment.setTerminalCountry(CountryCodeEnum.FR);
-			payment.setTransactionDate(new Date());
-			payment.setTransactionType(TransactionTypeEnum.REFUND);
-			records.add(payment);
-
-			payment = new EmvTransactionRecord();
-			payment.setAmount((float) 12.0);
-			payment.setCurrency(CurrencyEnum.USD);
-			payment.setCyptogramData("40");
-			payment.setTerminalCountry(CountryCodeEnum.US);
-			payment.setTransactionDate(new Date());
-			payment.setTransactionType(TransactionTypeEnum.PURCHASE);
-			records.add(payment);
-
-			payment = new EmvTransactionRecord();
-			payment.setAmount((float) 120.0);
-			payment.setCurrency(CurrencyEnum.USD);
-			payment.setCyptogramData("40");
-			payment.setTerminalCountry(CountryCodeEnum.US);
-			payment.setTransactionDate(new Date());
-			payment.setTransactionType(TransactionTypeEnum.PURCHASE);
-			records.add(payment);
-
-			mReadCard.setListTransactions(records);
-			refreshContent();
-			CroutonUtils.display(HomeActivity.this, getText(R.string.card_read), true);
-		} else {
-			super.onBackPressed();
+			ret = AtrUtils.getDescriptionFromAts(BytesUtils.bytesToString(atr));
 		}
+		return ret;
 	}
+
+	// @Override
+	// public void onBackPressed() {
+	// if (BuildConfig.DEBUG) {
+	// StringBuffer buff = mProvider.getLog();
+	// for (int i = 0; i < 6000; i++) {
+	// buff.append("=============<br/>");
+	// }
+	// mReadCard = new EmvCard();
+	// mReadCard.setCardNumber("4123456789012345");
+	// mReadCard.setAid("A0 00 00 000310 10");
+	// mReadCard.setLeftPinTry(3);
+	// mReadCard.setAtrDescription(Arrays.asList("German Health Insurance Card",
+	// "LogCard from concept2.com (a indoor rower manufacturer)", "I2C card"));
+	// mReadCard.setApplicationLabel("CB");
+	// mReadCard.setHolderName("test test");
+	// mReadCard.setExpireDate(new Date());
+	// mReadCard.setType(EmvCardScheme.VISA);
+	// List<EmvTransactionRecord> records = new ArrayList<EmvTransactionRecord>();
+	// // payment
+	// EmvTransactionRecord payment = new EmvTransactionRecord();
+	// payment.setAmount((float) 100.0);
+	// payment.setCurrency(CurrencyEnum.EUR);
+	// payment.setCyptogramData("12");
+	// payment.setTerminalCountry(CountryCodeEnum.FR);
+	// payment.setTransactionDate(new Date());
+	// payment.setTransactionType(TransactionTypeEnum.REFUND);
+	// records.add(payment);
+	//
+	// payment = new EmvTransactionRecord();
+	// payment.setAmount((float) 12.0);
+	// payment.setCurrency(CurrencyEnum.USD);
+	// payment.setCyptogramData("40");
+	// payment.setTerminalCountry(CountryCodeEnum.US);
+	// payment.setTransactionDate(new Date());
+	// payment.setTransactionType(TransactionTypeEnum.PURCHASE);
+	// records.add(payment);
+	//
+	// payment = new EmvTransactionRecord();
+	// payment.setAmount((float) 120.0);
+	// payment.setCurrency(CurrencyEnum.USD);
+	// payment.setCyptogramData("40");
+	// payment.setTerminalCountry(CountryCodeEnum.US);
+	// payment.setTransactionDate(new Date());
+	// payment.setTransactionType(TransactionTypeEnum.PURCHASE);
+	// records.add(payment);
+	//
+	// mReadCard.setListTransactions(records);
+	// refreshContent();
+	// CroutonUtils.display(HomeActivity.this, getText(R.string.card_read), true);
+	// } else {
+	// super.onBackPressed();
+	// }
+	// }
 
 	@Override
 	protected void onDestroy() {

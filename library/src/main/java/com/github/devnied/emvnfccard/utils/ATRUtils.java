@@ -75,12 +75,34 @@ public final class AtrUtils {
 	 * @return list of description
 	 */
 	@SuppressWarnings("unchecked")
-	public static final Collection<String> getATR(final String pAtr) {
+	public static final Collection<String> getDescription(final String pAtr) {
 		Collection<String> ret = null;
 		if (StringUtils.isNotBlank(pAtr)) {
 			String val = StringUtils.deleteWhitespace(pAtr);
 			for (String key : MAP.keySet()) {
 				if (val.matches("^" + key + "$")) {
+					ret = (Collection<String>) MAP.get(key);
+					break;
+				}
+			}
+		}
+		return ret;
+	}
+
+	/**
+	 * Method used to find ATR description from ATS (Answer to select)
+	 * 
+	 * @param pAts
+	 *            EMV card ATS
+	 * @return card description
+	 */
+	@SuppressWarnings("unchecked")
+	public static final Collection<String> getDescriptionFromAts(final String pAts) {
+		Collection<String> ret = null;
+		if (StringUtils.isNotBlank(pAts)) {
+			String val = StringUtils.deleteWhitespace(pAts);
+			for (String key : MAP.keySet()) {
+				if (key.contains(val)) { // TODO Fix this
 					ret = (Collection<String>) MAP.get(key);
 					break;
 				}
