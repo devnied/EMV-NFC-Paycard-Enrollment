@@ -33,7 +33,8 @@ public class ConfigurationFragment extends PreferenceFragment {
 			public boolean onPreferenceClick(final Preference preference) {
 				((HomeActivity) getActivity()).clear();
 				CroutonUtils.display(getActivity(), getString(R.string.card_deleted), true);
-				return false;
+				((HomeActivity) getActivity()).backToHomeScreen();
+				return true;
 			}
 		});
 

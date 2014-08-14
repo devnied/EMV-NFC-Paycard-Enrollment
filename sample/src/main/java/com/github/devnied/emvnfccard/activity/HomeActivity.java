@@ -136,17 +136,15 @@ public class HomeActivity extends Activity implements OnItemClickListener, ICont
 		R.drawable.ic_drawer, /* nav drawer icon to replace 'Up' caret */
 		R.string.navigation_menu_open, /* "open drawer" description */
 		R.string.navigation_menu_close /* "close drawer" description */
-		) {
-
-		};
+		);
 
 		// 2.2 Set actionBarDrawerToggle as the DrawerListener
 		mDrawerLayout.setDrawerListener(mActionBarDrawerToggle);
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
-		getActionBar().setDisplayShowHomeEnabled(false);
 		getActionBar().setDisplayUseLogoEnabled(false);
+		getActionBar().setDisplayShowHomeEnabled(false);
 
 		// Display home screen
 		backToHomeScreen();
@@ -160,7 +158,7 @@ public class HomeActivity extends Activity implements OnItemClickListener, ICont
 	/**
 	 * Method used to back to home screen
 	 */
-	private void backToHomeScreen() {
+	public void backToHomeScreen() {
 		// Select first menu
 		mDrawerListView.performItemClick(mDrawerListView, 0, mDrawerListView.getItemIdAtPosition(0));
 		// Close Drawer
@@ -258,7 +256,7 @@ public class HomeActivity extends Activity implements OnItemClickListener, ICont
 					try {
 						// Open connection
 						mTagcomm.connect();
-						Collection<String> desc = extractATR(mTagcomm);
+						Collection<String> desc = extractAtsDescription(mTagcomm);
 
 						mProvider.setmTagCom(mTagcomm);
 
@@ -307,7 +305,7 @@ public class HomeActivity extends Activity implements OnItemClickListener, ICont
 	 * 
 	 * @param pIso
 	 */
-	public Collection<String> extractATR(final IsoDep pIso) {
+	public Collection<String> extractAtsDescription(final IsoDep pIso) {
 		Collection<String> ret = null;
 		if (pIso.isConnected()) {
 			// Extract ATS from NFC-A
