@@ -1,12 +1,15 @@
 language: android
+jdk: oraclejdk7
 android:
   components:
-    - build-tools-19.0.3
-    - android-19
-    - sysimg-19
+    - build-tools-20.0.0
+    - android-20
+    - sysimg-20
     - extra-android-support
   licenses:
     - android-sdk-license-bcbbd656
+    - android-sdk-license-5be876d5
+    - android-sdk-preview-license-52d11cd2
     - '.*intel.+'
 before_install:
   - mkdir mvnDeployer
