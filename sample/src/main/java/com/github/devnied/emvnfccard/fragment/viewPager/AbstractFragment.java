@@ -1,6 +1,6 @@
 package com.github.devnied.emvnfccard.fragment.viewPager;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 
 /**
  * Abstract fragment
@@ -20,11 +20,22 @@ public abstract class AbstractFragment extends Fragment implements IFragment {
 	 */
 	protected boolean mEnable;
 
-	public AbstractFragment(final String pTitle, final boolean pEnable) {
-		mTitle = pTitle;
-		mEnable = pEnable;
+	/**
+	 * Setter for the field mTitle
+	 * 
+	 * @param mTitle
+	 *            the mTitle to set
+	 */
+	public void setTitle(final String mTitle) {
+		this.mTitle = mTitle;
 	}
 
+	/**
+	 * Setter for the field mEnable
+	 * 
+	 * @param mEnable
+	 *            the mEnable to set
+	 */
 	public void setEnable(final boolean mEnable) {
 		this.mEnable = mEnable;
 	}

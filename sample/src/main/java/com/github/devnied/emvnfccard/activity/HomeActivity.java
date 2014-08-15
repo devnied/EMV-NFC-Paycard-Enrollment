@@ -8,9 +8,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,6 +20,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,7 +54,7 @@ import fr.devnied.bitlib.BytesUtils;
  * 
  */
 @SuppressLint("InlinedApi")
-public class HomeActivity extends Activity implements OnItemClickListener, IContentActivity {
+public class HomeActivity extends FragmentActivity implements OnItemClickListener, IContentActivity {
 
 	/**
 	 * Nfc utils
@@ -254,6 +254,7 @@ public class HomeActivity extends Activity implements OnItemClickListener, ICont
 					mException = false;
 
 					try {
+						mReadCard = null;
 						// Open connection
 						mTagcomm.connect();
 						Collection<String> desc = extractAtsDescription(mTagcomm);
@@ -396,7 +397,7 @@ public class HomeActivity extends Activity implements OnItemClickListener, ICont
 	}
 
 	private void refreshContent() {
-		if (mRefreshableContent.get() != null) {
+		if (mRefreshableContent != null && mRefreshableContent.get() != null) {
 			mRefreshableContent.get().update();
 		}
 	}
@@ -407,7 +408,8 @@ public class HomeActivity extends Activity implements OnItemClickListener, ICont
 			Fragment fragment = null;
 			switch (position) {
 			case ConstantUtils.CARDS_DETAILS:
-				fragment = new ViewPagerFragment(this);
+				fragment = new ViewPagerFragment();
+				refreshContent();
 				break;
 			case ConstantUtils.CONFIGURATION:
 				fragment = new ConfigurationFragment();
@@ -419,11 +421,10 @@ public class HomeActivity extends Activity implements OnItemClickListener, ICont
 				break;
 			}
 			if (fragment != null) {
-				getFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
+				getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
 			}
 			mLastSelectedMenu = position;
 		}
-		refreshContent();
 		mDrawerLayout.closeDrawer(mDrawerListView);
 	}
 

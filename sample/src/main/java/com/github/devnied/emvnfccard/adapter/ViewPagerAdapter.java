@@ -2,9 +2,9 @@ package com.github.devnied.emvnfccard.adapter;
 
 import java.util.List;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.support.v13.app.FragmentStatePagerAdapter;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.view.ViewGroup;
 
 import com.github.devnied.emvnfccard.fragment.viewPager.IFragment;
 
@@ -14,7 +14,7 @@ import com.github.devnied.emvnfccard.fragment.viewPager.IFragment;
  * @author julien
  * 
  */
-public class ViewPagerAdapter extends FragmentStatePagerAdapter {
+public class ViewPagerAdapter extends SortablePagerAdapter {
 
 	/**
 	 * List fragments
@@ -45,10 +45,24 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 	@Override
 	public int getCount() {
 		int ret = 0;
-		for (IFragment f : mFragments) {
-			if (f.isEnable()) {
-				ret++;
+		if (mFragments != null) {
+			for (IFragment f : mFragments) {
+				if (f.isEnable()) {
+					ret++;
+				}
 			}
+		}
+		return ret;
+	}
+
+	public int getRealPagerPosition(final int pPosition) {
+		int ret = 0;
+		int activePosition = 0;
+		for (IFragment f : mFragments) {
+			if (f.isEnable() && activePosition++ == pPosition) {
+				break;
+			}
+			ret++;
 		}
 		return ret;
 	}
@@ -62,4 +76,38 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 		}
 		return ret;
 	}
+
+	@Override
+	public int getItemPosition(final Object object) {
+		int position = 0;
+
+		for (IFragment f : mFragments) {
+			if (f == object) {
+				if (!f.isEnable()) {
+					position = POSITION_NONE;
+				}
+				break;
+			} else if (f.isEnable()) {
+				position++;
+			}
+
+		}
+
+		return position;
+	}
+
+	@Override
+	public void destroyItem(final ViewGroup container, final int position, final Object object) {
+		try {
+			super.destroyItem(container, position, object);
+		} catch (Exception e) {
+			super.destroyItem(container, position - 1, object);
+		}
+	}
+
+	@Override
+	public long getItemId(final int position) {
+		return mFragments.indexOf(getItem(position));
+	}
+
 }

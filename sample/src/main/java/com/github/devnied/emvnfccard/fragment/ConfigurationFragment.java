@@ -3,7 +3,7 @@ package com.github.devnied.emvnfccard.fragment;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.preference.PreferenceFragment;
+import android.support.v4.preference.PreferenceFragment;
 import android.view.View;
 
 import com.github.devnied.emvnfccard.R;

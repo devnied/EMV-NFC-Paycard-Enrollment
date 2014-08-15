@@ -3,9 +3,10 @@ package com.github.devnied.emvnfccard.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Fragment;
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,10 +67,9 @@ public class ViewPagerFragment extends Fragment implements IRefreshable {
 		}
 
 		// Add fragments
-		fragments.add(new CardDetailFragment(mContentActivity.getCard(), getString(R.string.viewpager_carddetail)));
-		fragments.add(new TransactionHistoryFragment(transactions, getString(R.string.viewpager_transactions),
-				transactions != null && !transactions.isEmpty()));
-		fragments.add(new LogFragment(mContentActivity.getLog(), getString(R.string.viewpager_log)));
+		fragments.add(CardDetailFragment.newInstance(mContentActivity.getCard(), getString(R.string.viewpager_carddetail)));
+		fragments.add(TransactionHistoryFragment.newInstance(transactions, getString(R.string.viewpager_transactions)));
+		fragments.add(LogFragment.newInstance(mContentActivity.getLog(), getString(R.string.viewpager_log)));
 		// View pager
 		mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
 		mViewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager(), fragments);
@@ -93,20 +93,11 @@ public class ViewPagerFragment extends Fragment implements IRefreshable {
 		});
 	}
 
-	/**
-	 * Constructor using field
-	 * 
-	 * @param pContent
-	 */
-	public ViewPagerFragment(final IContentActivity pContent) {
-		mContentActivity = pContent;
-		pContent.setRefreshableContent(this);
-	}
-
-	/**
-	 * Default constructor
-	 */
-	public ViewPagerFragment() {
+	@Override
+	public void onAttach(final Activity activity) {
+		super.onAttach(activity);
+		mContentActivity = (IContentActivity) activity;
+		mContentActivity.setRefreshableContent(this);
 	}
 
 	@Override
@@ -126,4 +117,5 @@ public class ViewPagerFragment extends Fragment implements IRefreshable {
 			mTabLayout.updateTabs();
 		}
 	}
+
 }

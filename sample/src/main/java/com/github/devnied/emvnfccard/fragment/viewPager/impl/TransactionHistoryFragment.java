@@ -14,6 +14,7 @@ import android.widget.ExpandableListView.OnChildClickListener;
 import com.github.devnied.emvnfccard.R;
 import com.github.devnied.emvnfccard.adapter.TransactionsAdapter;
 import com.github.devnied.emvnfccard.fragment.viewPager.AbstractFragment;
+import com.github.devnied.emvnfccard.fragment.viewPager.IFragment;
 import com.github.devnied.emvnfccard.model.EmvTransactionRecord;
 
 /**
@@ -40,21 +41,22 @@ public class TransactionHistoryFragment extends AbstractFragment implements OnCh
 	private ExpandableListView mExpandableListView;
 
 	/**
-	 * Constructor using field
+	 * Method used to create a new instance of the fragment
 	 * 
 	 * @param pTransactionList
-	 *            transaction list
+	 *            transactions list
 	 * @param pTitle
 	 *            fragment title
-	 * @param pEnable
-	 *            boolean to enable or disable fragment
+	 * @return fragment
 	 */
-	public TransactionHistoryFragment(final List<EmvTransactionRecord> pTransactionList, final String pTitle,
-			final boolean pEnable) {
-		super(pTitle, pEnable);
+	public static IFragment newInstance(final List<EmvTransactionRecord> pTransactionList, final String pTitle) {
+		TransactionHistoryFragment ret = new TransactionHistoryFragment();
+		ret.setEnable(pTransactionList != null && !pTransactionList.isEmpty());
+		ret.setTitle(pTitle);
 		if (pTransactionList != null && !pTransactionList.isEmpty()) {
-			mTransactionList.addAll(pTransactionList);
+			ret.getTransactionList().addAll(pTransactionList);
 		}
+		return ret;
 	}
 
 	@Override
@@ -91,6 +93,15 @@ public class TransactionHistoryFragment extends AbstractFragment implements OnCh
 			final long id) {
 		parent.collapseGroup(groupPosition);
 		return true;
+	}
+
+	/**
+	 * Method used to get the field mTransactionList
+	 * 
+	 * @return the mTransactionList
+	 */
+	public List<EmvTransactionRecord> getTransactionList() {
+		return mTransactionList;
 	}
 
 }

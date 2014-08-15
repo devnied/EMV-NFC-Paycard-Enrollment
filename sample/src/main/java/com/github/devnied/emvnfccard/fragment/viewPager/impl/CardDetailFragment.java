@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.github.devnied.emvnfccard.EmvApplication;
 import com.github.devnied.emvnfccard.R;
 import com.github.devnied.emvnfccard.fragment.viewPager.AbstractFragment;
+import com.github.devnied.emvnfccard.fragment.viewPager.IFragment;
 import com.github.devnied.emvnfccard.model.EmvCard;
 import com.github.devnied.emvnfccard.utils.CardUtils;
 import com.github.devnied.emvnfccard.utils.ViewUtils;
@@ -66,16 +67,20 @@ public class CardDetailFragment extends AbstractFragment {
 	private TableLayout mExtendedLayout;
 
 	/**
-	 * Constructor using fields
+	 * Method used to create a new instance of the fragment
 	 * 
+	 * @param pCard
+	 *            EmvCard
 	 * @param pTitle
 	 *            fragment title
-	 * @param pEnable
-	 *            fragment visibility
+	 * @return fragment
 	 */
-	public CardDetailFragment(final EmvCard pCard, final String pTitle) {
-		super(pTitle, true);
-		mCard = pCard;
+	public static IFragment newInstance(final EmvCard pCard, final String pTitle) {
+		CardDetailFragment ret = new CardDetailFragment();
+		ret.setEnable(true);
+		ret.setTitle(pTitle);
+		ret.setCard(pCard);
+		return ret;
 	}
 
 	@Override
@@ -173,6 +178,16 @@ public class CardDetailFragment extends AbstractFragment {
 	public void update(final EmvCard pCard) {
 		mCard = pCard;
 		updateContent();
+	}
+
+	/**
+	 * Setter for the field mCard
+	 * 
+	 * @param mCard
+	 *            the mCard to set
+	 */
+	public void setCard(final EmvCard mCard) {
+		this.mCard = mCard;
 	}
 
 }

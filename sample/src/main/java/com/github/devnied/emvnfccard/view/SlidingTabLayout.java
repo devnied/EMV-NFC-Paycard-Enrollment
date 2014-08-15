@@ -31,6 +31,8 @@ import android.widget.HorizontalScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import com.github.devnied.emvnfccard.adapter.ViewPagerAdapter;
+
 /**
  * To be used with ViewPager to provide a tab indicator component which give constant feedback as to the user's scroll progress.
  * <p>
@@ -196,6 +198,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
 	public void updateTabs() {
 		populateTabStrip();
+		mViewPager.setCurrentItem(0);
 	}
 
 	private void populateTabStrip() {
@@ -310,7 +313,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
 		public void onClick(final View v) {
 			for (int i = 0; i < mTabStrip.getChildCount(); i++) {
 				if (v == mTabStrip.getChildAt(i)) {
-					mViewPager.setCurrentItem(i);
+					mViewPager.setCurrentItem(((ViewPagerAdapter) mViewPager.getAdapter()).getRealPagerPosition(i));
 					return;
 				}
 			}

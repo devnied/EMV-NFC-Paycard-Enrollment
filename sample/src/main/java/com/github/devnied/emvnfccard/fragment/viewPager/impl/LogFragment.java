@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.github.devnied.emvnfccard.R;
 import com.github.devnied.emvnfccard.fragment.viewPager.AbstractFragment;
+import com.github.devnied.emvnfccard.fragment.viewPager.IFragment;
 
 /**
  * View pager fragment used to display card log
@@ -35,16 +36,20 @@ public class LogFragment extends AbstractFragment {
 	private StringBuffer mBuffer;
 
 	/**
-	 * Constructor using fields
+	 * Method used to create an instance of the fragment
 	 * 
+	 * @param pBuf
+	 *            logs
 	 * @param pTitle
-	 *            fragment title
-	 * @param pEnable
-	 *            fragment visibility
+	 *            Fragment title
+	 * @return fragment
 	 */
-	public LogFragment(final StringBuffer pBuf, final String pTitle) {
-		super(pTitle, pBuf != null && pBuf.length() != 0);
-		mBuffer = pBuf;
+	public static IFragment newInstance(final StringBuffer pBuf, final String pTitle) {
+		LogFragment ret = new LogFragment();
+		ret.setEnable(pBuf != null && pBuf.length() != 0);
+		ret.setTitle(pTitle);
+		ret.setBuffer(pBuf);
+		return ret;
 	}
 
 	@Override
@@ -84,6 +89,16 @@ public class LogFragment extends AbstractFragment {
 				});
 			}
 		}
+	}
+
+	/**
+	 * Setter for the field mBuffer
+	 * 
+	 * @param mBuffer
+	 *            the mBuffer to set
+	 */
+	public void setBuffer(final StringBuffer mBuffer) {
+		this.mBuffer = mBuffer;
 	}
 
 }
