@@ -25,7 +25,7 @@ public class YourProvider implements IProvider {
 After that, create an instance of a parser and read the card.
 ```java
 IProvider prov = new YourProvider();
-// Create parser
+// Create parser (true for contactless false otherwise)
 EMVParser parser = new EMVParser(prov, true);
 // Read card
 EMVCard card = parser.readEmvCard();
