@@ -49,7 +49,9 @@ card object contains all data read (Aid, card number, expiration date, card type
 
 ### Gradle
 ```xml
-compile 'com.github.devnied.emvnfccard:library:1.1.0'
+dependencies {
+	compile 'com.github.devnied.emvnfccard:library:1.1.0'
+}
 ```
 
 ### JAR
