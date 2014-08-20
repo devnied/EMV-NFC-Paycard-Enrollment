@@ -47,6 +47,11 @@ card object contains all data read (Aid, card number, expiration date, card type
 </dependency>
 ```
 
+### Gradle
+```xml
+compile 'com.github.devnied.emvnfccard:library:1.1.0'
+```
+
 ### JAR
 You can download this library on [Maven central](http://search.maven.org/#search%7Cga%7C1%7Cemvnfccard) or in Github [release tab](https://github.com/devnied/EMV-NFC-Paycard-Enrollment/releases)
 
