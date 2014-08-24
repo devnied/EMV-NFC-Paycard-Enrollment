@@ -13,9 +13,9 @@
     
     <!-- Error -->
     <string name="error_communication_nfc">NFC communication error. Please retry!</string>
-    <string name="error_card_unknown">Unknown EMV card</string>
-    <string name="error_reading_card">Error reading card</string>
+    <string name="error_card_unknown">Unknown EMV card (Please send logs)</string>
     <string name="error_link">No web browser found</string>
+    <string name="error_email">No email client found</string>
     
     <!-- Tabs -->
     <string name="viewpager_carddetail">Card detail</string>
@@ -46,6 +46,11 @@
     <string name="transaction_type_1">Cash advance</string>
     <string name="transaction_type_9">Cash back</string>
     <string name="transaction_type_32">Refund</string>
+    
+    <!-- Logs -->
+    <string name="mail_subject">[EMV Reader] Log report</string>
+    <string name="mail_popup_title">Send Log by mail...</string>
+    <string name="mail_to">android@julien-millau.fr</string>
     
     
     <!-- About -->

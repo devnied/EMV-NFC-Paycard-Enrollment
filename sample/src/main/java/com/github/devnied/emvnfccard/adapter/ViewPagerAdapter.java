@@ -4,7 +4,6 @@ import java.util.List;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.view.ViewGroup;
 
 import com.github.devnied.emvnfccard.fragment.viewPager.IFragment;
 
@@ -90,19 +89,8 @@ public class ViewPagerAdapter extends SortablePagerAdapter {
 			} else if (f.isEnable()) {
 				position++;
 			}
-
 		}
-
 		return position;
-	}
-
-	@Override
-	public void destroyItem(final ViewGroup container, final int position, final Object object) {
-		try {
-			super.destroyItem(container, position, object);
-		} catch (Exception e) {
-			super.destroyItem(container, position - 1, object);
-		}
 	}
 
 	@Override
