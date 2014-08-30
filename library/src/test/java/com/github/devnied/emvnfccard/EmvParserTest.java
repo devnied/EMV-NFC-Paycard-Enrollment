@@ -310,6 +310,15 @@ public class EmvParserTest {
 			LOGGER.debug(card.toString());
 		}
 		Assertions.assertThat(card).isNotNull();
-		// TODO complete TEST
+		Assertions.assertThat(card.getAid()).isEqualTo("A0000000031010");
+		Assertions.assertThat(card.getCardNumber()).isEqualTo("4000000000000000");
+		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.VISA);
+		Assertions.assertThat(card.getApplicationLabel()).isEqualTo("VISA");
+		Assertions.assertThat(card.getHolderName()).isEqualTo("/");
+		Assertions.assertThat(card.getLeftPinTry()).isEqualTo(3);
+		Assertions.assertThat(card.getListTransactions()).isNotNull();
+		Assertions.assertThat(card.getListTransactions().size()).isEqualTo(30);
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
+		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2014");
 	}
 }

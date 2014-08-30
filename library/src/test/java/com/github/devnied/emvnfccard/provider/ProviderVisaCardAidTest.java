@@ -1,5 +1,6 @@
 package com.github.devnied.emvnfccard.provider;
 
+import org.fest.assertions.Assertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,26 +20,25 @@ public class ProviderVisaCardAidTest implements IProvider {
 		String response = null;
 		LOGGER.debug("send: " + BytesUtils.bytesToString(pCommand));
 
-		// TODO test select AID
 		switch (step++) {
 
 		case 0:
-			response = "6F 4D 84 0E 32 50 41 59 2E 53 59 53 2E 44 44 46 30 31 A5 3B BF 0C 38 61 16 4F 07 A0 00 00 00 42 10 10 87 01 01 50 02 43 42 9F 28 03 40 02 00 61 1E 4F 07 A0 00 00 00 04 10 10 87 01 02 50 0A 4D 41 53 54 45 52 43 41 52 44 9F 28 03 40 02 00 90 00";
+			response = "6F 37 84 07 A0 00 00 00 03 10 10 A5 2C 50 0A 56 49 53 41 20 44 45 42 49 54 87 01 02 9F 11 01 01 9F 12 04 56 49 53 41 5F 2D 02 66 72 BF 0C 0A DF 60 02 0B 1E 9F 4D 02 0B 1E 90 00";
 			break;
 		case 1:
-			response = "6F 29 84 07 A0 00 00 00 42 10 10 A5 1E 50 02 43 42 87 01 01 9F 11 01 01 9F 12 02 43 42 5F 2D 04 66 72 65 6E BF 0C 04 DF 61 01 04 90 00";
+			Assertions.assertThat(BytesUtils.bytesToString(pCommand)).isEqualTo("80 A8 00 00 02 83 00 00");
+			response = "80 12 3C 00 08 02 02 00 10 01 02 00 10 04 04 00 18 01 05 03 90 00";
 			break;
 		case 2:
-			response = "77 12 82 02 19 80 94 0C 10 01 01 01 18 01 01 00 20 01 02 00 90 00";
+			Assertions.assertThat(BytesUtils.bytesToString(pCommand)).isEqualTo("00 B2 02 0C 00");
+			response = "70 35 57 13 40 00 00 00 00 00 00 00 D1 40 92 01 74 12 57 75 80 00 0F 9F 1F 18 37 34 31 32 35 37 37 35 38 30 30 30 30 30 30 37 35 38 30 30 30 30 30 30 5F 20 02 20 2F 90 00";
 			break;
 		case 3:
-			response = "77 38 9F 10 07 06 01 1A 23 80 40 04 57 13 55 99 99 99 99 99 99 99 D1 50 92 FF FF FF FF FF FF FF 0F 82 02 20 00 9F 36 02 02 8F 9F 26 08 FF FF FF FF FF FF FF FF 9F 6C 02 10 00 90 00";
-			break;
-		case 4:
+			Assertions.assertThat(BytesUtils.bytesToString(pCommand)).isEqualTo("80 CA 9F 4F 00");
 			response = "9F 4F 10 9F 02 06 9F 27 01 9F 1A 02 5F 2A 02 9A 03 9C 01 90 00";
 			break;
 		default:
-			response = "00 00 00 00 46 00 40 02 50 09 78 14 03 16 20 90 00";
+			response = "00 00 00 00 00 01 40 02 50 09 78 14 07 25 00 90 00";
 		}
 
 		if (BytesUtils.bytesToStringNoSpace(pCommand).equals("80CA9F1700")) {
