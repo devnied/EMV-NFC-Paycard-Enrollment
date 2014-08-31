@@ -2,7 +2,11 @@ package com.github.devnied.emvnfccard.activity;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -29,13 +33,19 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.github.devnied.emvnfccard.BuildConfig;
 import com.github.devnied.emvnfccard.R;
 import com.github.devnied.emvnfccard.adapter.MenuDrawerAdapter;
+import com.github.devnied.emvnfccard.enums.EmvCardScheme;
 import com.github.devnied.emvnfccard.fragment.AboutFragment;
 import com.github.devnied.emvnfccard.fragment.ConfigurationFragment;
 import com.github.devnied.emvnfccard.fragment.IRefreshable;
 import com.github.devnied.emvnfccard.fragment.ViewPagerFragment;
 import com.github.devnied.emvnfccard.model.EmvCard;
+import com.github.devnied.emvnfccard.model.EmvTransactionRecord;
+import com.github.devnied.emvnfccard.model.enums.CountryCodeEnum;
+import com.github.devnied.emvnfccard.model.enums.CurrencyEnum;
+import com.github.devnied.emvnfccard.model.enums.TransactionTypeEnum;
 import com.github.devnied.emvnfccard.parser.EmvParser;
 import com.github.devnied.emvnfccard.provider.Provider;
 import com.github.devnied.emvnfccard.utils.AtrUtils;
@@ -323,59 +333,64 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 		return ret;
 	}
 
-	// @Override
-	// public void onBackPressed() {
-	// if (BuildConfig.DEBUG) {
-	// StringBuffer buff = mProvider.getLog();
-	// for (int i = 0; i < 6000; i++) {
-	// buff.append("=============<br/>");
-	// }
-	// mReadCard = new EmvCard();
-	// mReadCard.setCardNumber("4123456789012345");
-	// mReadCard.setAid("A0 00 00 000310 10");
-	// mReadCard.setLeftPinTry(3);
-	// mReadCard.setAtrDescription(Arrays.asList("German Health Insurance Card",
-	// "LogCard from concept2.com (a indoor rower manufacturer)", "I2C card"));
-	// mReadCard.setApplicationLabel("CB");
-	// mReadCard.setHolderName("test test");
-	// mReadCard.setExpireDate(new Date());
-	// mReadCard.setType(EmvCardScheme.VISA);
-	// List<EmvTransactionRecord> records = new ArrayList<EmvTransactionRecord>();
-	// // payment
-	// EmvTransactionRecord payment = new EmvTransactionRecord();
-	// payment.setAmount((float) 100.0);
-	// payment.setCurrency(CurrencyEnum.EUR);
-	// payment.setCyptogramData("12");
-	// payment.setTerminalCountry(CountryCodeEnum.FR);
-	// payment.setTransactionDate(new Date());
-	// payment.setTransactionType(TransactionTypeEnum.REFUND);
-	// records.add(payment);
-	//
-	// payment = new EmvTransactionRecord();
-	// payment.setAmount((float) 12.0);
-	// payment.setCurrency(CurrencyEnum.USD);
-	// payment.setCyptogramData("40");
-	// payment.setTerminalCountry(CountryCodeEnum.US);
-	// payment.setTransactionDate(new Date());
-	// payment.setTransactionType(TransactionTypeEnum.PURCHASE);
-	// records.add(payment);
-	//
-	// payment = new EmvTransactionRecord();
-	// payment.setAmount((float) 120.0);
-	// payment.setCurrency(CurrencyEnum.USD);
-	// payment.setCyptogramData("40");
-	// payment.setTerminalCountry(CountryCodeEnum.US);
-	// payment.setTransactionDate(new Date());
-	// payment.setTransactionType(TransactionTypeEnum.PURCHASE);
-	// records.add(payment);
-	//
-	// mReadCard.setListTransactions(records);
-	// refreshContent();
-	// CroutonUtils.display(HomeActivity.this, getText(R.string.card_read), true);
-	// } else {
-	// super.onBackPressed();
-	// }
-	// }
+	@Override
+	public void onBackPressed() {
+		if (BuildConfig.DEBUG) {
+			if (mReadCard == null) {
+				StringBuffer buff = mProvider.getLog();
+				for (int i = 0; i < 60; i++) {
+					buff.append("=============<br/>");
+				}
+				mReadCard = new EmvCard();
+				mReadCard.setCardNumber("4123456789012345");
+				mReadCard.setAid("A0 00 00 000310 10");
+				mReadCard.setLeftPinTry(3);
+				mReadCard.setAtrDescription(Arrays.asList("CB Visa Banque Populaire (France)"));
+				mReadCard.setApplicationLabel("CB");
+				mReadCard.setHolderName("John Doe");
+				mReadCard.setExpireDate(new Date());
+				mReadCard.setType(EmvCardScheme.VISA);
+				List<EmvTransactionRecord> records = new ArrayList<EmvTransactionRecord>();
+				// payment
+				EmvTransactionRecord payment = new EmvTransactionRecord();
+				payment.setAmount((float) 100.0);
+				payment.setCurrency(CurrencyEnum.EUR);
+				payment.setCyptogramData("12");
+				payment.setTerminalCountry(CountryCodeEnum.FR);
+				payment.setTransactionDate(new Date());
+				payment.setTransactionType(TransactionTypeEnum.REFUND);
+				records.add(payment);
+
+				payment = new EmvTransactionRecord();
+				payment.setAmount((float) 12.0);
+				payment.setCurrency(CurrencyEnum.USD);
+				payment.setCyptogramData("40");
+				payment.setTerminalCountry(CountryCodeEnum.US);
+				payment.setTransactionDate(new Date());
+				payment.setTransactionType(TransactionTypeEnum.PURCHASE);
+				records.add(payment);
+
+				payment = new EmvTransactionRecord();
+				payment.setAmount((float) 120.0);
+				payment.setCurrency(CurrencyEnum.USD);
+				payment.setCyptogramData("40");
+				payment.setTerminalCountry(CountryCodeEnum.US);
+				payment.setTransactionDate(new Date());
+				payment.setTransactionType(TransactionTypeEnum.PURCHASE);
+				records.add(payment);
+
+				mReadCard.setListTransactions(records);
+				refreshContent();
+				CroutonUtils.display(HomeActivity.this, getText(R.string.card_read), true);
+			} else if (mReadCard != null) {
+				mReadCard = null;
+				refreshContent();
+				CroutonUtils.display(HomeActivity.this, getText(R.string.card_read), true);
+			}
+		} else {
+			super.onBackPressed();
+		}
+	}
 
 	@Override
 	protected void onDestroy() {

@@ -49,7 +49,7 @@
     
     <!-- Logs -->
     <string name="mail_subject">[EMV Reader] Log report</string>
-    <string name="mail_popup_title">Send Log by mail...</string>
+    <string name="mail_popup_title">Send log by mail...</string>
     <string name="mail_to">android@julien-millau.fr</string>
     
     

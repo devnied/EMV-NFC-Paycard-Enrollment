@@ -115,28 +115,31 @@ public class LogFragment extends AbstractFragment implements OnClickListener {
 
 	@Override
 	public void onClick(final View v) {
-		Intent i = new Intent(Intent.ACTION_SEND);
-		i.setType("message/rfc822");
-		i.putExtra(Intent.EXTRA_EMAIL, new String[] { getString(R.string.mail_to) });
-		i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.mail_subject));
-		EmvCard card = ((HomeActivity) getActivity()).getCard();
-		String mailContent = null;
-		String cardNumber = null;
-		if (card != null) {
-			cardNumber = StringUtils.deleteWhitespace(card.getCardNumber());
-			if (cardNumber != null) {
-				cardNumber = cardNumber.replaceAll("\\d{2}", "$0 ").trim();
+		HomeActivity activity = (HomeActivity) getActivity();
+		if (activity != null) {
+			Intent i = new Intent(Intent.ACTION_SEND);
+			i.setType("message/rfc822");
+			i.putExtra(Intent.EXTRA_EMAIL, new String[] { getString(R.string.mail_to) });
+			i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.mail_subject));
+			EmvCard card = activity.getCard();
+			String mailContent = null;
+			String cardNumber = null;
+			if (card != null) {
+				cardNumber = StringUtils.deleteWhitespace(card.getCardNumber());
+				if (cardNumber != null) {
+					cardNumber = cardNumber.replaceAll("\\d{2}", "$0 ").trim();
+				}
 			}
-		}
-		mailContent = Html.fromHtml(mBuffer.toString()).toString().replace(" ", " ");
-		if (cardNumber != null && mailContent != null) {
-			mailContent = mailContent.replace(cardNumber, "XX XX");
-		}
-		i.putExtra(Intent.EXTRA_TEXT, mailContent);
-		try {
-			startActivity(Intent.createChooser(i, getString(R.string.mail_popup_title)));
-		} catch (android.content.ActivityNotFoundException ex) {
-			CroutonUtils.display(getActivity(), getResources().getText(R.string.error_email), false);
+			mailContent = Html.fromHtml(mBuffer.toString()).toString().replace(" ", " ");
+			if (cardNumber != null && mailContent != null) {
+				mailContent = mailContent.replace(cardNumber, "XX XX");
+			}
+			i.putExtra(Intent.EXTRA_TEXT, mailContent);
+			try {
+				startActivity(Intent.createChooser(i, getString(R.string.mail_popup_title)));
+			} catch (android.content.ActivityNotFoundException ex) {
+				CroutonUtils.display(getActivity(), getResources().getText(R.string.error_email), false);
+			}
 		}
 	}
 }

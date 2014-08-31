@@ -113,7 +113,9 @@ public class ViewPagerFragment extends Fragment implements IRefreshable {
 			}
 		}
 		if (mViewPagerAdapter != null) {
-			mViewPagerAdapter.notifyDataSetChanged();
+			if (getActivity() != null) {
+				mViewPagerAdapter.notifyDataSetChanged();
+			}
 			mTabLayout.updateTabs();
 		}
 	}

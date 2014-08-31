@@ -52,21 +52,19 @@ public class Provider implements IProvider {
 			throw new CommunicationException(e.getMessage());
 		}
 
-		if (BuildConfig.DEBUG) {
-			log.append("<font color='blue'><b>resp:</b> " + BytesUtils.bytesToString(response)).append("</font><br/>");
-			Log.d(TAG, "resp: " + BytesUtils.bytesToString(response));
-			try {
-				Log.d(TAG, "resp: " + TlvUtil.prettyPrintAPDUResponse(response));
-				SwEnum val = SwEnum.getSW(response);
-				if (val != null) {
-					Log.d(TAG, "resp: " + val.getDetail());
-				}
-				log.append("<pre>")
-						.append(TlvUtil.prettyPrintAPDUResponse(response).replace("\n", "<br/>").replace(" ", "&nbsp;"))
-						.append("</pre><br/>");
-			} catch (Exception e) {
+		log.append("<font color='blue'><b>resp:</b> " + BytesUtils.bytesToString(response)).append("</font><br/>");
+		Log.d(TAG, "resp: " + BytesUtils.bytesToString(response));
+		try {
+			Log.d(TAG, "resp: " + TlvUtil.prettyPrintAPDUResponse(response));
+			SwEnum val = SwEnum.getSW(response);
+			if (val != null) {
+				Log.d(TAG, "resp: " + val.getDetail());
 			}
+			log.append("<pre>").append(TlvUtil.prettyPrintAPDUResponse(response).replace("\n", "<br/>").replace(" ", "&nbsp;"))
+					.append("</pre><br/>");
+		} catch (Exception e) {
 		}
+
 		return response;
 	}
 
