@@ -147,8 +147,13 @@ public class TransactionsAdapter extends BaseExpandableListAdapter {
 			country.setText(parent.getContext().getString(R.string.transaction_unknown));
 		}
 		cryptogram.setText(transaction.getCyptogramData());
-		type.setText(ViewUtils.getStringRessourceByName(parent.getContext(), "transaction_type_"
-				+ transaction.getTransactionType().getKey()));
+		// transaction type
+		if (transaction.getTransactionType() != null) {
+			type.setText(ViewUtils.getStringRessourceByName(parent.getContext(), "transaction_type_"
+					+ transaction.getTransactionType().getKey()));
+		} else {
+			type.setText(parent.getContext().getString(R.string.transaction_unknown));
+		}
 
 		return v;
 	}

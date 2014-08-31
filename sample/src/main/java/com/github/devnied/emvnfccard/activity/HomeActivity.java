@@ -374,9 +374,9 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 				payment.setAmount((float) 120.0);
 				payment.setCurrency(CurrencyEnum.USD);
 				payment.setCyptogramData("40");
-				payment.setTerminalCountry(CountryCodeEnum.US);
+				payment.setTerminalCountry(null);
 				payment.setTransactionDate(new Date());
-				payment.setTransactionType(TransactionTypeEnum.PURCHASE);
+				payment.setTransactionType(null);
 				records.add(payment);
 
 				mReadCard.setListTransactions(records);

@@ -48,8 +48,10 @@ public abstract class AbstractByteBean<T> extends AbstractData implements IFile 
 			ret = new ArrayList<AnnotationData>(data.size());
 			for (TagAndLength tal : pTags) {
 				AnnotationData ann = data.get(tal.getTag());
-				ann.setSize(tal.getLength() * BitUtils.BYTE_SIZE);
-				ret.add(ann);
+				if (ann != null) {
+					ann.setSize(tal.getLength() * BitUtils.BYTE_SIZE);
+					ret.add(ann);
+				}
 			}
 		} else {
 			ret = AnnotationUtils.getInstance().getMapSet().get(getClass().getName());
