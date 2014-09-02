@@ -57,6 +57,10 @@ dependencies {
 ### JAR
 You can download this library on [Maven central](http://search.maven.org/#search%7Cga%7C1%7Cemvnfccard) or in Github [release tab](https://github.com/devnied/EMV-NFC-Paycard-Enrollment/releases)
 
+## Build
+
+To build the library you need [maven android SDK deployer](https://github.com/mosabua/maven-android-sdk-deployer) and install in your m2 repository the jar compatibility-v4.
+
 ## Dependencies
 
 If you are not using Maven or some other dependency management tool that can understand Maven repositories, the list below is what you need to run EMV-NFC-Paycard-Enrollment.
