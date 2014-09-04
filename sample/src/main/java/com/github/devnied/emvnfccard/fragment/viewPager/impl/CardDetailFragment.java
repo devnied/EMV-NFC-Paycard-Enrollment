@@ -113,8 +113,10 @@ public class CardDetailFragment extends AbstractFragment {
 				mScrollView.setVisibility(View.VISIBLE);
 				// Update content
 				mCardNumber.setText(CardUtils.formatCardNumber(mCard.getCardNumber(), mCard.getType()));
-				SimpleDateFormat format = new SimpleDateFormat("MM/yy", Locale.getDefault());
-				mCardValidity.setText(format.format(mCard.getExpireDate()));
+				if (mCard.getExpireDate() != null) {
+					SimpleDateFormat format = new SimpleDateFormat("MM/yy", Locale.getDefault());
+					mCardValidity.setText(format.format(mCard.getExpireDate()));
+				}
 				mImageView.setImageResource(CardUtils.getResourceIdCardType(mCard.getType()));
 
 				// Extended card data
