@@ -300,6 +300,10 @@ public class EmvParserTest {
 		prov.setReturnedData(null);
 		val = Whitebox.invokeMethod(new EmvParser(prov, true), EmvParser.class, "getLeftPinTry");
 		Assertions.assertThat(val).isEqualTo(EmvParser.UNKNOW);
+
+		prov.setReturnedData("8090");
+		val = Whitebox.invokeMethod(new EmvParser(prov, true), EmvParser.class, "getLeftPinTry");
+		Assertions.assertThat(val).isEqualTo(EmvParser.UNKNOW);
 	}
 
 	@Test

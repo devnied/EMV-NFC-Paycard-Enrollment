@@ -30,13 +30,26 @@ public final class ResponseUtils {
 	 * @return true if the status is 9000 false otherwise
 	 */
 	public static boolean isSucceed(final byte[] pByte) {
+		return isEquals(pByte, SwEnum.SW_9000);
+	}
+
+	/**
+	 * Method used to check equality with the last command return SW1SW2 == pEnum
+	 * 
+	 * @param pByte
+	 *            response to the last command
+	 * @param pEnum
+	 *            response to check
+	 * @return true if the response of the last command is equals to pEnum
+	 */
+	public static boolean isEquals(final byte[] pByte, final SwEnum pEnum) {
 		SwEnum val = SwEnum.getSW(pByte);
 		if (LOGGER.isDebugEnabled() && pByte != null) {
 			LOGGER.debug("Response Status <"
 					+ BytesUtils.bytesToStringNoSpace(Arrays.copyOfRange(pByte, pByte.length - 2, pByte.length)) + "> : "
 					+ (val != null ? val.getDetail() : "Unknow"));
 		}
-		return val != null && val == SwEnum.SW_9000;
+		return val != null && val == pEnum;
 	}
 
 	/**

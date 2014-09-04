@@ -127,7 +127,7 @@ public class EmvParser {
 		}
 		// Left PIN try command
 		byte[] data = provider.transceive(new CommandApdu(CommandEnum.GET_DATA, 0x9F, 0x17, 0).toBytes());
-		if (data != null) {
+		if (ResponseUtils.isSucceed(data)) {
 			// Extract PIN try counter
 			byte[] val = TlvUtil.getValue(data, EmvTags.PIN_TRY_COUNTER);
 			if (val != null) {
@@ -157,7 +157,7 @@ public class EmvParser {
 			}
 			data = provider.transceive(new CommandApdu(CommandEnum.READ_RECORD, sfi, sfi << 3 | 4, 0).toBytes());
 			// If LE is not correct
-			if (data[data.length - 2] == (byte) 0x6C) {
+			if (ResponseUtils.isEquals(data, SwEnum.SW_6C)) {
 				data = provider.transceive(new CommandApdu(CommandEnum.READ_RECORD, sfi, sfi << 3 | 4, data[data.length - 1])
 						.toBytes());
 			}
@@ -382,7 +382,7 @@ public class EmvParser {
 				for (int index = afl.getFirstRecord(); index <= afl.getLastRecord(); index++) {
 					byte[] info = provider.transceive(new CommandApdu(CommandEnum.READ_RECORD, index, afl.getSfi() << 3 | 4, 0)
 							.toBytes());
-					if (info[info.length - 2] == (byte) 0x6C) {
+					if (ResponseUtils.isEquals(data, SwEnum.SW_6C)) {
 						info = provider.transceive(new CommandApdu(CommandEnum.READ_RECORD, index, afl.getSfi() << 3 | 4,
 								info[info.length - 1]).toBytes());
 					}
