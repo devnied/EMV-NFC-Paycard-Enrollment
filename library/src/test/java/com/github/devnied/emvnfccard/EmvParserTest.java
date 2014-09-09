@@ -28,6 +28,7 @@ import com.github.devnied.emvnfccard.provider.ExceptionProviderTest;
 import com.github.devnied.emvnfccard.provider.PpseProviderMasterCard2Test;
 import com.github.devnied.emvnfccard.provider.PpseProviderMasterCardTest;
 import com.github.devnied.emvnfccard.provider.PpseProviderVisa2Test;
+import com.github.devnied.emvnfccard.provider.PpseProviderVisa3Test;
 import com.github.devnied.emvnfccard.provider.PpseProviderVisaNulTransactionsTest;
 import com.github.devnied.emvnfccard.provider.PpseProviderVisaTest;
 import com.github.devnied.emvnfccard.provider.ProviderAidTest;
@@ -63,6 +64,28 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getListTransactions().size()).isEqualTo(30);
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2015");
+	}
+
+	@Test
+	public void testPPSEVisa3() throws CommunicationException {
+
+		IProvider prov = new PpseProviderVisa3Test();
+
+		EmvParser parser = new EmvParser(prov, true);
+		EmvCard card = parser.readEmvCard();
+
+		if (card != null) {
+			LOGGER.debug(card.toString());
+		}
+		Assertions.assertThat(card).isNotNull();
+		Assertions.assertThat(card.getAid()).isEqualTo("A0000000421010");
+		Assertions.assertThat(card.getCardNumber()).isEqualTo("4999999999999999");
+		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.VISA);
+		Assertions.assertThat(card.getHolderName()).isEqualTo(null);
+		Assertions.assertThat(card.getApplicationLabel()).isEqualTo(null);
+		Assertions.assertThat(card.getListTransactions().size()).isEqualTo(0);
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
+		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("06/2018");
 	}
 
 	@Test

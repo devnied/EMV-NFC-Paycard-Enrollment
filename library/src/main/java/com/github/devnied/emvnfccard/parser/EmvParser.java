@@ -370,7 +370,10 @@ public class EmvParser {
 		if (data != null) {
 			data = ArrayUtils.subarray(data, 2, data.length);
 		} else { // Extract AFL data from Message template 2
-			data = TlvUtil.getValue(pGpo, EmvTags.APPLICATION_FILE_LOCATOR);
+			card = extractTrack2Data(pGpo);
+			if (card == null) {
+				data = TlvUtil.getValue(pGpo, EmvTags.APPLICATION_FILE_LOCATOR);
+			}
 		}
 
 		if (data != null) {
@@ -400,8 +403,6 @@ public class EmvParser {
 				}
 			}
 
-		} else { // If Response Message Template Format 2. Extract data
-			card = extractTrack2Data(pGpo);
 		}
 		return card;
 	}
