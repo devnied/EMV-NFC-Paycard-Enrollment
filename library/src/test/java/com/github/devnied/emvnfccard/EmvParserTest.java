@@ -26,6 +26,7 @@ import com.github.devnied.emvnfccard.parser.EmvParser;
 import com.github.devnied.emvnfccard.parser.IProvider;
 import com.github.devnied.emvnfccard.provider.ExceptionProviderTest;
 import com.github.devnied.emvnfccard.provider.PpseProviderMasterCard2Test;
+import com.github.devnied.emvnfccard.provider.PpseProviderMasterCard3Test;
 import com.github.devnied.emvnfccard.provider.PpseProviderMasterCardTest;
 import com.github.devnied.emvnfccard.provider.PpseProviderVisa2Test;
 import com.github.devnied.emvnfccard.provider.PpseProviderVisa3Test;
@@ -35,6 +36,7 @@ import com.github.devnied.emvnfccard.provider.ProviderAidTest;
 import com.github.devnied.emvnfccard.provider.ProviderSelectPaymentEnvTest;
 import com.github.devnied.emvnfccard.provider.ProviderVisaCardAidTest;
 import com.github.devnied.emvnfccard.provider.PseProviderTest;
+import com.github.devnied.emvnfccard.utils.TlvUtil;
 
 import fr.devnied.bitlib.BytesUtils;
 
@@ -151,7 +153,39 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getLeftPinTry()).isEqualTo(2);
 		Assertions.assertThat(card.getApplicationLabel()).isEqualTo(null);
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
-		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("10/2002");
+		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("07/2002");
+		Assertions.assertThat(card.getListTransactions()).isNotEmpty();
+		Assertions.assertThat(card.getListTransactions().size()).isEqualTo(10);
+		EmvTransactionRecord record = card.getListTransactions().get(0);
+		Assertions.assertThat(record.getAmount()).isEqualTo(2200);
+		Assertions.assertThat(record.getCyptogramData()).isEqualTo("40");
+		Assertions.assertThat(record.getCurrency()).isEqualTo(CurrencyEnum.TRY);
+		Assertions.assertThat(record.getTransactionDate()).isNotNull();
+		SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");
+		Assertions.assertThat(sdf2.format(record.getTransactionDate())).isEqualTo("12/01/2011");
+
+	}
+
+	@Test
+	public void testPPSEMasterCard3() throws CommunicationException {
+
+		IProvider prov = new PpseProviderMasterCard3Test();
+
+		EmvParser parser = new EmvParser(prov, true);
+		EmvCard card = parser.readEmvCard();
+
+		if (card != null) {
+			LOGGER.debug(card.toString());
+		}
+		Assertions.assertThat(card).isNotNull();
+		Assertions.assertThat(card.getAid()).isEqualTo("A0000000041010");
+		Assertions.assertThat(card.getCardNumber()).isEqualTo("5200000000000000");
+		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.MASTER_CARD);
+		Assertions.assertThat(card.getHolderName()).isEqualTo(null);
+		Assertions.assertThat(card.getLeftPinTry()).isEqualTo(2);
+		Assertions.assertThat(card.getApplicationLabel()).isEqualTo(null);
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
+		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("11/2019");
 		Assertions.assertThat(card.getListTransactions()).isNotEmpty();
 		Assertions.assertThat(card.getListTransactions().size()).isEqualTo(10);
 		EmvTransactionRecord record = card.getListTransactions().get(0);
@@ -351,10 +385,10 @@ public class EmvParserTest {
 	@Test
 	public void testGetLogEntry() throws Exception {
 		byte[] selectResponse = BytesUtils
-				.fromString("6F 37 84 07 A0 00 00 00 42 10 10 A5 2C 9F 38 18 9F 66 04 9F 02 06 9F 03 06 9F 1A 02 95 05 5F 2A 02 9A 03 9C 01 9F 37 04 BF 0C 0E DF 60 02 0B 1E DF 61 01 03 9F 4D 02 0B 11 90 00");
+				.fromString("6F 37 84 07 A0 00 00 00 42 10 10 A5 2C 9F 38 18 9F 66 04 9F 02 06 9F 03 06 9F 1A 02 95 05 5F 2A 02 9A 03 9C 01 9F 37 04 BF 0C 0E DF 62 02 0B 1E DF 61 01 03 9F 4D 02 0B 11 90 00");
+		System.out.println(TlvUtil.prettyPrintAPDUResponse(selectResponse));
 		byte[] data = Whitebox.invokeMethod(new EmvParser(null, true), EmvParser.class, "getLogEntry", selectResponse);
 
-		Assertions.assertThat(BytesUtils.bytesToString(data)).isEqualTo("0B 11");
 		selectResponse = BytesUtils
 				.fromString("6F 32 84 07 A0 00 00 00 42 10 10 A5 27 9F 38 18 9F 66 04 9F 02 06 9F 03 06 9F 1A 02 95 05 5F 2A 02 9A 03 9C 01 9F 37 04 BF 0C 09 DF 60 02 0B 1E DF 61 01 03 90 00");
 		data = Whitebox.invokeMethod(new EmvParser(null, true), EmvParser.class, "getLogEntry", selectResponse);

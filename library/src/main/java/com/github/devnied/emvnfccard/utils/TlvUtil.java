@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.github.devnied.emvnfccard.enums.SwEnum;
@@ -361,7 +362,7 @@ public final class TlvUtil {
 	 *            tag to find
 	 * @return tag value or null
 	 */
-	public static byte[] getValue(final byte[] pData, final ITag pTag) {
+	public static byte[] getValue(final byte[] pData, final ITag... pTag) {
 
 		byte[] ret = null;
 
@@ -371,7 +372,7 @@ public final class TlvUtil {
 			while (stream.available() > 0) {
 
 				TLV tlv = TlvUtil.getNextTLV(stream);
-				if (tlv.getTag() == pTag) {
+				if (ArrayUtils.contains(pTag, tlv.getTag())) {
 					return tlv.getValueBytes();
 				} else if (tlv.getTag().isConstructed()) {
 					ret = TlvUtil.getValue(tlv.getValueBytes(), pTag);

@@ -315,12 +315,7 @@ public class EmvParser {
 	 * @return byte array
 	 */
 	protected byte[] getLogEntry(final byte[] pSelectResponse) {
-		byte[] ret = TlvUtil.getValue(pSelectResponse, EmvTags.LOG_ENTRY);
-		// Find Visa specific log entry
-		if (ret == null) {
-			ret = TlvUtil.getValue(pSelectResponse, EmvTags.VISA_LOG_ENTRY);
-		}
-		return ret;
+		return TlvUtil.getValue(pSelectResponse, EmvTags.LOG_ENTRY, EmvTags.VISA_LOG_ENTRY);
 	}
 
 	/**
@@ -385,7 +380,7 @@ public class EmvParser {
 				for (int index = afl.getFirstRecord(); index <= afl.getLastRecord(); index++) {
 					byte[] info = provider.transceive(new CommandApdu(CommandEnum.READ_RECORD, index, afl.getSfi() << 3 | 4, 0)
 							.toBytes());
-					if (ResponseUtils.isEquals(data, SwEnum.SW_6C)) {
+					if (ResponseUtils.isEquals(info, SwEnum.SW_6C)) {
 						info = provider.transceive(new CommandApdu(CommandEnum.READ_RECORD, index, afl.getSfi() << 3 | 4,
 								info[info.length - 1]).toBytes());
 					}
@@ -493,7 +488,8 @@ public class EmvParser {
 	 */
 	protected EmvCard extractTrack2Data(final byte[] pData) {
 		EmvCard card = null;
-		byte[] track2 = TlvUtil.getValue(pData, EmvTags.TRACK_2_EQV_DATA);
+		byte[] track2 = TlvUtil.getValue(pData, EmvTags.TRACK_2_EQV_DATA, EmvTags.TRACK2_DATA);
+
 		if (track2 != null) {
 			card = new EmvCard();
 			BitUtils bit = new BitUtils(track2);
