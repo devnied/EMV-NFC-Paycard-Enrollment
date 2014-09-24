@@ -14,15 +14,15 @@ import fr.devnied.bitlib.BytesUtils;
  */
 public enum EmvCardScheme {
 
-	VISA("VISA", "^4[0-9]{12,15}", "A0 00 00 00 03"), //
+	VISA("VISA", "^4[0-9]{12,15}", "A0 00 00 00 03", "A0 00 00 00 98 08 48"), //
 	MASTER_CARD("Master card", "^5[0-5][0-9]{14}", "A0 00 00 00 04", "A0 00 00 00 05"), //
 	AMERICAN_EXPRESS("American express", "^3[47][0-9]{13}", "A0 00 00 00 25"), //
 	CB("CB", null, "A0 00 00 00 42"), //
 	LINK("LINK", null, "A0 00 00 00 29"), //
 	JCB("JCB", "^35[0-9]{14}", "A0 00 00 00 65"), //
-	DANKORT("Dankort", null, "A0 00 00 01 21"), //
-	COGEBAN("CoGeBan", null, "A0 00 00 01 41"), //
-	DISCOVER("Discover", "(6011|65|64[4-9]|622)[0-9]*", "A0 00 00 01 52"), //
+	DANKORT("Dankort", null, "A0 00 00 01 21 10 10"), //
+	COGEBAN("CoGeBan", null, "A0 00 00 01 41 00 01"), //
+	DISCOVER("Discover", "(6011|65|64[4-9]|622)[0-9]*", "A0 00 00 01 52 30 10"), //
 	BANRISUL("Banrisul", null, "A0 00 00 01 54"), //
 	SPAN("Saudi Payments Network", null, "A0 00 00 02 28"), //
 	INTERAC("Interac", null, "A0 00 00 02 77"), //
@@ -31,8 +31,16 @@ public enum EmvCardScheme {
 	EAPS("Euro Alliance of Payment Schemes", null, "A0 00 00 03 59"), //
 	VERVE("Verve", null, "A0 00 00 03 71"), //
 	TENN("The Exchange Network ATM Network", null, "A0 00 00 04 39"), //
-	RUPAY("Rupay", null, "A0 00 00 05 24"), //
-	ПРО100("ПРО100", null, "A0 00 00 04 32");
+	RUPAY("Rupay", null, "A0 00 00 05 24 10 10"), //
+	ПРО100("ПРО100", null, "A0 00 00 04 32 00 01"), //
+	ZKA("ZKA", null, "D2 76 00 00 25 45 50 01 00"), //
+	BANKAXEPT("Bankaxept", null, "D5 78 00 00 02 10 10"), //
+	BRADESCO("BRADESCO", null, "F0 00 00 00 03 00 01"),
+	MIDLAND("Midland", null, "A0 00 00 00 24 01"), //
+	PBS("PBS", null, "A0 00 00 01 21 10 10"), //
+	ETRANZACT("eTranzact", null, "A0 00 00 04 54"), //
+	GOOGLE("Google", null, "A0 00 00 04 76 6C"), //
+	INTER_SWITCH("InterSwitch", null, "A0 00 00 03 71 00 01");
 
 	/**
 	 * array of Card AID or partial AID (RID)
