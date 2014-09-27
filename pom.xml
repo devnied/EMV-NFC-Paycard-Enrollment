@@ -16,6 +16,9 @@
 	<description>
 	 	A Java library used to read and extract data from EMV paycard.
 	</description>
+	<issueManagement>
+		<url>https://github.com/devnied/EMV-NFC-Paycard-Enrollment/issues</url>
+	</issueManagement>
 
 	<url>https://github.com/devnied/EMV-NFC-Paycard-Enrollment</url>
 	<developers>
