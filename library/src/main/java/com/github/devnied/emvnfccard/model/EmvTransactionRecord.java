@@ -51,13 +51,19 @@ public class EmvTransactionRecord extends AbstractByteBean<EmvTransactionRecord>
 	 * Transaction date
 	 */
 	@Data(index = 5, size = 24, dateStandard = DataFactory.BCD_DATE, format = "yyMMdd", tag = "9a")
-	private Date transactionDate;
+	private Date date;
 
 	/**
 	 * Transaction type (0:Payment, other:Withdrawal)
 	 */
 	@Data(index = 6, size = 8, readHexa = true, tag = "9c")
 	private TransactionTypeEnum transactionType;
+
+	/**
+	 * Transaction time
+	 */
+	@Data(index = 7, size = 24, dateStandard = DataFactory.BCD_DATE, format = "HHmmss", tag = "9f21")
+	private Date time;
 
 	/**
 	 * Method used to get the field amount
@@ -84,15 +90,6 @@ public class EmvTransactionRecord extends AbstractByteBean<EmvTransactionRecord>
 	 */
 	public CurrencyEnum getCurrency() {
 		return currency;
-	}
-
-	/**
-	 * Method used to get the field transactionDate
-	 * 
-	 * @return the transactionDate
-	 */
-	public Date getTransactionDate() {
-		return transactionDate;
 	}
 
 	/**
@@ -154,16 +151,6 @@ public class EmvTransactionRecord extends AbstractByteBean<EmvTransactionRecord>
 	}
 
 	/**
-	 * Setter for the field transactionDate
-	 * 
-	 * @param transactionDate
-	 *            the transactionDate to set
-	 */
-	public void setTransactionDate(final Date transactionDate) {
-		this.transactionDate = transactionDate;
-	}
-
-	/**
 	 * Setter for the field transactionType
 	 * 
 	 * @param transactionType
@@ -171,6 +158,44 @@ public class EmvTransactionRecord extends AbstractByteBean<EmvTransactionRecord>
 	 */
 	public void setTransactionType(final TransactionTypeEnum transactionType) {
 		this.transactionType = transactionType;
+	}
+
+	/**
+	 * Method used to get the field date
+	 * 
+	 * @return the date
+	 */
+	public Date getDate() {
+		return date;
+	}
+
+	/**
+	 * Setter for the field date
+	 * 
+	 * @param date
+	 *            the date to set
+	 */
+	public void setDate(final Date date) {
+		this.date = date;
+	}
+
+	/**
+	 * Method used to get the field time
+	 * 
+	 * @return the time
+	 */
+	public Date getTime() {
+		return time;
+	}
+
+	/**
+	 * Setter for the field time
+	 * 
+	 * @param time
+	 *            the time to set
+	 */
+	public void setTime(final Date time) {
+		this.time = time;
 	}
 
 }

@@ -102,7 +102,7 @@ public class TransactionsAdapter extends BaseExpandableListAdapter {
 
 		// Set date
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-		date.setText(format.format(record.getTransactionDate()));
+		date.setText(format.format(record.getDate()));
 
 		// set price amount
 		String amount = null;

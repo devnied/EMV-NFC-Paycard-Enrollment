@@ -51,6 +51,11 @@ public class AnnotationData implements Comparable<AnnotationData>, Cloneable {
 	private ITag tag;
 
 	/**
+	 * Skip data
+	 */
+	private boolean skip;
+
+	/**
 	 * Comparable method {@inheritDoc}
 	 * 
 	 */
@@ -183,6 +188,25 @@ public class AnnotationData implements Comparable<AnnotationData>, Cloneable {
 		data.size = size;
 		data.tag = tag;
 		return data;
+	}
+
+	/**
+	 * Method used to get the field skip
+	 * 
+	 * @return the skip
+	 */
+	public boolean isSkip() {
+		return skip;
+	}
+
+	/**
+	 * Setter for the field skip
+	 * 
+	 * @param skip
+	 *            the skip to set
+	 */
+	public void setSkip(final boolean skip) {
+		this.skip = skip;
 	}
 
 }

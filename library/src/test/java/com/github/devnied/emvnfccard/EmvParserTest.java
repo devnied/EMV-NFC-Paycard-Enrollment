@@ -160,9 +160,9 @@ public class EmvParserTest {
 		Assertions.assertThat(record.getAmount()).isEqualTo(2200);
 		Assertions.assertThat(record.getCyptogramData()).isEqualTo("40");
 		Assertions.assertThat(record.getCurrency()).isEqualTo(CurrencyEnum.TRY);
-		Assertions.assertThat(record.getTransactionDate()).isNotNull();
+		Assertions.assertThat(record.getDate()).isNotNull();
 		SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");
-		Assertions.assertThat(sdf2.format(record.getTransactionDate())).isEqualTo("12/01/2011");
+		Assertions.assertThat(sdf2.format(record.getDate())).isEqualTo("12/01/2011");
 
 	}
 
@@ -192,9 +192,9 @@ public class EmvParserTest {
 		Assertions.assertThat(record.getAmount()).isEqualTo(2200);
 		Assertions.assertThat(record.getCyptogramData()).isEqualTo("40");
 		Assertions.assertThat(record.getCurrency()).isEqualTo(CurrencyEnum.TRY);
-		Assertions.assertThat(record.getTransactionDate()).isNotNull();
+		Assertions.assertThat(record.getDate()).isNotNull();
 		SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");
-		Assertions.assertThat(sdf2.format(record.getTransactionDate())).isEqualTo("12/01/2011");
+		Assertions.assertThat(sdf2.format(record.getDate())).isEqualTo("12/01/2011");
 
 	}
 
@@ -247,7 +247,7 @@ public class EmvParserTest {
 		Assertions.assertThat(record.getTransactionType()).isEqualTo(TransactionTypeEnum.PURCHASE);
 		Assertions.assertThat(record.getCurrency()).isEqualTo(CurrencyEnum.EUR);
 		Assertions.assertThat(record.getTerminalCountry()).isEqualTo(CountryCodeEnum.FR);
-		Assertions.assertThat(record.getTransactionDate()).isNotNull();
+		Assertions.assertThat(record.getDate()).isNotNull();
 	}
 
 	@Test

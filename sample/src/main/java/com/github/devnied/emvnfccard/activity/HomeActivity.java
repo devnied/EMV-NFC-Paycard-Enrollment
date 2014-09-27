@@ -357,7 +357,7 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 				payment.setCurrency(CurrencyEnum.EUR);
 				payment.setCyptogramData("12");
 				payment.setTerminalCountry(CountryCodeEnum.FR);
-				payment.setTransactionDate(new Date());
+				payment.setDate(new Date());
 				payment.setTransactionType(TransactionTypeEnum.REFUND);
 				records.add(payment);
 
@@ -366,7 +366,7 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 				payment.setCurrency(CurrencyEnum.USD);
 				payment.setCyptogramData("40");
 				payment.setTerminalCountry(CountryCodeEnum.US);
-				payment.setTransactionDate(new Date());
+				payment.setDate(new Date());
 				payment.setTransactionType(TransactionTypeEnum.PURCHASE);
 				records.add(payment);
 
@@ -375,7 +375,7 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 				payment.setCurrency(CurrencyEnum.USD);
 				payment.setCyptogramData("40");
 				payment.setTerminalCountry(null);
-				payment.setTransactionDate(new Date());
+				payment.setDate(new Date());
 				payment.setTransactionType(null);
 				records.add(payment);
 

@@ -39,7 +39,7 @@ public final class DataFactory {
 	public static final String BCD_FORMAT = "BCD_Format";
 
 	/**
-	 * Method to get a date from the bytes table
+	 * Method to get a date from the bytes array
 	 * 
 	 * @param pAnnotation
 	 *            annotation data

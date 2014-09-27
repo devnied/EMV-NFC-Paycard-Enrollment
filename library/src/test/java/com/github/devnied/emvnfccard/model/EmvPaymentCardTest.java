@@ -18,7 +18,7 @@ public class EmvPaymentCardTest {
 		payment.setCurrency(CurrencyEnum.EUR);
 		payment.setCyptogramData("12");
 		payment.setTerminalCountry(CountryCodeEnum.FR);
-		payment.setTransactionDate(new Date());
+		payment.setDate(new Date());
 		payment.setTransactionType(TransactionTypeEnum.CASHBACK);
 
 		Assertions.assertThat(payment.getAmount()).isEqualTo(100);
