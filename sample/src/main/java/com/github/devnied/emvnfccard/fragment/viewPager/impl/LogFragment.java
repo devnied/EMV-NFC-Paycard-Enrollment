@@ -3,6 +3,7 @@ package com.github.devnied.emvnfccard.fragment.viewPager.impl;
 import org.apache.commons.lang3.StringUtils;
 
 import android.content.Intent;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -121,25 +122,43 @@ public class LogFragment extends AbstractFragment implements OnClickListener {
 			i.setType("message/rfc822");
 			i.putExtra(Intent.EXTRA_EMAIL, new String[] { getString(R.string.mail_to) });
 			i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.mail_subject));
-			EmvCard card = activity.getCard();
-			String mailContent = null;
-			String cardNumber = null;
-			if (card != null) {
-				cardNumber = StringUtils.deleteWhitespace(card.getCardNumber());
-				if (cardNumber != null) {
-					cardNumber = cardNumber.replaceAll("\\d{2}", "$0 ").trim();
-				}
-			}
-			mailContent = Html.fromHtml(mBuffer.toString()).toString().replace(" ", " ");
-			if (cardNumber != null && mailContent != null) {
-				mailContent = mailContent.replace(cardNumber, "XX XX");
-			}
-			i.putExtra(Intent.EXTRA_TEXT, mailContent);
+			i.putExtra(Intent.EXTRA_TEXT, getMailContent(activity));
 			try {
 				startActivity(Intent.createChooser(i, getString(R.string.mail_popup_title)));
 			} catch (android.content.ActivityNotFoundException ex) {
 				CroutonUtils.display(getActivity(), getResources().getText(R.string.error_email), false);
 			}
 		}
+	}
+
+	/**
+	 * Get mail content
+	 * 
+	 * @param pActivity
+	 * @return
+	 */
+	private String getMailContent(final HomeActivity pActivity) {
+		StringBuilder builder = new StringBuilder();
+		EmvCard card = pActivity.getCard();
+		// Add version
+		try {
+			builder.append(pActivity.getPackageManager().getPackageInfo(pActivity.getPackageName(), 0).versionName).append("\n");
+		} catch (NameNotFoundException e) {
+			// Do nothing
+		}
+
+		String cardNumber = null;
+		if (card != null) {
+			cardNumber = StringUtils.deleteWhitespace(card.getCardNumber());
+			if (cardNumber != null) {
+				cardNumber = cardNumber.replaceAll("\\d{2}", "$0 ").trim();
+			}
+		}
+		String mailContent = Html.fromHtml(mBuffer.toString()).toString().replace(" ", " ");
+		if (cardNumber != null && mailContent != null) {
+			mailContent = mailContent.replace(cardNumber, "XX XX");
+		}
+		builder.append(mailContent);
+		return builder.toString();
 	}
 }
