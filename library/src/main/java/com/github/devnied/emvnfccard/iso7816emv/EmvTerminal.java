@@ -38,6 +38,7 @@ public final class EmvTerminal {
 		if (pTagAndLength.getTag() == EmvTags.TERMINAL_TRANSACTION_QUALIFIERS) {
 			TerminalTransactionQualifiers terminalQual = new TerminalTransactionQualifiers();
 			terminalQual.setContactlessEMVmodeSupported(true);
+			terminalQual.setReaderIsOfflineOnly(true);
 			ret = terminalQual.getBytes();
 		} else if (pTagAndLength.getTag() == EmvTags.TERMINAL_COUNTRY_CODE) {
 			val = BytesUtils.fromString(StringUtils.leftPad(String.valueOf(CountryCodeEnum.FR.getNumeric()), 4, "0"));

@@ -18,7 +18,7 @@ public enum SwEnum {
 	SW_6282("6282", "End of file/record reached before reading Le bytes"),
 	SW_6283("6283", "Selected file invalidated"),
 	SW_6284("6284", "Selected file is not valid. FCI not formated according to ISO"),
-	SW_6285("6285", "No Purse Engine enslaved for R3bc"),
+	SW_6285("6285", "Selected file is in termination state"),
 	SW_62A2("62A2", "Wrong R-MAC"),
 	SW_62A4("62A4", "Card locked (during reset( ))"),
 	SW_62F1("62F1", "Wrong C-MAC"),

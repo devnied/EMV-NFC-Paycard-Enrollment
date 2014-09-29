@@ -36,7 +36,6 @@ import com.github.devnied.emvnfccard.provider.ProviderAidTest;
 import com.github.devnied.emvnfccard.provider.ProviderSelectPaymentEnvTest;
 import com.github.devnied.emvnfccard.provider.ProviderVisaCardAidTest;
 import com.github.devnied.emvnfccard.provider.PseProviderTest;
-import com.github.devnied.emvnfccard.utils.TlvUtil;
 
 import fr.devnied.bitlib.BytesUtils;
 
@@ -110,6 +109,36 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getListTransactions().size()).isEqualTo(0);
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2015");
+	}
+
+	@Test
+	public void testGetAid() throws Exception {
+
+		byte[] data = Whitebox
+				.invokeMethod(
+						new EmvParser(null, true),
+						EmvParser.class,
+						"getAid",
+						BytesUtils
+								.fromString("6F 57 84 0E 32 50 41 59 2E 53 59 53 2E 44 44 46 30 31 A5 45 BF 0C 42 61 1B 4F 07 A0 00 00 00 42 10 10 50 02 43 42 87 01 01 9F 2A 08 03 00 00 00 00 00 00 00 61 23 4F 07 A0 00 00 00 03 10 10 50 0A 56 49 53 41 20 44 45 42 49 54 87 01 02 9F 2A 08 03 00 00 00 00 00 00 00"));
+		Assertions.assertThat(BytesUtils.bytesToString(data)).isEqualTo("A0 00 00 00 42 10 10 03 00 00 00 00 00 00 00");
+		data = Whitebox
+				.invokeMethod(
+						new EmvParser(null, true),
+						EmvParser.class,
+						"getAid",
+						BytesUtils
+								.fromString("6F 2C 84 0E 32 50 41 59 2E 53 59 53 2E 44 44 46 30 31 A5 1A BF 0C 17 61 15 4F 07 A0 00 00 02 77 10 10 50 07 49 6E 74 65 72 61 63 87 01 01"));
+		Assertions.assertThat(BytesUtils.bytesToString(data)).isEqualTo("A0 00 00 02 77 10 10");
+		data = Whitebox
+				.invokeMethod(
+						new EmvParser(null, true),
+						EmvParser.class,
+						"getAid",
+						BytesUtils
+								.fromString("6F 2C 84 0E 32 50 41 59 2E 53 59 53 2E 44 44 46 30 31 A5 1A BF 0C 17 61 15 41 07 A0 00 00 02 77 10 10 50 07 49 6E 74 65 72 61 63 87 01 01"));
+		Assertions.assertThat(data).isEqualTo(null);
+
 	}
 
 	@Test
@@ -269,7 +298,6 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getHolderName()).isEqualTo("/");
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("08/2014");
-
 	}
 
 	@Test
@@ -386,7 +414,6 @@ public class EmvParserTest {
 	public void testGetLogEntry() throws Exception {
 		byte[] selectResponse = BytesUtils
 				.fromString("6F 37 84 07 A0 00 00 00 42 10 10 A5 2C 9F 38 18 9F 66 04 9F 02 06 9F 03 06 9F 1A 02 95 05 5F 2A 02 9A 03 9C 01 9F 37 04 BF 0C 0E DF 62 02 0B 1E DF 61 01 03 9F 4D 02 0B 11 90 00");
-		System.out.println(TlvUtil.prettyPrintAPDUResponse(selectResponse));
 		byte[] data = Whitebox.invokeMethod(new EmvParser(null, true), EmvParser.class, "getLogEntry", selectResponse);
 
 		selectResponse = BytesUtils

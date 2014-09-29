@@ -203,15 +203,33 @@ public class EmvParser {
 			data = parseFCIProprietaryTemplate(data);
 			// Extract application label
 			if (ResponseUtils.isSucceed(data)) {
+
 				String label = extractApplicationLabel(data);
 				// Get Card
-				card = extractPublicData(TlvUtil.getValue(data, EmvTags.AID_CARD), label);
+				card = extractPublicData(getAid(data), label);
 			}
 		} else if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug((contactLess ? "PPSE" : "PSE") + " not found -> Use kown AID");
 		}
 
 		return card;
+	}
+
+	/**
+	 * Method used to get the aid of the application, if the Kernel Identifier is defined, <br/>
+	 * this value need to be appended to the ADF Name in the data field of <br/>
+	 * the SELECT command, if the Extended Selection Support flag is present and set to 1.
+	 * 
+	 * @param pData
+	 *            FCI proprietary template data
+	 * @return the Aid to select
+	 */
+	protected byte[] getAid(final byte[] pData) {
+		byte[] aid = TlvUtil.getValue(pData, EmvTags.AID_CARD);
+		if (aid != null) {
+			return ArrayUtils.addAll(aid, TlvUtil.getValue(pData, EmvTags.KERNEL_IDENTIFIER));
+		}
+		return null;
 	}
 
 	/**
@@ -440,10 +458,17 @@ public class EmvParser {
 				if (ResponseUtils.isSucceed(response)) {
 					EmvTransactionRecord record = new EmvTransactionRecord();
 					record.parse(response, tals);
+
+					// Fix artifact in EMV VISA card
+					if (record.getAmount() >= 1500000000) {
+						record.setAmount(record.getAmount() - 1500000000);
+					}
+
 					// Skip transaction with nul amount
 					if (record.getAmount() == null || record.getAmount() == 0) {
 						continue;
 					}
+
 					if (record != null) {
 						// Unknown currency
 						if (record.getCurrency() == null) {
@@ -451,7 +476,8 @@ public class EmvParser {
 						}
 						listRecord.add(record);
 					}
-				} else if (SwEnum.getSW(response) == SwEnum.SW_6A83) { // No more transaction log
+				} else {
+					// No more transaction log or transaction disabled
 					break;
 				}
 			}
