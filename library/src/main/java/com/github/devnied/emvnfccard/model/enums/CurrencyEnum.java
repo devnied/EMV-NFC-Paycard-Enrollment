@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2013 MILLAU Julien
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.github.devnied.emvnfccard.model.enums;
 
 /**
@@ -59,11 +74,8 @@ public enum CurrencyEnum implements IKeyEnum {
 	CVE(132, Digits.DIGITS_0, "Cape Verde escudo", new CountryCodeEnum[] { CountryCodeEnum.CV }),
 	CZK(203, Digits.DIGITS_2, "Czech koruna", new CountryCodeEnum[] { CountryCodeEnum.CZ }),
 	DJF(262, Digits.DIGITS_0, "Djiboutian franc", new CountryCodeEnum[] { CountryCodeEnum.DJ }),
-	DKK(
-			208,
-			Digits.DIGITS_2,
-			"Danish krone",
-			new CountryCodeEnum[] { CountryCodeEnum.DK, CountryCodeEnum.FO, CountryCodeEnum.GL }),
+	DKK(208, Digits.DIGITS_2, "Danish krone",
+		new CountryCodeEnum[] { CountryCodeEnum.DK, CountryCodeEnum.FO, CountryCodeEnum.GL }),
 	DOP(214, Digits.DIGITS_2, "Dominican peso", new CountryCodeEnum[] { CountryCodeEnum.DO }),
 	DZD(12, Digits.DIGITS_2, "Algerian dinar", new CountryCodeEnum[] { CountryCodeEnum.DZ }),
 	EGP(818, Digits.DIGITS_2, "Egyptian pound", new CountryCodeEnum[] { CountryCodeEnum.EG }),
@@ -184,11 +196,8 @@ public enum CurrencyEnum implements IKeyEnum {
 			CountryCodeEnum.TC, CountryCodeEnum.US, CountryCodeEnum.VI, CountryCodeEnum.ZW }),
 	USN(997, Digits.DIGITS_2, "United States dollar (next day) (funds code)", new CountryCodeEnum[] { CountryCodeEnum.US }),
 	USS(998, Digits.DIGITS_2, "United States dollar (same day) (funds code)", new CountryCodeEnum[] { CountryCodeEnum.US }),
-	UYI(
-			940,
-			Digits.DIGITS_0,
-			"Uruguay Peso en Unidades Indexadas (URUIURUI) (funds code)",
-			new CountryCodeEnum[] { CountryCodeEnum.UY }),
+	UYI(940, Digits.DIGITS_0, "Uruguay Peso en Unidades Indexadas (URUIURUI) (funds code)",
+		new CountryCodeEnum[] { CountryCodeEnum.UY }),
 	UYU(858, Digits.DIGITS_2, "Uruguayan peso", new CountryCodeEnum[] { CountryCodeEnum.UY }),
 	UZS(860, Digits.DIGITS_2, "Uzbekistan som", new CountryCodeEnum[] { CountryCodeEnum.UZ }),
 	VEF(937, Digits.DIGITS_2, "Venezuelan bolívar fuerte", new CountryCodeEnum[] { CountryCodeEnum.VE }),
@@ -227,7 +236,11 @@ public enum CurrencyEnum implements IKeyEnum {
 	private final CountryCodeEnum[] countries;
 
 	private enum Digits {
-		DIGITS_0, DIGITS_2, DIGITS_3, DIGITS_07, DIGITS_NO
+		DIGITS_0,
+		DIGITS_2,
+		DIGITS_3,
+		DIGITS_07,
+		DIGITS_NO
 	};
 
 	private CurrencyEnum(final int numeric, final Digits digits, final String name, final CountryCodeEnum[] countries) {

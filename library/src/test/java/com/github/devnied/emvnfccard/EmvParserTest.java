@@ -90,7 +90,7 @@ public class EmvParserTest {
 	}
 
 	@Test
-	public void testPPSEVisanulLog() throws CommunicationException {
+	public void testPPSEVisaNullLog() throws CommunicationException {
 
 		IProvider prov = new PpseProviderVisaNulTransactionsTest();
 
