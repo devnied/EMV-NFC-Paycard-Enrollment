@@ -67,6 +67,7 @@ public class TransactionHistoryFragment extends AbstractFragment implements OnCh
 	@Override
 	public void onViewCreated(final View view, final Bundle savedInstanceState) {
 		mExpandableListView = (ExpandableListView) view.findViewById(R.id.list_event);
+		mExpandableListView.setEmptyView(view.findViewById(R.id.emptyHisto));
 		mAdapter = new TransactionsAdapter(mTransactionList);
 		mExpandableListView.setOnChildClickListener(this);
 		mExpandableListView.setAdapter(mAdapter);
@@ -82,7 +83,7 @@ public class TransactionHistoryFragment extends AbstractFragment implements OnCh
 		if (pTransactionRecords != null && !pTransactionRecords.isEmpty()) {
 			mTransactionList.addAll(pTransactionRecords);
 		}
-		setEnable(mTransactionList.size() > 0);
+		setEnable(pTransactionRecords != null);
 		if (mAdapter != null) {
 			mAdapter.notifyDataSetChanged();
 		}

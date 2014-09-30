@@ -35,6 +35,9 @@
     <string name="extended_title_possible_bank">Card issuer :\n(possible)</string>
     <string name="extended_title_times">Time(s)</string>
     
+    <!-- Transaction -->
+    <string name="transaction_empty">Your card doesn\'t provided\ntransaction history</string>
+    
     <!-- Transaction detail -->
     <string name="transaction_type">Transaction type :</string>
     <string name="transaction_cryptogram">Cryptogram :</string>
