@@ -29,12 +29,12 @@ import fr.devnied.bitlib.BytesUtils;
  */
 public enum EmvCardScheme {
 
-	VISA("VISA", "^4[0-9]{12,15}", "A0 00 00 00 03", "A0 00 00 00 98 08 48"), //
-	MASTER_CARD("Master card", "^5[0-5][0-9]{14}", "A0 00 00 00 04", "A0 00 00 00 05"), //
-	AMERICAN_EXPRESS("American express", "^3[47][0-9]{13}", "A0 00 00 00 25"), //
+	VISA("VISA", "^4[0-9]{6,}$", "A0 00 00 00 03", "A0 00 00 00 03 10 10", "A0 00 00 00 98 08 48"), //
+	MASTER_CARD("Master card", "^5[1-5][0-9]{5,}$", "A0 00 00 00 04", "A0 00 00 00 05"), //
+	AMERICAN_EXPRESS("American express", "^3[47][0-9]{5,}$", "A0 00 00 00 25"), //
 	CB("CB", null, "A0 00 00 00 42"), //
 	LINK("LINK", null, "A0 00 00 00 29"), //
-	JCB("JCB", "^35[0-9]{14}", "A0 00 00 00 65"), //
+	JCB("JCB", "^(?:2131|1800|35[0-9]{3})[0-9]{3,}$", "A0 00 00 00 65"), //
 	DANKORT("Dankort", null, "A0 00 00 01 21 10 10"), //
 	COGEBAN("CoGeBan", null, "A0 00 00 01 41 00 01"), //
 	DISCOVER("Discover", "(6011|65|64[4-9]|622)[0-9]*", "A0 00 00 01 52 30 10"), //
@@ -73,9 +73,9 @@ public enum EmvCardScheme {
 	private final String name;
 
 	/**
-	 * Card number regex
+	 * Card number pattern regex
 	 */
-	private final String regex;
+	private final Pattern pattern;
 
 	/**
 	 * Constructor using fields
@@ -94,7 +94,11 @@ public enum EmvCardScheme {
 			aidsByte[i] = BytesUtils.fromString(pAids[i]);
 		}
 		name = pScheme;
-		regex = pRegex;
+		if (StringUtils.isNoneEmpty(pRegex)) {
+			pattern = Pattern.compile(pRegex);
+		} else {
+			pattern = null;
+		}
 	}
 
 	/**
@@ -149,7 +153,7 @@ public enum EmvCardScheme {
 		EmvCardScheme ret = null;
 		if (pCardNumber != null) {
 			for (EmvCardScheme val : EmvCardScheme.values()) {
-				if (val.regex != null && Pattern.matches(val.regex, StringUtils.deleteWhitespace(pCardNumber))) {
+				if (val.pattern != null && val.pattern.matcher(StringUtils.deleteWhitespace(pCardNumber)).matches()) {
 					ret = val;
 					break;
 				}

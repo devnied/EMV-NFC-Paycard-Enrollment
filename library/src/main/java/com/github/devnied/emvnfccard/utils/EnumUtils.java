@@ -41,10 +41,11 @@ public final class EnumUtils {
 	 *            Enum class
 	 * @return Enum instance of the specified key or null otherwise
 	 */
-	public static IKeyEnum getValue(final int pKey, final Class<? extends IKeyEnum> pClass) {
+	@SuppressWarnings("unchecked")
+	public static <T extends IKeyEnum> T getValue(final int pKey, final Class<T> pClass) {
 		for (IKeyEnum val : pClass.getEnumConstants()) {
 			if (val.getKey() == pKey) {
-				return val;
+				return (T) val;
 			}
 		}
 		LOGGER.error("Unknow value:" + pKey + " for Enum:" + pClass.getName());

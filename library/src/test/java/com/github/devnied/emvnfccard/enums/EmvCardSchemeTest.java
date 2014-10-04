@@ -8,7 +8,7 @@ public class EmvCardSchemeTest {
 	@Test
 	public void testCardType() throws Exception {
 		Assertions.assertThat(EmvCardScheme.getCardTypeByCardNumber("4000000000000000")).isEqualTo(EmvCardScheme.VISA);
-		Assertions.assertThat(EmvCardScheme.getCardTypeByCardNumber("5000000000000000")).isEqualTo(EmvCardScheme.MASTER_CARD);
+		Assertions.assertThat(EmvCardScheme.getCardTypeByCardNumber("5100000000000000")).isEqualTo(EmvCardScheme.MASTER_CARD);
 		Assertions.assertThat(EmvCardScheme.getCardTypeByCardNumber("6200000000000000")).isEqualTo(EmvCardScheme.UNIONPAY);
 		Assertions.assertThat(EmvCardScheme.getCardTypeByCardNumber(null)).isEqualTo(null);
 	}
