@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2013 MILLAU Julien
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.github.devnied.emvnfccard.model;
 
 import java.util.Collection;
@@ -25,9 +40,14 @@ public class EmvCard extends AbstractData {
 	private String aid;
 
 	/**
-	 * Holder Name
+	 * Holder Lastname
 	 */
-	private String holderName;
+	private String holderLastname;
+
+	/**
+	 * Holder Firstname
+	 */
+	private String holderFirstname;
 
 	/**
 	 * Card number
@@ -65,6 +85,11 @@ public class EmvCard extends AbstractData {
 	private Collection<String> atrDescription;
 
 	/**
+	 * Card services
+	 */
+	private Service service;
+
+	/**
 	 * Method used to get the field aid
 	 * 
 	 * @return the aid
@@ -84,22 +109,41 @@ public class EmvCard extends AbstractData {
 	}
 
 	/**
-	 * Method used to get the field holderName
+	 * Method used to get the field holderLastname
 	 * 
-	 * @return the holderName
+	 * @return the holderLastname
 	 */
-	public String getHolderName() {
-		return holderName;
+	public String getHolderLastname() {
+		return holderLastname;
 	}
 
 	/**
-	 * Setter for the field holderName
+	 * Setter for the field holderLastname
 	 * 
-	 * @param holderName
-	 *            the holderName to set
+	 * @param holderLastname
+	 *            the holderLastname to set
 	 */
-	public void setHolderName(final String holderName) {
-		this.holderName = holderName;
+	public void setHolderLastname(final String holderLastname) {
+		this.holderLastname = holderLastname;
+	}
+
+	/**
+	 * Method used to get the field holderFirstname
+	 * 
+	 * @return the holderFirstname
+	 */
+	public String getHolderFirstname() {
+		return holderFirstname;
+	}
+
+	/**
+	 * Setter for the field holderFirstname
+	 * 
+	 * @param holderFirstname
+	 *            the holderFirstname to set
+	 */
+	public void setHolderFirstname(final String holderFirstname) {
+		this.holderFirstname = holderFirstname;
 	}
 
 	/**
@@ -238,6 +282,25 @@ public class EmvCard extends AbstractData {
 	 */
 	public void setAtrDescription(final Collection<String> atrDescription) {
 		this.atrDescription = atrDescription;
+	}
+
+	/**
+	 * Method used to get the field service
+	 * 
+	 * @return the service
+	 */
+	public Service getService() {
+		return service;
+	}
+
+	/**
+	 * Setter for the field service
+	 * 
+	 * @param service
+	 *            the service to set
+	 */
+	public void setService(final Service service) {
+		this.service = service;
 	}
 
 }

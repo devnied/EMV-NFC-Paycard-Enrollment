@@ -125,8 +125,9 @@ public class CardDetailFragment extends AbstractFragment {
 				mExtendedLayout.removeAllViews();
 
 				// Card holder name
-				if (mCard.getHolderName() != null && mCard.getHolderName().length() > 1) {
-					createRaw(getString(R.string.extended_card_holder_name), mCard.getHolderName());
+				if (StringUtils.isNoneBlank(mCard.getHolderFirstname(), mCard.getHolderLastname())) {
+					createRaw(getString(R.string.extended_card_holder_name),
+							StringUtils.join(mCard.getHolderFirstname(), " ", mCard.getHolderLastname()));
 				}
 
 				// card AID

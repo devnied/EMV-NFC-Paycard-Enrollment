@@ -60,7 +60,8 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getAid()).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("4999999999999999");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.VISA);
-		Assertions.assertThat(card.getHolderName()).isEqualTo(null);
+		Assertions.assertThat(card.getHolderLastname()).isNull();
+		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		Assertions.assertThat(card.getApplicationLabel()).isEqualTo("CB");
 		Assertions.assertThat(card.getListTransactions().size()).isEqualTo(30);
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
@@ -82,7 +83,8 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getAid()).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("4999999999999999");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.VISA);
-		Assertions.assertThat(card.getHolderName()).isEqualTo(null);
+		Assertions.assertThat(card.getHolderFirstname()).isNull();
+		Assertions.assertThat(card.getHolderLastname()).isNull();
 		Assertions.assertThat(card.getApplicationLabel()).isEqualTo(null);
 		Assertions.assertThat(card.getListTransactions().size()).isEqualTo(0);
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
@@ -104,7 +106,8 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getAid()).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("4999999999999999");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.VISA);
-		Assertions.assertThat(card.getHolderName()).isEqualTo(null);
+		Assertions.assertThat(card.getHolderLastname()).isNull();
+		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		Assertions.assertThat(card.getApplicationLabel()).isEqualTo("CB");
 		Assertions.assertThat(card.getListTransactions().size()).isEqualTo(0);
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
@@ -156,7 +159,8 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getAid()).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("5599999999999999");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.MASTER_CARD);
-		Assertions.assertThat(card.getHolderName()).isEqualTo(null);
+		Assertions.assertThat(card.getHolderLastname()).isNull();
+		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		Assertions.assertThat(card.getApplicationLabel()).isEqualTo("CB");
 		Assertions.assertThat(card.getListTransactions()).isEmpty();
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
@@ -178,7 +182,8 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getAid()).isEqualTo("A0000000041010");
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("5200000000000000");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.MASTER_CARD);
-		Assertions.assertThat(card.getHolderName()).isEqualTo(null);
+		Assertions.assertThat(card.getHolderLastname()).isNull();
+		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		Assertions.assertThat(card.getLeftPinTry()).isEqualTo(2);
 		Assertions.assertThat(card.getApplicationLabel()).isEqualTo(null);
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
@@ -210,7 +215,8 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getAid()).isEqualTo("A0000000041010");
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("5200000000000000");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.MASTER_CARD);
-		Assertions.assertThat(card.getHolderName()).isEqualTo(null);
+		Assertions.assertThat(card.getHolderLastname()).isNull();
+		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		Assertions.assertThat(card.getLeftPinTry()).isEqualTo(2);
 		Assertions.assertThat(card.getApplicationLabel()).isEqualTo(null);
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
@@ -242,7 +248,8 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getAid()).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("4999999999999999");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.VISA);
-		Assertions.assertThat(card.getHolderName()).isEqualTo(null);
+		Assertions.assertThat(card.getHolderLastname()).isNull();
+		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		Assertions.assertThat(card.getApplicationLabel()).isEqualTo("CB");
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2015");
@@ -263,7 +270,8 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getAid()).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("4979670123453600");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.VISA);
-		Assertions.assertThat(card.getHolderName()).isEqualTo("/");
+		Assertions.assertThat(card.getHolderLastname()).isNull();
+		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		Assertions.assertThat(card.getApplicationLabel()).isEqualTo("CB");
 		Assertions.assertThat(card.getLeftPinTry()).isEqualTo(3);
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
@@ -295,7 +303,8 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("5772829193253472");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.VISA);
 		Assertions.assertThat(card.getApplicationLabel()).isEqualTo("VISA");
-		Assertions.assertThat(card.getHolderName()).isEqualTo("/");
+		Assertions.assertThat(card.getHolderLastname()).isNull();
+		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("08/2014");
 	}
@@ -424,8 +433,9 @@ public class EmvParserTest {
 
 	@Test
 	public void testReadWithAid() throws Exception {
-		IProvider prov = new ProviderVisaCardAidTest();
-		EmvCard card = (EmvCard) Whitebox.invokeMethod(new EmvParser(prov, true), EmvParser.class, "readWithAID");
+		EmvParser parser = new EmvParser(new ProviderVisaCardAidTest(), true);
+		Whitebox.invokeMethod(parser, EmvParser.class, "readWithAID");
+		EmvCard card = parser.getCard();
 
 		if (card != null) {
 			LOGGER.debug(card.toString());
@@ -435,11 +445,41 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("4000000000000000");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.VISA);
 		Assertions.assertThat(card.getApplicationLabel()).isEqualTo("VISA");
-		Assertions.assertThat(card.getHolderName()).isEqualTo("/");
+		Assertions.assertThat(card.getHolderLastname()).isNull();
+		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		Assertions.assertThat(card.getLeftPinTry()).isEqualTo(3);
 		Assertions.assertThat(card.getListTransactions()).isNotNull();
 		Assertions.assertThat(card.getListTransactions().size()).isEqualTo(30);
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2014");
+	}
+
+	@Test
+	public void testextractCardHolderNameNull() throws Exception {
+		EmvParser parser = new EmvParser(new ProviderVisaCardAidTest(), true);
+		Whitebox.invokeMethod(parser, EmvParser.class, "extractCardHolderName", BytesUtils.fromString("5F 20 02 20 2F"));
+		EmvCard card = parser.getCard();
+
+		if (card != null) {
+			LOGGER.debug(card.toString());
+		}
+		Assertions.assertThat(card).isNotNull();
+		Assertions.assertThat(card.getHolderLastname()).isNull();
+		Assertions.assertThat(card.getHolderFirstname()).isNull();
+	}
+
+	@Test
+	public void testextractCardHolderName() throws Exception {
+		EmvParser parser = new EmvParser(new ProviderVisaCardAidTest(), true);
+		Whitebox.invokeMethod(parser, EmvParser.class, "extractCardHolderName",
+				BytesUtils.fromString("5F 20 08 4a 6f 68 6e 2f 44 6f 65"));
+		EmvCard card = parser.getCard();
+
+		if (card != null) {
+			LOGGER.debug(card.toString());
+		}
+		Assertions.assertThat(card).isNotNull();
+		Assertions.assertThat(card.getHolderLastname()).isEqualTo("Doe");
+		Assertions.assertThat(card.getHolderFirstname()).isEqualTo("John");
 	}
 }

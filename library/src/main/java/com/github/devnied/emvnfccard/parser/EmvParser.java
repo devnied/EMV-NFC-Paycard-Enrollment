@@ -18,15 +18,11 @@ package com.github.devnied.emvnfccard.parser;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.time.DateUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,8 +40,8 @@ import com.github.devnied.emvnfccard.model.enums.CurrencyEnum;
 import com.github.devnied.emvnfccard.utils.CommandApdu;
 import com.github.devnied.emvnfccard.utils.ResponseUtils;
 import com.github.devnied.emvnfccard.utils.TlvUtil;
+import com.github.devnied.emvnfccard.utils.TrackUtils;
 
-import fr.devnied.bitlib.BitUtils;
 import fr.devnied.bitlib.BytesUtils;
 
 /**
@@ -78,6 +74,11 @@ public class EmvParser {
 	public static final int UNKNOW = -1;
 
 	/**
+	 * Card holder name separator
+	 */
+	public static final String CARD_HOLDER_NAME_SEPARATOR = "/";
+
+	/**
 	 * Provider
 	 */
 	private IProvider provider;
@@ -86,6 +87,11 @@ public class EmvParser {
 	 * use contact less mode
 	 */
 	private boolean contactLess;
+
+	/**
+	 * Card data
+	 */
+	private EmvCard card;
 
 	/**
 	 * Constructor
@@ -98,6 +104,7 @@ public class EmvParser {
 	public EmvParser(final IProvider pProvider, final boolean pContactLess) {
 		provider = pProvider;
 		contactLess = pContactLess;
+		card = new EmvCard();
 	}
 
 	/**
@@ -107,10 +114,9 @@ public class EmvParser {
 	 */
 	public EmvCard readEmvCard() throws CommunicationException {
 		// use PSE first
-		EmvCard card = readWithPSE();
-		// Find with AID
-		if (card == null) {
-			card = readWithAID();
+		if (!readWithPSE()) {
+			// Find with AID
+			readWithAID();
 		}
 		return card;
 	}
@@ -204,13 +210,13 @@ public class EmvParser {
 	/**
 	 * Read EMV card with Payment System Environment or Proximity Payment System Environment
 	 * 
-	 * @return Read card
+	 * @return true is succeed false otherwise
 	 */
-	protected EmvCard readWithPSE() throws CommunicationException {
+	protected boolean readWithPSE() throws CommunicationException {
+		boolean ret = false;
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Try to read card with Payment System Environment");
 		}
-		EmvCard card = null;
 		// Select the PPSE or PSE directory
 		byte[] data = selectPaymentEnvironment();
 		if (ResponseUtils.isSucceed(data)) {
@@ -219,15 +225,15 @@ public class EmvParser {
 			// Extract application label
 			if (ResponseUtils.isSucceed(data)) {
 				// TODO add foreach card aid
-				String label = extractApplicationLabel(data);
+
 				// Get Card
-				card = extractPublicData(getAid(data), label);
+				ret = extractPublicData(getAid(data), extractApplicationLabel(data));
 			}
 		} else if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug((contactLess ? "PPSE" : "PSE") + " not found -> Use kown AID");
 		}
 
-		return card;
+		return ret;
 	}
 
 	/**
@@ -249,27 +255,19 @@ public class EmvParser {
 
 	/**
 	 * Read EMV card with AID
-	 * 
-	 * @return Card read
 	 */
-	protected EmvCard readWithAID() throws CommunicationException {
-		EmvCard card = null;
+	protected void readWithAID() throws CommunicationException {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Try to read card with AID");
 		}
 		// Test each card from know EMV AID
 		for (EmvCardScheme type : EmvCardScheme.values()) {
 			for (byte[] aid : type.getAidByte()) {
-				card = extractPublicData(aid, type.getName());
-				if (card != null) {
-					break;
+				if (extractPublicData(aid, type.getName())) {
+					return;
 				}
 			}
-			if (card != null) {
-				break;
-			}
 		}
-		return card;
 	}
 
 	/**
@@ -294,26 +292,26 @@ public class EmvParser {
 	 *            card AID in bytes
 	 * @param pApplicationLabel
 	 *            application scheme (Application label)
-	 * @return card read or null
+	 * @return true if succeed false otherwise
 	 */
-	protected EmvCard extractPublicData(final byte[] pAid, final String pApplicationLabel) throws CommunicationException {
-		EmvCard ret = null;
+	protected boolean extractPublicData(final byte[] pAid, final String pApplicationLabel) throws CommunicationException {
+		boolean ret = false;
 		// Select AID
 		byte[] data = selectAID(pAid);
 		// check response
 		if (ResponseUtils.isSucceed(data)) {
 			// Parse select response
 			ret = parse(data, provider);
-			if (ret != null) {
+			if (ret) {
 				// Get AID
 				String aid = BytesUtils.bytesToStringNoSpace(TlvUtil.getValue(data, EmvTags.DEDICATED_FILE_NAME));
 				if (LOGGER.isDebugEnabled()) {
 					LOGGER.debug("Application label:" + pApplicationLabel + " with Aid:" + aid);
 				}
-				ret.setAid(aid);
-				ret.setType(findCardScheme(aid, ret.getCardNumber()));
-				ret.setApplicationLabel(pApplicationLabel);
-				ret.setLeftPinTry(getLeftPinTry());
+				card.setAid(aid);
+				card.setType(findCardScheme(aid, card.getCardNumber()));
+				card.setApplicationLabel(pApplicationLabel);
+				card.setLeftPinTry(getLeftPinTry());
 			}
 		}
 		return ret;
@@ -354,8 +352,8 @@ public class EmvParser {
 	/**
 	 * Method used to parse EMV card
 	 */
-	protected EmvCard parse(final byte[] pSelectResponse, final IProvider pProvider) throws CommunicationException {
-		EmvCard card = null;
+	protected boolean parse(final byte[] pSelectResponse, final IProvider pProvider) throws CommunicationException {
+		boolean ret = false;
 		// Get TLV log entry
 		byte[] logEntry = getLogEntry(pSelectResponse);
 		// Get PDOL
@@ -368,38 +366,36 @@ public class EmvParser {
 			gpo = getGetProcessingOptions(null, pProvider);
 			// Check response
 			if (!ResponseUtils.isSucceed(gpo)) {
-				return null;
+				return false;
 			}
 		}
 
 		// Extract commons card data (number, expire date, ...)
-		card = extractCommonsCardData(gpo);
+		if (extractCommonsCardData(gpo)) {
 
-		// Extract log entry
-		if (card != null) {
+			// Extract log entry
 			card.setListTransactions(extractLogEntry(logEntry));
+			ret = true;
 		}
 
-		return card;
+		return ret;
 	}
 
 	/**
 	 * Method used to extract commons card data
 	 * 
-	 * @param pCard
-	 *            Card data
 	 * @param pGpo
 	 *            global processing options response
 	 */
-	protected EmvCard extractCommonsCardData(final byte[] pGpo) throws CommunicationException {
-		EmvCard card = null;
+	protected boolean extractCommonsCardData(final byte[] pGpo) throws CommunicationException {
+		boolean ret = false;
 		// Extract data from Message Template 1
 		byte data[] = TlvUtil.getValue(pGpo, EmvTags.RESPONSE_MESSAGE_TEMPLATE_1);
 		if (data != null) {
 			data = ArrayUtils.subarray(data, 2, data.length);
 		} else { // Extract AFL data from Message template 2
-			card = extractTrack2Data(pGpo);
-			if (card == null) {
+			ret = TrackUtils.extractTrack2Data(card, pGpo);
+			if (!ret) {
 				data = TlvUtil.getValue(pGpo, EmvTags.APPLICATION_FILE_LOCATOR);
 			}
 		}
@@ -420,19 +416,15 @@ public class EmvParser {
 
 					// Extract card data
 					if (ResponseUtils.isSucceed(info)) {
-						card = extractTrack2Data(info);
-						if (card != null) {
-							break;
+						extractCardHolderName(info);
+						if (TrackUtils.extractTrack2Data(card, info)) {
+							return true;
 						}
 					}
 				}
-				if (card != null) {
-					break;
-				}
 			}
-
 		}
-		return card;
+		return ret;
 	}
 
 	/**
@@ -522,39 +514,21 @@ public class EmvParser {
 	}
 
 	/**
-	 * Extract track 2 data (card number + expire date)
+	 * Extract card holder lastname and firstname
 	 * 
 	 * @param pData
-	 *            data
+	 *            card data
 	 */
-	protected EmvCard extractTrack2Data(final byte[] pData) {
-		EmvCard card = null;
-		byte[] track2 = TlvUtil.getValue(pData, EmvTags.TRACK_2_EQV_DATA, EmvTags.TRACK2_DATA);
-
-		if (track2 != null) {
-			card = new EmvCard();
-			BitUtils bit = new BitUtils(track2);
-			// Read card number
-			card.setCardNumber(bit.getNextHexaString(64));
-			// Read expire date
-			SimpleDateFormat sdf = new SimpleDateFormat("'D'yyMM", Locale.getDefault());
-			try {
-				String date = bit.getNextHexaString(5 * 4);
-				// fit template "'D'yyMM"
-				if (date.length() > 5) {
-					date = date.substring(0, 5);
-				}
-				card.setExpireDate(DateUtils.truncate(sdf.parse(date), Calendar.MONTH));
-			} catch (ParseException e) {
-				LOGGER.error("Unparsable expire card date");
-			}
-			// Extract Card Holder name (if exist)
-			byte[] cardHolderByte = TlvUtil.getValue(pData, EmvTags.CARDHOLDER_NAME);
-			if (cardHolderByte != null) {
-				card.setHolderName(new String(cardHolderByte).trim());
+	protected void extractCardHolderName(final byte[] pData) {
+		// Extract Card Holder name (if exist)
+		byte[] cardHolderByte = TlvUtil.getValue(pData, EmvTags.CARDHOLDER_NAME);
+		if (cardHolderByte != null) {
+			String[] name = StringUtils.split(new String(cardHolderByte), CARD_HOLDER_NAME_SEPARATOR);
+			if (name != null && name.length == 2) {
+				card.setHolderFirstname(StringUtils.trimToNull(name[0]));
+				card.setHolderLastname(StringUtils.trimToNull(name[1]));
 			}
 		}
-		return card;
 	}
 
 	/**
@@ -582,6 +556,15 @@ public class EmvParser {
 			LOGGER.error("Construct GPO Command:" + ioe.getMessage(), ioe);
 		}
 		return pProvider.transceive(new CommandApdu(CommandEnum.GPO, out.toByteArray(), 0).toBytes());
+	}
+
+	/**
+	 * Method used to get the field card
+	 * 
+	 * @return the card
+	 */
+	public EmvCard getCard() {
+		return card;
 	}
 
 }

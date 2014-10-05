@@ -347,7 +347,8 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 				mReadCard.setLeftPinTry(3);
 				mReadCard.setAtrDescription(Arrays.asList("CB Visa Banque Populaire (France)"));
 				mReadCard.setApplicationLabel("CB");
-				mReadCard.setHolderName("John Doe");
+				mReadCard.setHolderFirstname("John");
+				mReadCard.setHolderFirstname("Doe");
 				mReadCard.setExpireDate(new Date());
 				mReadCard.setType(EmvCardScheme.VISA);
 				List<EmvTransactionRecord> records = new ArrayList<EmvTransactionRecord>();
