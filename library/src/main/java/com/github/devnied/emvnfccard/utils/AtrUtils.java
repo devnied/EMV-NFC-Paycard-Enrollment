@@ -128,7 +128,7 @@ public final class AtrUtils {
 	}
 
 	/**
-	 * Private constrcutor
+	 * Private constructor
 	 */
 	private AtrUtils() {
 	}

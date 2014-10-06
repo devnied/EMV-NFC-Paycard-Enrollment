@@ -469,6 +469,20 @@ public class EmvParserTest {
 	}
 
 	@Test
+	public void testextractCardHolderNameEmpty() throws Exception {
+		EmvParser parser = new EmvParser(new ProviderVisaCardAidTest(), true);
+		Whitebox.invokeMethod(parser, EmvParser.class, "extractCardHolderName", BytesUtils.fromString("5F 20 02 20 20"));
+		EmvCard card = parser.getCard();
+
+		if (card != null) {
+			LOGGER.debug(card.toString());
+		}
+		Assertions.assertThat(card).isNotNull();
+		Assertions.assertThat(card.getHolderLastname()).isNull();
+		Assertions.assertThat(card.getHolderFirstname()).isNull();
+	}
+
+	@Test
 	public void testextractCardHolderName() throws Exception {
 		EmvParser parser = new EmvParser(new ProviderVisaCardAidTest(), true);
 		Whitebox.invokeMethod(parser, EmvParser.class, "extractCardHolderName",

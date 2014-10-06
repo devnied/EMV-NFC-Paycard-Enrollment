@@ -523,7 +523,7 @@ public class EmvParser {
 		// Extract Card Holder name (if exist)
 		byte[] cardHolderByte = TlvUtil.getValue(pData, EmvTags.CARDHOLDER_NAME);
 		if (cardHolderByte != null) {
-			String[] name = StringUtils.split(new String(cardHolderByte), CARD_HOLDER_NAME_SEPARATOR);
+			String[] name = StringUtils.split(new String(cardHolderByte).trim(), CARD_HOLDER_NAME_SEPARATOR);
 			if (name != null && name.length == 2) {
 				card.setHolderFirstname(StringUtils.trimToNull(name[0]));
 				card.setHolderLastname(StringUtils.trimToNull(name[1]));
