@@ -5,6 +5,8 @@ import java.util.Currency;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.commons.lang3.StringUtils;
+
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -142,17 +144,27 @@ public class TransactionsAdapter extends BaseExpandableListAdapter {
 
 		// Update content
 		if (transaction.getTerminalCountry() != null) {
+			ViewHolder.get(v, R.id.row_transaction_country).setVisibility(View.VISIBLE);
 			country.setText(transaction.getTerminalCountry().getName());
 		} else {
-			country.setText(parent.getContext().getString(R.string.transaction_unknown));
+			ViewHolder.get(v, R.id.row_transaction_country).setVisibility(View.GONE);
 		}
-		cryptogram.setText(transaction.getCyptogramData());
+
+		// Transaction cryptogram
+		if (StringUtils.isNotBlank(transaction.getCyptogramData())) {
+			ViewHolder.get(v, R.id.row_transaction_crypto).setVisibility(View.VISIBLE);
+			cryptogram.setText(transaction.getCyptogramData());
+		} else {
+			ViewHolder.get(v, R.id.row_transaction_crypto).setVisibility(View.GONE);
+		}
+
 		// transaction type
 		if (transaction.getTransactionType() != null) {
+			ViewHolder.get(v, R.id.row_transaction_type).setVisibility(View.VISIBLE);
 			type.setText(ViewUtils.getStringRessourceByName(parent.getContext(), "transaction_type_"
 					+ transaction.getTransactionType().getKey()));
 		} else {
-			type.setText(parent.getContext().getString(R.string.transaction_unknown));
+			ViewHolder.get(v, R.id.row_transaction_type).setVisibility(View.GONE);
 		}
 
 		return v;
