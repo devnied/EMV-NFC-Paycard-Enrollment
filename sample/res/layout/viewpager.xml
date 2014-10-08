@@ -15,7 +15,7 @@
         android:layout_below="@id/sliding_tabs" />
 
     <LinearLayout
-        android:id="@+id/couton"
+        android:id="@+id/crouton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/sliding_tabs"

@@ -17,6 +17,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.IsoDep;
@@ -53,6 +54,7 @@ import com.github.devnied.emvnfccard.utils.ConstantUtils;
 import com.github.devnied.emvnfccard.utils.CroutonUtils;
 import com.github.devnied.emvnfccard.utils.NFCUtils;
 import com.github.devnied.emvnfccard.utils.SimpleAsyncTask;
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import fr.devnied.bitlib.BytesUtils;
@@ -119,11 +121,26 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 	 */
 	private int mLastSelectedMenu = -1;
 
+	/**
+	 * Tint manager
+	 */
+	private SystemBarTintManager tintManager;
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+
+		if (Build.VERSION.SDK_INT >= 19) {
+			// create our manager instance after the content view is set
+			tintManager = new SystemBarTintManager(this);
+			// enable status bar tint
+			tintManager.setStatusBarTintEnabled(true);
+			tintManager.setNavigationBarTintEnabled(true);
+			tintManager.setTintColor(Color.parseColor("#03a9f4"));
+
+		}
 
 		// init NfcUtils
 		mNfcUtils = new NFCUtils(this);
@@ -153,8 +170,9 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
+		getActionBar().setDisplayShowHomeEnabled(true);
 		getActionBar().setDisplayUseLogoEnabled(false);
-		getActionBar().setDisplayShowHomeEnabled(false);
+		getActionBar().setDisplayShowCustomEnabled(true);
 
 		// Display home screen
 		backToHomeScreen();

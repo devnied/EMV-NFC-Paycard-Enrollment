@@ -39,7 +39,7 @@ public final class CroutonUtils {
 				.setTextAppearance(R.style.Crouton_TextApparence) //
 				.build();
 
-		Crouton.showText(pActivity, msg, style, R.id.couton);
+		Crouton.showText(pActivity, msg, style, R.id.crouton);
 	}
 
 	/**

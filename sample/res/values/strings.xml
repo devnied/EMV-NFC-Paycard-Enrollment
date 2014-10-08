@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Card Reader</string>
+    <string name="activity_name">EMV Card Reader</string>
     
     <!-- Msg -->
     <string name="card_read">Card read</string>
@@ -12,7 +13,7 @@
     <string name="msg_info">Info</string>
     
     <!-- Error -->
-    <string name="error_communication_nfc">NFC communication error. Please retry!</string>
+    <string name="error_communication_nfc">Please do not move card, try again !</string>
     <string name="error_card_unknown">Unknown EMV card (Please send logs)</string>
     <string name="error_link">No web browser found</string>
     <string name="error_email">No email client found</string>
