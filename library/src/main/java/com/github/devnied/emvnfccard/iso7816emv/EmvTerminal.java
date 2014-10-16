@@ -54,11 +54,13 @@ public final class EmvTerminal {
 			TerminalTransactionQualifiers terminalQual = new TerminalTransactionQualifiers();
 			terminalQual.setContactlessEMVmodeSupported(true);
 			terminalQual.setReaderIsOfflineOnly(true);
-			ret = terminalQual.getBytes();
+			val = terminalQual.getBytes();
 		} else if (pTagAndLength.getTag() == EmvTags.TERMINAL_COUNTRY_CODE) {
-			val = BytesUtils.fromString(StringUtils.leftPad(String.valueOf(CountryCodeEnum.FR.getNumeric()), 4, "0"));
+			val = BytesUtils.fromString(StringUtils.leftPad(String.valueOf(CountryCodeEnum.FR.getNumeric()),
+					pTagAndLength.getLength() * 2, "0"));
 		} else if (pTagAndLength.getTag() == EmvTags.TRANSACTION_CURRENCY_CODE) {
-			val = BytesUtils.fromString(StringUtils.leftPad(String.valueOf(CurrencyEnum.EUR.getISOCodeNumeric()), 4, "0"));
+			val = BytesUtils.fromString(StringUtils.leftPad(String.valueOf(CurrencyEnum.EUR.getISOCodeNumeric()),
+					pTagAndLength.getLength() * 2, "0"));
 		} else if (pTagAndLength.getTag() == EmvTags.TRANSACTION_DATE) {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
 			val = BytesUtils.fromString(sdf.format(new Date()));
@@ -66,12 +68,17 @@ public final class EmvTerminal {
 			val = new byte[] { (byte) TransactionTypeEnum.PURCHASE.getKey() };
 		} else if (pTagAndLength.getTag() == EmvTags.AMOUNT_AUTHORISED_NUMERIC) {
 			val = BytesUtils.fromString("00");
+		} else if (pTagAndLength.getTag() == EmvTags.TERMINAL_TYPE) {
+			val = new byte[] { 0x22 };
+		} else if (pTagAndLength.getTag() == EmvTags.TERMINAL_CAPABILITIES) {
+			val = new byte[] { (byte) 0xE0, (byte) 0xA0, 0x00 };
+		} else if (pTagAndLength.getTag() == EmvTags.ADDITIONAL_TERMINAL_CAPABILITIES) {
+			val = new byte[] { (byte) 0x8e, (byte) 0, (byte) 0xb0, 0x50, 0x05 };
 		} else if (pTagAndLength.getTag() == EmvTags.UNPREDICTABLE_NUMBER) {
 			random.nextBytes(ret);
 		}
 		if (val != null) {
-			System.arraycopy(val, Math.max(0, val.length - ret.length), ret, Math.max(ret.length - val.length, 0),
-					Math.min(val.length, ret.length));
+			System.arraycopy(val, 0, ret, 0, Math.min(val.length, ret.length));
 		}
 		return ret;
 	}
