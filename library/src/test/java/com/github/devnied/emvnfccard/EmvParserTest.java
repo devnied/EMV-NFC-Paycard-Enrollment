@@ -36,6 +36,7 @@ import com.github.devnied.emvnfccard.provider.ProviderAidTest;
 import com.github.devnied.emvnfccard.provider.ProviderSelectPaymentEnvTest;
 import com.github.devnied.emvnfccard.provider.ProviderVisaCardAidTest;
 import com.github.devnied.emvnfccard.provider.PseProviderTest;
+import com.github.devnied.emvnfccard.utils.TlvUtil;
 
 import fr.devnied.bitlib.BytesUtils;
 
@@ -117,31 +118,42 @@ public class EmvParserTest {
 	@Test
 	public void testGetAid() throws Exception {
 
-		byte[] data = Whitebox
+		List<byte[]> data = Whitebox
 				.invokeMethod(
 						new EmvParser(null, true),
 						EmvParser.class,
-						"getAid",
+						"getAids",
 						BytesUtils
 								.fromString("6F 57 84 0E 32 50 41 59 2E 53 59 53 2E 44 44 46 30 31 A5 45 BF 0C 42 61 1B 4F 07 A0 00 00 00 42 10 10 50 02 43 42 87 01 01 9F 2A 08 03 00 00 00 00 00 00 00 61 23 4F 07 A0 00 00 00 03 10 10 50 0A 56 49 53 41 20 44 45 42 49 54 87 01 02 9F 2A 08 03 00 00 00 00 00 00 00"));
-		Assertions.assertThat(BytesUtils.bytesToString(data)).isEqualTo("A0 00 00 00 42 10 10 03 00 00 00 00 00 00 00");
+		Assertions.assertThat(data).isNotNull();
+		Assertions.assertThat(data.size()).isEqualTo(4);
+		System.out
+				.println(TlvUtil.prettyPrintAPDUResponse(BytesUtils
+						.fromString("6F 57 84 0E 32 50 41 59 2E 53 59 53 2E 44 44 46 30 31 A5 45 BF 0C 42 61 1B 4F 07 A0 00 00 00 42 10 10 50 02 43 42 87 01 01 9F 2A 08 03 00 00 00 00 00 00 00 61 23 4F 07 A0 00 00 00 03 10 10 50 0A 56 49 53 41 20 44 45 42 49 54 87 01 02 9F 2A 08 03 00 00 00 00 00 00 00")));
+		Assertions.assertThat(BytesUtils.bytesToString(data.get(0))).isEqualTo("A0 00 00 00 42 10 10");
+		Assertions.assertThat(BytesUtils.bytesToString(data.get(1))).isEqualTo("A0 00 00 00 42 10 10 03 00 00 00 00 00 00 00");
+		Assertions.assertThat(BytesUtils.bytesToString(data.get(2))).isEqualTo("A0 00 00 00 03 10 10");
+		Assertions.assertThat(BytesUtils.bytesToString(data.get(3))).isEqualTo("A0 00 00 00 03 10 10 03 00 00 00 00 00 00 00");
+
 		data = Whitebox
 				.invokeMethod(
 						new EmvParser(null, true),
 						EmvParser.class,
-						"getAid",
+						"getAids",
 						BytesUtils
 								.fromString("6F 2C 84 0E 32 50 41 59 2E 53 59 53 2E 44 44 46 30 31 A5 1A BF 0C 17 61 15 4F 07 A0 00 00 02 77 10 10 50 07 49 6E 74 65 72 61 63 87 01 01"));
-		Assertions.assertThat(BytesUtils.bytesToString(data)).isEqualTo("A0 00 00 02 77 10 10");
+		Assertions.assertThat(data).isNotNull();
+		Assertions.assertThat(data.size()).isEqualTo(1);
+		Assertions.assertThat(BytesUtils.bytesToString(data.get(0))).isEqualTo("A0 00 00 02 77 10 10");
 		data = Whitebox
 				.invokeMethod(
 						new EmvParser(null, true),
 						EmvParser.class,
-						"getAid",
+						"getAids",
 						BytesUtils
 								.fromString("6F 2C 84 0E 32 50 41 59 2E 53 59 53 2E 44 44 46 30 31 A5 1A BF 0C 17 61 15 41 07 A0 00 00 02 77 10 10 50 07 49 6E 74 65 72 61 63 87 01 01"));
-		Assertions.assertThat(data).isEqualTo(null);
-
+		Assertions.assertThat(data).isNotNull();
+		Assertions.assertThat(data.size()).isEqualTo(0);
 	}
 
 	@Test

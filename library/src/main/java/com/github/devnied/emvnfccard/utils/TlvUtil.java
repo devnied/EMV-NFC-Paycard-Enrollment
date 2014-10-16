@@ -354,6 +354,35 @@ public final class TlvUtil {
 	}
 
 	/**
+	 * Method used to get the list of TLV corresponding to tags specified in parameters
+	 * 
+	 * @param pData
+	 *            data to parse
+	 * @param pTag
+	 *            tags to find
+	 * @param pAdd
+	 * @return the list of TLV
+	 */
+	public static List<TLV> getlistTLV(final byte[] pData, final ITag... pTag) {
+
+		List<TLV> list = new ArrayList<TLV>();
+
+		ByteArrayInputStream stream = new ByteArrayInputStream(pData);
+
+		while (stream.available() > 0) {
+
+			TLV tlv = TlvUtil.getNextTLV(stream);
+			if (ArrayUtils.contains(pTag, tlv.getTag())) {
+				list.add(tlv);
+			} else if (tlv.getTag().isConstructed()) {
+				list.addAll(TlvUtil.getlistTLV(tlv.getValueBytes(), pTag));
+			}
+		}
+
+		return list;
+	}
+
+	/**
 	 * Method used to get Tag value
 	 * 
 	 * @param pData

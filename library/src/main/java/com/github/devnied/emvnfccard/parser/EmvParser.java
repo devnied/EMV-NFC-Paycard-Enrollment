@@ -32,6 +32,7 @@ import com.github.devnied.emvnfccard.enums.SwEnum;
 import com.github.devnied.emvnfccard.exception.CommunicationException;
 import com.github.devnied.emvnfccard.iso7816emv.EmvTags;
 import com.github.devnied.emvnfccard.iso7816emv.EmvTerminal;
+import com.github.devnied.emvnfccard.iso7816emv.TLV;
 import com.github.devnied.emvnfccard.iso7816emv.TagAndLength;
 import com.github.devnied.emvnfccard.model.Afl;
 import com.github.devnied.emvnfccard.model.EmvCard;
@@ -224,10 +225,14 @@ public class EmvParser {
 			data = parseFCIProprietaryTemplate(data);
 			// Extract application label
 			if (ResponseUtils.isSucceed(data)) {
-				// TODO add foreach card aid
-
-				// Get Card
-				ret = extractPublicData(getAid(data), extractApplicationLabel(data));
+				// Get Aids
+				List<byte[]> aids = getAids(data);
+				for (byte[] aid : aids) {
+					ret = extractPublicData(aid, extractApplicationLabel(data));
+					if (ret == true) {
+						break;
+					}
+				}
 			}
 		} else if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug((contactLess ? "PPSE" : "PSE") + " not found -> Use kown AID");
@@ -237,20 +242,25 @@ public class EmvParser {
 	}
 
 	/**
-	 * Method used to get the aid of the application, if the Kernel Identifier is defined, <br/>
+	 * Method used to get the aid list, if the Kernel Identifier is defined, <br/>
 	 * this value need to be appended to the ADF Name in the data field of <br/>
-	 * the SELECT command, if the Extended Selection Support flag is present and set to 1.
+	 * the SELECT command.
 	 * 
 	 * @param pData
 	 *            FCI proprietary template data
 	 * @return the Aid to select
 	 */
-	protected byte[] getAid(final byte[] pData) {
-		byte[] aid = TlvUtil.getValue(pData, EmvTags.AID_CARD);
-		if (aid != null) {
-			return ArrayUtils.addAll(aid, TlvUtil.getValue(pData, EmvTags.KERNEL_IDENTIFIER));
+	protected List<byte[]> getAids(final byte[] pData) {
+		List<byte[]> ret = new ArrayList<byte[]>();
+		List<TLV> listTlv = TlvUtil.getlistTLV(pData, EmvTags.AID_CARD, EmvTags.KERNEL_IDENTIFIER);
+		for (TLV tlv : listTlv) {
+			if (tlv.getTag() == EmvTags.KERNEL_IDENTIFIER && ret.size() != 0) {
+				ret.add(ArrayUtils.addAll(ret.get(ret.size() - 1), tlv.getValueBytes()));
+			} else {
+				ret.add(tlv.getValueBytes());
+			}
 		}
-		return null;
+		return ret;
 	}
 
 	/**
