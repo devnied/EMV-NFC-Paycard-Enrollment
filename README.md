@@ -60,9 +60,11 @@ You can download this library on [Maven central](http://search.maven.org/#search
 ## Build
 
 To build the sample you need [maven android SDK deployer](https://github.com/mosabua/maven-android-sdk-deployer) and install in your m2 repository the jar compatibility-v4.
-
+Run these commands:
 ```xml
-/extras/compatibility-v4 > mvn install
+git clone https://github.com/mosabua/maven-android-sdk-deployer.git
+cd maven-android-sdk-deployer/extras/
+mvn clean install
 ```
 
 ## Dependencies
