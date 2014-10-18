@@ -48,7 +48,7 @@ card object contains all data read (Aid, card number, expiration date, card type
 ```
 
 ### Gradle
-```xml
+```groovy
 dependencies {
 	compile 'com.github.devnied.emvnfccard:library:2.0.1'
 }
@@ -62,9 +62,9 @@ You can download this library on [Maven central](http://search.maven.org/#search
 To build the sample you need [maven android SDK deployer](https://github.com/mosabua/maven-android-sdk-deployer) and install in your m2 repository the jar compatibility-v4.
 Run these commands:
 ```xml
-git clone https://github.com/mosabua/maven-android-sdk-deployer.git
-cd maven-android-sdk-deployer/extras/
-mvn clean install
+./git clone https://github.com/mosabua/maven-android-sdk-deployer.git
+./cd maven-android-sdk-deployer/extras/
+./mvn clean install
 ```
 
 ## Dependencies
