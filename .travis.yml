@@ -15,7 +15,7 @@ before_install:
   - mkdir mvnDeployer
   - git clone git://github.com/mosabua/maven-android-sdk-deployer.git mvnDeployer/maven-android-sdk-deployer
   - cd mvnDeployer/maven-android-sdk-deployer/extras/compatibility-v4
-  - mvn clean install
+  - mvn clean install -P 4.4
   - cd -
 after_success:
   - mvn clean cobertura:cobertura coveralls:cobertura
