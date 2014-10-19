@@ -20,7 +20,7 @@
 		<dependency>
 		  <groupId>android.support</groupId>
 		  <artifactId>compatibility-v4</artifactId>
-		  <version>20.0.0</version>
+		  <version>21.0.0</version>
 		</dependency>
 		
 		<dependency>
