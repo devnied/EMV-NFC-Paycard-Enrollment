@@ -8,4 +8,8 @@
     <color name="black_error">#ff616161</color>
     <color name="green_success">#ff9ccc65</color>
     
+    <!-- Blue -->
+    <color name="blue">#03a9f4</color>
+    <color name="light_blue">#b3e5fc</color>
+    
 </resources>

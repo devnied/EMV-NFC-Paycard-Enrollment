@@ -1,9 +1,11 @@
 package com.github.devnied.emvnfccard.fragment;
 
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Spannable;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -47,10 +49,28 @@ public class AboutFragment extends Fragment {
 
 	@Override
 	public void onViewCreated(final View view, final Bundle savedInstanceState) {
-		TextView content = (TextView) view.findViewById(R.id.about_content);
-		if (content != null) {
-			content.setMovementMethod(new MovementCheck());
+
+		TextView githubContent = (TextView) view.findViewById(R.id.about_github_content);
+		if (githubContent != null) {
+			githubContent.setMovementMethod(new MovementCheck());
+		}
+
+		// Add version
+		TextView aboutversion = (TextView) view.findViewById(R.id.about_version);
+		try {
+			aboutversion.setText(getText(R.string.activity_name) + " v"
+					+ getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName);
+		} catch (NameNotFoundException e) {
+			Log.e(AboutFragment.class.getName(), "Application version not found");
+		}
+
+		// Add inApp fragment
+		View billingView = view.findViewById(R.id.about_inapp_content);
+		if (billingView != null) {
+			// && GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity()) == ConnectionResult.SUCCESS) {
+			billingView.setVisibility(View.VISIBLE);
+			getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.about_inapp_content, new BillingFragment())
+					.commit();
 		}
 	}
-
 }

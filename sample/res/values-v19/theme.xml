@@ -7,6 +7,9 @@
         <item name="android:actionBarStyle">@style/MyTheme.ActionBar</item>
         <item name="android:actionMenuTextColor">@android:color/white</item>
         <item name="android:windowContentOverlay">@null</item>
+        
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
     <!-- ActionBar styles -->

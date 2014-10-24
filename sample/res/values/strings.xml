@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Card Reader</string>
-    <string name="activity_name">EMV Card Reader</string>
+    <string name="app_name">Banking Card Reader</string>
+    <string name="activity_name">Banking Card Reader</string>
     
     <!-- Msg -->
+    <string name="billing_success">Thanks for your donation!</string>
     <string name="card_read">Card read</string>
     <string name="card_reading">Reading in progress&#8230;</string>
     <string name="card_deleted">Card data deleted</string>
@@ -58,7 +59,11 @@
     
     
     <!-- About -->
-    <string name="about_content">Application written by <a href="http://julien-millau.fr">Julien Millau</a>.\n\nSource Code and documentation available on <a href="https://github.com/devnied/EMV-NFC-Paycard-Enrollment">Github</a>.</string>
+    <string name="about_app_detail">This app was made to read public data on banking NFC cards compliants with EMV norm.</string>
+    <string name="about_source_detail">Source Code and documentation available on <a href="https://github.com/devnied/EMV-NFC-Paycard-Enrollment">Github</a>. Application written by <a href="http://julien-millau.fr">Julien Millau</a></string>
+    <string name="about_inapp_text">Help me to improve this app with donation</string>
+    <string name="about_title">About</string>
+    <string name="about_inApp">Donate</string>
     
     <!-- Navigation drawable -->
     <string name="navigation_menu_open">Navigation menu open</string>

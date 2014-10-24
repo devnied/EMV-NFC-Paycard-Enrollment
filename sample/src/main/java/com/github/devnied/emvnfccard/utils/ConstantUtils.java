@@ -24,6 +24,11 @@ public final class ConstantUtils {
 	public static final int ABOUT = 2;
 
 	/**
+	 * Intent result code for billing
+	 */
+	public static final int INTENT_RESULT_CODE = 1003;
+
+	/**
 	 * Private constructor
 	 */
 	private ConstantUtils() {

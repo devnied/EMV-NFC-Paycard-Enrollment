@@ -39,6 +39,7 @@ import com.github.devnied.emvnfccard.R;
 import com.github.devnied.emvnfccard.adapter.MenuDrawerAdapter;
 import com.github.devnied.emvnfccard.enums.EmvCardScheme;
 import com.github.devnied.emvnfccard.fragment.AboutFragment;
+import com.github.devnied.emvnfccard.fragment.BillingFragment;
 import com.github.devnied.emvnfccard.fragment.ConfigurationFragment;
 import com.github.devnied.emvnfccard.fragment.IRefreshable;
 import com.github.devnied.emvnfccard.fragment.ViewPagerFragment;
@@ -460,6 +461,16 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 			mLastSelectedMenu = position;
 		}
 		mDrawerLayout.closeDrawer(mDrawerListView);
+	}
+
+	@Override
+	public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+		if (mLastSelectedMenu == ConstantUtils.ABOUT) {
+			Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.about_inapp_content);
+			if (fragment != null) {
+				((BillingFragment) fragment).onActivityResult(requestCode, resultCode, data);
+			}
+		}
 	}
 
 	@Override

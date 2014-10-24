@@ -1,27 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:background="#FFF"
-    android:padding="10dp"
-    android:orientation="vertical" >
+    android:background="#f5f5f5" >
 
-        <ImageView
-            android:id="@+id/contactLessImg"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_launcher" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp" >
 
-        <TextView
-            android:id="@+id/about_content"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:gravity="left"
-            android:text="@string/about_content">
+            android:background="@drawable/cardui"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+             >
 
-        </TextView>
+            <TextView
+                android:id="@+id/about_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:text="@string/about_title"
+                android:textColor="#999"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+            
+            
+            <ImageView
+                android:id="@+id/contactLessImg"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:paddingRight="5dp"
+                android:scaleType="centerCrop"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/ic_launcher" />
+            
+            <TextView
+                android:id="@+id/about_version"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginBottom="10dp"
+                android:textSize="15sp" />
 
-</LinearLayout>
+            <TextView
+                android:id="@+id/about_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/about_app_detail"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:id="@+id/github_icon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/github" />
+
+            
+            <TextView
+                android:id="@+id/about_github_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/about_source_detail"
+                android:layout_marginBottom="10dp"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/cardui"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/about_inApp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:text="@string/about_inApp"
+                android:textColor="#999"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+            
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/about_inapp_text"
+                android:layout_marginBottom="10dp"
+                android:textSize="15sp" />
+            
+            <FrameLayout
+	            android:id="@+id/about_inapp_content"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content" 
+	            android:visibility="gone"
+	            />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>
