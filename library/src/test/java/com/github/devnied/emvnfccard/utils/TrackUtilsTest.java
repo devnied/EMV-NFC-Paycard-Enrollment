@@ -26,8 +26,13 @@ public class TrackUtilsTest {
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("06/2015");
 		Assertions.assertThat(card.getService()).isNotNull();
 		Assertions.assertThat(card.getService().getServiceCode1()).isEqualTo(ServiceCode1Enum.INTERNATIONNAL_ICC);
+		Assertions.assertThat(card.getService().getServiceCode1().getInterchange()).isNotNull();
+		Assertions.assertThat(card.getService().getServiceCode1().getTechnology()).isNotNull();
 		Assertions.assertThat(card.getService().getServiceCode2()).isEqualTo(ServiceCode2Enum.NORMAL);
+		Assertions.assertThat(card.getService().getServiceCode2().getAuthorizationProcessing()).isNotNull();
 		Assertions.assertThat(card.getService().getServiceCode3()).isEqualTo(ServiceCode3Enum.NO_RESTRICTION);
+		Assertions.assertThat(card.getService().getServiceCode3().getAllowedServices()).isNotNull();
+		Assertions.assertThat(card.getService().getServiceCode3().getPinRequirements()).isNotNull();
 	}
 
 	@Test

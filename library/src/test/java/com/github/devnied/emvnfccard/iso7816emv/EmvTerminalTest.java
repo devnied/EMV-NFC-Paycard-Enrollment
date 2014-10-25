@@ -28,4 +28,18 @@ public class EmvTerminalTest {
 		Assertions.assertThat(EmvTerminal.constructValue(new TagAndLength(EmvTags.TERMINAL_COUNTRY_CODE, 4))).isEqualTo(
 				new byte[] { 0x00, 0x00, 0x02, 0x50 });
 	}
+
+	@Test
+	public void testTerminalType() {
+		Assertions.assertThat(EmvTerminal.constructValue(new TagAndLength(EmvTags.TERMINAL_TYPE, 1))).isEqualTo(
+				new byte[] { 0x22 });
+	}
+
+	@Test
+	public void testTerminalCapabilities() {
+		Assertions.assertThat(EmvTerminal.constructValue(new TagAndLength(EmvTags.TERMINAL_CAPABILITIES, 2))).isEqualTo(
+				new byte[] { (byte) 0xE0, (byte) 0xA0 });
+		Assertions.assertThat(EmvTerminal.constructValue(new TagAndLength(EmvTags.TERMINAL_CAPABILITIES, 4))).isEqualTo(
+				new byte[] { (byte) 0xE0, (byte) 0xA0, 0, 0 });
+	}
 }

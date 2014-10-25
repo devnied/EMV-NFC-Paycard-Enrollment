@@ -20,11 +20,14 @@ public class EmvPaymentCardTest {
 		payment.setTerminalCountry(CountryCodeEnum.FR);
 		payment.setDate(new Date());
 		payment.setTransactionType(TransactionTypeEnum.CASHBACK);
+		payment.setTime(new Date());
 
 		Assertions.assertThat(payment.getAmount()).isEqualTo(100);
 		Assertions.assertThat(payment.getCurrency()).isEqualTo(CurrencyEnum.EUR);
 		Assertions.assertThat(payment.getCyptogramData()).isEqualTo("12");
 		Assertions.assertThat(payment.getTerminalCountry()).isEqualTo(CountryCodeEnum.FR);
 		Assertions.assertThat(payment.getTransactionType()).isEqualTo(TransactionTypeEnum.CASHBACK);
+		Assertions.assertThat(payment.getTime()).isNotNull();
+		Assertions.assertThat(payment.getDate()).isNotNull();
 	}
 }

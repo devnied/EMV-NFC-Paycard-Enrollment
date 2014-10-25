@@ -15,7 +15,7 @@ import com.github.devnied.emvnfccard.utils.TlvUtil;
 
 import fr.devnied.bitlib.BytesUtils;
 
-public class EmvPaymentRecordTest {
+public class EmvTransactionRecordTest {
 
 	@Test
 	public void test() {
@@ -78,8 +78,7 @@ public class EmvPaymentRecordTest {
 		SimpleDateFormat time = new SimpleDateFormat("HHmmss");
 		List<TagAndLength> list = TlvUtil.parseTagAndLength(BytesUtils
 				.fromString("9F 27 01 9F 02 06 5F 2A 02 9A 03 9F 36 02 9F 52 06 DF 3E 01 9F 21 03 9F 7C 14"));
-		System.out.println(TlvUtil.prettyPrintAPDUResponse(BytesUtils
-				.fromString("9F 4F 1A 9F 27 01 9F 02 06 5F 2A 02 9A 03 9F 36 02 9F 52 06 DF 3E 01 9F 21 03 9F 7C 14 90 00")));
+
 		EmvTransactionRecord record = new EmvTransactionRecord();
 		record.parse(
 				BytesUtils
