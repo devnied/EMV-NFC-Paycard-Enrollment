@@ -130,7 +130,7 @@ public class EmvParser {
 	 */
 	protected byte[] selectPaymentEnvironment() throws CommunicationException {
 		if (LOGGER.isDebugEnabled()) {
-			LOGGER.info("Select " + (contactLess ? "PPSE" : "PSE") + " Application");
+			LOGGER.debug("Select " + (contactLess ? "PPSE" : "PSE") + " Application");
 		}
 		// Select the PPSE or PSE directory
 		return provider.transceive(new CommandApdu(CommandEnum.SELECT, contactLess ? PPSE : PSE, 0).toBytes());
@@ -145,7 +145,7 @@ public class EmvParser {
 	protected int getLeftPinTry() throws CommunicationException {
 		int ret = UNKNOW;
 		if (LOGGER.isDebugEnabled()) {
-			LOGGER.info("Get Left PIN try");
+			LOGGER.debug("Get Left PIN try");
 		}
 		// Left PIN try command
 		byte[] data = provider.transceive(new CommandApdu(CommandEnum.GET_DATA, 0x9F, 0x17, 0).toBytes());
@@ -175,7 +175,7 @@ public class EmvParser {
 		if (data != null) {
 			int sfi = BytesUtils.byteArrayToInt(data);
 			if (LOGGER.isDebugEnabled()) {
-				LOGGER.info("SFI found:" + sfi);
+				LOGGER.debug("SFI found:" + sfi);
 			}
 			data = provider.transceive(new CommandApdu(CommandEnum.READ_RECORD, sfi, sfi << 3 | 4, 0).toBytes());
 			// If LE is not correct
@@ -186,7 +186,7 @@ public class EmvParser {
 			return data;
 		}
 		if (LOGGER.isDebugEnabled()) {
-			LOGGER.info("(FCI) Issuer Discretionary Data is already present");
+			LOGGER.debug("(FCI) Issuer Discretionary Data is already present");
 		}
 		return pData;
 	}
@@ -342,7 +342,7 @@ public class EmvParser {
 		if (type == EmvCardScheme.CB) {
 			type = EmvCardScheme.getCardTypeByCardNumber(pCardNumber);
 			if (type != null) {
-				LOGGER.info("Real type:" + type.getName());
+				LOGGER.debug("Real type:" + type.getName());
 			}
 		}
 		return type;
@@ -446,7 +446,7 @@ public class EmvParser {
 	protected List<TagAndLength> getLogFormat() throws CommunicationException {
 		List<TagAndLength> ret = new ArrayList<TagAndLength>();
 		if (LOGGER.isDebugEnabled()) {
-			LOGGER.info("GET log format");
+			LOGGER.debug("GET log format");
 		}
 		// Get log format
 		byte[] data = provider.transceive(new CommandApdu(CommandEnum.GET_DATA, 0x9F, 0x4F, 0).toBytes());
