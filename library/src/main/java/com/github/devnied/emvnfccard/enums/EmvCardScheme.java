@@ -94,7 +94,7 @@ public enum EmvCardScheme {
 			aidsByte[i] = BytesUtils.fromString(pAids[i]);
 		}
 		name = pScheme;
-		if (StringUtils.isNoneEmpty(pRegex)) {
+		if (StringUtils.isNotBlank(pRegex)) {
 			pattern = Pattern.compile(pRegex);
 		} else {
 			pattern = null;
