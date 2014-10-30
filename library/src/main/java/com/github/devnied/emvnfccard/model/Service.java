@@ -31,7 +31,12 @@ import fr.devnied.bitlib.BytesUtils;
  * @author MILLAU julien
  * 
  */
-public class Service {
+public class Service extends AbstractData{
+
+	/**
+	 * Generated serial UID
+	 */
+	private static final long serialVersionUID = 5154895810563519768L;
 
 	/**
 	 * Service code 1
