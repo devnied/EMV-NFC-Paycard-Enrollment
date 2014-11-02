@@ -12,9 +12,9 @@ import com.github.devnied.emvnfccard.utils.CroutonUtils;
 
 /**
  * Configuration fragment
- * 
+ *
  * @author Millau Julien
- * 
+ *
  */
 public class ConfigurationFragment extends PreferenceFragment {
 

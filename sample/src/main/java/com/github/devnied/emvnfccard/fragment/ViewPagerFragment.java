@@ -24,9 +24,9 @@ import com.github.devnied.emvnfccard.view.SlidingTabLayout;
 
 /**
  * View pager
- * 
+ *
  * @author Millau Julien
- * 
+ *
  */
 public class ViewPagerFragment extends Fragment implements IRefreshable {
 
@@ -74,6 +74,9 @@ public class ViewPagerFragment extends Fragment implements IRefreshable {
 		mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
 		mViewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager(), fragments);
 		mViewPager.setAdapter(mViewPagerAdapter);
+
+		// banner
+		view.findViewById(R.id.banner).setOnClickListener((View.OnClickListener) getActivity());
 
 		// Tab layout
 		mTabLayout = (SlidingTabLayout) view.findViewById(R.id.sliding_tabs);

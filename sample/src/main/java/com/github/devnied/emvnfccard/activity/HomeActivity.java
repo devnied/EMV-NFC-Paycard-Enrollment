@@ -30,6 +30,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -62,12 +63,12 @@ import fr.devnied.bitlib.BytesUtils;
 
 /**
  * Main Activity
- * 
+ *
  * @author MILLAU Julien
- * 
+ *
  */
 @SuppressLint("InlinedApi")
-public class HomeActivity extends FragmentActivity implements OnItemClickListener, IContentActivity {
+public class HomeActivity extends FragmentActivity implements OnItemClickListener, IContentActivity, OnClickListener {
 
 	/**
 	 * Nfc utils
@@ -140,7 +141,6 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 			tintManager.setStatusBarTintEnabled(true);
 			tintManager.setNavigationBarTintEnabled(true);
 			tintManager.setTintColor(Color.parseColor("#03a9f4"));
-
 		}
 
 		// init NfcUtils
@@ -332,7 +332,7 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 
 	/**
 	 * Method used to get historical byte
-	 * 
+	 *
 	 * @param pIso
 	 */
 	public Collection<String> extractAtsDescription(final IsoDep pIso) {
@@ -506,6 +506,13 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 		IRefreshable content = mRefreshableContent.get();
 		if (content != null) {
 			content.update();
+		}
+	}
+
+	@Override
+	public void onClick(final View v) {
+		if (mDrawerListView != null) {
+			mDrawerListView.performItemClick(mDrawerListView, 2, mDrawerListView.getItemIdAtPosition(2));
 		}
 	}
 }

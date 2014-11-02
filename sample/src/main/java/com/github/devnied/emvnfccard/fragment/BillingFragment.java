@@ -2,6 +2,7 @@ package com.github.devnied.emvnfccard.fragment;
 
 import java.util.ArrayList;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.json.JSONException;
 
 import android.app.ActionBar.LayoutParams;
@@ -31,11 +32,31 @@ import com.github.devnied.emvnfccard.utils.SimpleAsyncTask;
 
 /**
  * Billing fragment
- * 
+ *
  * @author Millau Julien
- * 
+ *
  */
 public class BillingFragment extends Fragment implements OnClickListener {
+
+	/**
+	 * In app constant
+	 */
+	private static final String INAPP = "inapp";
+
+	/**
+	 * Detail list
+	 */
+	private static final String DETAILS_LIST = "DETAILS_LIST";
+
+	/**
+	 * Response code
+	 */
+	private static final String RESPONSE_CODE = "RESPONSE_CODE";
+
+	/**
+	 * Billing response result
+	 */
+	private static final int BILLING_RESPONSE_RESULT_OK = 0;
 
 	/**
 	 * InApp Billing service
@@ -58,9 +79,14 @@ public class BillingFragment extends Fragment implements OnClickListener {
 	private boolean serviceBind;
 
 	/**
+	 * Clicked view
+	 */
+	private View clickedView;
+
+	/**
 	 * Service connection
 	 */
-	private ServiceConnection mServiceConn = new ServiceConnection() {
+	private final ServiceConnection mServiceConn = new ServiceConnection() {
 
 		@Override
 		public void onServiceDisconnected(final ComponentName name) {
@@ -80,19 +106,35 @@ public class BillingFragment extends Fragment implements OnClickListener {
 				private ArrayList<String> responseList;
 
 				@Override
+				protected void onPreExecute() {
+					if (layout != null) {
+						layout.removeAllViews();
+					}
+				}
+
+				@Override
 				protected void doInBackground() {
 					Bundle querySkus = new Bundle();
 					ArrayList<String> itemId = new ArrayList<String>();
 					for (int i = 0; i < 10; i++) {
 						itemId.add("donate_" + i);
 					}
-					querySkus.putStringArrayList("ITEM_ID_LIST", itemId);
 					try {
-						Bundle skuDetails = mService.getSkuDetails(3, getActivity().getPackageName(), "inapp", querySkus);
-						int response = skuDetails.getInt("RESPONSE_CODE");
-						if (response == 0) {
-							responseList = skuDetails.getStringArrayList("DETAILS_LIST");
+						// Get owned Items
+						Bundle ownedItems = mService.getPurchases(3, getActivity().getPackageName(), INAPP, null);
+						if (ownedItems.getInt(RESPONSE_CODE) == BILLING_RESPONSE_RESULT_OK) {
+							final ArrayList<String> owned = ownedItems.getStringArrayList("INAPP_PURCHASE_ITEM_LIST");
+							if (CollectionUtils.isNotEmpty(owned)) {
+								itemId.removeAll(owned);
+							}
 						}
+						querySkus.putStringArrayList("ITEM_ID_LIST", itemId);
+						// get Sku detail
+						Bundle skuDetails = mService.getSkuDetails(3, getActivity().getPackageName(), INAPP, querySkus);
+						if (skuDetails.getInt(RESPONSE_CODE) == BILLING_RESPONSE_RESULT_OK) {
+							responseList = skuDetails.getStringArrayList(DETAILS_LIST);
+						}
+
 					} catch (RemoteException e) {
 						Log.e(BillingFragment.class.getName(), "Remote exception", e);
 					}
@@ -164,12 +206,14 @@ public class BillingFragment extends Fragment implements OnClickListener {
 	@Override
 	public void onClick(final View v) {
 		try {
-			Bundle buyIntentBundle = mService.getBuyIntent(3, getActivity().getPackageName(), ((SkuDetails) v.getTag()).getSku(),
-					"inapp", null);
-			PendingIntent pendingIntent = buyIntentBundle.getParcelable("BUY_INTENT");
-
-			getActivity().startIntentSenderForResult(pendingIntent.getIntentSender(), ConstantUtils.INTENT_RESULT_CODE,
-					new Intent(), 0, 0, 0);
+			Bundle buyIntentBundle = mService.getBuyIntent(3, getActivity().getPackageName(), ((SkuDetails) v.getTag()).getSku(), INAPP,
+					null);
+			if (buyIntentBundle.getInt(RESPONSE_CODE) == BILLING_RESPONSE_RESULT_OK) {
+				PendingIntent pendingIntent = buyIntentBundle.getParcelable("BUY_INTENT");
+				clickedView = v;
+				getActivity().startIntentSenderForResult(pendingIntent.getIntentSender(), ConstantUtils.INTENT_RESULT_CODE, new Intent(),
+						0, 0, 0);
+			}
 		} catch (Exception e) {
 			Log.e(BillingFragment.class.getName(), "On click error", e);
 		}
@@ -177,7 +221,11 @@ public class BillingFragment extends Fragment implements OnClickListener {
 
 	@Override
 	public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
-		if (resultCode == ConstantUtils.INTENT_RESULT_CODE) {
+		if (requestCode == ConstantUtils.INTENT_RESULT_CODE && data != null
+				&& data.getIntExtra("RESPONSE_CODE", 0) == BILLING_RESPONSE_RESULT_OK) {
+			if (clickedView != null) {
+				layout.removeView(clickedView);
+			}
 			CroutonUtils.display(getActivity(), getText(R.string.billing_success), true);
 		}
 	}

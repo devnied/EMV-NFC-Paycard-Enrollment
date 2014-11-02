@@ -12,6 +12,7 @@
     <string name="msg_nfc_disable">Please enable NFC and press back to return to this application.</string>
     <string name="msg_activate_nfc">OK</string>
     <string name="msg_info">Info</string>
+    <string name="donate_banner">Help us to improve this app, donate !</string>
     
     <!-- Error -->
     <string name="error_communication_nfc">Please do not move card, try again !</string>
@@ -61,7 +62,7 @@
     <!-- About -->
     <string name="about_app_detail">This app was made to read public data on banking NFC cards compliants with EMV norm.</string>
     <string name="about_source_detail">Source Code and documentation available on <a href="https://github.com/devnied/EMV-NFC-Paycard-Enrollment">Github</a>. Application written by <a href="http://julien-millau.fr">Julien Millau</a></string>
-    <string name="about_inapp_text">Help me to improve this app with donation</string>
+    <string name="about_inapp_text">Help us to improve this app with donation</string>
     <string name="about_title">About</string>
     <string name="about_inApp">Donate</string>
     

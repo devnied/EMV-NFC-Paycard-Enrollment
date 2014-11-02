@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Lecteur de carte bancaire</string>
+    <string name="activity_name">Lecteur de carte bancaire</string>
+    
+    <!-- Msg -->
+    <string name="billing_success">Merci pour votre don !</string>
+    <string name="card_read">Carte lue</string>
+    <string name="card_reading">Lecture en cours&#8230;</string>
+    <string name="card_deleted">Données supprimées</string>
+    <string name="card_reading_desc">Veuillez ne pas enlever ou bouger votre carte pendant la lecture.</string>
+    <string name="msg_nfc_disable">Veuillez activer le NFC et appuyez sur retour pour revenir sur l\'application.</string>
+    <string name="msg_activate_nfc">OK</string>
+    <string name="msg_info">Info</string>
+    <string name="donate_banner">Aidez nous à améliorer l\'application avec un don !</string>
+    
+    <!-- Error -->
+    <string name="error_communication_nfc">Merci de ne pas bouger votre carte durant la lecture !</string>
+    <string name="error_card_unknown">Carte inconnue (Merci d\'envoyer les logs)</string>
+    <string name="error_link">Aucun navigateur trouvé</string>
+    <string name="error_email">Aucun client mail trouvé</string>
+    
+    <!-- Tabs -->
+    <string name="viewpager_carddetail">Infos carte</string>
+    <string name="viewpager_transactions">Transactions</string>
+    <string name="viewpager_log">Log</string>
+    
+    <!-- Card Detail -->
+    <string name="paycard_back_text">Positionnez votre carte NFC\n à l\'arriére de votre téléphone</string>
+    <string name="extended_card_detail_title">Information avancées</string>
+    <string name="card_representation_title">Representation visuelle</string>
+    
+    <string name="extended_title_AID">Carte AID :</string>
+    <string name="extended_title_application_label">Application :</string>
+    <string name="extended_title_pin_try">PIN restant :</string>
+    <string name="extended_title_card_type">Type de carte :</string>
+    <string name="extended_card_holder_name">Nom :</string>
+    <string name="extended_title_possible_bank">Banque :\n(possible)</string>
+    <string name="extended_title_times">essai(s)</string>
+    
+    <!-- Transaction -->
+    <string name="transaction_empty">Votre carte ne donne pas accés à\n l\'historique des transactions</string>
+    
+    <!-- Transaction detail -->
+    <string name="transaction_type">Type de transaction :</string>
+    <string name="transaction_cryptogram">Cryptogram :</string>
+    <string name="transaction_country">Pays :</string>
+    <string name="transaction_unknown">Unknown</string>
+    
+    <!-- Transaction type -->
+    <string name="transaction_type_0">Achat</string>
+    <string name="transaction_type_1">Avance</string>
+    <string name="transaction_type_9">Retrait d\'espèces</string>
+    <string name="transaction_type_32">Remboursement</string>
+    
+    <!-- Logs -->
+    <string name="mail_subject">[EMV Reader] Log détail</string>
+    <string name="mail_popup_title">Envoyer par email...</string>
+    <string name="mail_to">android@julien-millau.fr</string>
+    
+    <!-- About -->
+    <string name="about_app_detail">Cette application a été faite pour lire les données publiques sur une carte bancaires NFC respectant la norme EMV.</string>
+    <string name="about_source_detail">Code source et documentation disponible sur <a href="https://github.com/devnied/EMV-NFC-Paycard-Enrollment">Github</a>. Application écrite par <a href="http://julien-millau.fr">Julien Millau</a></string>
+    <string name="about_inapp_text">Aidez nous à améliorer l\'application avec un don</string>
+    <string name="about_title">A propos</string>
+    <string name="about_inApp">Dons</string>
+    
+    <!-- Navigation drawable -->
+    <string name="navigation_menu_open"></string>
+    <string name="navigation_menu_close"></string>
+    <string-array name="navigation_items">
+        <item>Infos carte</item>
+        <item>Configuration</item>
+        <item>A propos</item>
+    </string-array>
+    
+    <!-- Preferences -->
+    <string name="general_category">Préférences générales</string>
+    <string name="pref_save_read_card">Sauvegarde de la carte</string>
+    <string name="pref_sum_save_card">Save detail on file system</string>
+    <string name="pref_remove_all_stored_cards">Supprimer les données sauvegardées</string>
+    
+        <!--  Strings for possible PreferenceActivity Back/Next buttons -->
+    <string name="back_button_label">Back</string>
+    <string name="next_button_label">Next</string>
+
+    <!-- Optional button to Skip a PreferenceActivity [CHAR LIMIT=20] -->
+    <string name="skip_button_label">Skip</string>
+
+</resources>

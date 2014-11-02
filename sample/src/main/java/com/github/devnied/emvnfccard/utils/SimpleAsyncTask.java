@@ -5,9 +5,9 @@ import android.util.Log;
 
 /**
  * Simple Async task
- * 
+ *
  * @author Millau Julien
- * 
+ *
  */
 public abstract class SimpleAsyncTask extends AsyncTask<Void, Void, Object> {
 

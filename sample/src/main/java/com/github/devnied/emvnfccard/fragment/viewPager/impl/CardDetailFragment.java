@@ -25,9 +25,9 @@ import com.github.devnied.emvnfccard.utils.ViewUtils;
 
 /**
  * View pager fragment used to display card detail
- * 
+ *
  * @author Millau Julien
- * 
+ *
  */
 public class CardDetailFragment extends AbstractFragment {
 
@@ -67,8 +67,13 @@ public class CardDetailFragment extends AbstractFragment {
 	private TableLayout mExtendedLayout;
 
 	/**
+	 * Linear layout (banner)
+	 */
+	private LinearLayout mBanner;
+
+	/**
 	 * Method used to create a new instance of the fragment
-	 * 
+	 *
 	 * @param pCard
 	 *            EmvCard
 	 * @param pTitle
@@ -97,6 +102,7 @@ public class CardDetailFragment extends AbstractFragment {
 		mCardValidity = (TextView) view.findViewById(R.id.cardValidity);
 		mImageView = (ImageView) view.findViewById(R.id.type);
 		mExtendedLayout = (TableLayout) view.findViewById(R.id.extended_content);
+		mBanner = (LinearLayout) getActivity().findViewById(R.id.banner);
 		// Set OCR-A typeface
 		ViewUtils.setTypeFace(EmvApplication.sTypeface, mCardNumber, mCardValidity);
 		// Update content
@@ -109,6 +115,7 @@ public class CardDetailFragment extends AbstractFragment {
 	private void updateContent() {
 		if (getActivity() != null) {
 			if (mCard != null) {
+				mBanner.setVisibility(View.VISIBLE);
 				mEmptyView.setVisibility(View.GONE);
 				mScrollView.setVisibility(View.VISIBLE);
 				// Update content
@@ -155,6 +162,7 @@ public class CardDetailFragment extends AbstractFragment {
 				}
 
 			} else {
+				mBanner.setVisibility(View.GONE);
 				mEmptyView.setVisibility(View.VISIBLE);
 				mScrollView.setVisibility(View.GONE);
 			}
@@ -163,7 +171,7 @@ public class CardDetailFragment extends AbstractFragment {
 
 	/**
 	 * Method used to create a row in the section "Extended card detail"
-	 * 
+	 *
 	 * @param pKeyName
 	 *            key title
 	 * @param pValue
@@ -185,7 +193,7 @@ public class CardDetailFragment extends AbstractFragment {
 
 	/**
 	 * Setter for the field mCard
-	 * 
+	 *
 	 * @param mCard
 	 *            the mCard to set
 	 */
