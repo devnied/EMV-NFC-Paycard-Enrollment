@@ -125,7 +125,7 @@ public class CardDetailFragment extends AbstractFragment {
 				mExtendedLayout.removeAllViews();
 
 				// Card holder name
-				if (StringUtils.isNoneBlank(mCard.getHolderFirstname(), mCard.getHolderLastname())) {
+				if (StringUtils.isNotBlank(mCard.getHolderFirstname()) && StringUtils.isNotBlank(mCard.getHolderLastname())) {
 					createRaw(getString(R.string.extended_card_holder_name),
 							StringUtils.join(mCard.getHolderFirstname(), " ", mCard.getHolderLastname()));
 				}
