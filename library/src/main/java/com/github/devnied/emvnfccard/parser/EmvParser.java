@@ -48,9 +48,9 @@ import fr.devnied.bitlib.BytesUtils;
 /**
  * Emv Parser.<br/>
  * Class used to read and parse EMV card
- * 
+ *
  * @author MILLAU Julien
- * 
+ *
  */
 public class EmvParser {
 
@@ -96,7 +96,7 @@ public class EmvParser {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param pProvider
 	 *            provider to launch command
 	 * @param pContactLess
@@ -110,7 +110,7 @@ public class EmvParser {
 
 	/**
 	 * Method used to read public data from EMV card
-	 * 
+	 *
 	 * @return data read from card or null if any provider match the card type
 	 */
 	public EmvCard readEmvCard() throws CommunicationException {
@@ -124,7 +124,7 @@ public class EmvParser {
 
 	/**
 	 * Method used to select payment environment PSE or PPSE
-	 * 
+	 *
 	 * @return response byte array
 	 * @throws CommunicationException
 	 */
@@ -138,7 +138,7 @@ public class EmvParser {
 
 	/**
 	 * Method used to get the number of pin try left
-	 * 
+	 *
 	 * @return the number of pin try left
 	 * @throws CommunicationException
 	 */
@@ -161,7 +161,7 @@ public class EmvParser {
 
 	/**
 	 * Method used to parse FCI Proprietary Template
-	 * 
+	 *
 	 * @param pData
 	 *            data to parse
 	 * @return
@@ -180,8 +180,7 @@ public class EmvParser {
 			data = provider.transceive(new CommandApdu(CommandEnum.READ_RECORD, sfi, sfi << 3 | 4, 0).toBytes());
 			// If LE is not correct
 			if (ResponseUtils.isEquals(data, SwEnum.SW_6C)) {
-				data = provider.transceive(new CommandApdu(CommandEnum.READ_RECORD, sfi, sfi << 3 | 4, data[data.length - 1])
-						.toBytes());
+				data = provider.transceive(new CommandApdu(CommandEnum.READ_RECORD, sfi, sfi << 3 | 4, data[data.length - 1]).toBytes());
 			}
 			return data;
 		}
@@ -193,7 +192,7 @@ public class EmvParser {
 
 	/**
 	 * Method used to extract application label
-	 * 
+	 *
 	 * @return decoded application label or null
 	 */
 	protected String extractApplicationLabel(final byte[] pData) {
@@ -209,8 +208,9 @@ public class EmvParser {
 	}
 
 	/**
-	 * Read EMV card with Payment System Environment or Proximity Payment System Environment
-	 * 
+	 * Read EMV card with Payment System Environment or Proximity Payment System
+	 * Environment
+	 *
 	 * @return true is succeed false otherwise
 	 */
 	protected boolean readWithPSE() throws CommunicationException {
@@ -245,7 +245,7 @@ public class EmvParser {
 	 * Method used to get the aid list, if the Kernel Identifier is defined, <br/>
 	 * this value need to be appended to the ADF Name in the data field of <br/>
 	 * the SELECT command.
-	 * 
+	 *
 	 * @param pData
 	 *            FCI proprietary template data
 	 * @return the Aid to select
@@ -282,7 +282,7 @@ public class EmvParser {
 
 	/**
 	 * Select application with AID or RID
-	 * 
+	 *
 	 * @param pAid
 	 *            byte array containing AID or RID
 	 * @return response byte array
@@ -297,7 +297,7 @@ public class EmvParser {
 
 	/**
 	 * Read public card data from parameter AID
-	 * 
+	 *
 	 * @param pAid
 	 *            card AID in bytes
 	 * @param pApplicationLabel
@@ -329,7 +329,7 @@ public class EmvParser {
 
 	/**
 	 * Method used to find the real card scheme
-	 * 
+	 *
 	 * @param pAid
 	 *            card complete AID
 	 * @param pCardNumber
@@ -350,7 +350,7 @@ public class EmvParser {
 
 	/**
 	 * Method used to extract Log Entry from Select response
-	 * 
+	 *
 	 * @param pSelectResponse
 	 *            select response
 	 * @return byte array
@@ -393,7 +393,7 @@ public class EmvParser {
 
 	/**
 	 * Method used to extract commons card data
-	 * 
+	 *
 	 * @param pGpo
 	 *            global processing options response
 	 */
@@ -407,6 +407,8 @@ public class EmvParser {
 			ret = TrackUtils.extractTrack2Data(card, pGpo);
 			if (!ret) {
 				data = TlvUtil.getValue(pGpo, EmvTags.APPLICATION_FILE_LOCATOR);
+			} else {
+				extractCardHolderName(pGpo);
 			}
 		}
 
@@ -417,8 +419,7 @@ public class EmvParser {
 			for (Afl afl : listAfl) {
 				// check all records
 				for (int index = afl.getFirstRecord(); index <= afl.getLastRecord(); index++) {
-					byte[] info = provider.transceive(new CommandApdu(CommandEnum.READ_RECORD, index, afl.getSfi() << 3 | 4, 0)
-							.toBytes());
+					byte[] info = provider.transceive(new CommandApdu(CommandEnum.READ_RECORD, index, afl.getSfi() << 3 | 4, 0).toBytes());
 					if (ResponseUtils.isEquals(info, SwEnum.SW_6C)) {
 						info = provider.transceive(new CommandApdu(CommandEnum.READ_RECORD, index, afl.getSfi() << 3 | 4,
 								info[info.length - 1]).toBytes());
@@ -439,7 +440,7 @@ public class EmvParser {
 
 	/**
 	 * Method used to get log format
-	 * 
+	 *
 	 * @return list of tag and length for the log format
 	 * @throws CommunicationException
 	 */
@@ -458,7 +459,7 @@ public class EmvParser {
 
 	/**
 	 * Method used to extract log entry from card
-	 * 
+	 *
 	 * @param pLogEntry
 	 *            log entry position
 	 */
@@ -469,8 +470,7 @@ public class EmvParser {
 			List<TagAndLength> tals = getLogFormat();
 			// read all records
 			for (int rec = 1; rec <= pLogEntry[1]; rec++) {
-				byte[] response = provider.transceive(new CommandApdu(CommandEnum.READ_RECORD, rec, pLogEntry[0] << 3 | 4, 0)
-						.toBytes());
+				byte[] response = provider.transceive(new CommandApdu(CommandEnum.READ_RECORD, rec, pLogEntry[0] << 3 | 4, 0).toBytes());
 				// Extract data
 				if (ResponseUtils.isSucceed(response)) {
 					EmvTransactionRecord record = new EmvTransactionRecord();
@@ -504,7 +504,7 @@ public class EmvParser {
 
 	/**
 	 * Extract list of application file locator from Afl response
-	 * 
+	 *
 	 * @param pAfl
 	 *            AFL data
 	 * @return list of AFL
@@ -525,7 +525,7 @@ public class EmvParser {
 
 	/**
 	 * Extract card holder lastname and firstname
-	 * 
+	 *
 	 * @param pData
 	 *            card data
 	 */
@@ -543,7 +543,7 @@ public class EmvParser {
 
 	/**
 	 * Method used to create GPO command and execute it
-	 * 
+	 *
 	 * @param pPdol
 	 *            PDOL data
 	 * @param pProvider
@@ -555,7 +555,8 @@ public class EmvParser {
 		List<TagAndLength> list = TlvUtil.parseTagAndLength(pPdol);
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		try {
-			out.write(EmvTags.COMMAND_TEMPLATE.getTagBytes()); // COMMAND TEMPLATE
+			out.write(EmvTags.COMMAND_TEMPLATE.getTagBytes()); // COMMAND
+																// TEMPLATE
 			out.write(TlvUtil.getLength(list)); // ADD total length
 			if (list != null) {
 				for (TagAndLength tl : list) {
@@ -570,7 +571,7 @@ public class EmvParser {
 
 	/**
 	 * Method used to get the field card
-	 * 
+	 *
 	 * @return the card
 	 */
 	public EmvCard getCard() {
