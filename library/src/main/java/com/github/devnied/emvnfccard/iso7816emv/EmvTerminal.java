@@ -29,9 +29,9 @@ import fr.devnied.bitlib.BytesUtils;
 
 /**
  * Factory to create Tag value
- * 
+ *
  * @author Millau Julien
- * 
+ *
  */
 public final class EmvTerminal {
 
@@ -42,7 +42,7 @@ public final class EmvTerminal {
 
 	/**
 	 * Method used to construct value from tag and length
-	 * 
+	 *
 	 * @param pTagAndLength
 	 *            tag and length value
 	 * @return tag value in byte
@@ -56,8 +56,8 @@ public final class EmvTerminal {
 			terminalQual.setReaderIsOfflineOnly(true);
 			val = terminalQual.getBytes();
 		} else if (pTagAndLength.getTag() == EmvTags.TERMINAL_COUNTRY_CODE) {
-			val = BytesUtils.fromString(StringUtils.leftPad(String.valueOf(CountryCodeEnum.FR.getNumeric()),
-					pTagAndLength.getLength() * 2, "0"));
+			val = BytesUtils.fromString(StringUtils.leftPad(String.valueOf(CountryCodeEnum.FR.getNumeric()), pTagAndLength.getLength() * 2,
+					"0"));
 		} else if (pTagAndLength.getTag() == EmvTags.TRANSACTION_CURRENCY_CODE) {
 			val = BytesUtils.fromString(StringUtils.leftPad(String.valueOf(CurrencyEnum.EUR.getISOCodeNumeric()),
 					pTagAndLength.getLength() * 2, "0"));
@@ -74,6 +74,8 @@ public final class EmvTerminal {
 			val = new byte[] { (byte) 0xE0, (byte) 0xA0, 0x00 };
 		} else if (pTagAndLength.getTag() == EmvTags.ADDITIONAL_TERMINAL_CAPABILITIES) {
 			val = new byte[] { (byte) 0x8e, (byte) 0, (byte) 0xb0, 0x50, 0x05 };
+		} else if (pTagAndLength.getTag() == EmvTags.DS_REQUESTED_OPERATOR_ID) {
+			val = BytesUtils.fromString("7345123215904501");
 		} else if (pTagAndLength.getTag() == EmvTags.UNPREDICTABLE_NUMBER) {
 			random.nextBytes(ret);
 		}
