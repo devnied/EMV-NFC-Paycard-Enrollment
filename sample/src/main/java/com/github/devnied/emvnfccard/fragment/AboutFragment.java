@@ -17,17 +17,17 @@ import com.github.devnied.emvnfccard.utils.CroutonUtils;
 
 /**
  * About Fragment
- * 
+ *
  * @author Millau Julien
- * 
+ *
  */
 public class AboutFragment extends Fragment {
 
 	/**
 	 * Custom LinkMovementMethod for catching impossible action
-	 * 
+	 *
 	 * @author MILLAU Julien
-	 * 
+	 *
 	 */
 	private class MovementCheck extends LinkMovementMethod {
 
@@ -67,10 +67,8 @@ public class AboutFragment extends Fragment {
 		// Add inApp fragment
 		View billingView = view.findViewById(R.id.about_inapp_content);
 		if (billingView != null) {
-			// && GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity()) == ConnectionResult.SUCCESS) {
 			billingView.setVisibility(View.VISIBLE);
-			getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.about_inapp_content, new BillingFragment())
-					.commit();
+			getChildFragmentManager().beginTransaction().replace(R.id.about_inapp_content, new BillingFragment()).commit();
 		}
 	}
 }

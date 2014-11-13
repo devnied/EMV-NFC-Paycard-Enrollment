@@ -18,11 +18,11 @@
 		</dependency>
 
 		<dependency>
-			<groupId>android.support</groupId>
-			<artifactId>compatibility-v4</artifactId>
-			<version>20.0.0</version>
+			<groupId>com.android.support</groupId>
+			<artifactId>v4</artifactId>
+			<version>21.0.1</version>
 			<scope>system</scope>
-      		<systemPath>${basedir}/jar/compatibility-v4-20.0.0.jar</systemPath>
+      		<systemPath>${basedir}/jar/android-support-v4.jar</systemPath>
 		</dependency>
 
 		<dependency>
