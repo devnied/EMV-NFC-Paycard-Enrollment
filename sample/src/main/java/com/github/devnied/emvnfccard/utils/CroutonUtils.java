@@ -10,26 +10,45 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 
 /**
  * Utils class used to manipulate crouton
- * 
+ *
  * @author MILLAU Julien
- * 
+ *
  */
 public final class CroutonUtils {
 
 	/**
+	 * Enum for crouton color
+	 *
+	 * @author MILLAU Julien
+	 *
+	 */
+	public static enum CoutonColor {
+		BLACK, ORANGE, GREEN;
+	}
+
+	/**
 	 * Method used to display message in an activity
-	 * 
+	 *
 	 * @param pActivity
 	 *            activity
 	 * @param msg
 	 * @param success
 	 */
-	public static void display(final Activity pActivity, final CharSequence msg, final boolean success) {
+	public static void display(final Activity pActivity, final CharSequence msg, final CoutonColor coutonColor) {
 
-		int color = pActivity.getResources().getColor(R.color.black_error);
-		if (success) {
+		int color = 0;
+		switch (coutonColor) {
+		case GREEN:
 			color = pActivity.getResources().getColor(R.color.green_success);
+			break;
+		case ORANGE:
+			color = pActivity.getResources().getColor(R.color.orange);
+			break;
+		case BLACK:
+		default:
+			color = pActivity.getResources().getColor(R.color.black_error);
 		}
+
 		// Remove all previous crouton
 		Crouton.cancelAllCroutons();
 		// Build style

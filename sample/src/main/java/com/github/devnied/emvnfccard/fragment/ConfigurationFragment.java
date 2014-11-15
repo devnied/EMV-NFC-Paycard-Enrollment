@@ -9,6 +9,7 @@ import android.view.View;
 import com.github.devnied.emvnfccard.R;
 import com.github.devnied.emvnfccard.activity.HomeActivity;
 import com.github.devnied.emvnfccard.utils.CroutonUtils;
+import com.github.devnied.emvnfccard.utils.CroutonUtils.CoutonColor;
 
 /**
  * Configuration fragment
@@ -34,7 +35,7 @@ public class ConfigurationFragment extends PreferenceFragment {
 				HomeActivity activity = (HomeActivity) getActivity();
 				if (activity != null) {
 					activity.clear();
-					CroutonUtils.display(activity, getString(R.string.card_deleted), true);
+					CroutonUtils.display(activity, getString(R.string.card_deleted), CoutonColor.GREEN);
 					activity.backToHomeScreen();
 				}
 				return true;

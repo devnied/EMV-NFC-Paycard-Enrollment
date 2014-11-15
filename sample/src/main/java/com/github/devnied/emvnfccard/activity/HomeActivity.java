@@ -54,6 +54,7 @@ import com.github.devnied.emvnfccard.provider.Provider;
 import com.github.devnied.emvnfccard.utils.AtrUtils;
 import com.github.devnied.emvnfccard.utils.ConstantUtils;
 import com.github.devnied.emvnfccard.utils.CroutonUtils;
+import com.github.devnied.emvnfccard.utils.CroutonUtils.CoutonColor;
 import com.github.devnied.emvnfccard.utils.NFCUtils;
 import com.github.devnied.emvnfccard.utils.SimpleAsyncTask;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
@@ -127,6 +128,11 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 	 * Tint manager
 	 */
 	private SystemBarTintManager tintManager;
+
+	/**
+	 * Last Ats
+	 */
+	private byte[] lastAts;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -277,7 +283,7 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 
 					mTagcomm = IsoDep.get(mTag);
 					if (mTagcomm == null) {
-						CroutonUtils.display(HomeActivity.this, getText(R.string.error_communication_nfc), false);
+						CroutonUtils.display(HomeActivity.this, getText(R.string.error_communication_nfc), CoutonColor.BLACK);
 						return;
 					}
 					mException = false;
@@ -286,14 +292,14 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 						mReadCard = null;
 						// Open connection
 						mTagcomm.connect();
-						Collection<String> desc = extractAtsDescription(mTagcomm);
+						lastAts = getAts(mTagcomm);
 
 						mProvider.setmTagCom(mTagcomm);
 
 						EmvParser parser = new EmvParser(mProvider, true);
 						mCard = parser.readEmvCard();
 						if (mCard != null) {
-							mCard.setAtrDescription(desc);
+							mCard.setAtrDescription(extractAtsDescription(lastAts));
 						}
 
 					} catch (IOException e) {
@@ -312,14 +318,19 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 					}
 
 					if (!mException) {
-						if (mCard != null && StringUtils.isNotBlank(mCard.getCardNumber())) {
-							CroutonUtils.display(HomeActivity.this, getText(R.string.card_read), true);
-							mReadCard = mCard;
+						if (mCard != null) {
+							if (StringUtils.isNotBlank(mCard.getCardNumber())) {
+								CroutonUtils.display(HomeActivity.this, getText(R.string.card_read), CoutonColor.GREEN);
+								mReadCard = mCard;
+							} else if (mCard.isNfcLocked()) {
+								CroutonUtils.display(HomeActivity.this, getText(R.string.nfc_locked), CoutonColor.ORANGE);
+							}
 						} else {
-							CroutonUtils.display(HomeActivity.this, getText(R.string.error_card_unknown), false);
+							CroutonUtils.display(HomeActivity.this, getText(R.string.error_card_unknown), CoutonColor.BLACK);
 						}
 					} else {
-						CroutonUtils.display(HomeActivity.this, getResources().getText(R.string.error_communication_nfc), false);
+						CroutonUtils
+								.display(HomeActivity.this, getResources().getText(R.string.error_communication_nfc), CoutonColor.BLACK);
 					}
 
 					refreshContent();
@@ -331,25 +342,33 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 	}
 
 	/**
-	 * Method used to get historical byte
+	 * Get ATS from isoDep
 	 *
 	 * @param pIso
+	 *            isodep
+	 * @return ATS byte array
 	 */
-	public Collection<String> extractAtsDescription(final IsoDep pIso) {
-		Collection<String> ret = null;
+	private byte[] getAts(final IsoDep pIso) {
+		byte[] ret = null;
 		if (pIso.isConnected()) {
 			// Extract ATS from NFC-A
-			byte[] atr = pIso.getHistoricalBytes();
-			if (atr == null) {
+			ret = pIso.getHistoricalBytes();
+			if (ret == null) {
 				// Extract ATS from NFC-B
-				atr = pIso.getHiLayerResponse();
-				if (atr == null) {
-					return ret;
-				}
+				ret = pIso.getHiLayerResponse();
 			}
-			ret = AtrUtils.getDescriptionFromAts(BytesUtils.bytesToString(atr));
 		}
 		return ret;
+	}
+
+	/**
+	 * Method used to get description from ATS
+	 *
+	 * @param pAts
+	 *            ATS byte
+	 */
+	public Collection<String> extractAtsDescription(final byte[] pAts) {
+		return AtrUtils.getDescriptionFromAts(BytesUtils.bytesToString(pAts));
 	}
 
 	@Override
@@ -369,7 +388,7 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 				mReadCard.setHolderFirstname("John");
 				mReadCard.setHolderFirstname("Doe");
 				mReadCard.setExpireDate(new Date());
-				mReadCard.setType(EmvCardScheme.VISA);
+				mReadCard.setType(EmvCardScheme.UNIONPAY);
 				List<EmvTransactionRecord> records = new ArrayList<EmvTransactionRecord>();
 				// payment
 				EmvTransactionRecord payment = new EmvTransactionRecord();
@@ -401,11 +420,11 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 
 				mReadCard.setListTransactions(records);
 				refreshContent();
-				CroutonUtils.display(HomeActivity.this, getText(R.string.card_read), true);
+				CroutonUtils.display(HomeActivity.this, getText(R.string.card_read), CoutonColor.GREEN);
 			} else if (mReadCard != null) {
 				mReadCard = null;
 				refreshContent();
-				CroutonUtils.display(HomeActivity.this, getText(R.string.card_read), true);
+				CroutonUtils.display(HomeActivity.this, getText(R.string.card_read), CoutonColor.GREEN);
 			}
 		} else {
 			super.onBackPressed();
@@ -515,4 +534,14 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 			mDrawerListView.performItemClick(mDrawerListView, 2, mDrawerListView.getItemIdAtPosition(2));
 		}
 	}
+
+	/**
+	 * Get the last ATS
+	 *
+	 * @return the last card ATS
+	 */
+	public byte[] getLastAts() {
+		return lastAts;
+	}
+
 }

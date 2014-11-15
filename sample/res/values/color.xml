@@ -7,6 +7,7 @@
     <!-- Material color -->
     <color name="black_error">#ff616161</color>
     <color name="green_success">#ff9ccc65</color>
+    <color name="orange">#ffffc107</color>
     
     <!-- Blue -->
     <color name="blue">#03a9f4</color>

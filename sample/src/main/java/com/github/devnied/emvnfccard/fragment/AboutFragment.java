@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.github.devnied.emvnfccard.R;
 import com.github.devnied.emvnfccard.utils.CroutonUtils;
+import com.github.devnied.emvnfccard.utils.CroutonUtils.CoutonColor;
 
 /**
  * About Fragment
@@ -36,7 +37,7 @@ public class AboutFragment extends Fragment {
 			try {
 				return super.onTouchEvent(widget, buffer, event);
 			} catch (Exception e) {
-				CroutonUtils.display(getActivity(), getText(R.string.error_link), false);
+				CroutonUtils.display(getActivity(), getText(R.string.error_link), CoutonColor.BLACK);
 			}
 			return false;
 		}

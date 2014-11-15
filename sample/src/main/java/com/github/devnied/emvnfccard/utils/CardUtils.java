@@ -7,20 +7,20 @@ import com.github.devnied.emvnfccard.enums.EmvCardScheme;
 
 /**
  * Utils class for card
- * 
+ *
  * @author Millau Julien
- * 
+ *
  */
 public final class CardUtils {
 
 	/**
 	 * Method used to format card number
-	 * 
+	 *
 	 * @param pCardNumber
 	 *            card number to display
 	 * @param pType
 	 *            card type
-	 * 
+	 *
 	 * @return the card number formated
 	 */
 	public static String formatCardNumber(final String pCardNumber, final EmvCardScheme pType) {
@@ -41,7 +41,7 @@ public final class CardUtils {
 
 	/**
 	 * Method used to format AID
-	 * 
+	 *
 	 * @param pAid
 	 *            card aid
 	 * @return formated AID
@@ -56,7 +56,7 @@ public final class CardUtils {
 
 	/**
 	 * Method used to get the resource Id for card type
-	 * 
+	 *
 	 * @param pEnum
 	 *            card enum
 	 * @return resource id
@@ -73,6 +73,12 @@ public final class CardUtils {
 				break;
 			case VISA:
 				ret = R.drawable.visa;
+				break;
+			case JCB:
+				ret = R.drawable.jcb;
+				break;
+			case UNIONPAY:
+				ret = R.drawable.unionpay;
 				break;
 			default:
 				break;

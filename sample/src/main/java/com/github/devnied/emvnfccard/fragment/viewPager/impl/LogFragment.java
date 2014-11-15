@@ -19,13 +19,16 @@ import com.github.devnied.emvnfccard.fragment.viewPager.AbstractFragment;
 import com.github.devnied.emvnfccard.fragment.viewPager.IFragment;
 import com.github.devnied.emvnfccard.model.EmvCard;
 import com.github.devnied.emvnfccard.utils.CroutonUtils;
+import com.github.devnied.emvnfccard.utils.CroutonUtils.CoutonColor;
 import com.github.devnied.emvnfccard.view.FloatingActionButton;
+
+import fr.devnied.bitlib.BytesUtils;
 
 /**
  * View pager fragment used to display card log
- * 
+ *
  * @author Millau Julien
- * 
+ *
  */
 public class LogFragment extends AbstractFragment implements OnClickListener {
 
@@ -46,7 +49,7 @@ public class LogFragment extends AbstractFragment implements OnClickListener {
 
 	/**
 	 * Method used to create an instance of the fragment
-	 * 
+	 *
 	 * @param pBuf
 	 *            logs
 	 * @param pTitle
@@ -79,7 +82,7 @@ public class LogFragment extends AbstractFragment implements OnClickListener {
 
 	/**
 	 * Method used to update log
-	 * 
+	 *
 	 * @param pBuff
 	 */
 	public void updateLog(final StringBuffer pBuff) {
@@ -106,7 +109,7 @@ public class LogFragment extends AbstractFragment implements OnClickListener {
 
 	/**
 	 * Setter for the field mBuffer
-	 * 
+	 *
 	 * @param mBuffer
 	 *            the mBuffer to set
 	 */
@@ -126,26 +129,29 @@ public class LogFragment extends AbstractFragment implements OnClickListener {
 			try {
 				startActivity(Intent.createChooser(i, getString(R.string.mail_popup_title)));
 			} catch (android.content.ActivityNotFoundException ex) {
-				CroutonUtils.display(getActivity(), getResources().getText(R.string.error_email), false);
+				CroutonUtils.display(getActivity(), getResources().getText(R.string.error_email), CoutonColor.BLACK);
 			}
 		}
 	}
 
 	/**
 	 * Get mail content
-	 * 
+	 *
 	 * @param pActivity
 	 * @return
 	 */
 	private String getMailContent(final HomeActivity pActivity) {
 		StringBuilder builder = new StringBuilder();
 		EmvCard card = pActivity.getCard();
-		// Add version
+		// Add application version
 		try {
 			builder.append(pActivity.getPackageManager().getPackageInfo(pActivity.getPackageName(), 0).versionName).append("\n");
 		} catch (NameNotFoundException e) {
 			// Do nothing
 		}
+
+		// Add ATS
+		builder.append("ATS: ").append(BytesUtils.bytesToString(pActivity.getLastAts())).append("\n");
 
 		String cardNumber = null;
 		if (card != null) {

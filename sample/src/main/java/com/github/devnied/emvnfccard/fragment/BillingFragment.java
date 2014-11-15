@@ -28,6 +28,7 @@ import com.github.devnied.emvnfccard.R;
 import com.github.devnied.emvnfccard.billing.SkuDetails;
 import com.github.devnied.emvnfccard.utils.ConstantUtils;
 import com.github.devnied.emvnfccard.utils.CroutonUtils;
+import com.github.devnied.emvnfccard.utils.CroutonUtils.CoutonColor;
 import com.github.devnied.emvnfccard.utils.SimpleAsyncTask;
 
 /**
@@ -232,7 +233,7 @@ public class BillingFragment extends Fragment implements OnClickListener {
 			if (clickedView != null) {
 				layout.removeView(clickedView);
 			}
-			CroutonUtils.display(getActivity(), getText(R.string.billing_success), true);
+			CroutonUtils.display(getActivity(), getText(R.string.billing_success), CoutonColor.GREEN);
 		}
 	}
 }
