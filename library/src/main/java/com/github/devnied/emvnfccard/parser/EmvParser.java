@@ -233,6 +233,9 @@ public class EmvParser {
 						break;
 					}
 				}
+				if (!ret) {
+					card.setNfcLocked(true);
+				}
 			}
 		} else if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug((contactLess ? "PPSE" : "PSE") + " not found -> Use kown AID");
@@ -413,7 +416,7 @@ public class EmvParser {
 		}
 
 		if (data != null) {
-			// Get SFI
+			// Extract Afl
 			List<Afl> listAfl = extractAfl(data);
 			// for each AFL
 			for (Afl afl : listAfl) {
@@ -556,7 +559,7 @@ public class EmvParser {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		try {
 			out.write(EmvTags.COMMAND_TEMPLATE.getTagBytes()); // COMMAND
-																// TEMPLATE
+			// TEMPLATE
 			out.write(TlvUtil.getLength(list)); // ADD total length
 			if (list != null) {
 				for (TagAndLength tl : list) {

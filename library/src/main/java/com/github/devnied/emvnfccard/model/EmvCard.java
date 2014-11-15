@@ -23,9 +23,9 @@ import com.github.devnied.emvnfccard.enums.EmvCardScheme;
 
 /**
  * Bean used to describe data in EMV card
- * 
+ *
  * @author MILLAU Julien
- * 
+ *
  */
 public class EmvCard extends AbstractData {
 
@@ -90,8 +90,13 @@ public class EmvCard extends AbstractData {
 	private Service service;
 
 	/**
+	 * Indicate if the nfc is locked on the card
+	 */
+	private boolean nfcLocked;
+
+	/**
 	 * Method used to get the field aid
-	 * 
+	 *
 	 * @return the aid
 	 */
 	public String getAid() {
@@ -100,7 +105,7 @@ public class EmvCard extends AbstractData {
 
 	/**
 	 * Setter for the field aid
-	 * 
+	 *
 	 * @param aid
 	 *            the aid to set
 	 */
@@ -110,7 +115,7 @@ public class EmvCard extends AbstractData {
 
 	/**
 	 * Method used to get the field holderLastname
-	 * 
+	 *
 	 * @return the holderLastname
 	 */
 	public String getHolderLastname() {
@@ -119,7 +124,7 @@ public class EmvCard extends AbstractData {
 
 	/**
 	 * Setter for the field holderLastname
-	 * 
+	 *
 	 * @param holderLastname
 	 *            the holderLastname to set
 	 */
@@ -129,7 +134,7 @@ public class EmvCard extends AbstractData {
 
 	/**
 	 * Method used to get the field holderFirstname
-	 * 
+	 *
 	 * @return the holderFirstname
 	 */
 	public String getHolderFirstname() {
@@ -138,7 +143,7 @@ public class EmvCard extends AbstractData {
 
 	/**
 	 * Setter for the field holderFirstname
-	 * 
+	 *
 	 * @param holderFirstname
 	 *            the holderFirstname to set
 	 */
@@ -148,7 +153,7 @@ public class EmvCard extends AbstractData {
 
 	/**
 	 * Method used to get the field cardNumber
-	 * 
+	 *
 	 * @return the cardNumber
 	 */
 	public String getCardNumber() {
@@ -157,7 +162,7 @@ public class EmvCard extends AbstractData {
 
 	/**
 	 * Setter for the field cardNumber
-	 * 
+	 *
 	 * @param cardNumber
 	 *            the cardNumber to set
 	 */
@@ -167,7 +172,7 @@ public class EmvCard extends AbstractData {
 
 	/**
 	 * Method used to get the field expireDate
-	 * 
+	 *
 	 * @return the expireDate
 	 */
 	public Date getExpireDate() {
@@ -176,7 +181,7 @@ public class EmvCard extends AbstractData {
 
 	/**
 	 * Setter for the field expireDate
-	 * 
+	 *
 	 * @param expireDate
 	 *            the expireDate to set
 	 */
@@ -186,7 +191,7 @@ public class EmvCard extends AbstractData {
 
 	/**
 	 * Method used to get the field listTransactions
-	 * 
+	 *
 	 * @return the listTransactions
 	 */
 	public List<EmvTransactionRecord> getListTransactions() {
@@ -195,7 +200,7 @@ public class EmvCard extends AbstractData {
 
 	/**
 	 * Setter for the field listTransactions
-	 * 
+	 *
 	 * @param listTransactions
 	 *            the listTransactions to set
 	 */
@@ -205,7 +210,7 @@ public class EmvCard extends AbstractData {
 
 	/**
 	 * Method used to get the field type
-	 * 
+	 *
 	 * @return the type
 	 */
 	public EmvCardScheme getType() {
@@ -214,7 +219,7 @@ public class EmvCard extends AbstractData {
 
 	/**
 	 * Setter for the field type
-	 * 
+	 *
 	 * @param type
 	 *            the type to set
 	 */
@@ -224,7 +229,7 @@ public class EmvCard extends AbstractData {
 
 	/**
 	 * Method used to get the field applicationLabel
-	 * 
+	 *
 	 * @return the applicationLabel
 	 */
 	public String getApplicationLabel() {
@@ -233,7 +238,7 @@ public class EmvCard extends AbstractData {
 
 	/**
 	 * Setter for the field applicationLabel
-	 * 
+	 *
 	 * @param applicationLabel
 	 *            the applicationLabel to set
 	 */
@@ -248,7 +253,7 @@ public class EmvCard extends AbstractData {
 
 	/**
 	 * Method used to get the field leftPinTry
-	 * 
+	 *
 	 * @return the leftPinTry
 	 */
 	public int getLeftPinTry() {
@@ -257,7 +262,7 @@ public class EmvCard extends AbstractData {
 
 	/**
 	 * Setter for the field leftPinTry
-	 * 
+	 *
 	 * @param leftPinTry
 	 *            the leftPinTry to set
 	 */
@@ -267,7 +272,7 @@ public class EmvCard extends AbstractData {
 
 	/**
 	 * Method used to get the field atrDescription
-	 * 
+	 *
 	 * @return the atrDescription
 	 */
 	public Collection<String> getAtrDescription() {
@@ -276,7 +281,7 @@ public class EmvCard extends AbstractData {
 
 	/**
 	 * Setter for the field atrDescription
-	 * 
+	 *
 	 * @param atrDescription
 	 *            the atrDescription to set
 	 */
@@ -286,7 +291,7 @@ public class EmvCard extends AbstractData {
 
 	/**
 	 * Method used to get the field service
-	 * 
+	 *
 	 * @return the service
 	 */
 	public Service getService() {
@@ -295,12 +300,31 @@ public class EmvCard extends AbstractData {
 
 	/**
 	 * Setter for the field service
-	 * 
+	 *
 	 * @param service
 	 *            the service to set
 	 */
 	public void setService(final Service service) {
 		this.service = service;
+	}
+
+	/**
+	 * Method used to get the field nfcLocked
+	 *
+	 * @return the nfcLocked
+	 */
+	public boolean isNfcLocked() {
+		return nfcLocked;
+	}
+
+	/**
+	 * Setter for the field nfcLocked
+	 *
+	 * @param nfcLocked
+	 *            the nfcLocked to set
+	 */
+	public void setNfcLocked(final boolean nfcLocked) {
+		this.nfcLocked = nfcLocked;
 	}
 
 }
