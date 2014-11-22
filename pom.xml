@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.devnied.emvnfccard</groupId>
 	<artifactId>parent</artifactId>
@@ -138,14 +139,68 @@
 		<pluginManagement>
 			<plugins>
 				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jarsigner-plugin</artifactId>
+					<version>1.3.2</version>
+					<executions>
+						<execution>
+							<id>signing</id>
+							<goals>
+								<goal>sign</goal>
+								<goal>verify</goal>
+							</goals>
+							<phase>package</phase>
+							<inherited>true</inherited>
+							<configuration>
+								<skip>${sign.skip}</skip>
+								<removeExistingSignatures>true</removeExistingSignatures>
+								<archiveDirectory />
+								<includes>
+									<include>${project.build.directory}/${project.artifactId}.apk</include>
+								</includes>
+								<keystore>${sign.keystore}</keystore>
+								<alias>${sign.alias}</alias>
+								<storepass>${sign.storepass}</storepass>
+								<keypass>${sign.keypass}</keypass>
+								<verbose>true</verbose>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
 					<groupId>com.jayway.maven.plugins.android.generation2</groupId>
 					<artifactId>android-maven-plugin</artifactId>
-					<version>3.9.0-rc.3</version>
+					<version>4.0.0-rc.2</version>
 					<configuration>
+						<release>true</release>
 						<sdk>
 							<platform>19</platform>
 						</sdk>
+						<androidManifestFile>AndroidManifest.xml</androidManifestFile>
+						<resourceDirectory>res</resourceDirectory>
+						<assetsDirectory>assets</assetsDirectory>
+						<proguard>
+							<skip>false</skip>
+						</proguard>
+						<sign>
+							<debug>false</debug>
+						</sign>
+						<zipalign>
+							<verbose>false</verbose>
+							<inputApk>${project.build.directory}/${project.artifactId}.apk</inputApk>
+							<outputApk>${project.build.directory}/${project.artifactId}-signed-aligned.apk</outputApk>
+							<skip>false</skip>
+						</zipalign>
 					</configuration>
+					<executions>
+						<execution>
+							<id>alignApk</id>
+							<phase>package</phase>
+							<goals>
+								<goal>zipalign</goal>
+							</goals>
+						</execution>
+					</executions>
 					<extensions>true</extensions>
 				</plugin>
 				<plugin>
@@ -216,6 +271,21 @@
 	</build>
 	<profiles>
 		<profile>
+			<id>ci</id>
+			<properties>
+				<sign.skip>true</sign.skip>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+		<profile>
+			<id>release-apk</id>
+			<properties>
+				<sign.skip>false</sign.skip>
+			</properties>
+		</profile>
+		<profile>
 			<id>release-sign-artifacts</id>
 			<activation>
 				<property>
@@ -223,6 +293,9 @@
 					<value>true</value>
 				</property>
 			</activation>
+			<properties>
+				<sign.skip>true</sign.skip>
+			</properties>
 			<build>
 				<plugins>
 					<plugin>
