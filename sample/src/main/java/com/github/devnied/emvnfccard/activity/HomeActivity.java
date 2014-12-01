@@ -165,12 +165,12 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 
 		// 2.1 create ActionBarDrawerToggle
 		mActionBarDrawerToggle = new ActionBarDrawerToggle(/* */
-		this, /* host Activity */
-		mDrawerLayout, /* DrawerLayout object */
-		R.drawable.ic_drawer, /* nav drawer icon to replace 'Up' caret */
-		R.string.navigation_menu_open, /* "open drawer" description */
-		R.string.navigation_menu_close /* "close drawer" description */
-		);
+				this, /* host Activity */
+				mDrawerLayout, /* DrawerLayout object */
+				R.drawable.ic_drawer, /* nav drawer icon to replace 'Up' caret */
+				R.string.navigation_menu_open, /* "open drawer" description */
+				R.string.navigation_menu_close /* "close drawer" description */
+				);
 
 		// 2.2 Set actionBarDrawerToggle as the DrawerListener
 		mDrawerLayout.setDrawerListener(mActionBarDrawerToggle);
@@ -330,7 +330,7 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 						}
 					} else {
 						CroutonUtils
-								.display(HomeActivity.this, getResources().getText(R.string.error_communication_nfc), CoutonColor.BLACK);
+						.display(HomeActivity.this, getResources().getText(R.string.error_communication_nfc), CoutonColor.BLACK);
 					}
 
 					refreshContent();
@@ -485,9 +485,12 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 	@Override
 	public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
 		if (mLastSelectedMenu == ConstantUtils.ABOUT) {
-			Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.about_inapp_content);
+			Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
 			if (fragment != null) {
-				((BillingFragment) fragment).onActivityResult(requestCode, resultCode, data);
+				BillingFragment billing = (BillingFragment) fragment.getChildFragmentManager().findFragmentById(R.id.about_inapp_content);
+				if (billing != null) {
+					billing.onActivityResult(requestCode, resultCode, data);
+				}
 			}
 		}
 	}

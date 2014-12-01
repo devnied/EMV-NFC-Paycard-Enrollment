@@ -6,7 +6,8 @@
 target/*
 target/*.pom
 target/*.asc
- 
+*/proguard/*
+
 # OS Files #
 .DS_Store
  

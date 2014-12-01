@@ -62,6 +62,7 @@
 
 	</dependencies>
 	<build>
+		<finalName>emv-paycard-library-${project.version}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.eluder.coveralls</groupId>

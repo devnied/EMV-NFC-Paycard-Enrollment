@@ -155,13 +155,19 @@
 								<skip>${sign.skip}</skip>
 								<removeExistingSignatures>true</removeExistingSignatures>
 								<archiveDirectory />
+								<excludes>
+									<exclude>${project.build.directory}/*.apk</exclude>
+									<exclude>${project.build.directory}/*.jar</exclude>
+								</excludes>
 								<includes>
-									<include>${project.build.directory}/${project.artifactId}.apk</include>
+									<include>${project.build.directory}/sample-signed-aligned.apk</include>
 								</includes>
 								<keystore>${sign.keystore}</keystore>
 								<alias>${sign.alias}</alias>
 								<storepass>${sign.storepass}</storepass>
 								<keypass>${sign.keypass}</keypass>
+								<argument>-sigalg</argument><argument>MD5withRSA</argument>
+								<argument>-digestalg</argument><argument>SHA1</argument>
 								<verbose>true</verbose>
 							</configuration>
 						</execution>
