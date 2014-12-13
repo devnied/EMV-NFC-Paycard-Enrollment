@@ -1,6 +1,6 @@
 ## EMV NFC Paycard Enrollment [![Build Status](https://travis-ci.org/devnied/EMV-NFC-Paycard-Enrollment.png)](https://travis-ci.org/devnied/EMV-NFC-Paycard-Enrollment) [![Coverage Status](https://coveralls.io/repos/devnied/EMV-NFC-Paycard-Enrollment/badge.png?branch=master)](https://coveralls.io/r/devnied/EMV-NFC-Paycard-Enrollment?branch=master)
 ### Description
-Java library used to read and extract data from NFC EMV paycard.<br/>
+Java library used to read and extract public data from NFC EMV credit cards.<br/>
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.devnied.emvnfccard/library/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/com.github.devnied.emvnfccard/library)<br/>
 <br/>
 Android sample app available on Play store.
@@ -12,7 +12,7 @@ Android sample app available on Play store.
 
 ### Getting started
 
-First you need to create a custom Provider to exchange APDU to NFC EMV card.
+First you need to create a custom Provider to exchange APDU with an NFC EMV credit card.
 ```java
 public class YourProvider implements IProvider {
 
