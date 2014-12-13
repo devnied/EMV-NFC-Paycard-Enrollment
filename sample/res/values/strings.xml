@@ -76,6 +76,13 @@
         <item>About</item>
     </string-array>
     
+    <!-- App rating  -->
+    <string name="dialog_text">Please take a moment to rate this app. Thanks for your support!</string>
+    <string name="dialog_header">Rate this app</string>
+    <string name="rate">Rate this app</string>
+    <string name="no">No thanks</string>
+    <string name="dontask">Do not ask again</string>
+    
     <!-- Preferences -->
     <string name="general_category">General Preferences</string>
     <string name="pref_save_read_card">Save card</string>

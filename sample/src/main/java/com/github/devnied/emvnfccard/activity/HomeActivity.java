@@ -56,6 +56,7 @@ import com.github.devnied.emvnfccard.utils.ConstantUtils;
 import com.github.devnied.emvnfccard.utils.CroutonUtils;
 import com.github.devnied.emvnfccard.utils.CroutonUtils.CoutonColor;
 import com.github.devnied.emvnfccard.utils.NFCUtils;
+import com.github.devnied.emvnfccard.utils.RateDialog;
 import com.github.devnied.emvnfccard.utils.SimpleAsyncTask;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
@@ -321,6 +322,7 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 						if (mCard != null) {
 							if (StringUtils.isNotBlank(mCard.getCardNumber())) {
 								CroutonUtils.display(HomeActivity.this, getText(R.string.card_read), CoutonColor.GREEN);
+								new RateDialog(HomeActivity.this).init();
 								mReadCard = mCard;
 							} else if (mCard.isNfcLocked()) {
 								CroutonUtils.display(HomeActivity.this, getText(R.string.nfc_locked), CoutonColor.ORANGE);

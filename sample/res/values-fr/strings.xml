@@ -75,6 +75,13 @@
         <item>A propos</item>
     </string-array>
     
+    <!-- App rating  -->
+    <string name="dialog_text">Merci de prendre un moment pour noter cette application!</string>
+    <string name="dialog_header">Noter cette application</string>
+    <string name="rate">Noter</string>
+    <string name="no">Plus tard</string>
+    <string name="dontask">Ne plus demander</string>
+    
     <!-- Preferences -->
     <string name="general_category">Préférences générales</string>
     <string name="pref_save_read_card">Sauvegarde de la carte</string>
