@@ -43,14 +43,14 @@ card object contains all data read (Aid, card number, expiration date, card type
 <dependency>
   <groupId>com.github.devnied.emvnfccard</groupId>
   <artifactId>library</artifactId>
-  <version>2.1.0</version>
+  <version>2.1.1</version>
 </dependency>
 ```
 
 ### Gradle
 ```groovy
 dependencies {
-	compile 'com.github.devnied.emvnfccard:library:2.1.0'
+	compile 'com.github.devnied.emvnfccard:library:2.1.1'
 }
 ```
 
