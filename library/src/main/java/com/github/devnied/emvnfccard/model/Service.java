@@ -26,12 +26,12 @@ import fr.devnied.bitlib.BitUtils;
 import fr.devnied.bitlib.BytesUtils;
 
 /**
- * Track 2 service
- * 
+ * Track 1 & 2 service
+ *
  * @author MILLAU julien
- * 
+ *
  */
-public class Service extends AbstractData{
+public class Service extends AbstractData {
 
 	/**
 	 * Generated serial UID
@@ -55,7 +55,7 @@ public class Service extends AbstractData{
 
 	/**
 	 * Constructor with service bytes array parameter
-	 * 
+	 *
 	 * @param pData
 	 *            service as byte array
 	 */
@@ -70,7 +70,7 @@ public class Service extends AbstractData{
 
 	/**
 	 * Method used to get the field serviceCode1
-	 * 
+	 *
 	 * @return the serviceCode1
 	 */
 	public ServiceCode1Enum getServiceCode1() {
@@ -79,7 +79,7 @@ public class Service extends AbstractData{
 
 	/**
 	 * Method used to get the field serviceCode2
-	 * 
+	 *
 	 * @return the serviceCode2
 	 */
 	public ServiceCode2Enum getServiceCode2() {
@@ -88,7 +88,7 @@ public class Service extends AbstractData{
 
 	/**
 	 * Method used to get the field serviceCode3
-	 * 
+	 *
 	 * @return the serviceCode3
 	 */
 	public ServiceCode3Enum getServiceCode3() {

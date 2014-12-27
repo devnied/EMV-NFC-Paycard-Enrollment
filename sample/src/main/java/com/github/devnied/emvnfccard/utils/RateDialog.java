@@ -17,7 +17,7 @@ public class RateDialog {
 	private final static String DONT_SHOW = "dontshowagain";
 	private final static String LAUNCH_COUNT = "launch_count";
 
-	private int launchesUntilPrompt = 3;
+	private int launchesUntilPrompt = 2;
 
 	private static Context mContext;
 

@@ -22,21 +22,24 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.devnied.emvnfccard.iso7816emv.EmvTags;
 import com.github.devnied.emvnfccard.model.EmvCard;
+import com.github.devnied.emvnfccard.model.EmvTrack1;
+import com.github.devnied.emvnfccard.model.EmvTrack2;
 import com.github.devnied.emvnfccard.model.Service;
 
 import fr.devnied.bitlib.BytesUtils;
 
 /**
  * Extract track data
- * 
+ *
  * @author MILLAU Julien
- * 
+ *
  */
 public final class TrackUtils {
 
@@ -46,13 +49,39 @@ public final class TrackUtils {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TrackUtils.class);
 
 	/**
+	 * Card holder name separator
+	 */
+	public static final String CARD_HOLDER_NAME_SEPARATOR = "/";
+
+	/**
 	 * Track 2 pattern
 	 */
 	private static final Pattern TRACK2_PATTERN = Pattern.compile("([0-9]{1,19})D([0-9]{4})([0-9]{3})?(.*)");
 
 	/**
+	 * Track 1 pattern
+	 */
+	private static final Pattern TRACK1_PATTERN = Pattern
+			.compile("%?([A-Z])([0-9]{1,19})(\\?[0-9])?\\^([^\\^]{2,26})\\^([0-9]{4}|\\^)([0-9]{3}|\\^)([^\\?]+)\\??");
+
+	/**
+	 * Method used to extract track data from response
+	 *
+	 * @param pEmvCard
+	 *            Card data
+	 * @param pData
+	 *            data send by card
+	 * @return true if track 1 or track 2 can be read
+	 */
+	public static boolean extractTrackData(final EmvCard pEmvCard, final byte[] pData) {
+		boolean extractTrack1 = extractTrack1Data(pEmvCard, pData);
+		boolean extractTrack2 = extractTrack2Data(pEmvCard, pData);
+		return extractTrack1 || extractTrack2;
+	}
+
+	/**
 	 * Extract track 2 data
-	 * 
+	 *
 	 * @param pEmvCard
 	 *            Object card representation
 	 * @param pData
@@ -61,25 +90,77 @@ public final class TrackUtils {
 	 */
 	public static boolean extractTrack2Data(final EmvCard pEmvCard, final byte[] pData) {
 		boolean ret = false;
-		byte[] track2 = TlvUtil.getValue(pData, EmvTags.TRACK_2_EQV_DATA, EmvTags.TRACK2_DATA);
+		byte[] rawTrack2 = TlvUtil.getValue(pData, EmvTags.TRACK_2_EQV_DATA, EmvTags.TRACK2_DATA);
 
-		if (track2 != null) {
-			String data = BytesUtils.bytesToStringNoSpace(track2);
+		if (rawTrack2 != null) {
+			EmvTrack2 track2 = new EmvTrack2();
+			track2.setRaw(rawTrack2);
+			String data = BytesUtils.bytesToStringNoSpace(rawTrack2);
 			Matcher m = TRACK2_PATTERN.matcher(data);
 			// Check pattern
 			if (m.find()) {
 				// read card number
-				pEmvCard.setCardNumber(m.group(1));
+				track2.setCardNumber(m.group(1));
 				// Read expire date
 				SimpleDateFormat sdf = new SimpleDateFormat("yyMM", Locale.getDefault());
 				try {
-					pEmvCard.setExpireDate(DateUtils.truncate(sdf.parse(m.group(2)), Calendar.MONTH));
+					track2.setExpireDate(DateUtils.truncate(sdf.parse(m.group(2)), Calendar.MONTH));
 				} catch (ParseException e) {
 					LOGGER.error("Unparsable expire card date : {}", e.getMessage());
 					return ret;
 				}
 				// Read service
-				pEmvCard.setService(new Service(m.group(3)));
+				track2.setService(new Service(m.group(3)));
+				pEmvCard.setTrack2(track2);
+				ret = true;
+			}
+		}
+		return ret;
+	}
+
+	/**
+	 * Extract track 1 data
+	 *
+	 * @param pEmvCard
+	 *            Object card representation
+	 * @param pData
+	 *            data to parse
+	 * @return true if the extraction succeed false otherwise
+	 */
+	public static boolean extractTrack1Data(final EmvCard pEmvCard, final byte[] pData) {
+		boolean ret = false;
+		byte[] rawTrack1 = TlvUtil.getValue(pData, EmvTags.TRACK1_DATA);
+
+		if (rawTrack1 != null) {
+			EmvTrack1 track1 = new EmvTrack1();
+			track1.setRaw(rawTrack1);
+			String data = new String(rawTrack1);
+			Matcher m = TRACK1_PATTERN.matcher(data);
+			// Check pattern
+			if (m.find()) {
+				// Set format code
+				track1.setFormatCode(m.group(1));
+				// Set card number
+				track1.setCardNumber(m.group(2));
+				// Extract holder name
+				String[] name = StringUtils.split(m.group(4).trim(), CARD_HOLDER_NAME_SEPARATOR);
+				if (name != null && name.length == 2) {
+					track1.setHolderLastname(StringUtils.trimToNull(name[0]));
+					track1.setHolderFirstname(StringUtils.trimToNull(name[1]));
+				}
+				// Read expire date
+				SimpleDateFormat sdf = new SimpleDateFormat("yyMM", Locale.getDefault());
+				try {
+					track1.setExpireDate(DateUtils.truncate(sdf.parse(m.group(5)), Calendar.MONTH));
+				} catch (ParseException e) {
+					LOGGER.error("Unparsable expire card date : {}", e.getMessage());
+					return ret;
+				}
+				// Read service
+				track1.setService(new Service(m.group(6)));
+
+				// Set track 1
+				pEmvCard.setTrack1(track1);
 				ret = true;
 			}
 		}

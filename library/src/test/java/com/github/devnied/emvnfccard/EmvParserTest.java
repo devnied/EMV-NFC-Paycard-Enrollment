@@ -21,6 +21,9 @@ import com.github.devnied.emvnfccard.model.EmvCard;
 import com.github.devnied.emvnfccard.model.EmvTransactionRecord;
 import com.github.devnied.emvnfccard.model.enums.CountryCodeEnum;
 import com.github.devnied.emvnfccard.model.enums.CurrencyEnum;
+import com.github.devnied.emvnfccard.model.enums.ServiceCode1Enum;
+import com.github.devnied.emvnfccard.model.enums.ServiceCode2Enum;
+import com.github.devnied.emvnfccard.model.enums.ServiceCode3Enum;
 import com.github.devnied.emvnfccard.model.enums.TransactionTypeEnum;
 import com.github.devnied.emvnfccard.parser.EmvParser;
 import com.github.devnied.emvnfccard.parser.IProvider;
@@ -58,6 +61,10 @@ public class EmvParserTest {
 			LOGGER.debug(card.toString());
 		}
 		Assertions.assertThat(card).isNotNull();
+		Assertions.assertThat(card.getTrack1()).isNull();
+		Assertions.assertThat(card.getTrack2()).isNotNull();
+		Assertions.assertThat(card.getTrack2().getRaw()).isNotNull();
+		Assertions.assertThat(card.getTrack2().getService()).isNotNull();
 		Assertions.assertThat(card.getAid()).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("4999999999999999");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.VISA);
@@ -82,6 +89,10 @@ public class EmvParserTest {
 			LOGGER.debug(card.toString());
 		}
 		Assertions.assertThat(card).isNotNull();
+		Assertions.assertThat(card.getTrack1()).isNull();
+		Assertions.assertThat(card.getTrack2()).isNotNull();
+		Assertions.assertThat(card.getTrack2().getRaw()).isNotNull();
+		Assertions.assertThat(card.getTrack2().getService()).isNotNull();
 		Assertions.assertThat(card.getAid()).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("4999999999999999");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.VISA);
@@ -106,6 +117,10 @@ public class EmvParserTest {
 			LOGGER.debug(card.toString());
 		}
 		Assertions.assertThat(card).isNotNull();
+		Assertions.assertThat(card.getTrack1()).isNull();
+		Assertions.assertThat(card.getTrack2()).isNotNull();
+		Assertions.assertThat(card.getTrack2().getRaw()).isNotNull();
+		Assertions.assertThat(card.getTrack2().getService()).isNotNull();
 		Assertions.assertThat(card.getAid()).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("4999999999999999");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.VISA);
@@ -168,6 +183,10 @@ public class EmvParserTest {
 			LOGGER.debug(card.toString());
 		}
 		Assertions.assertThat(card).isNotNull();
+		Assertions.assertThat(card.getTrack1()).isNull();
+		Assertions.assertThat(card.getTrack2()).isNotNull();
+		Assertions.assertThat(card.getTrack2().getRaw()).isNotNull();
+		Assertions.assertThat(card.getTrack2().getService()).isNotNull();
 		Assertions.assertThat(card.getAid()).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("5599999999999999");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.MASTER_CARD);
@@ -191,7 +210,25 @@ public class EmvParserTest {
 		if (card != null) {
 			LOGGER.debug(card.toString());
 		}
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(card).isNotNull();
+		Assertions.assertThat(card.getTrack1()).isNotNull();
+		Assertions.assertThat(sdf.format(card.getTrack1().getExpireDate())).isEqualTo("07/2002");
+		Assertions.assertThat(card.getTrack1().getCardNumber()).isEqualTo("5200000000000000");
+		Assertions.assertThat(card.getTrack1().getHolderFirstname()).isNull();
+		Assertions.assertThat(card.getTrack1().getHolderLastname()).isNull();
+		Assertions.assertThat(card.getTrack1().getService()).isNotNull();
+		Assertions.assertThat(card.getTrack1().getService().getServiceCode1()).isEqualTo(ServiceCode1Enum.INTERNATIONNAL_ICC);
+		Assertions.assertThat(card.getTrack1().getService().getServiceCode1().getInterchange()).isNotNull();
+		Assertions.assertThat(card.getTrack1().getService().getServiceCode1().getTechnology()).isNotNull();
+		Assertions.assertThat(card.getTrack1().getService().getServiceCode2()).isEqualTo(ServiceCode2Enum.NORMAL);
+		Assertions.assertThat(card.getTrack1().getService().getServiceCode2().getAuthorizationProcessing()).isNotNull();
+		Assertions.assertThat(card.getTrack1().getService().getServiceCode3()).isEqualTo(ServiceCode3Enum.GOODS_SERVICES);
+		Assertions.assertThat(card.getTrack1().getService().getServiceCode3().getAllowedServices()).isNotNull();
+		Assertions.assertThat(card.getTrack1().getService().getServiceCode3().getPinRequirements()).isNotNull();
+		Assertions.assertThat(card.getTrack2()).isNotNull();
+		Assertions.assertThat(card.getTrack2().getRaw()).isNotNull();
+		Assertions.assertThat(card.getTrack2().getService()).isNotNull();
 		Assertions.assertThat(card.getAid()).isEqualTo("A0000000041010");
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("5200000000000000");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.MASTER_CARD);
@@ -199,7 +236,6 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		Assertions.assertThat(card.getLeftPinTry()).isEqualTo(2);
 		Assertions.assertThat(card.getApplicationLabel()).isEqualTo(null);
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("07/2002");
 		Assertions.assertThat(card.getListTransactions()).isNotEmpty();
 		Assertions.assertThat(card.getListTransactions().size()).isEqualTo(10);
@@ -226,6 +262,10 @@ public class EmvParserTest {
 			LOGGER.debug(card.toString());
 		}
 		Assertions.assertThat(card).isNotNull();
+		Assertions.assertThat(card.getTrack1()).isNull();
+		Assertions.assertThat(card.getTrack2()).isNotNull();
+		Assertions.assertThat(card.getTrack2().getRaw()).isNotNull();
+		Assertions.assertThat(card.getTrack2().getService()).isNotNull();
 		Assertions.assertThat(card.getAid()).isEqualTo("A0000000041010");
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("5200000000000000");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.MASTER_CARD);
@@ -260,6 +300,10 @@ public class EmvParserTest {
 			LOGGER.debug(card.toString());
 		}
 		Assertions.assertThat(card).isNotNull();
+		Assertions.assertThat(card.getTrack1()).isNull();
+		Assertions.assertThat(card.getTrack2()).isNotNull();
+		Assertions.assertThat(card.getTrack2().getRaw()).isNotNull();
+		Assertions.assertThat(card.getTrack2().getService()).isNotNull();
 		Assertions.assertThat(card.getAid()).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("4999999999999999");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.VISA);
@@ -283,6 +327,10 @@ public class EmvParserTest {
 			LOGGER.debug(card.toString());
 		}
 		Assertions.assertThat(card).isNotNull();
+		Assertions.assertThat(card.getTrack1()).isNull();
+		Assertions.assertThat(card.getTrack2()).isNotNull();
+		Assertions.assertThat(card.getTrack2().getRaw()).isNotNull();
+		Assertions.assertThat(card.getTrack2().getService()).isNotNull();
 		Assertions.assertThat(card.getAid()).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("4979670123453600");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.VISA);
@@ -316,6 +364,10 @@ public class EmvParserTest {
 			LOGGER.debug(card.toString());
 		}
 		Assertions.assertThat(card).isNotNull();
+		Assertions.assertThat(card.getTrack1()).isNull();
+		Assertions.assertThat(card.getTrack2()).isNotNull();
+		Assertions.assertThat(card.getTrack2().getRaw()).isNotNull();
+		Assertions.assertThat(card.getTrack2().getService()).isNotNull();
 		Assertions.assertThat(card.getAid()).isEqualTo("A0000000031010");
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("5772829193253472");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.VISA);
@@ -458,6 +510,10 @@ public class EmvParserTest {
 			LOGGER.debug(card.toString());
 		}
 		Assertions.assertThat(card).isNotNull();
+		Assertions.assertThat(card.getTrack1()).isNull();
+		Assertions.assertThat(card.getTrack2()).isNotNull();
+		Assertions.assertThat(card.getTrack2().getRaw()).isNotNull();
+		Assertions.assertThat(card.getTrack2().getService()).isNotNull();
 		Assertions.assertThat(card.getAid()).isEqualTo("A0000000031010");
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("4000000000000000");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.VISA);
@@ -503,7 +559,7 @@ public class EmvParserTest {
 	@Test
 	public void testextractCardHolderName() throws Exception {
 		EmvParser parser = new EmvParser(new ProviderVisaCardAidTest(), true);
-		Whitebox.invokeMethod(parser, EmvParser.class, "extractCardHolderName", BytesUtils.fromString("5F 20 08 4a 6f 68 6e 2f 44 6f 65"));
+		Whitebox.invokeMethod(parser, EmvParser.class, "extractCardHolderName", BytesUtils.fromString("5F2008446F652F4A6F686E"));
 		EmvCard card = parser.getCard();
 
 		if (card != null) {

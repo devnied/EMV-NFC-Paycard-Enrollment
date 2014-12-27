@@ -75,11 +75,6 @@ public class EmvParser {
 	public static final int UNKNOW = -1;
 
 	/**
-	 * Card holder name separator
-	 */
-	public static final String CARD_HOLDER_NAME_SEPARATOR = "/";
-
-	/**
 	 * Provider
 	 */
 	private IProvider provider;
@@ -431,7 +426,7 @@ public class EmvParser {
 					// Extract card data
 					if (ResponseUtils.isSucceed(info)) {
 						extractCardHolderName(info);
-						if (TrackUtils.extractTrack2Data(card, info)) {
+						if (TrackUtils.extractTrackData(card, info)) {
 							return true;
 						}
 					}
@@ -536,10 +531,10 @@ public class EmvParser {
 		// Extract Card Holder name (if exist)
 		byte[] cardHolderByte = TlvUtil.getValue(pData, EmvTags.CARDHOLDER_NAME);
 		if (cardHolderByte != null) {
-			String[] name = StringUtils.split(new String(cardHolderByte).trim(), CARD_HOLDER_NAME_SEPARATOR);
+			String[] name = StringUtils.split(new String(cardHolderByte).trim(), TrackUtils.CARD_HOLDER_NAME_SEPARATOR);
 			if (name != null && name.length == 2) {
-				card.setHolderFirstname(StringUtils.trimToNull(name[0]));
-				card.setHolderLastname(StringUtils.trimToNull(name[1]));
+				card.setHolderLastname(StringUtils.trimToNull(name[0]));
+				card.setHolderFirstname(StringUtils.trimToNull(name[1]));
 			}
 		}
 	}

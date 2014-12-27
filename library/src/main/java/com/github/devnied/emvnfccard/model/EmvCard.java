@@ -50,16 +50,6 @@ public class EmvCard extends AbstractData {
 	private String holderFirstname;
 
 	/**
-	 * Card number
-	 */
-	private String cardNumber;
-
-	/**
-	 * Expiration date
-	 */
-	private Date expireDate;
-
-	/**
 	 * Card type
 	 */
 	private EmvCardScheme type;
@@ -85,9 +75,14 @@ public class EmvCard extends AbstractData {
 	private Collection<String> atrDescription;
 
 	/**
-	 * Card services
+	 * Track 2 data
 	 */
-	private Service service;
+	private EmvTrack2 track2;
+
+	/**
+	 * Track 1 data
+	 */
+	private EmvTrack1 track1;
 
 	/**
 	 * Indicate if the nfc is locked on the card
@@ -119,7 +114,11 @@ public class EmvCard extends AbstractData {
 	 * @return the holderLastname
 	 */
 	public String getHolderLastname() {
-		return holderLastname;
+		String ret = holderLastname;
+		if (ret == null && track1 != null) {
+			ret = track1.getHolderLastname();
+		}
+		return ret;
 	}
 
 	/**
@@ -138,7 +137,11 @@ public class EmvCard extends AbstractData {
 	 * @return the holderFirstname
 	 */
 	public String getHolderFirstname() {
-		return holderFirstname;
+		String ret = holderFirstname;
+		if (ret == null && track1 != null) {
+			ret = track1.getHolderFirstname();
+		}
+		return ret;
 	}
 
 	/**
@@ -157,17 +160,14 @@ public class EmvCard extends AbstractData {
 	 * @return the cardNumber
 	 */
 	public String getCardNumber() {
-		return cardNumber;
-	}
-
-	/**
-	 * Setter for the field cardNumber
-	 *
-	 * @param cardNumber
-	 *            the cardNumber to set
-	 */
-	public void setCardNumber(final String cardNumber) {
-		this.cardNumber = cardNumber;
+		String ret = null;
+		if (track2 != null) {
+			ret = track2.getCardNumber();
+		}
+		if (ret == null && track1 != null) {
+			ret = track1.getCardNumber();
+		}
+		return ret;
 	}
 
 	/**
@@ -176,17 +176,14 @@ public class EmvCard extends AbstractData {
 	 * @return the expireDate
 	 */
 	public Date getExpireDate() {
-		return expireDate;
-	}
-
-	/**
-	 * Setter for the field expireDate
-	 *
-	 * @param expireDate
-	 *            the expireDate to set
-	 */
-	public void setExpireDate(final Date expireDate) {
-		this.expireDate = expireDate;
+		Date ret = null;
+		if (track2 != null) {
+			ret = track2.getExpireDate();
+		}
+		if (ret == null && track1 != null) {
+			ret = track1.getExpireDate();
+		}
+		return ret;
 	}
 
 	/**
@@ -248,7 +245,7 @@ public class EmvCard extends AbstractData {
 
 	@Override
 	public boolean equals(final Object arg0) {
-		return arg0 instanceof EmvCard && cardNumber != null && cardNumber.equals(((EmvCard) arg0).getCardNumber());
+		return arg0 instanceof EmvCard && getCardNumber() != null && getCardNumber().equals(((EmvCard) arg0).getCardNumber());
 	}
 
 	/**
@@ -290,25 +287,6 @@ public class EmvCard extends AbstractData {
 	}
 
 	/**
-	 * Method used to get the field service
-	 *
-	 * @return the service
-	 */
-	public Service getService() {
-		return service;
-	}
-
-	/**
-	 * Setter for the field service
-	 *
-	 * @param service
-	 *            the service to set
-	 */
-	public void setService(final Service service) {
-		this.service = service;
-	}
-
-	/**
 	 * Method used to get the field nfcLocked
 	 *
 	 * @return the nfcLocked
@@ -325,6 +303,36 @@ public class EmvCard extends AbstractData {
 	 */
 	public void setNfcLocked(final boolean nfcLocked) {
 		this.nfcLocked = nfcLocked;
+	}
+
+	/**
+	 * @return the track2
+	 */
+	public EmvTrack2 getTrack2() {
+		return track2;
+	}
+
+	/**
+	 * @param track2
+	 *            the track2 to set
+	 */
+	public void setTrack2(final EmvTrack2 track2) {
+		this.track2 = track2;
+	}
+
+	/**
+	 * @return the track1
+	 */
+	public EmvTrack1 getTrack1() {
+		return track1;
+	}
+
+	/**
+	 * @param track1
+	 *            the track1 to set
+	 */
+	public void setTrack1(final EmvTrack1 track1) {
+		this.track1 = track1;
 	}
 
 }

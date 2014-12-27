@@ -1,11 +1,21 @@
 package com.github.devnied.emvnfccard.fragment.viewPager.impl;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -154,17 +164,40 @@ public class LogFragment extends AbstractFragment implements OnClickListener {
 		builder.append("ATS: ").append(BytesUtils.bytesToString(pActivity.getLastAts())).append("\n");
 
 		String cardNumber = null;
+		String cardEncoded = null;
 		if (card != null) {
 			cardNumber = StringUtils.deleteWhitespace(card.getCardNumber());
 			if (cardNumber != null) {
+				cardEncoded = BytesUtils.bytesToString(cardNumber.getBytes()).trim();
 				cardNumber = cardNumber.replaceAll("\\d{2}", "$0 ").trim();
 			}
 		}
-		String mailContent = Html.fromHtml(mBuffer.toString()).toString().replace(" ", " ");
+		String mailContent = StringUtils.join(getLines(Html.fromHtml(mBuffer.toString()).toString().getBytes()), "\n");
 		if (cardNumber != null && mailContent != null) {
-			mailContent = mailContent.replace(cardNumber, "XX XX");
+			mailContent = mailContent.replace(cardNumber, "XX XX").replace(cardEncoded, "YY YY");
 		}
 		builder.append(mailContent);
 		return builder.toString();
+	}
+
+	private List<String> getLines(final byte[] pData) {
+		List<String> lines = new ArrayList<String>();
+		InputStream is = new ByteArrayInputStream(pData);
+		// read it with BufferedReader
+		BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		String line = null;
+		try {
+			while ((line = br.readLine()) != null) {
+				Log.d("--------", "new line");
+				if (line.startsWith("resp:") || line.startsWith("send:")) {
+					lines.add(line.replaceAll("[^a-zA-Z0-9:]", " "));
+				}
+			}
+		} catch (IOException e) {
+			Log.e(LogFragment.class.getName(), e.getMessage(), e);
+		} finally {
+			IOUtils.closeQuietly(br);
+		}
+		return lines;
 	}
 }
