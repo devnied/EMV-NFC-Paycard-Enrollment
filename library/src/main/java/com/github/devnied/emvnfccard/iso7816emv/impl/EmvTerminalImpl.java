@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.devnied.emvnfccard.iso7816emv;
+package com.github.devnied.emvnfccard.iso7816emv.impl;
 
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
@@ -21,6 +21,10 @@ import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.github.devnied.emvnfccard.iso7816emv.EmvTags;
+import com.github.devnied.emvnfccard.iso7816emv.ITerminal;
+import com.github.devnied.emvnfccard.iso7816emv.TagAndLength;
+import com.github.devnied.emvnfccard.iso7816emv.TerminalTransactionQualifiers;
 import com.github.devnied.emvnfccard.model.enums.CountryCodeEnum;
 import com.github.devnied.emvnfccard.model.enums.CurrencyEnum;
 import com.github.devnied.emvnfccard.model.enums.TransactionTypeEnum;
@@ -33,7 +37,7 @@ import fr.devnied.bitlib.BytesUtils;
  * @author Millau Julien
  *
  */
-public final class EmvTerminal {
+public final class EmvTerminalImpl implements ITerminal {
 
 	/**
 	 * Random
@@ -47,7 +51,8 @@ public final class EmvTerminal {
 	 *            tag and length value
 	 * @return tag value in byte
 	 */
-	public static byte[] constructValue(final TagAndLength pTagAndLength) {
+	@Override
+	public byte[] constructValue(final TagAndLength pTagAndLength) {
 		byte ret[] = new byte[pTagAndLength.getLength()];
 		byte val[] = null;
 		if (pTagAndLength.getTag() == EmvTags.TERMINAL_TRANSACTION_QUALIFIERS) {
@@ -64,7 +69,7 @@ public final class EmvTerminal {
 		} else if (pTagAndLength.getTag() == EmvTags.TRANSACTION_DATE) {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
 			val = BytesUtils.fromString(sdf.format(new Date()));
-		} else if (pTagAndLength.getTag() == EmvTags.TRANSACTION_TYPE) {
+		} else if (pTagAndLength.getTag() == EmvTags.TRANSACTION_TYPE || pTagAndLength.getTag() == EmvTags.TERMINAL_TRANSACTION_TYPE) {
 			val = new byte[] { (byte) TransactionTypeEnum.PURCHASE.getKey() };
 		} else if (pTagAndLength.getTag() == EmvTags.AMOUNT_AUTHORISED_NUMERIC) {
 			val = BytesUtils.fromString("00");
@@ -78,17 +83,15 @@ public final class EmvTerminal {
 			val = BytesUtils.fromString("7345123215904501");
 		} else if (pTagAndLength.getTag() == EmvTags.UNPREDICTABLE_NUMBER) {
 			random.nextBytes(ret);
+		} else if (pTagAndLength.getTag() == EmvTags.MERCHANT_TYPE_INDICATOR) {
+			val = new byte[] { 0x01 };
+		} else if (pTagAndLength.getTag() == EmvTags.TERMINAL_TRANSACTION_INFORMATION) {
+			val = new byte[] { (byte) 0xC0, (byte) 0x80, 0 };
 		}
 		if (val != null) {
 			System.arraycopy(val, 0, ret, 0, Math.min(val.length, ret.length));
 		}
 		return ret;
-	}
-
-	/**
-	 * Private Constructor
-	 */
-	private EmvTerminal() {
 	}
 
 }

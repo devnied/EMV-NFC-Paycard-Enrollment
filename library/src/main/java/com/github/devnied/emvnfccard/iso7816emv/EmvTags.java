@@ -23,12 +23,12 @@ import com.github.devnied.emvnfccard.iso7816emv.impl.TagImpl;
 
 /**
  * http://www.emvlab.org/emvtags/all/
- * 
- * 
+ *
+ *
  * The coding of primitive context-specific class data objects in the ranges '80' to '9E' and '9F00' to '9F4F' is reserved for EMV
  * specification. The coding of primitive context-specific class data objects in the range '9F50' to '9F7F' is reserved for the
  * payment systems.
- * 
+ *
  * @author sasc
  */
 public final class EmvTags {
@@ -273,6 +273,9 @@ public final class EmvTags {
 	public static final ITag TRANSACTION_CATEGORY_CODE = new TagImpl("9f53", TagValueTypeEnum.BINARY, "Transaction Category Code", "");
 	public static final ITag DS_ODS_CARD = new TagImpl("9f54", TagValueTypeEnum.BINARY, "DS ODS Card", "");
 	public static final ITag MOBILE_SUPPORT_INDICATOR = new TagImpl("9f55", TagValueTypeEnum.BINARY, "Mobile Support Indicator", "");
+	public static final ITag MERCHANT_TYPE_INDICATOR = new TagImpl("9f58", TagValueTypeEnum.BINARY, "Merchant Type Indicator (Interac)", "");
+	public static final ITag TERMINAL_TRANSACTION_INFORMATION = new TagImpl("9f59", TagValueTypeEnum.BINARY, "Terminal Transaction Information (Interac)", "");
+	public static final ITag TERMINAL_TRANSACTION_TYPE = new TagImpl("9f5A", TagValueTypeEnum.BINARY, "Terminal transaction Type (Interac)", "");
 	public static final ITag DSDOL = new TagImpl("9f5b", TagValueTypeEnum.BINARY, "DSDOL", "");
 	public static final ITag DS_REQUESTED_OPERATOR_ID = new TagImpl("9f5c", TagValueTypeEnum.BINARY, "DS Requested Operator ID", "");
 	// 9f5d 01 01
@@ -372,7 +375,7 @@ public final class EmvTags {
 
 	/**
 	 * If the tag is not found, this method returns the "[UNHANDLED TAG]" containing 'tagBytes'
-	 * 
+	 *
 	 * @param tagBytes
 	 * @return
 	 */

@@ -31,9 +31,10 @@ import com.github.devnied.emvnfccard.enums.EmvCardScheme;
 import com.github.devnied.emvnfccard.enums.SwEnum;
 import com.github.devnied.emvnfccard.exception.CommunicationException;
 import com.github.devnied.emvnfccard.iso7816emv.EmvTags;
-import com.github.devnied.emvnfccard.iso7816emv.EmvTerminal;
+import com.github.devnied.emvnfccard.iso7816emv.ITerminal;
 import com.github.devnied.emvnfccard.iso7816emv.TLV;
 import com.github.devnied.emvnfccard.iso7816emv.TagAndLength;
+import com.github.devnied.emvnfccard.iso7816emv.impl.EmvTerminalImpl;
 import com.github.devnied.emvnfccard.model.Afl;
 import com.github.devnied.emvnfccard.model.EmvCard;
 import com.github.devnied.emvnfccard.model.EmvTransactionRecord;
@@ -70,9 +71,14 @@ public class EmvParser {
 	private static final byte[] PSE = "1PAY.SYS.DDF01".getBytes();
 
 	/**
-	 * Unknow response
+	 * Unknown response
 	 */
 	public static final int UNKNOW = -1;
+
+	/**
+	 * EMV Terminal
+	 */
+	private ITerminal terminal = new EmvTerminalImpl();
 
 	/**
 	 * Provider
@@ -558,7 +564,7 @@ public class EmvParser {
 			out.write(TlvUtil.getLength(list)); // ADD total length
 			if (list != null) {
 				for (TagAndLength tl : list) {
-					out.write(EmvTerminal.constructValue(tl));
+					out.write(terminal.constructValue(tl));
 				}
 			}
 		} catch (IOException ioe) {
@@ -574,6 +580,16 @@ public class EmvParser {
 	 */
 	public EmvCard getCard() {
 		return card;
+	}
+
+	/**
+	 * Method used to set Terminal value
+	 * 
+	 * @param terminal
+	 *            the terminal to set
+	 */
+	public void setTerminal(final ITerminal terminal) {
+		this.terminal = terminal;
 	}
 
 }
