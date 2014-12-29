@@ -15,6 +15,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -230,7 +231,14 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 					startActivity(intent);
 				}
 			});
-			alertbox.setCancelable(false);
+			alertbox.setCancelable(true);
+			alertbox.setOnCancelListener(new OnCancelListener() {
+
+				@Override
+				public void onCancel(final DialogInterface arg0) {
+					finish();
+				}
+			});
 			mAlertDialog = alertbox.show();
 		}
 		super.onResume();
@@ -323,6 +331,7 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 						if (mCard != null) {
 							if (StringUtils.isNotBlank(mCard.getCardNumber())) {
 								CroutonUtils.display(HomeActivity.this, getText(R.string.card_read), CoutonColor.GREEN);
+								// rate dialog
 								new RateDialog(HomeActivity.this).init();
 								mReadCard = mCard;
 							} else if (mCard.isNfcLocked()) {
