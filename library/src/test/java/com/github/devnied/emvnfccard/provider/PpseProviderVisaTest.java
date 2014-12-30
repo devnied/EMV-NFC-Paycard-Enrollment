@@ -39,8 +39,14 @@ public class PpseProviderVisaTest implements IProvider {
 			response = "00 00 00 00 46 00 40 02 50 09 78 14 03 16 20 90 00";
 		}
 
+		// Pin try left
 		if (BytesUtils.bytesToStringNoSpace(pCommand).equals("80CA9F1700")) {
 			response = "9F 17 01 03 90 00";
+		}
+
+		// ATC
+		if (BytesUtils.bytesToStringNoSpace(pCommand).equals("80CA9F3600")) {
+			response = "9F 36 02 06 2C 90 00";
 		}
 
 		LOGGER.debug("resp: " + response);

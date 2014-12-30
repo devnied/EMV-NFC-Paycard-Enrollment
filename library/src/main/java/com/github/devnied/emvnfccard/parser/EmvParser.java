@@ -138,6 +138,28 @@ public class EmvParser {
 	}
 
 	/**
+	 * Method used to get Transaction counter
+	 *
+	 * @return the number of card transaction
+	 * @throws CommunicationException
+	 */
+	protected int getTransactionCounter() throws CommunicationException {
+		int ret = UNKNOW;
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Get Transaction Counter ATC");
+		}
+		byte[] data = provider.transceive(new CommandApdu(CommandEnum.GET_DATA, 0x9F, 0x36, 0).toBytes());
+		if (ResponseUtils.isSucceed(data)) {
+			// Extract ATC
+			byte[] val = TlvUtil.getValue(data, EmvTags.APP_TRANSACTION_COUNTER);
+			if (val != null) {
+				ret = BytesUtils.byteArrayToInt(val);
+			}
+		}
+		return ret;
+	}
+
+	/**
 	 * Method used to get the number of pin try left
 	 *
 	 * @return the number of pin try left
@@ -326,6 +348,7 @@ public class EmvParser {
 				card.setType(findCardScheme(aid, card.getCardNumber()));
 				card.setApplicationLabel(pApplicationLabel);
 				card.setLeftPinTry(getLeftPinTry());
+				card.setTransactionCounter(getTransactionCounter());
 			}
 		}
 		return ret;
@@ -584,7 +607,7 @@ public class EmvParser {
 
 	/**
 	 * Method used to set Terminal value
-	 * 
+	 *
 	 * @param terminal
 	 *            the terminal to set
 	 */

@@ -40,8 +40,14 @@ public class PpseProviderMasterCard2Test implements IProvider {
 			response = "40 00 00 00 00 22 00 09 49 11 01 12 00 E0 61 90 22 21 00 00 00 00 50 23 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 90 00";
 		}
 
+		// Pin try left
 		if (BytesUtils.bytesToStringNoSpace(pCommand).equals("80CA9F1700")) {
-			response = "9F 17 01 02 90 00";
+			response = "9F 17 01 03 90 00";
+		}
+
+		// ATC
+		if (BytesUtils.bytesToStringNoSpace(pCommand).equals("80CA9F3600")) {
+			response = "9F 36 02 06 2C 90 00";
 		}
 
 		LOGGER.debug("resp: " + response);

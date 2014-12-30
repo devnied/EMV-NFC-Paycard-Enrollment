@@ -234,7 +234,8 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.MASTER_CARD);
 		Assertions.assertThat(card.getHolderLastname()).isNull();
 		Assertions.assertThat(card.getHolderFirstname()).isNull();
-		Assertions.assertThat(card.getLeftPinTry()).isEqualTo(2);
+		Assertions.assertThat(card.getLeftPinTry()).isEqualTo(3);
+		Assertions.assertThat(card.getTransactionCounter()).isEqualTo(1580);
 		Assertions.assertThat(card.getApplicationLabel()).isEqualTo(null);
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("07/2002");
 		Assertions.assertThat(card.getListTransactions()).isNotEmpty();
@@ -271,7 +272,8 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.MASTER_CARD);
 		Assertions.assertThat(card.getHolderLastname()).isNull();
 		Assertions.assertThat(card.getHolderFirstname()).isNull();
-		Assertions.assertThat(card.getLeftPinTry()).isEqualTo(2);
+		Assertions.assertThat(card.getLeftPinTry()).isEqualTo(3);
+		Assertions.assertThat(card.getTransactionCounter()).isEqualTo(1580);
 		Assertions.assertThat(card.getApplicationLabel()).isEqualTo(null);
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("11/2019");
@@ -568,6 +570,27 @@ public class EmvParserTest {
 		Assertions.assertThat(card).isNotNull();
 		Assertions.assertThat(card.getHolderLastname()).isEqualTo("Doe");
 		Assertions.assertThat(card.getHolderFirstname()).isEqualTo("John");
+	}
+
+	@Test
+	public void testTransactionCounter() throws Exception {
+		ProviderSelectPaymentEnvTest prov = new ProviderSelectPaymentEnvTest();
+		prov.setExpectedData("80CA9F3600");
+		prov.setReturnedData("9F 36 02 06 2C 90 00");
+		int ret = Whitebox.invokeMethod(new EmvParser(prov, true), EmvParser.class, "getTransactionCounter");
+		Assertions.assertThat(ret).isEqualTo(1580);
+
+		prov.setReturnedData("9F 36 02 FF FF 90 00");
+		ret = Whitebox.invokeMethod(new EmvParser(prov, true), EmvParser.class, "getTransactionCounter");
+		Assertions.assertThat(ret).isEqualTo(65535);
+
+		prov.setReturnedData("0000");
+		ret = Whitebox.invokeMethod(new EmvParser(prov, true), EmvParser.class, "getTransactionCounter");
+		Assertions.assertThat(ret).isEqualTo(EmvParser.UNKNOW);
+
+		prov.setReturnedData("9000");
+		ret = Whitebox.invokeMethod(new EmvParser(prov, true), EmvParser.class, "getTransactionCounter");
+		Assertions.assertThat(ret).isEqualTo(EmvParser.UNKNOW);
 	}
 
 	@Test

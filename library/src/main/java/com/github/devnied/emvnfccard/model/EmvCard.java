@@ -55,6 +55,11 @@ public class EmvCard extends AbstractData {
 	private EmvCardScheme type;
 
 	/**
+	 * Transaction counter ATC
+	 */
+	private int transactionCounter;
+
+	/**
 	 * Left PIN try
 	 */
 	private int leftPinTry;
@@ -333,6 +338,21 @@ public class EmvCard extends AbstractData {
 	 */
 	public void setTrack1(final EmvTrack1 track1) {
 		this.track1 = track1;
+	}
+
+	/**
+	 * @return the transactionCounter
+	 */
+	public int getTransactionCounter() {
+		return transactionCounter;
+	}
+
+	/**
+	 * @param transactionCounter
+	 *            the transactionCounter to set
+	 */
+	public void setTransactionCounter(final int transactionCounter) {
+		this.transactionCounter = transactionCounter;
 	}
 
 }
