@@ -168,12 +168,12 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 
 		// 2.1 create ActionBarDrawerToggle
 		mActionBarDrawerToggle = new ActionBarDrawerToggle(/* */
-		this, /* host Activity */
-		mDrawerLayout, /* DrawerLayout object */
-		R.drawable.ic_drawer, /* nav drawer icon to replace 'Up' caret */
-		R.string.navigation_menu_open, /* "open drawer" description */
-		R.string.navigation_menu_close /* "close drawer" description */
-		);
+				this, /* host Activity */
+				mDrawerLayout, /* DrawerLayout object */
+				R.drawable.ic_drawer, /* nav drawer icon to replace 'Up' caret */
+				R.string.navigation_menu_open, /* "open drawer" description */
+				R.string.navigation_menu_close /* "close drawer" description */
+				);
 
 		// 2.2 Set actionBarDrawerToggle as the DrawerListener
 		mDrawerLayout.setDrawerListener(mActionBarDrawerToggle);
@@ -296,6 +296,7 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 						CroutonUtils.display(HomeActivity.this, getText(R.string.error_communication_nfc), CoutonColor.BLACK);
 						return;
 					}
+					mTagcomm.setTimeout(2000);
 					mException = false;
 
 					try {
@@ -342,7 +343,7 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 						}
 					} else {
 						CroutonUtils
-								.display(HomeActivity.this, getResources().getText(R.string.error_communication_nfc), CoutonColor.BLACK);
+						.display(HomeActivity.this, getResources().getText(R.string.error_communication_nfc), CoutonColor.BLACK);
 					}
 
 					refreshContent();
