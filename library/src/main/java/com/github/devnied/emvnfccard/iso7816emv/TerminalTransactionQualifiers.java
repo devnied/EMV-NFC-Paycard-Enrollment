@@ -21,11 +21,11 @@ import fr.devnied.bitlib.BytesUtils;
 
 /**
  * This implementation is a mix of EMV & VISA TTQ
- * 
+ *
  * VISA: Terminal Transaction Qualifiers (Tag '9F66') is a reader data element indicating capabilities (e.g., MSD or qVSDC) and
  * transaction-specific requirements (e.g., online) of the reader. It is requested by the card in the PDOL and used by the card to
  * determine how to process the transaction (for example, process using MSD or qVSDC, process offline or online).
- * 
+ *
  */
 public class TerminalTransactionQualifiers {
 
@@ -82,7 +82,7 @@ public class TerminalTransactionQualifiers {
 		return BytesUtils.matchBitByBitIndex(data[2], 6);
 	}
 
-	public void setContactlessMagneticStripeSupported(final boolean value) {
+	public void setMagneticStripeSupported(final boolean value) {
 		data[0] = BytesUtils.setBit(data[0], 7, value);
 	}
 

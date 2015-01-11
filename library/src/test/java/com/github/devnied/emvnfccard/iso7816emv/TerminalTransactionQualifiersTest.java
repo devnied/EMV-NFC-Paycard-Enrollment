@@ -22,7 +22,7 @@ public class TerminalTransactionQualifiersTest {
 		qualifier.setContactlessEMVmodeSupported(true);
 		Assertions.assertThat(qualifier.contactlessEMVmodeSupported()).isEqualTo(true);
 		Assertions.assertThat(BytesUtils.bytesToStringNoSpace(qualifier.getBytes())).isEqualTo("30204000");
-		qualifier.setContactlessMagneticStripeSupported(true);
+		qualifier.setMagneticStripeSupported(true);
 		Assertions.assertThat(qualifier.contactlessMagneticStripeSupported()).isEqualTo(true);
 		Assertions.assertThat(BytesUtils.bytesToStringNoSpace(qualifier.getBytes())).isEqualTo("B0204000");
 		qualifier.setContactlessVSDCsupported(true);

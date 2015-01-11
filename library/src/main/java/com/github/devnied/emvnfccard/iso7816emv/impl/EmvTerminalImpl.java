@@ -57,8 +57,16 @@ public final class EmvTerminalImpl implements ITerminal {
 		byte val[] = null;
 		if (pTagAndLength.getTag() == EmvTags.TERMINAL_TRANSACTION_QUALIFIERS) {
 			TerminalTransactionQualifiers terminalQual = new TerminalTransactionQualifiers();
+			terminalQual.setMagneticStripeSupported(true);
 			terminalQual.setContactlessEMVmodeSupported(true);
-			terminalQual.setReaderIsOfflineOnly(true);
+			terminalQual.setOnlinePINsupported(true);
+			terminalQual.setContactEMVsupported(true);
+			terminalQual.setReaderIsOfflineOnly(false);
+			terminalQual.setSignatureSupported(true);
+			terminalQual.setContactChipOfflinePINsupported(true);
+			//
+			terminalQual.setIssuerUpdateProcessingSupported(true);
+			terminalQual.setConsumerDeviceCVMsupported(true);
 			val = terminalQual.getBytes();
 		} else if (pTagAndLength.getTag() == EmvTags.TERMINAL_COUNTRY_CODE) {
 			val = BytesUtils.fromString(StringUtils.leftPad(String.valueOf(CountryCodeEnum.FR.getNumeric()), pTagAndLength.getLength() * 2,
