@@ -70,7 +70,7 @@ If you are not using Maven or some other dependency management tool that can und
 ## Build
 **To build the project launch:**
 ```xml
-	mvn clean install
+mvn clean install
 ```
 
 **To build the projet and sign the Android app**
@@ -95,7 +95,7 @@ Add some properties to your settings.xml
 ```
 And use the profile release-apk
 ```xml
-	mvn clean install -P release-apk
+mvn clean install -P release-apk
 ```
 
 ## Bugs
