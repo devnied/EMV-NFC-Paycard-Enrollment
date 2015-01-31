@@ -7,8 +7,15 @@
 	<parent>
 		<groupId>com.github.devnied.emvnfccard</groupId>
 		<artifactId>parent</artifactId>
-		<version>2.1.1-SNAPSHOT</version>
+		<version>2.1.2-SNAPSHOT</version>
 	</parent>
+	
+	<repositories>
+        <repository>
+            <id>lib</id>
+            <url>file://${basedir}/repo/</url>
+        </repository>
+    </repositories>
 
 	<dependencies>
 		<dependency>
@@ -21,14 +28,12 @@
 			<groupId>com.android.support</groupId>
 			<artifactId>v4</artifactId>
 			<version>21.0.1</version>
-			<scope>system</scope>
-      		<systemPath>${basedir}/jar/android-support-v4.jar</systemPath>
 		</dependency>
 
 		<dependency>
 			<groupId>com.github.devnied.emvnfccard</groupId>
 			<artifactId>library</artifactId>
-			<version>2.1.1-SNAPSHOT</version>
+			<version>2.1.2-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
@@ -54,7 +59,7 @@
 		<finalName>${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
-				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+				<groupId>com.simpligility.maven.plugins</groupId>
 				<artifactId>android-maven-plugin</artifactId>
 			</plugin>
 			<plugin>

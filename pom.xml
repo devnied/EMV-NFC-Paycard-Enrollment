@@ -1,10 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.devnied.emvnfccard</groupId>
 	<artifactId>parent</artifactId>
 	<packaging>pom</packaging>
-	<version>2.1.1-SNAPSHOT</version>
+	<version>2.1.2-SNAPSHOT</version>
 	<name>EMV Paycard Enrollment</name>
 
 	<parent>
@@ -174,9 +173,9 @@
 					</executions>
 				</plugin>
 				<plugin>
-					<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+					<groupId>com.simpligility.maven.plugins</groupId>
 					<artifactId>android-maven-plugin</artifactId>
-					<version>4.0.0-rc.2</version>
+					<version>4.1.0</version>
 					<configuration>
 						<release>true</release>
 						<sdk>

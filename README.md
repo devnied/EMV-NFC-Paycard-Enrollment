@@ -1,6 +1,6 @@
-## EMV NFC Paycard Enrollment [![Build Status](https://travis-ci.org/devnied/EMV-NFC-Paycard-Enrollment.png)](https://travis-ci.org/devnied/EMV-NFC-Paycard-Enrollment) [![Coverage Status](https://coveralls.io/repos/devnied/EMV-NFC-Paycard-Enrollment/badge.png?branch=master)](https://coveralls.io/r/devnied/EMV-NFC-Paycard-Enrollment?branch=master)
+## EMV NFC Paycard Enrollment [![Build Status](https://travis-ci.org/devnied/EMV-NFC-Paycard-Enrollment.png)](https://travis-ci.org/devnied/EMV-NFC-Paycard-Enrollment) [![Coverage Status](https://coveralls.io/repos/devnied/EMV-NFC-Paycard-Enrollment/badge.svg?branch=master)](https://coveralls.io/r/devnied/EMV-NFC-Paycard-Enrollment?branch=master)
 ### Description
-Java library used to read and extract data from NFC EMV paycard.<br/>
+Java library used to read and extract public data from NFC EMV credit cards.<br/>
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.devnied.emvnfccard/library/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/com.github.devnied.emvnfccard/library)<br/>
 <br/>
 Android sample app available on Play store.
@@ -12,7 +12,7 @@ Android sample app available on Play store.
 
 ### Getting started
 
-First you need to create a custom Provider to exchange APDU to NFC EMV card.
+First you need to create a custom Provider to exchange APDU with an NFC EMV credit card.
 ```java
 public class YourProvider implements IProvider {
 
@@ -43,14 +43,14 @@ card object contains all data read (Aid, card number, expiration date, card type
 <dependency>
   <groupId>com.github.devnied.emvnfccard</groupId>
   <artifactId>library</artifactId>
-  <version>2.1.0</version>
+  <version>2.1.1</version>
 </dependency>
 ```
 
 ### Gradle
 ```groovy
 dependencies {
-	compile 'com.github.devnied.emvnfccard:library:2.1.0'
+	compile 'com.github.devnied.emvnfccard:library:2.1.1'
 }
 ```
 
@@ -66,6 +66,37 @@ If you are not using Maven or some other dependency management tool that can und
 * bit-lib4j 1.4.10
 * commons-io 2.4
 * commons-collections4 4.0
+
+## Build
+**To build the project launch:**
+```xml
+mvn clean install
+```
+
+**To build the projet and sign the Android app**
+
+Add some properties to your settings.xml
+```xml
+<settings>
+  ...
+  <profiles>
+	<profile>
+	    <id>default</id>
+	    <properties>
+            <android.sdk.path>xxxx</android.sdk.path>
+            <sign.keystore>xxx</sign.keystore>
+            <sign.alias>xxx</sign.alias>
+            <sign.keypass>xxx</sign.keypass>
+            <sign.storepass>xxx</sign.storepass>
+	    </properties>
+	</profile>
+  </profiles>
+</settings>
+```
+And use the profile release-apk
+```xml
+mvn clean install -P release-apk
+```
 
 ## Bugs
 
