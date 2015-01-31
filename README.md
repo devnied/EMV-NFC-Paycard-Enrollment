@@ -67,6 +67,37 @@ If you are not using Maven or some other dependency management tool that can und
 * commons-io 2.4
 * commons-collections4 4.0
 
+## Build
+**To build the project launch:**
+```xml
+	mvn clean install
+```
+
+**To build the projet and sign the Android app**
+
+Add some properties to your settings.xml
+```xml
+<settings>
+  ...
+  <profiles>
+	<profile>
+	    <id>default</id>
+	    <properties>
+            <android.sdk.path>xxxx</android.sdk.path>
+            <sign.keystore>xxx</sign.keystore>
+            <sign.alias>xxx</sign.alias>
+            <sign.keypass>xxx</sign.keypass>
+            <sign.storepass>xxx</sign.storepass>
+	    </properties>
+	</profile>
+  </profiles>
+</settings>
+```
+And use the profile release-apk
+```xml
+	mvn clean install -P release-apk
+```
+
 ## Bugs
 
 Please report bugs and feature requests to the GitHub issue tracker.<br/>
