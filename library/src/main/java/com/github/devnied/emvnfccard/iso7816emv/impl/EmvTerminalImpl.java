@@ -60,11 +60,9 @@ public final class EmvTerminalImpl implements ITerminal {
 			terminalQual.setMagneticStripeSupported(true);
 			terminalQual.setContactlessEMVmodeSupported(true);
 			terminalQual.setOnlinePINsupported(true);
-			terminalQual.setContactEMVsupported(true);
 			terminalQual.setReaderIsOfflineOnly(false);
 			terminalQual.setSignatureSupported(true);
 			terminalQual.setContactChipOfflinePINsupported(true);
-			//
 			terminalQual.setIssuerUpdateProcessingSupported(true);
 			terminalQual.setConsumerDeviceCVMsupported(true);
 			val = terminalQual.getBytes();
