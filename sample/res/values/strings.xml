@@ -40,7 +40,7 @@
     <string name="extended_title_times">Time(s)</string>
     
     <!-- Transaction -->
-    <string name="transaction_empty">Your card doesn\'t provided\ntransaction history</string>
+    <string name="transaction_empty">Your card doesn\'t provide\ntransaction history</string>
     
     <!-- Transaction detail -->
     <string name="transaction_type">Transaction type :</string>
