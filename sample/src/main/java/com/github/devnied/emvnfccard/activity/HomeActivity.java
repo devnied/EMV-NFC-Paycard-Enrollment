@@ -296,10 +296,10 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 						CroutonUtils.display(HomeActivity.this, getText(R.string.error_communication_nfc), CoutonColor.BLACK);
 						return;
 					}
-					mTagcomm.setTimeout(2000);
 					mException = false;
 
 					try {
+						mTagcomm.setTimeout(2000);
 						mReadCard = null;
 						// Open connection
 						mTagcomm.connect();
