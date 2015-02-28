@@ -431,7 +431,7 @@ public class EmvParser {
 		if (data != null) {
 			data = ArrayUtils.subarray(data, 2, data.length);
 		} else { // Extract AFL data from Message template 2
-			ret = TrackUtils.extractTrack2Data(card, pGpo);
+			ret = TrackUtils.extractTrackData(card, pGpo);
 			if (!ret) {
 				data = TlvUtil.getValue(pGpo, EmvTags.APPLICATION_FILE_LOCATOR);
 			} else {
