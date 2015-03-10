@@ -17,13 +17,17 @@ package com.github.devnied.emvnfccard.utils;
  */
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sf.scuba.tlv.TLVInputStream;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.github.devnied.emvnfccard.enums.SwEnum;
 import com.github.devnied.emvnfccard.enums.TagValueTypeEnum;
@@ -37,223 +41,92 @@ import fr.devnied.bitlib.BytesUtils;
 
 /**
  * List of utils methods to manipulate TLV
- * 
+ *
  * @author MILLAU Julien
- * 
+ *
  */
 public final class TlvUtil {
 
+	// Class logger
+	private static final Logger LOGGER = LoggerFactory.getLogger(TlvUtil.class);
+
 	/**
 	 * Method used to find Tag with ID
-	 * 
+	 *
 	 * @param tagIdBytes
 	 *            the tag to find
 	 * @return the tag found
 	 */
-	private static ITag searchTagById(final byte[] tagIdBytes) {
-		return EmvTags.getNotNull(tagIdBytes); // TODO take app (IIN or RID) into consideration
+	private static ITag searchTagById(final int tagId) {
+		return EmvTags.getNotNull(trim(BytesUtils.toByteArray(tagId)));
 	}
 
-	/**
-	 * Method used to search tag with id
-	 * 
-	 * @param stream
-	 *            Byte array in a stream
-	 * @return Tag found
-	 */
-	private static ITag searchTagById(final ByteArrayInputStream stream) {
-		return searchTagById(TlvUtil.readTagIdBytes(stream));
+	static byte[] trim(final byte[] bytes) {
+		int i = 0;
+		while (i < bytes.length - 1 && bytes[i] == 0) {
+			i++;
+		}
+
+		byte[] ret = new byte[bytes.length - i];
+		System.arraycopy(bytes, i, ret, 0, bytes.length - i);
+
+		return ret;
 	}
 
 	// This is just a list of Tag And Lengths (eg DOLs)
 	public static String getFormattedTagAndLength(final byte[] data, final int indentLength) {
 		StringBuilder buf = new StringBuilder();
 		String indent = getSpaces(indentLength);
-		ByteArrayInputStream stream = new ByteArrayInputStream(data);
+		TLVInputStream stream = new TLVInputStream(new ByteArrayInputStream(data));
 
 		boolean firstLine = true;
-		while (stream.available() > 0) {
-			if (firstLine) {
-				firstLine = false;
-			} else {
-				buf.append("\n");
+		try {
+			while (stream.available() > 0) {
+				if (firstLine) {
+					firstLine = false;
+				} else {
+					buf.append("\n");
+				}
+				buf.append(indent);
+
+				ITag tag = searchTagById(stream.readTag());
+				int length = stream.readLength();
+
+				buf.append(prettyPrintHex(tag.getTagBytes()));
+				buf.append(" ");
+				buf.append(String.format("%02x", length));
+				buf.append(" -- ");
+				buf.append(tag.getName());
 			}
-			buf.append(indent);
-
-			ITag tag = searchTagById(stream);
-			int length = TlvUtil.readTagLength(stream);
-
-			buf.append(prettyPrintHex(tag.getTagBytes()));
-			buf.append(" ");
-			buf.append(String.format("%02x", length));
-			buf.append(" -- ");
-			buf.append(tag.getName());
+		} catch (IOException e) {
+			LOGGER.error(e.getMessage(), e);
+		} finally {
+			IOUtils.closeQuietly(stream);
 		}
 		return buf.toString();
 	}
 
-	public static byte[] readTagIdBytes(final ByteArrayInputStream stream) {
-		ByteArrayOutputStream tagBAOS = new ByteArrayOutputStream();
-		byte tagFirstOctet = (byte) stream.read();
-		tagBAOS.write(tagFirstOctet);
-
-		// Find TAG bytes
-		byte MASK = (byte) 0x1F;
-		if ((tagFirstOctet & MASK) == MASK) { // EMV book 3, Page 178 or Annex B1 (EMV4.3)
-			// Tag field is longer than 1 byte
-			do {
-				int nextOctet = stream.read();
-				if (nextOctet < 0) {
-					break;
-				}
-				byte tlvIdNextOctet = (byte) nextOctet;
-
-				tagBAOS.write(tlvIdNextOctet);
-
-				if (!BytesUtils.matchBitByBitIndex(tlvIdNextOctet, 7) || BytesUtils.matchBitByBitIndex(tlvIdNextOctet, 7)
-						&& (tlvIdNextOctet & 0x7f) == 0) {
-					break;
-				}
-			} while (true);
-		}
-		return tagBAOS.toByteArray();
-	}
-
-	public static int readTagLength(final ByteArrayInputStream stream) {
-		// Find LENGTH bytes
-		int length;
-		int tmpLength = stream.read();
-
-		if (tmpLength < 0) {
-			throw new TlvException("Negative length: " + tmpLength);
-		}
-
-		if (tmpLength <= 127) { // 0111 1111
-			// short length form
-			length = tmpLength;
-		} else if (tmpLength == 128) { // 1000 0000
-			// length identifies indefinite form, will be set later
-			// indefinite form is not specified in ISO7816-4, but we include it here for completeness
-			length = tmpLength;
-		} else {
-			// long length form
-			int numberOfLengthOctets = tmpLength & 127; // turn off 8th bit
-			tmpLength = 0;
-			for (int i = 0; i < numberOfLengthOctets; i++) {
-				int nextLengthOctet = stream.read();
-				if (nextLengthOctet < 0) {
-					throw new TlvException("EOS when reading length bytes");
-				}
-				tmpLength <<= 8;
-				tmpLength |= nextLengthOctet;
+	public static TLV getNextTLV(final TLVInputStream stream) {
+		try {
+			if (stream.available() < 2) {
+				throw new TlvException("Error parsing data. Available bytes < 2 . Length=" + stream.available());
 			}
-			length = tmpLength;
+			System.out.println("" + stream.available());
+			ITag tag = searchTagById(stream.readTag());
+			int length = stream.readLength();
+			System.out.println(" datalength" + length);
+			return new TLV(tag, length, trim(BytesUtils.toByteArray(length)), stream.readValue());
+		} catch (IOException e) {
+			LOGGER.error(e.getMessage(), e);
+		} finally {
+			IOUtils.closeQuietly(stream);
 		}
-		return length;
-	}
-
-	public static TLV getNextTLV(final ByteArrayInputStream stream) {
-		if (stream.available() < 2) {
-			throw new TlvException("Error parsing data. Available bytes < 2 . Length=" + stream.available());
-		}
-
-		// ISO/IEC 7816 uses neither '00' nor 'FF' as tag value.
-		// Before, between, or after TLV-coded data objects,
-		// '00' or 'FF' bytes without any meaning may occur
-		// (for example, due to erased or modified TLV-coded data objects).
-
-		stream.mark(0);
-		int peekInt = stream.read();
-		byte peekByte = (byte) peekInt;
-		// peekInt == 0xffffffff indicates EOS
-		while (peekInt != -1 && (peekByte == (byte) 0xFF || peekByte == (byte) 0x00)) {
-			stream.mark(0); // Current position
-			peekInt = stream.read();
-			peekByte = (byte) peekInt;
-		}
-		stream.reset(); // Reset back to the last known position without 0x00 or 0xFF
-
-		if (stream.available() < 2) {
-			throw new TlvException("Error parsing data. Available bytes < 2 . Length=" + stream.available());
-		}
-
-		byte[] tagIdBytes = TlvUtil.readTagIdBytes(stream);
-
-		// We need to get the raw length bytes.
-		// Use quick and dirty workaround
-		stream.mark(0);
-		int posBefore = stream.available();
-		// Now parse the lengthbyte(s)
-		// This method will read all length bytes. We can then find out how many bytes was read.
-		int length = TlvUtil.readTagLength(stream); // Decoded
-		// Now find the raw (encoded) length bytes
-		int posAfter = stream.available();
-		stream.reset();
-		byte[] lengthBytes = new byte[posBefore - posAfter];
-
-		if (lengthBytes.length < 1 || lengthBytes.length > 4) {
-			throw new TlvException("Number of length bytes must be from 1 to 4. Found " + lengthBytes.length);
-		}
-
-		stream.read(lengthBytes, 0, lengthBytes.length);
-
-		int rawLength = BytesUtils.byteArrayToInt(lengthBytes);
-
-		byte[] valueBytes;
-
-		ITag tag = searchTagById(tagIdBytes);
-
-		// Find VALUE bytes
-		if (rawLength == 128) { // 1000 0000
-			// indefinite form
-			stream.mark(0);
-			int prevOctet = 1;
-			int curOctet;
-			int len = 0;
-			while (true) {
-				len++;
-				curOctet = stream.read();
-				if (curOctet < 0) {
-					throw new TlvException("Error parsing data. TLV " + "length byte indicated indefinite length, but EOS "
-							+ "was reached before 0x0000 was found" + stream.available());
-				}
-				if (prevOctet == 0 && curOctet == 0) {
-					break;
-				}
-				prevOctet = curOctet;
-			}
-			len -= 2;
-			valueBytes = new byte[len];
-			stream.reset();
-			stream.read(valueBytes, 0, len);
-			length = len;
-		} else {
-			if (stream.available() < length) {
-				throw new TlvException("Length byte(s) indicated " + length + " value bytes, but only " + stream.available()
-						+ " " + (stream.available() > 1 ? "are" : "is") + " available");
-			}
-			// definite form
-			valueBytes = new byte[length];
-			stream.read(valueBytes, 0, length);
-		}
-
-		// Remove any trailing 0x00 and 0xFF
-		stream.mark(0);
-		peekInt = stream.read();
-		peekByte = (byte) peekInt;
-		while (peekInt != -1 && (peekByte == (byte) 0xFF || peekByte == (byte) 0x00)) {
-			stream.mark(0);
-			peekInt = stream.read();
-			peekByte = (byte) peekInt;
-		}
-		stream.reset(); // Reset back to the last known position without 0x00 or 0xFF
-
-		return new TLV(tag, length, lengthBytes, valueBytes);
+		return null;
 	}
 
 	/**
 	 * Method used get Tag value as String
-	 * 
+	 *
 	 * @param tag
 	 *            tag type
 	 * @param value
@@ -290,25 +163,31 @@ public final class TlvUtil {
 
 	/**
 	 * Method used to parser Tag and length
-	 * 
+	 *
 	 * @param data
 	 *            data to parse
-	 * @return list of tag and length
+	 * @return tag and length
 	 */
 	public static List<TagAndLength> parseTagAndLength(final byte[] data) {
 		List<TagAndLength> tagAndLengthList = new ArrayList<TagAndLength>();
 		if (data != null) {
-			ByteArrayInputStream stream = new ByteArrayInputStream(data);
+			TLVInputStream stream = new TLVInputStream(new ByteArrayInputStream(data));
 
-			while (stream.available() > 0) {
-				if (stream.available() < 2) {
-					throw new TlvException("Data length < 2 : " + stream.available());
+			try {
+				while (stream.available() > 0) {
+					if (stream.available() < 2) {
+						throw new TlvException("Data length < 2 : " + stream.available());
+					}
+
+					ITag tag = searchTagById(stream.readTag());
+					int tagValueLength = stream.readLength();
+
+					tagAndLengthList.add(new TagAndLength(tag, tagValueLength));
 				}
-
-				ITag tag = searchTagById(TlvUtil.readTagIdBytes(stream));
-				int tagValueLength = TlvUtil.readTagLength(stream);
-
-				tagAndLengthList.add(new TagAndLength(tag, tagValueLength));
+			} catch (IOException e) {
+				LOGGER.error(e.getMessage(), e);
+			} finally {
+				IOUtils.closeQuietly(stream);
 			}
 		}
 		return tagAndLengthList;
@@ -326,7 +205,7 @@ public final class TlvUtil {
 
 	/**
 	 * Method used to get the list of TLV inside the parameter tag specified in parameter
-	 * 
+	 *
 	 * @param pData
 	 *            data to parse
 	 * @param pTag
@@ -338,16 +217,22 @@ public final class TlvUtil {
 
 		List<TLV> list = new ArrayList<TLV>();
 
-		ByteArrayInputStream stream = new ByteArrayInputStream(pData);
+		TLVInputStream stream = new TLVInputStream(new ByteArrayInputStream(pData));
 
-		while (stream.available() > 0) {
+		try {
+			while (stream.available() > 0) {
 
-			TLV tlv = TlvUtil.getNextTLV(stream);
-			if (pAdd) {
-				list.add(tlv);
-			} else if (tlv.getTag().isConstructed()) {
-				list.addAll(TlvUtil.getlistTLV(tlv.getValueBytes(), pTag, tlv.getTag() == pTag));
+				TLV tlv = TlvUtil.getNextTLV(stream);
+				if (pAdd) {
+					list.add(tlv);
+				} else if (tlv.getTag().isConstructed()) {
+					list.addAll(TlvUtil.getlistTLV(tlv.getValueBytes(), pTag, tlv.getTag() == pTag));
+				}
 			}
+		} catch (IOException e) {
+			LOGGER.error(e.getMessage(), e);
+		} finally {
+			IOUtils.closeQuietly(stream);
 		}
 
 		return list;
@@ -355,7 +240,7 @@ public final class TlvUtil {
 
 	/**
 	 * Method used to get the list of TLV corresponding to tags specified in parameters
-	 * 
+	 *
 	 * @param pData
 	 *            data to parse
 	 * @param pTag
@@ -367,16 +252,22 @@ public final class TlvUtil {
 
 		List<TLV> list = new ArrayList<TLV>();
 
-		ByteArrayInputStream stream = new ByteArrayInputStream(pData);
+		TLVInputStream stream = new TLVInputStream(new ByteArrayInputStream(pData));
 
-		while (stream.available() > 0) {
+		try {
+			while (stream.available() > 0) {
 
-			TLV tlv = TlvUtil.getNextTLV(stream);
-			if (ArrayUtils.contains(pTag, tlv.getTag())) {
-				list.add(tlv);
-			} else if (tlv.getTag().isConstructed()) {
-				list.addAll(TlvUtil.getlistTLV(tlv.getValueBytes(), pTag));
+				TLV tlv = TlvUtil.getNextTLV(stream);
+				if (ArrayUtils.contains(pTag, tlv.getTag())) {
+					list.add(tlv);
+				} else if (tlv.getTag().isConstructed()) {
+					list.addAll(TlvUtil.getlistTLV(tlv.getValueBytes(), pTag));
+				}
 			}
+		} catch (IOException e) {
+			LOGGER.error(e.getMessage(), e);
+		} finally {
+			IOUtils.closeQuietly(stream);
 		}
 
 		return list;
@@ -384,7 +275,7 @@ public final class TlvUtil {
 
 	/**
 	 * Method used to get Tag value
-	 * 
+	 *
 	 * @param pData
 	 *            data
 	 * @param pTag
@@ -396,19 +287,25 @@ public final class TlvUtil {
 		byte[] ret = null;
 
 		if (pData != null) {
-			ByteArrayInputStream stream = new ByteArrayInputStream(pData);
+			TLVInputStream stream = new TLVInputStream(new ByteArrayInputStream(pData));
 
-			while (stream.available() > 0) {
+			try {
+				while (stream.available() > 0) {
 
-				TLV tlv = TlvUtil.getNextTLV(stream);
-				if (ArrayUtils.contains(pTag, tlv.getTag())) {
-					return tlv.getValueBytes();
-				} else if (tlv.getTag().isConstructed()) {
-					ret = TlvUtil.getValue(tlv.getValueBytes(), pTag);
-					if (ret != null) {
-						break;
+					TLV tlv = TlvUtil.getNextTLV(stream);
+					if (ArrayUtils.contains(pTag, tlv.getTag())) {
+						return tlv.getValueBytes();
+					} else if (tlv.getTag().isConstructed()) {
+						ret = TlvUtil.getValue(tlv.getValueBytes(), pTag);
+						if (ret != null) {
+							break;
+						}
 					}
 				}
+			} catch (IOException e) {
+				LOGGER.error(e.getMessage(), e);
+			} finally {
+				IOUtils.closeQuietly(stream);
 			}
 		}
 
@@ -417,62 +314,67 @@ public final class TlvUtil {
 
 	public static String prettyPrintAPDUResponse(final byte[] data, final int indentLength) {
 		StringBuilder buf = new StringBuilder();
+		TLVInputStream stream = new TLVInputStream(new ByteArrayInputStream(data));
 
-		ByteArrayInputStream stream = new ByteArrayInputStream(data);
-
-		while (stream.available() > 0) {
-			buf.append("\n");
-			if (stream.available() == 2) {
-				stream.mark(0);
-				byte[] value = new byte[2];
-				try {
-					stream.read(value);
-				} catch (IOException e) {
-				}
-				SwEnum sw = SwEnum.getSW(value);
-				if (sw != null) {
-					buf.append(getSpaces(0));
-					buf.append(BytesUtils.bytesToString(value)).append(" -- ");
-					buf.append(sw.getDetail());
-					continue;
-				}
-				stream.reset();
-			}
-
-			buf.append(getSpaces(indentLength));
-
-			TLV tlv = TlvUtil.getNextTLV(stream);
-
-			byte[] tagBytes = tlv.getTagBytes();
-			byte[] lengthBytes = tlv.getRawEncodedLengthBytes();
-			byte[] valueBytes = tlv.getValueBytes();
-
-			ITag tag = tlv.getTag();
-
-			buf.append(prettyPrintHex(tagBytes));
-			buf.append(" ");
-			buf.append(prettyPrintHex(lengthBytes));
-			buf.append(" -- ");
-			buf.append(tag.getName());
-
-			int extraIndent = (lengthBytes.length + tagBytes.length) * 3;
-
-			if (tag.isConstructed()) {
-				// indentLength += extraIndent; //TODO check this
-				// Recursion
-				buf.append(prettyPrintAPDUResponse(valueBytes, indentLength + extraIndent));
-			} else {
+		try {
+			while (stream.available() > 0) {
 				buf.append("\n");
-				if (tag.getTagValueType() == TagValueTypeEnum.DOL) {
-					buf.append(TlvUtil.getFormattedTagAndLength(valueBytes, indentLength + extraIndent));
+				if (stream.available() == 2) {
+					stream.mark(0);
+					byte[] value = new byte[2];
+					try {
+						stream.read(value);
+					} catch (IOException e) {
+					}
+					SwEnum sw = SwEnum.getSW(value);
+					if (sw != null) {
+						buf.append(getSpaces(0));
+						buf.append(BytesUtils.bytesToString(value)).append(" -- ");
+						buf.append(sw.getDetail());
+						continue;
+					}
+					stream.reset();
+				}
+
+				buf.append(getSpaces(indentLength));
+
+				TLV tlv = TlvUtil.getNextTLV(stream);
+
+				byte[] tagBytes = tlv.getTagBytes();
+				byte[] lengthBytes = tlv.getRawEncodedLengthBytes();
+				byte[] valueBytes = tlv.getValueBytes();
+
+				ITag tag = tlv.getTag();
+
+				buf.append(prettyPrintHex(tagBytes));
+				buf.append(" ");
+				buf.append(prettyPrintHex(lengthBytes));
+				buf.append(" -- ");
+				buf.append(tag.getName());
+
+				int extraIndent = (lengthBytes.length + tagBytes.length) * 3;
+
+				if (tag.isConstructed()) {
+					// indentLength += extraIndent; //TODO check this
+					// Recursion
+					buf.append(prettyPrintAPDUResponse(valueBytes, indentLength + extraIndent));
 				} else {
-					buf.append(getSpaces(indentLength + extraIndent));
-					buf.append(prettyPrintHex(BytesUtils.bytesToStringNoSpace(valueBytes), indentLength + extraIndent));
-					buf.append(" (");
-					buf.append(TlvUtil.getTagValueAsString(tag, valueBytes));
-					buf.append(")");
+					buf.append("\n");
+					if (tag.getTagValueType() == TagValueTypeEnum.DOL) {
+						buf.append(TlvUtil.getFormattedTagAndLength(valueBytes, indentLength + extraIndent));
+					} else {
+						buf.append(getSpaces(indentLength + extraIndent));
+						buf.append(prettyPrintHex(BytesUtils.bytesToStringNoSpace(valueBytes), indentLength + extraIndent));
+						buf.append(" (");
+						buf.append(TlvUtil.getTagValueAsString(tag, valueBytes));
+						buf.append(")");
+					}
 				}
 			}
+		} catch (IOException e) {
+			LOGGER.error(e.getMessage(), e);
+		} finally {
+			IOUtils.closeQuietly(stream);
 		}
 		return buf.toString();
 	}
@@ -542,7 +444,7 @@ public final class TlvUtil {
 
 	/**
 	 * Method used to get length of all Tags
-	 * 
+	 *
 	 * @param pList
 	 *            tag length list
 	 * @return the sum of tag length

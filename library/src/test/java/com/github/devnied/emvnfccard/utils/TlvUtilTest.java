@@ -1,6 +1,5 @@
 package com.github.devnied.emvnfccard.utils;
 
-import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,14 +67,14 @@ public class TlvUtilTest {
 
 	/**
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	public void testSearchTagById() throws Exception {
 
-		ITag tag = (ITag) Whitebox.invokeMethod(TlvUtil.class, "searchTagById", BytesUtils.fromString("9F6B"));
+		ITag tag = (ITag) Whitebox.invokeMethod(TlvUtil.class, "searchTagById", 0x9F6B);
 		Assertions.assertThat(tag).isEqualTo(EmvTags.TRACK2_DATA);
-		tag = (ITag) Whitebox.invokeMethod(TlvUtil.class, "searchTagById", BytesUtils.fromString("FFFF"));
+		tag = (ITag) Whitebox.invokeMethod(TlvUtil.class, "searchTagById", 0xFFFF);
 		Assertions.assertThat(tag.getName()).isEqualTo("[UNKNOWN TAG]");
 		Assertions.assertThat(tag.getDescription()).isEqualTo("");
 		Assertions.assertThat(tag.getTagBytes()).isEqualTo(BytesUtils.fromString("FFFF"));
@@ -87,18 +86,16 @@ public class TlvUtilTest {
 
 	/**
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	public void testSearchTagByIdIn() throws Exception {
 
-		ByteArrayInputStream in = new ByteArrayInputStream(BytesUtils.fromString("9F6B"));
 
-		ITag tag = (ITag) Whitebox.invokeMethod(TlvUtil.class, "searchTagById", in);
+		ITag tag = (ITag) Whitebox.invokeMethod(TlvUtil.class, "searchTagById", 0x9F6B);
 		Assertions.assertThat(tag).isEqualTo(EmvTags.TRACK2_DATA);
 
-		in = new ByteArrayInputStream(BytesUtils.fromString("FFFF"));
-		tag = (ITag) Whitebox.invokeMethod(TlvUtil.class, "searchTagById", in);
+		tag = (ITag) Whitebox.invokeMethod(TlvUtil.class, "searchTagById", 0xFFFF);
 		Assertions.assertThat(tag.getName()).isEqualTo("[UNKNOWN TAG]");
 		Assertions.assertThat(tag.getDescription()).isEqualTo("");
 		Assertions.assertThat(tag.getTagBytes()).isEqualTo(BytesUtils.fromString("FFFF"));
@@ -140,9 +137,9 @@ public class TlvUtilTest {
 	@Test
 	public void testGetTagValueAsString() throws Exception {
 		Assertions
-				.assertThat(
-						(String) Whitebox.invokeMethod(TlvUtil.class, "getTagValueAsString", EmvTags.ACQUIRER_IDENTIFIER,
-								"56".getBytes())).isEqualTo("NUMERIC");
+		.assertThat(
+				(String) Whitebox.invokeMethod(TlvUtil.class, "getTagValueAsString", EmvTags.ACQUIRER_IDENTIFIER,
+						"56".getBytes())).isEqualTo("NUMERIC");
 		Assertions.assertThat(
 				(String) Whitebox.invokeMethod(TlvUtil.class, "getTagValueAsString", EmvTags.ISSUER_COUNTRY_CODE_ALPHA3,
 						"56".getBytes())).isEqualTo("=56");
@@ -153,7 +150,7 @@ public class TlvUtilTest {
 				(String) Whitebox.invokeMethod(TlvUtil.class, "getTagValueAsString", EmvTags.BANK_IDENTIFIER_CODE,
 						"56".getBytes())).isEqualTo("=56");
 		Assertions
-				.assertThat((String) Whitebox.invokeMethod(TlvUtil.class, "getTagValueAsString", EmvTags.DDOL, "56".getBytes()))
-				.isEqualTo("");
+		.assertThat((String) Whitebox.invokeMethod(TlvUtil.class, "getTagValueAsString", EmvTags.DDOL, "56".getBytes()))
+		.isEqualTo("");
 	}
 }

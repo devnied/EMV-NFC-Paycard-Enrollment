@@ -86,6 +86,12 @@
 				<artifactId>commons-io</artifactId>
 				<version>2.4</version>
 			</dependency>
+			
+			<dependency>
+				<groupId>net.sf.scuba</groupId>
+				<artifactId>scuba-smartcards</artifactId>
+				<version>0.0.4</version>
+			</dependency>
 
 			<!-- Android -->
 			<dependency>
