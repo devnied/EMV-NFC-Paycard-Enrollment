@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sf.scuba.tlv.TLVInputStream;
+import net.sf.scuba.tlv.TLVUtil;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -58,19 +59,7 @@ public final class TlvUtil {
 	 * @return the tag found
 	 */
 	private static ITag searchTagById(final int tagId) {
-		return EmvTags.getNotNull(trim(BytesUtils.toByteArray(tagId)));
-	}
-
-	static byte[] trim(final byte[] bytes) {
-		int i = 0;
-		while (i < bytes.length - 1 && bytes[i] == 0) {
-			i++;
-		}
-
-		byte[] ret = new byte[bytes.length - i];
-		System.arraycopy(bytes, i, ret, 0, bytes.length - i);
-
-		return ret;
+		return EmvTags.getNotNull(TLVUtil.getTagAsBytes(tagId));
 	}
 
 	// This is just a list of Tag And Lengths (eg DOLs)
@@ -111,11 +100,9 @@ public final class TlvUtil {
 			if (stream.available() < 2) {
 				throw new TlvException("Error parsing data. Available bytes < 2 . Length=" + stream.available());
 			}
-			System.out.println("" + stream.available());
 			ITag tag = searchTagById(stream.readTag());
 			int length = stream.readLength();
-			System.out.println(" datalength" + length);
-			return new TLV(tag, length, trim(BytesUtils.toByteArray(length)), stream.readValue());
+			return new TLV(tag, length, TLVUtil.getLengthAsBytes(length), stream.readValue());
 		} catch (IOException e) {
 			LOGGER.error(e.getMessage(), e);
 		} finally {
