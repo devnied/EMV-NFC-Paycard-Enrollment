@@ -96,19 +96,22 @@ public final class TlvUtil {
 	}
 
 	public static TLV getNextTLV(final TLVInputStream stream) {
+		TLV tlv = null;
 		try {
 			if (stream.available() < 2) {
 				throw new TlvException("Error parsing data. Available bytes < 2 . Length=" + stream.available());
 			}
 			ITag tag = searchTagById(stream.readTag());
 			int length = stream.readLength();
-			return new TLV(tag, length, TLVUtil.getLengthAsBytes(length), stream.readValue());
+			if (stream.available() >= length) {
+				tlv = new TLV(tag, length, TLVUtil.getLengthAsBytes(length), stream.readValue());
+			}
 		} catch (IOException e) {
 			LOGGER.error(e.getMessage(), e);
 		} finally {
 			IOUtils.closeQuietly(stream);
 		}
-		return null;
+		return tlv;
 	}
 
 	/**
@@ -327,6 +330,10 @@ public final class TlvUtil {
 
 				TLV tlv = TlvUtil.getNextTLV(stream);
 
+				if (tlv == null) {
+					throw new TlvException("TLV format error");
+				}
+
 				byte[] tagBytes = tlv.getTagBytes();
 				byte[] lengthBytes = tlv.getRawEncodedLengthBytes();
 				byte[] valueBytes = tlv.getValueBytes();
@@ -360,6 +367,9 @@ public final class TlvUtil {
 			}
 		} catch (IOException e) {
 			LOGGER.error(e.getMessage(), e);
+		} catch (TlvException exce) {
+			buf.setLength(0);
+			LOGGER.debug(exce.getMessage(), exce);
 		} finally {
 			IOUtils.closeQuietly(stream);
 		}

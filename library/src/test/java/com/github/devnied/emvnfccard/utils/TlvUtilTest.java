@@ -28,7 +28,7 @@ public class TlvUtilTest {
 			+ "07 a0 00 00 03 15 60 20 50 08 43 68 69 70 6b 6e 69 70 87 01 00 90 00");
 
 	@Test
-	public void test() {
+	public void testPrettyPrint() {
 
 		String expResult = "\n"//
 				+ "70 63 -- Record Template (EMV Proprietary)\n" //
@@ -63,6 +63,13 @@ public class TlvUtilTest {
 				+ "90 00 -- Command successfully executed (OK)";
 
 		Assertions.assertThat(TlvUtil.prettyPrintAPDUResponse(DATA)).isEqualTo(expResult);
+	}
+
+	@Test
+	public void testPrettyPrintTransactionRecord() {
+		// Assertions.assertThat(TlvUtil.prettyPrintAPDUResponse(BytesUtils.fromString(""))).isEqualTo("");
+		Assertions.assertThat(TlvUtil.prettyPrintAPDUResponse(BytesUtils.fromString("00 00 00 00 46 00 40 02 50 09 78 14 03 16 20 90 00")))
+		.isEqualTo("");
 	}
 
 	/**
