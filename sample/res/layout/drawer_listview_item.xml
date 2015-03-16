@@ -6,15 +6,19 @@
     android:gravity="center"
     android:background="@drawable/menu_back"
     android:weightSum="1"
-    android:padding="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp"
     android:orientation="horizontal" >
 
-    <ImageView
+    <TextView
         android:id="@+id/menu_item_icon"
         android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/mastercard" />
+        android:layout_height="wrap_content"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        />
     
 	<TextView
 	    android:layout_width="match_parent"

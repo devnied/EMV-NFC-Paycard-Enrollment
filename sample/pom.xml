@@ -41,6 +41,12 @@
 			<artifactId>systembartint</artifactId>
 			<version>1.0.3</version>
 		</dependency>
+		
+		<dependency>
+		    <groupId>com.joanzapata.android</groupId>
+		    <artifactId>android-iconify</artifactId>
+		    <version>1.0.9</version>
+		</dependency>
 
 		<dependency>
 			<artifactId>crouton</artifactId>

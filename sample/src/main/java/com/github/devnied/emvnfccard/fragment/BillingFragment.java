@@ -117,8 +117,10 @@ public class BillingFragment extends Fragment implements OnClickListener {
 				protected void doInBackground() {
 					Bundle querySkus = new Bundle();
 					ArrayList<String> itemId = new ArrayList<String>();
-					for (int i = 0; i <= 5; i++) {
-						itemId.add("donate_" + i);
+					for (int i = 0; i <= 7; i++) {
+						if (i != 6) {
+							itemId.add("donate_" + i);
+						}
 					}
 					try {
 						// Get owned Items

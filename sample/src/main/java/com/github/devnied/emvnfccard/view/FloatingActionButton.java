@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -75,7 +76,14 @@ public class FloatingActionButton extends View {
 	}
 
 	public void setDrawable(final Drawable drawable) {
-		mBitmap = ((BitmapDrawable) drawable).getBitmap();
+		if (drawable instanceof BitmapDrawable) {
+			mBitmap = ((BitmapDrawable) drawable).getBitmap();
+		}
+
+		mBitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Config.ARGB_8888);
+		Canvas canvas = new Canvas(mBitmap);
+		drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+		drawable.draw(canvas);
 		invalidate();
 	}
 

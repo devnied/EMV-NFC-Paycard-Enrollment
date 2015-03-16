@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.github.devnied.emvnfccard.R;
 import com.github.devnied.emvnfccard.utils.CroutonUtils;
 import com.github.devnied.emvnfccard.utils.CroutonUtils.CoutonColor;
+import com.joanzapata.android.iconify.Iconify;
 
 /**
  * About Fragment
@@ -55,6 +56,10 @@ public class AboutFragment extends Fragment {
 		if (githubContent != null) {
 			githubContent.setMovementMethod(new MovementCheck());
 		}
+
+		// Git hub icon
+		TextView githubIcon = (TextView) view.findViewById(R.id.github_icon);
+		Iconify.addIcons(githubIcon);
 
 		// Add version
 		TextView aboutversion = (TextView) view.findViewById(R.id.about_version);

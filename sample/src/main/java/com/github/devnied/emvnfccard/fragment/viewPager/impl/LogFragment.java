@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -31,6 +32,8 @@ import com.github.devnied.emvnfccard.model.EmvCard;
 import com.github.devnied.emvnfccard.utils.CroutonUtils;
 import com.github.devnied.emvnfccard.utils.CroutonUtils.CoutonColor;
 import com.github.devnied.emvnfccard.view.FloatingActionButton;
+import com.joanzapata.android.iconify.IconDrawable;
+import com.joanzapata.android.iconify.Iconify.IconValue;
 
 import fr.devnied.bitlib.BytesUtils;
 
@@ -85,7 +88,8 @@ public class LogFragment extends AbstractFragment implements OnClickListener {
 		mTextView = (TextView) view.findViewById(R.id.logContent);
 		FloatingActionButton button = (FloatingActionButton) view.findViewById(R.id.fabutton);
 		button.attachTo(mScrollView);
-		button.setDrawable(getResources().getDrawable(R.drawable.ic_menu_share));
+		button.setColor(getResources().getColor(R.color.blue));
+		button.setDrawable(new IconDrawable(view.getContext(), IconValue.fa_share_alt).sizeDp(25).color(Color.WHITE).getCurrent());
 		button.setOnClickListener(this);
 		updateLog(mBuffer);
 	}
@@ -188,7 +192,6 @@ public class LogFragment extends AbstractFragment implements OnClickListener {
 		String line = null;
 		try {
 			while ((line = br.readLine()) != null) {
-				Log.d("--------", "new line");
 				if (line.startsWith("resp:") || line.startsWith("send:")) {
 					lines.add(line.replaceAll("[^a-zA-Z0-9:]", " "));
 				}

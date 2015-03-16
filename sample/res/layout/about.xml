@@ -52,16 +52,17 @@
                 android:layout_height="wrap_content"
                 android:text="@string/about_app_detail"
                 android:textSize="15sp" />
+            
 
-            <ImageView
+            <TextView
                 android:id="@+id/github_icon"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="14dp"
                 android:layout_marginTop="15dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/github" />
+                android:textSize="45sp"
+                android:text="{fa-github}" />
 
             
             <TextView
