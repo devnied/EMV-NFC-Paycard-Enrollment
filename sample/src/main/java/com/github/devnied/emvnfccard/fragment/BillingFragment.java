@@ -183,12 +183,9 @@ public class BillingFragment extends Fragment implements OnClickListener {
 	public void onViewCreated(final View view, final Bundle savedInstanceState) {
 		layout = (LinearLayout) view.findViewById(R.id.inAppList);
 		if (!serviceBind) {
-			View v = getActivity().findViewById(R.id.about_inapp_content);
+			View v = getActivity().findViewById(R.id.about_donation_card);
 			if (v != null) {
-				View parent = (View) v.getParent();
-				if (parent != null) {
-					parent.setVisibility(View.GONE);
-				}
+				v.setVisibility(View.GONE);
 			}
 		}
 	}

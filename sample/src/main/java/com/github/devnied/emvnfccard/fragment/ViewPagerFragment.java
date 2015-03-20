@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.github.devnied.emvnfccard.R;
 import com.github.devnied.emvnfccard.activity.IContentActivity;
@@ -21,6 +22,7 @@ import com.github.devnied.emvnfccard.fragment.viewPager.impl.LogFragment;
 import com.github.devnied.emvnfccard.fragment.viewPager.impl.TransactionHistoryFragment;
 import com.github.devnied.emvnfccard.model.EmvTransactionRecord;
 import com.github.devnied.emvnfccard.view.SlidingTabLayout;
+import com.joanzapata.android.iconify.Iconify;
 
 /**
  * View pager
@@ -76,7 +78,9 @@ public class ViewPagerFragment extends Fragment implements IRefreshable {
 		mViewPager.setAdapter(mViewPagerAdapter);
 
 		// banner
-		view.findViewById(R.id.banner).setOnClickListener((View.OnClickListener) getActivity());
+		View banner = view.findViewById(R.id.banner);
+		banner.setOnClickListener((View.OnClickListener) getActivity());
+		Iconify.addIcons((TextView) view.findViewById(R.id.bannerArrow));
 
 		// Tab layout
 		mTabLayout = (SlidingTabLayout) view.findViewById(R.id.sliding_tabs);

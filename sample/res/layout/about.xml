@@ -10,102 +10,119 @@
         android:orientation="vertical"
         android:padding="10dp" >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/cardui"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-             >
-
-            <TextView
-                android:id="@+id/about_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:text="@string/about_title"
-                android:textColor="#999"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-            
-            
-            <ImageView
-                android:id="@+id/contactLessImg"
-                android:layout_width="50dp"
-                android:layout_height="30dp"
-                android:paddingRight="5dp"
-                android:scaleType="centerCrop"
-                android:layout_marginBottom="10dp"
-                android:src="@drawable/ic_launcher" />
-            
-            <TextView
-                android:id="@+id/about_version"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:layout_marginBottom="10dp"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/about_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/about_app_detail"
-                android:textSize="15sp" />
-            
-
-            <TextView
-                android:id="@+id/github_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="14dp"
-                android:layout_marginTop="15dp"
-                android:textSize="45sp"
-                android:text="{fa-github}" />
-
-            
-            <TextView
-                android:id="@+id/about_github_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/about_source_detail"
-                android:layout_marginBottom="10dp"
-                android:textSize="15sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/cardui"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/about_inApp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:text="@string/about_inApp"
-                android:textColor="#999"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-            
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/about_inapp_text"
-                android:layout_marginBottom="10dp"
-                android:textSize="15sp" />
-            
-            <FrameLayout
-	            android:id="@+id/about_inapp_content"
+        <android.support.v7.widget.CardView
+	        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+	        android:layout_gravity="center"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        card_view:contentPadding="10dp"
+	        card_view:cardCornerRadius="4dp">
+	        
+	        <LinearLayout
 	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content" 
-	            android:visibility="gone"
-	            />
+	            android:layout_height="wrap_content"
+	            android:gravity="center_horizontal"
+	            android:orientation="vertical"
+	             >
+	
+	            <TextView
+	                android:id="@+id/about_title"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:layout_marginBottom="15dp"
+	                android:text="@string/about_title"
+	                android:textColor="#999"
+	                android:textSize="14sp"
+	                android:textStyle="bold" />
+	            
+	            
+	            <ImageView
+	                android:id="@+id/contactLessImg"
+	                android:layout_width="50dp"
+	                android:layout_height="30dp"
+	                android:paddingRight="5dp"
+	                android:scaleType="centerCrop"
+	                android:layout_marginBottom="10dp"
+	                android:src="@drawable/ic_launcher" />
+	            
+	            <TextView
+	                android:id="@+id/about_version"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:gravity="center_horizontal"
+	                android:layout_marginBottom="10dp"
+	                android:textSize="15sp" />
+	
+	            <TextView
+	                android:id="@+id/about_content"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:text="@string/about_app_detail"
+	                android:textSize="15sp" />
+	            
+	
+	            <TextView
+	                android:id="@+id/github_icon"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_centerHorizontal="true"
+	                android:layout_marginBottom="14dp"
+	                android:layout_marginTop="15dp"
+	                android:textSize="45sp"
+	                android:text="{fa-github}" />
+	
+	            
+	            <TextView
+	                android:id="@+id/about_github_content"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:text="@string/about_source_detail"
+	                android:layout_marginBottom="10dp"
+	                android:textSize="15sp" />
+	        </LinearLayout>
+        </android.support.v7.widget.CardView>
 
-        </LinearLayout>
+        <android.support.v7.widget.CardView
+	        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+	        android:id="@+id/about_donation_card"
+	        android:layout_gravity="center"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="10dp"
+	        card_view:contentPadding="10dp"
+	        card_view:cardCornerRadius="4dp">
+	        
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:orientation="vertical" >
+	
+	            <TextView
+	                android:id="@+id/about_inApp"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:layout_marginBottom="15dp"
+	                android:text="@string/about_inApp"
+	                android:textColor="#999"
+	                android:textSize="14sp"
+	                android:textStyle="bold" />
+	            
+	            <TextView
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:text="@string/about_inapp_text"
+	                android:layout_marginBottom="10dp"
+	                android:textSize="15sp" />
+	            
+	            <FrameLayout
+		            android:id="@+id/about_inapp_content"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content" 
+		            android:visibility="gone"
+		            />
+	
+	        </LinearLayout>
+	   </android.support.v7.widget.CardView>
     </LinearLayout>
 
 </ScrollView>

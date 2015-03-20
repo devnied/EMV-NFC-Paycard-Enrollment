@@ -211,7 +211,7 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 			mAlertDialog.cancel();
 		}
 		// Check NFC enable
-		if (!NFCUtils.isNfcEnable(getApplicationContext())) {
+		if (NFCUtils.isNfcEnable(getApplicationContext())) {
 			backToHomeScreen();
 
 			AlertDialog.Builder alertbox = new AlertDialog.Builder(this);
@@ -442,6 +442,8 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 				refreshContent();
 				CroutonUtils.display(HomeActivity.this, getText(R.string.card_read), CoutonColor.GREEN);
 			}
+		} else if (mLastSelectedMenu != ConstantUtils.CARDS_DETAILS) {
+			backToHomeScreen();
 		} else {
 			super.onBackPressed();
 		}

@@ -29,6 +29,13 @@
 			<artifactId>v4</artifactId>
 			<version>21.0.1</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.android.support</groupId>
+			<artifactId>cardview-v7</artifactId>
+			<version>21.0.2</version>
+			<type>aar</type>
+		</dependency>
 
 		<dependency>
 			<groupId>com.github.devnied.emvnfccard</groupId>

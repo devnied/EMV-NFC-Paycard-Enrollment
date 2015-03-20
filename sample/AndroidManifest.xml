@@ -2,12 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.github.devnied.emvnfccard"
     android:installLocation="auto"
-    android:versionCode="32"
-    android:versionName="2.2.4" >
+    android:versionCode="33"
+    android:versionName="2.3.0" >
 
     <uses-sdk
         android:minSdkVersion="15"
-        android:targetSdkVersion="21" />
+        android:targetSdkVersion="22" />
 
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="com.android.vending.BILLING" />

@@ -5,12 +5,17 @@
     android:gravity="center"
     android:orientation="vertical" >
 
+    <android.support.v7.widget.CardView
+	        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+	        android:layout_gravity="center"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        card_view:contentPadding="10dp"
+	        card_view:cardCornerRadius="4dp">
     <LinearLayout
         android:id="@+id/transaction_group_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/cardui"
-        android:padding="10dp"
         android:gravity="center_vertical"
         android:orientation="horizontal" >
         
@@ -51,6 +56,7 @@
                 android:textSize="15sp" />
         </LinearLayout>
     </LinearLayout>
+    </android.support.v7.widget.CardView>
 
     <View
         android:id="@+id/transaction_group_divider"
