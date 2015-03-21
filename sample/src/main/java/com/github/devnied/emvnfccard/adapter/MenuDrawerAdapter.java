@@ -15,7 +15,7 @@ import com.joanzapata.android.iconify.Iconify;
 /**
  * Menu Adapter to display menu item
  *
- * @author julien
+ * @author Millau Julien
  *
  */
 public class MenuDrawerAdapter extends BaseAdapter {
