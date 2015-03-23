@@ -9,9 +9,9 @@ import com.github.devnied.emvnfccard.fragment.viewPager.IFragment;
 
 /**
  * View Pager Adapter
- * 
- * @author julien
- * 
+ *
+ * @author julien Millau
+ *
  */
 public class ViewPagerAdapter extends SortablePagerAdapter {
 
@@ -21,7 +21,7 @@ public class ViewPagerAdapter extends SortablePagerAdapter {
 	private final List<IFragment> mFragments;
 
 	/**
-	 * 
+	 *
 	 * @param fm
 	 * @param pFragments
 	 */

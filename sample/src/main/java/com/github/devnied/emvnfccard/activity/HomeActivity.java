@@ -11,6 +11,10 @@ import java.util.List;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -323,6 +327,12 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 
 				@Override
 				protected void onPostExecute(final Object result) {
+
+					// check destroyed Activity
+					if (HomeActivity.this.isFinishing()) {
+						return;
+					}
+
 					// close dialog
 					if (mDialog != null) {
 						mDialog.cancel();
@@ -552,7 +562,31 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 	@Override
 	public void onClick(final View v) {
 		if (mDrawerListView != null) {
-			mDrawerListView.performItemClick(mDrawerListView, 2, mDrawerListView.getItemIdAtPosition(2));
+			// Animate banner
+			ObjectAnimator animator = ObjectAnimator.ofObject(v, "backgroundColor", new ArgbEvaluator(), Color.parseColor("#C5E1A5"),
+					Color.parseColor("#AED581")).setDuration(70);
+			animator.addListener(new AnimatorListener() {
+
+				@Override
+				public void onAnimationStart(final Animator animation) {
+				}
+
+				@Override
+				public void onAnimationRepeat(final Animator animation) {
+				}
+
+				@Override
+				public void onAnimationEnd(final Animator animation) {
+					v.setBackgroundColor(Color.parseColor("#C5E1A5"));
+					mDrawerListView.performItemClick(mDrawerListView, 2, mDrawerListView.getItemIdAtPosition(2));
+				}
+
+				@Override
+				public void onAnimationCancel(final Animator animation) {
+				}
+			});
+			animator.start();
+
 		}
 	}
 

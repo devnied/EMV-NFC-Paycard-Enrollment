@@ -31,7 +31,7 @@
         android:visibility="gone"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
-        android:background="#DCEDC8" >
+        android:background="#C5E1A5" >
         
            <ImageView
                	android:layout_width="24dp"

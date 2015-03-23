@@ -96,7 +96,7 @@ public class TransactionHistoryFragment extends AbstractFragment implements OnIt
 	@Override
 	public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
 		mTransactionList.get(position).setClicked(!mTransactionList.get(position).isClicked());
-		mAdapter.notifyDataSetInvalidated();
+		mAdapter.notifyDataSetChanged();
 	}
 
 }
