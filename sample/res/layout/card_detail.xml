@@ -12,8 +12,6 @@
         android:gravity="center"
         android:orientation="vertical"
         android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
         android:visibility="gone" >
 
         <LinearLayout
@@ -26,6 +24,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 card_view:cardCornerRadius="4dp"
                 card_view:contentPadding="10dp" >
@@ -55,6 +55,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="15dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 card_view:cardCornerRadius="4dp"
                 card_view:contentPadding="10dp" >

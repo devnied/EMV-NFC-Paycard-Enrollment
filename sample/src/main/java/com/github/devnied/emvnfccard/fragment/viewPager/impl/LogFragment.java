@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Color;
+import android.graphics.Paint.Style;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -86,10 +87,14 @@ public class LogFragment extends AbstractFragment implements OnClickListener {
 	public void onViewCreated(final View view, final Bundle savedInstanceState) {
 		mScrollView = (ScrollView) view.findViewById(R.id.scrollView);
 		mTextView = (TextView) view.findViewById(R.id.logContent);
+		// Create icon
+		IconDrawable icon = new IconDrawable(view.getContext(), IconValue.fa_share_alt).sizeDp(25).color(Color.WHITE);
+		icon.setStyle(Style.FILL);
+		// Update action button
 		FloatingActionButton button = (FloatingActionButton) view.findViewById(R.id.fabutton);
 		button.attachTo(mScrollView);
 		button.setColor(getResources().getColor(R.color.blue));
-		button.setDrawable(new IconDrawable(view.getContext(), IconValue.fa_share_alt).sizeDp(25).color(Color.WHITE).getCurrent());
+		button.setDrawable(icon.getCurrent());
 		button.setOnClickListener(this);
 		updateLog(mBuffer);
 	}

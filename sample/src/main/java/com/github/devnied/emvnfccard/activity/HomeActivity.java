@@ -215,7 +215,7 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 			mAlertDialog.cancel();
 		}
 		// Check NFC enable
-		if (NFCUtils.isNfcEnable(getApplicationContext())) {
+		if (!NFCUtils.isNfcEnable(getApplicationContext())) {
 			backToHomeScreen();
 
 			AlertDialog.Builder alertbox = new AlertDialog.Builder(this);
