@@ -611,8 +611,9 @@ public class EmvParser {
 	 * @param terminal
 	 *            the terminal to set
 	 */
-	public void setTerminal(final ITerminal terminal) {
+	public EmvParser terminal(final ITerminal terminal) {
 		this.terminal = terminal;
+		return this;
 	}
 
 }
