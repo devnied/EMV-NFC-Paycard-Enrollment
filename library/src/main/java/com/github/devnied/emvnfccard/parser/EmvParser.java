@@ -480,6 +480,8 @@ public class EmvParser {
 		byte[] data = provider.transceive(new CommandApdu(CommandEnum.GET_DATA, 0x9F, 0x4F, 0).toBytes());
 		if (ResponseUtils.isSucceed(data)) {
 			ret = TlvUtil.parseTagAndLength(TlvUtil.getValue(data, EmvTags.LOG_FORMAT));
+		} else {
+			LOGGER.warn("No Log format found");
 		}
 		return ret;
 	}
@@ -495,34 +497,38 @@ public class EmvParser {
 		// If log entry is defined
 		if (pLogEntry != null) {
 			List<TagAndLength> tals = getLogFormat();
-			// read all records
-			for (int rec = 1; rec <= pLogEntry[1]; rec++) {
-				byte[] response = provider.transceive(new CommandApdu(CommandEnum.READ_RECORD, rec, pLogEntry[0] << 3 | 4, 0).toBytes());
-				// Extract data
-				if (ResponseUtils.isSucceed(response)) {
-					EmvTransactionRecord record = new EmvTransactionRecord();
-					record.parse(response, tals);
+			if (tals != null && !tals.isEmpty()) {
+				// read all records
+				for (int rec = 1; rec <= pLogEntry[1]; rec++) {
+					byte[] response = provider.transceive(new CommandApdu(CommandEnum.READ_RECORD, rec, pLogEntry[0] << 3 | 4, 0).toBytes());
+					// Extract data
+					if (ResponseUtils.isSucceed(response)) {
+						EmvTransactionRecord record = new EmvTransactionRecord();
+						record.parse(response, tals);
 
-					// Fix artifact in EMV VISA card
-					if (record.getAmount() >= 1500000000) {
-						record.setAmount(record.getAmount() - 1500000000);
-					}
+						if (record.getAmount() != null) {
+							// Fix artifact in EMV VISA card
+							if (record.getAmount() >= 1500000000) {
+								record.setAmount(record.getAmount() - 1500000000);
+							}
 
-					// Skip transaction with nul amount
-					if (record.getAmount() == null || record.getAmount() == 0) {
-						continue;
-					}
-
-					if (record != null) {
-						// Unknown currency
-						if (record.getCurrency() == null) {
-							record.setCurrency(CurrencyEnum.XXX);
+							// Skip transaction with nul amount
+							if (record.getAmount() == null || record.getAmount() == 0) {
+								continue;
+							}
 						}
-						listRecord.add(record);
+
+						if (record != null) {
+							// Unknown currency
+							if (record.getCurrency() == null) {
+								record.setCurrency(CurrencyEnum.XXX);
+							}
+							listRecord.add(record);
+						}
+					} else {
+						// No more transaction log or transaction disabled
+						break;
 					}
-				} else {
-					// No more transaction log or transaction disabled
-					break;
 				}
 			}
 		}

@@ -17,6 +17,7 @@ package com.github.devnied.emvnfccard.utils;
  */
 
 import java.io.ByteArrayInputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -106,6 +107,8 @@ public final class TlvUtil {
 			if (stream.available() >= length) {
 				tlv = new TLV(tag, length, TLVUtil.getLengthAsBytes(length), stream.readValue());
 			}
+		} catch (EOFException eof) {
+			LOGGER.debug(eof.getMessage(), eof);
 		} catch (IOException e) {
 			LOGGER.error(e.getMessage(), e);
 		} finally {
