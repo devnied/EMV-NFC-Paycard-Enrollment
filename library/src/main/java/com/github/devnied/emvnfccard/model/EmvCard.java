@@ -90,6 +90,16 @@ public class EmvCard extends AbstractData {
 	private EmvTrack1 track1;
 
 	/**
+	 * BIC - Bank Identifier Code
+	 */
+	private String bic;
+
+	/**
+	 * IBAN - International Bank Account Number
+	 */
+	private String iban;
+
+	/**
 	 * Indicate if the nfc is locked on the card
 	 */
 	private boolean nfcLocked;
@@ -353,6 +363,36 @@ public class EmvCard extends AbstractData {
 	 */
 	public void setTransactionCounter(final int transactionCounter) {
 		this.transactionCounter = transactionCounter;
+	}
+
+	/**
+	 * @return the bic
+	 */
+	public String getBic() {
+		return bic;
+	}
+
+	/**
+	 * @param bic
+	 *            the bic to set
+	 */
+	public void setBic(final String bic) {
+		this.bic = bic;
+	}
+
+	/**
+	 * @return the iban
+	 */
+	public String getIban() {
+		return iban;
+	}
+
+	/**
+	 * @param iban
+	 *            the iban to set
+	 */
+	public void setIban(final String iban) {
+		this.iban = iban;
 	}
 
 }

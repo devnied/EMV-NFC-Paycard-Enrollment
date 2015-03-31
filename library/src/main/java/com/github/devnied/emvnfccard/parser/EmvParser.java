@@ -300,6 +300,7 @@ public class EmvParser {
 		for (EmvCardScheme type : EmvCardScheme.values()) {
 			for (byte[] aid : type.getAidByte()) {
 				if (extractPublicData(aid, type.getName())) {
+
 					return;
 				}
 			}
@@ -349,6 +350,7 @@ public class EmvParser {
 				card.setApplicationLabel(pApplicationLabel);
 				card.setLeftPinTry(getLeftPinTry());
 				card.setTransactionCounter(getTransactionCounter());
+				card.setNfcLocked(false);
 			}
 		}
 		return ret;
@@ -397,6 +399,8 @@ public class EmvParser {
 		byte[] pdol = TlvUtil.getValue(pSelectResponse, EmvTags.PDOL);
 		// Send GPO Command
 		byte[] gpo = getGetProcessingOptions(pdol, pProvider);
+		// Extract Bank data
+		extractBankDta(pSelectResponse);
 
 		// Check empty PDOL
 		if (!ResponseUtils.isSucceed(gpo)) {
@@ -554,6 +558,25 @@ public class EmvParser {
 			list.add(afl);
 		}
 		return list;
+	}
+
+	/**
+	 * Extract bank data (BIC and IBAN)
+	 *
+	 * @param pData
+	 *            card data
+	 */
+	protected void extractBankDta(final byte[] pData) {
+		// Extract BIC data
+		byte[] bic = TlvUtil.getValue(pData, EmvTags.BANK_IDENTIFIER_CODE);
+		if (bic != null) {
+			card.setBic(new String(bic));
+		}
+		// Extract IBAN
+		byte[] iban = TlvUtil.getValue(pData, EmvTags.IBAN);
+		if (iban != null) {
+			card.setIban(new String(iban));
+		}
 	}
 
 	/**

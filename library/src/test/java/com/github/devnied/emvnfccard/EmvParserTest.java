@@ -28,6 +28,7 @@ import com.github.devnied.emvnfccard.model.enums.TransactionTypeEnum;
 import com.github.devnied.emvnfccard.parser.EmvParser;
 import com.github.devnied.emvnfccard.parser.IProvider;
 import com.github.devnied.emvnfccard.provider.ExceptionProviderTest;
+import com.github.devnied.emvnfccard.provider.PpseProviderGeldKarteTest;
 import com.github.devnied.emvnfccard.provider.PpseProviderLockedCardTest;
 import com.github.devnied.emvnfccard.provider.PpseProviderMasterCard2Test;
 import com.github.devnied.emvnfccard.provider.PpseProviderMasterCard3Test;
@@ -196,6 +197,36 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getListTransactions()).isEmpty();
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2015");
+		Assertions.assertThat(card.isNfcLocked()).isFalse();
+	}
+
+	@Test
+	public void testPPSEGeldKarte() throws CommunicationException {
+
+		IProvider prov = new PpseProviderGeldKarteTest();
+
+		EmvParser parser = new EmvParser(prov, true);
+		EmvCard card = parser.readEmvCard();
+
+		if (card != null) {
+			LOGGER.debug(card.toString());
+		}
+		Assertions.assertThat(card).isNotNull();
+		Assertions.assertThat(card.getBic()).isEqualTo("SPKHDE2HXXX");
+		Assertions.assertThat(card.getIban()).isEqualTo("DE11111111111111111111");
+		Assertions.assertThat(card.getTrack1()).isNull();
+		Assertions.assertThat(card.getTrack2()).isNotNull();
+		Assertions.assertThat(card.getTrack2().getRaw()).isNotNull();
+		Assertions.assertThat(card.getTrack2().getService()).isNotNull();
+		Assertions.assertThat(card.getAid()).isEqualTo("A0000000043060");
+		Assertions.assertThat(card.getCardNumber()).isEqualTo("5200000000000000");
+		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.MASTER_CARD);
+		Assertions.assertThat(card.getHolderLastname()).isNull();
+		Assertions.assertThat(card.getHolderFirstname()).isNull();
+		Assertions.assertThat(card.getApplicationLabel()).isEqualTo("Master card");
+		Assertions.assertThat(card.getListTransactions()).isNotEmpty();
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
+		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("11/2019");
 		Assertions.assertThat(card.isNfcLocked()).isFalse();
 	}
 
