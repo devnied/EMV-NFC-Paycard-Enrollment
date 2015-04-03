@@ -342,12 +342,16 @@ public class EmvParser {
 			if (ret) {
 				// Get AID
 				String aid = BytesUtils.bytesToStringNoSpace(TlvUtil.getValue(data, EmvTags.DEDICATED_FILE_NAME));
+				String applicationLabel = extractApplicationLabel(data);
+				if (applicationLabel == null) {
+					applicationLabel = pApplicationLabel;
+				}
 				if (LOGGER.isDebugEnabled()) {
-					LOGGER.debug("Application label:" + pApplicationLabel + " with Aid:" + aid);
+					LOGGER.debug("Application label:" + applicationLabel + " with Aid:" + aid);
 				}
 				card.setAid(aid);
 				card.setType(findCardScheme(aid, card.getCardNumber()));
-				card.setApplicationLabel(pApplicationLabel);
+				card.setApplicationLabel(applicationLabel);
 				card.setLeftPinTry(getLeftPinTry());
 				card.setTransactionCounter(getTransactionCounter());
 				card.setNfcLocked(false);

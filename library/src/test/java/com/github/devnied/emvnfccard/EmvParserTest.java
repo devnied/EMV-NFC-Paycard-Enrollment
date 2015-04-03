@@ -223,7 +223,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.MASTER_CARD);
 		Assertions.assertThat(card.getHolderLastname()).isNull();
 		Assertions.assertThat(card.getHolderFirstname()).isNull();
-		Assertions.assertThat(card.getApplicationLabel()).isEqualTo("Master card");
+		Assertions.assertThat(card.getApplicationLabel()).isEqualTo("Maestro");
 		Assertions.assertThat(card.getListTransactions()).isNotEmpty();
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("11/2019");
@@ -267,7 +267,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		Assertions.assertThat(card.getLeftPinTry()).isEqualTo(3);
 		Assertions.assertThat(card.getTransactionCounter()).isEqualTo(1580);
-		Assertions.assertThat(card.getApplicationLabel()).isEqualTo(null);
+		Assertions.assertThat(card.getApplicationLabel()).isEqualTo("DEBIT MASTERCARD");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("07/2002");
 		Assertions.assertThat(card.getListTransactions()).isNotEmpty();
 		Assertions.assertThat(card.getListTransactions().size()).isEqualTo(10);
@@ -305,7 +305,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		Assertions.assertThat(card.getLeftPinTry()).isEqualTo(3);
 		Assertions.assertThat(card.getTransactionCounter()).isEqualTo(1580);
-		Assertions.assertThat(card.getApplicationLabel()).isEqualTo(null);
+		Assertions.assertThat(card.getApplicationLabel()).isEqualTo("MasterCard");
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("11/2019");
 		Assertions.assertThat(card.getListTransactions()).isNotEmpty();
@@ -550,7 +550,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getAid()).isEqualTo("A0000000031010");
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("4000000000000000");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.VISA);
-		Assertions.assertThat(card.getApplicationLabel()).isEqualTo("VISA");
+		Assertions.assertThat(card.getApplicationLabel()).isEqualTo("VISA DEBIT");
 		Assertions.assertThat(card.getHolderLastname()).isNull();
 		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		Assertions.assertThat(card.getLeftPinTry()).isEqualTo(3);
