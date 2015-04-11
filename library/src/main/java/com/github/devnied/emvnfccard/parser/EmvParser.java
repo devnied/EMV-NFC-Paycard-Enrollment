@@ -196,7 +196,8 @@ public class EmvParser {
 	 * @return
 	 * @throws CommunicationException
 	 */
-	protected void parseFCIProprietaryTemplate(final byte[] pData) throws CommunicationException {
+	protected List<Application> parseFCIProprietaryTemplate(final byte[] pData) throws CommunicationException {
+		List<Application> ret = new ArrayList<Application>();
 		// Get SFI
 		byte[] data = TlvUtil.getValue(pData, EmvTags.SFI);
 
@@ -217,15 +218,20 @@ public class EmvParser {
 				// Check response
 				if (ResponseUtils.isSucceed(data)) {
 					// Get applications Tags
-					card.getApplications().addAll(getApplicationTemplate(data));
+					ret.addAll(getApplicationTemplate(data));
 				} else {
 					// No more records
 					break;
 				}
 			}
-		} else if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("(FCI) Issuer Discretionary Data is already present");
+		} else {
+			// Read Application template
+			ret.addAll(getApplicationTemplate(pData));
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("(FCI) Issuer Discretionary Data is already present");
+			}
 		}
+		return ret;
 	}
 
 	/**
@@ -260,7 +266,7 @@ public class EmvParser {
 		byte[] data = selectPaymentEnvironment();
 		if (ResponseUtils.isSucceed(data)) {
 			// Parse FCI Template
-			parseFCIProprietaryTemplate(data);
+			card.getApplications().addAll(parseFCIProprietaryTemplate(data));
 			// For each application
 			for (Application app : card.getApplications()) {
 				if (ret = extractPublicData(app)) {
