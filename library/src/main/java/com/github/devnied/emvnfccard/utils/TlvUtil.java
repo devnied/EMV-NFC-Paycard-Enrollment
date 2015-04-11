@@ -334,7 +334,8 @@ public final class TlvUtil {
 				TLV tlv = TlvUtil.getNextTLV(stream);
 
 				if (tlv == null) {
-					throw new TlvException("TLV format error");
+					LOGGER.debug("TLV format error");
+					break;
 				}
 
 				byte[] tagBytes = tlv.getTagBytes();

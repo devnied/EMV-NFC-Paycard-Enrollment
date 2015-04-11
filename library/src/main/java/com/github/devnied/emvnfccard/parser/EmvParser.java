@@ -36,6 +36,7 @@ import com.github.devnied.emvnfccard.iso7816emv.TLV;
 import com.github.devnied.emvnfccard.iso7816emv.TagAndLength;
 import com.github.devnied.emvnfccard.iso7816emv.impl.EmvTerminalImpl;
 import com.github.devnied.emvnfccard.model.Afl;
+import com.github.devnied.emvnfccard.model.Application;
 import com.github.devnied.emvnfccard.model.EmvCard;
 import com.github.devnied.emvnfccard.model.EmvTransactionRecord;
 import com.github.devnied.emvnfccard.model.enums.CurrencyEnum;
@@ -69,6 +70,11 @@ public class EmvParser {
 	 * PSE directory "1PAY.SYS.DDF01"
 	 */
 	private static final byte[] PSE = "1PAY.SYS.DDF01".getBytes();
+
+	/**
+	 * Max record for SFI
+	 */
+	private static final int MAX_RECORD_SFI = 16;
 
 	/**
 	 * Unknown response
@@ -190,7 +196,7 @@ public class EmvParser {
 	 * @return
 	 * @throws CommunicationException
 	 */
-	protected byte[] parseFCIProprietaryTemplate(final byte[] pData) throws CommunicationException {
+	protected void parseFCIProprietaryTemplate(final byte[] pData) throws CommunicationException {
 		// Get SFI
 		byte[] data = TlvUtil.getValue(pData, EmvTags.SFI);
 
@@ -200,17 +206,26 @@ public class EmvParser {
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("SFI found:" + sfi);
 			}
-			data = provider.transceive(new CommandApdu(CommandEnum.READ_RECORD, sfi, sfi << 3 | 4, 0).toBytes());
-			// If LE is not correct
-			if (ResponseUtils.isEquals(data, SwEnum.SW_6C)) {
-				data = provider.transceive(new CommandApdu(CommandEnum.READ_RECORD, sfi, sfi << 3 | 4, data[data.length - 1]).toBytes());
+			// For each records
+			for (int rec = 0; rec < MAX_RECORD_SFI; rec++) {
+				data = provider.transceive(new CommandApdu(CommandEnum.READ_RECORD, rec, sfi << 3 | 4, 0).toBytes());
+				// If LE is not correct
+				if (ResponseUtils.isEquals(data, SwEnum.SW_6C)) {
+					data = provider
+							.transceive(new CommandApdu(CommandEnum.READ_RECORD, rec, sfi << 3 | 4, data[data.length - 1]).toBytes());
+				}
+				// Check response
+				if (ResponseUtils.isSucceed(data)) {
+					// Get applications Tags
+					card.getApplications().addAll(getApplicationTemplate(data));
+				} else {
+					// No more records
+					break;
+				}
 			}
-			return data;
-		}
-		if (LOGGER.isDebugEnabled()) {
+		} else if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("(FCI) Issuer Discretionary Data is already present");
 		}
-		return pData;
 	}
 
 	/**
@@ -245,20 +260,15 @@ public class EmvParser {
 		byte[] data = selectPaymentEnvironment();
 		if (ResponseUtils.isSucceed(data)) {
 			// Parse FCI Template
-			data = parseFCIProprietaryTemplate(data);
-			// Extract application label
-			if (ResponseUtils.isSucceed(data)) {
-				// Get Aids
-				List<byte[]> aids = getAids(data);
-				for (byte[] aid : aids) {
-					ret = extractPublicData(aid, extractApplicationLabel(data));
-					if (ret == true) {
-						break;
-					}
+			parseFCIProprietaryTemplate(data);
+			// For each application
+			for (Application app : card.getApplications()) {
+				if (ret = extractPublicData(app)) {
+					break;
 				}
-				if (!ret) {
-					card.setNfcLocked(true);
-				}
+			}
+			if (!ret) {
+				card.setNfcLocked(true);
 			}
 		} else if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug((contactLess ? "PPSE" : "PSE") + " not found -> Use kown AID");
@@ -268,22 +278,35 @@ public class EmvParser {
 	}
 
 	/**
-	 * Method used to get the aid list, if the Kernel Identifier is defined, <br/>
+	 * Method used to get the application list, if the Kernel Identifier is
+	 * defined, <br/>
 	 * this value need to be appended to the ADF Name in the data field of <br/>
 	 * the SELECT command.
 	 *
 	 * @param pData
 	 *            FCI proprietary template data
-	 * @return the Aid to select
+	 * @return the application data (Aid,extended Aid, ...)
 	 */
-	protected List<byte[]> getAids(final byte[] pData) {
-		List<byte[]> ret = new ArrayList<byte[]>();
-		List<TLV> listTlv = TlvUtil.getlistTLV(pData, EmvTags.AID_CARD, EmvTags.KERNEL_IDENTIFIER);
+	protected List<Application> getApplicationTemplate(final byte[] pData) {
+		List<Application> ret = new ArrayList<Application>();
+		// Search Application template
+		List<TLV> listTlv = TlvUtil.getlistTLV(pData, EmvTags.APPLICATION_TEMPLATE);
+		// For each application template
 		for (TLV tlv : listTlv) {
-			if (tlv.getTag() == EmvTags.KERNEL_IDENTIFIER && ret.size() != 0) {
-				ret.add(ArrayUtils.addAll(ret.get(ret.size() - 1), tlv.getValueBytes()));
-			} else {
-				ret.add(tlv.getValueBytes());
+			Application application = new Application();
+			// Get AID, Kernel_Identifier and application label
+			List<TLV> listTlvData = TlvUtil.getlistTLV(tlv.getValueBytes(), EmvTags.AID_CARD, EmvTags.KERNEL_IDENTIFIER,
+					EmvTags.APPLICATION_LABEL);
+			// For each data
+			for (TLV data : listTlvData) {
+				if (data.getTag() == EmvTags.APPLICATION_LABEL) {
+					application.setApplicationLabel(new String(data.getValueBytes()));
+				} else if (data.getTag() == EmvTags.KERNEL_IDENTIFIER && application.getAid() != null) {
+					application.setExtendedAid(ArrayUtils.addAll(application.getAid(), data.getValueBytes()));
+				} else {
+					application.setAid(data.getValueBytes());
+					ret.add(application);
+				}
 			}
 		}
 		return ret;
@@ -297,10 +320,13 @@ public class EmvParser {
 			LOGGER.debug("Try to read card with AID");
 		}
 		// Test each card from know EMV AID
+		Application app = new Application();
 		for (EmvCardScheme type : EmvCardScheme.values()) {
 			for (byte[] aid : type.getAidByte()) {
-				if (extractPublicData(aid, type.getName())) {
-
+				app.setAid(aid);
+				app.setApplicationLabel(type.getName());
+				if (extractPublicData(app)) {
+					card.getApplications().add(app);
 					return;
 				}
 			}
@@ -325,35 +351,36 @@ public class EmvParser {
 	/**
 	 * Read public card data from parameter AID
 	 *
-	 * @param pAid
-	 *            card AID in bytes
-	 * @param pApplicationLabel
-	 *            application scheme (Application label)
+	 * @param pApplication
+	 *            application data
 	 * @return true if succeed false otherwise
 	 */
-	protected boolean extractPublicData(final byte[] pAid, final String pApplicationLabel) throws CommunicationException {
+	protected boolean extractPublicData(final Application pApplication) throws CommunicationException {
 		boolean ret = false;
 		// Select AID
-		byte[] data = selectAID(pAid);
+		byte[] data = selectAID(pApplication.getAid());
+		// Use Extended card aid if exist
+		if (!ResponseUtils.isSucceed(data) && pApplication.getExtendedAid() != null) {
+			data = selectAID(pApplication.getExtendedAid());
+		}
 		// check response
 		if (ResponseUtils.isSucceed(data)) {
 			// Parse select response
-			ret = parse(data, provider);
-			if (ret) {
+			if ((ret = parse(data, pApplication)) == true) {
 				// Get AID
 				String aid = BytesUtils.bytesToStringNoSpace(TlvUtil.getValue(data, EmvTags.DEDICATED_FILE_NAME));
 				String applicationLabel = extractApplicationLabel(data);
 				if (applicationLabel == null) {
-					applicationLabel = pApplicationLabel;
+					applicationLabel = pApplication.getApplicationLabel();
 				}
 				if (LOGGER.isDebugEnabled()) {
 					LOGGER.debug("Application label:" + applicationLabel + " with Aid:" + aid);
 				}
-				card.setAid(aid);
 				card.setType(findCardScheme(aid, card.getCardNumber()));
-				card.setApplicationLabel(applicationLabel);
-				card.setLeftPinTry(getLeftPinTry());
-				card.setTransactionCounter(getTransactionCounter());
+				pApplication.setAid(BytesUtils.fromString(aid));
+				pApplication.setApplicationLabel(applicationLabel);
+				pApplication.setLeftPinTry(getLeftPinTry());
+				pApplication.setTransactionCounter(getTransactionCounter());
 				card.setNfcLocked(false);
 			}
 		}
@@ -392,23 +419,32 @@ public class EmvParser {
 		return TlvUtil.getValue(pSelectResponse, EmvTags.LOG_ENTRY, EmvTags.VISA_LOG_ENTRY);
 	}
 
+
 	/**
 	 * Method used to parse EMV card
+	 *
+	 * @param pSelectResponse
+	 *            select response data
+	 * @param pApplication
+	 *            application selected
+	 * @return true if the parsing succeed false otherwise
+	 * @throws CommunicationException
 	 */
-	protected boolean parse(final byte[] pSelectResponse, final IProvider pProvider) throws CommunicationException {
+	protected boolean parse(final byte[] pSelectResponse, final Application pApplication)
+			throws CommunicationException {
 		boolean ret = false;
 		// Get TLV log entry
 		byte[] logEntry = getLogEntry(pSelectResponse);
 		// Get PDOL
 		byte[] pdol = TlvUtil.getValue(pSelectResponse, EmvTags.PDOL);
 		// Send GPO Command
-		byte[] gpo = getGetProcessingOptions(pdol, pProvider);
+		byte[] gpo = getGetProcessingOptions(pdol, provider);
 		// Extract Bank data
 		extractBankDta(pSelectResponse);
 
 		// Check empty PDOL
 		if (!ResponseUtils.isSucceed(gpo)) {
-			gpo = getGetProcessingOptions(null, pProvider);
+			gpo = getGetProcessingOptions(null, provider);
 			// Check response
 			if (!ResponseUtils.isSucceed(gpo)) {
 				return false;
@@ -417,9 +453,8 @@ public class EmvParser {
 
 		// Extract commons card data (number, expire date, ...)
 		if (extractCommonsCardData(gpo)) {
-
 			// Extract log entry
-			card.setListTransactions(extractLogEntry(logEntry));
+			pApplication.setListTransactions(extractLogEntry(logEntry));
 			ret = true;
 		}
 

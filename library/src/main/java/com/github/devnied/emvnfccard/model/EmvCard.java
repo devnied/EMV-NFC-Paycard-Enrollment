@@ -15,6 +15,7 @@
  */
 package com.github.devnied.emvnfccard.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -35,11 +36,6 @@ public class EmvCard extends AbstractData {
 	private static final long serialVersionUID = 736740432469989941L;
 
 	/**
-	 * Card AID
-	 */
-	private String aid;
-
-	/**
 	 * Holder Lastname
 	 */
 	private String holderLastname;
@@ -53,26 +49,6 @@ public class EmvCard extends AbstractData {
 	 * Card type
 	 */
 	private EmvCardScheme type;
-
-	/**
-	 * Transaction counter ATC
-	 */
-	private int transactionCounter;
-
-	/**
-	 * Left PIN try
-	 */
-	private int leftPinTry;
-
-	/**
-	 * Application label
-	 */
-	private String applicationLabel;
-
-	/**
-	 * List of issued payment
-	 */
-	private List<EmvTransactionRecord> listTransactions;
 
 	/**
 	 * List of Atr description
@@ -100,28 +76,14 @@ public class EmvCard extends AbstractData {
 	private String iban;
 
 	/**
+	 * Application list
+	 */
+	private final List<Application> applications = new ArrayList<Application>();
+
+	/**
 	 * Indicate if the nfc is locked on the card
 	 */
 	private boolean nfcLocked;
-
-	/**
-	 * Method used to get the field aid
-	 *
-	 * @return the aid
-	 */
-	public String getAid() {
-		return aid;
-	}
-
-	/**
-	 * Setter for the field aid
-	 *
-	 * @param aid
-	 *            the aid to set
-	 */
-	public void setAid(final String aid) {
-		this.aid = aid;
-	}
 
 	/**
 	 * Method used to get the field holderLastname
@@ -202,25 +164,6 @@ public class EmvCard extends AbstractData {
 	}
 
 	/**
-	 * Method used to get the field listTransactions
-	 *
-	 * @return the listTransactions
-	 */
-	public List<EmvTransactionRecord> getListTransactions() {
-		return listTransactions;
-	}
-
-	/**
-	 * Setter for the field listTransactions
-	 *
-	 * @param listTransactions
-	 *            the listTransactions to set
-	 */
-	public void setListTransactions(final List<EmvTransactionRecord> listTransactions) {
-		this.listTransactions = listTransactions;
-	}
-
-	/**
 	 * Method used to get the field type
 	 *
 	 * @return the type
@@ -239,47 +182,9 @@ public class EmvCard extends AbstractData {
 		this.type = type;
 	}
 
-	/**
-	 * Method used to get the field applicationLabel
-	 *
-	 * @return the applicationLabel
-	 */
-	public String getApplicationLabel() {
-		return applicationLabel;
-	}
-
-	/**
-	 * Setter for the field applicationLabel
-	 *
-	 * @param applicationLabel
-	 *            the applicationLabel to set
-	 */
-	public void setApplicationLabel(final String applicationLabel) {
-		this.applicationLabel = applicationLabel;
-	}
-
 	@Override
 	public boolean equals(final Object arg0) {
 		return arg0 instanceof EmvCard && getCardNumber() != null && getCardNumber().equals(((EmvCard) arg0).getCardNumber());
-	}
-
-	/**
-	 * Method used to get the field leftPinTry
-	 *
-	 * @return the leftPinTry
-	 */
-	public int getLeftPinTry() {
-		return leftPinTry;
-	}
-
-	/**
-	 * Setter for the field leftPinTry
-	 *
-	 * @param leftPinTry
-	 *            the leftPinTry to set
-	 */
-	public void setLeftPinTry(final int leftPinTry) {
-		this.leftPinTry = leftPinTry;
 	}
 
 	/**
@@ -321,6 +226,8 @@ public class EmvCard extends AbstractData {
 	}
 
 	/**
+	 * Method used to get the field track2
+	 *
 	 * @return the track2
 	 */
 	public EmvTrack2 getTrack2() {
@@ -328,6 +235,8 @@ public class EmvCard extends AbstractData {
 	}
 
 	/**
+	 * Setter for the field track2
+	 *
 	 * @param track2
 	 *            the track2 to set
 	 */
@@ -336,6 +245,8 @@ public class EmvCard extends AbstractData {
 	}
 
 	/**
+	 * Method used to get the field track1
+	 *
 	 * @return the track1
 	 */
 	public EmvTrack1 getTrack1() {
@@ -343,6 +254,8 @@ public class EmvCard extends AbstractData {
 	}
 
 	/**
+	 * Setter for the field track1
+	 *
 	 * @param track1
 	 *            the track1 to set
 	 */
@@ -351,21 +264,8 @@ public class EmvCard extends AbstractData {
 	}
 
 	/**
-	 * @return the transactionCounter
-	 */
-	public int getTransactionCounter() {
-		return transactionCounter;
-	}
-
-	/**
-	 * @param transactionCounter
-	 *            the transactionCounter to set
-	 */
-	public void setTransactionCounter(final int transactionCounter) {
-		this.transactionCounter = transactionCounter;
-	}
-
-	/**
+	 * Method used to get the field bic
+	 *
 	 * @return the bic
 	 */
 	public String getBic() {
@@ -373,6 +273,8 @@ public class EmvCard extends AbstractData {
 	}
 
 	/**
+	 * Setter for the field bic
+	 *
 	 * @param bic
 	 *            the bic to set
 	 */
@@ -381,6 +283,8 @@ public class EmvCard extends AbstractData {
 	}
 
 	/**
+	 * Method used to get the field iban
+	 *
 	 * @return the iban
 	 */
 	public String getIban() {
@@ -388,6 +292,8 @@ public class EmvCard extends AbstractData {
 	}
 
 	/**
+	 * Setter for the field iban
+	 *
 	 * @param iban
 	 *            the iban to set
 	 */
@@ -395,4 +301,12 @@ public class EmvCard extends AbstractData {
 		this.iban = iban;
 	}
 
+	/**
+	 * Method used to get the field applications
+	 *
+	 * @return the applications
+	 */
+	public List<Application> getApplications() {
+		return applications;
+	}
 }

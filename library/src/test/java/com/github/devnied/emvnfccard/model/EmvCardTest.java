@@ -6,13 +6,20 @@ import java.util.Date;
 import org.fest.assertions.Assertions;
 import org.junit.Test;
 
+import fr.devnied.bitlib.BytesUtils;
+
 public class EmvCardTest {
 
 	@Test
 	public void testCard() {
 		EmvCard card = new EmvCard();
-		card.setAid("0000");
-		card.setApplicationLabel("VISA");
+		Application app = new Application();
+		app.setAid(BytesUtils.fromString("0000"));
+		app.setExtendedAid(BytesUtils.fromString("020034"));
+		app.setApplicationLabel("VISA");
+		app.setLeftPinTry(3);
+		app.setTransactionCounter(10);
+		card.getApplications().add(app);
 		EmvTrack2 track2 = new EmvTrack2();
 		track2.setCardNumber("12345678");
 		card.setTrack2(track2);
@@ -32,8 +39,13 @@ public class EmvCardTest {
 	@Test
 	public void testCardTrack2() {
 		EmvCard card = new EmvCard();
-		card.setAid("0000");
-		card.setApplicationLabel("VISA");
+		Application app = new Application();
+		app.setAid(BytesUtils.fromString("0000"));
+		app.setExtendedAid(BytesUtils.fromString("020034"));
+		app.setApplicationLabel("VISA");
+		app.setLeftPinTry(3);
+		app.setTransactionCounter(10);
+		card.getApplications().add(app);
 		EmvTrack2 track2 = new EmvTrack2();
 		track2.setCardNumber("12345678");
 		card.setTrack2(track2);
@@ -47,8 +59,13 @@ public class EmvCardTest {
 	public void testCardTrack1() {
 		Date date = new Date();
 		EmvCard card = new EmvCard();
-		card.setAid("0000");
-		card.setApplicationLabel("VISA");
+		Application app = new Application();
+		app.setAid(BytesUtils.fromString("0000"));
+		app.setExtendedAid(BytesUtils.fromString("020034"));
+		app.setApplicationLabel("VISA");
+		app.setLeftPinTry(3);
+		app.setTransactionCounter(10);
+		card.getApplications().add(app);
 		EmvTrack1 track1 = new EmvTrack1();
 		track1.setCardNumber("12345678");
 		track1.setExpireDate(date);
