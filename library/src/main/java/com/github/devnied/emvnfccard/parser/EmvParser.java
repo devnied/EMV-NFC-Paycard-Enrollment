@@ -450,9 +450,13 @@ public class EmvParser {
 
 		// Check empty PDOL
 		if (!ResponseUtils.isSucceed(gpo)) {
-			gpo = getGetProcessingOptions(null, provider);
-			// Check response
-			if (!ResponseUtils.isSucceed(gpo)) {
+			if (pdol != null) {
+				gpo = getGetProcessingOptions(null, provider);
+				// Check response
+				if (!ResponseUtils.isSucceed(gpo)) {
+					return false;
+				}
+			} else {
 				return false;
 			}
 		}
