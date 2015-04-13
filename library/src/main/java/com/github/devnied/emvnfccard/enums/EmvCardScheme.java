@@ -23,9 +23,9 @@ import fr.devnied.bitlib.BytesUtils;
 
 /**
  * Class used to define all supported NFC EMV paycard. <link>http://en.wikipedia.org/wiki/Europay_Mastercard_Visa</link>
- * 
+ *
  * @author MILLAU Julien
- * 
+ *
  */
 public enum EmvCardScheme {
 
@@ -55,6 +55,7 @@ public enum EmvCardScheme {
 	PBS("PBS", null, "A0 00 00 01 21 10 10"), //
 	ETRANZACT("eTranzact", null, "A0 00 00 04 54"), //
 	GOOGLE("Google", null, "A0 00 00 04 76 6C"), //
+	GELDKARTE("GeldKarte", null, "D2 76 00 00 25 45 50 02 00"), //
 	INTER_SWITCH("InterSwitch", null, "A0 00 00 03 71 00 01");
 
 	/**
@@ -79,7 +80,7 @@ public enum EmvCardScheme {
 
 	/**
 	 * Constructor using fields
-	 * 
+	 *
 	 * @param pAid
 	 *            Card AID or RID
 	 * @param pScheme
@@ -103,7 +104,7 @@ public enum EmvCardScheme {
 
 	/**
 	 * Method used to get the field aid
-	 * 
+	 *
 	 * @return the aid
 	 */
 	public String[] getAid() {
@@ -112,7 +113,7 @@ public enum EmvCardScheme {
 
 	/**
 	 * Method used to get the field name
-	 * 
+	 *
 	 * @return the name
 	 */
 	public String getName() {
@@ -121,7 +122,7 @@ public enum EmvCardScheme {
 
 	/**
 	 * Get card type by AID
-	 * 
+	 *
 	 * @param pAid
 	 *            card AID
 	 * @return CardType or null
@@ -144,7 +145,7 @@ public enum EmvCardScheme {
 
 	/**
 	 * Method used to the the card type with regex
-	 * 
+	 *
 	 * @param pCardNumber
 	 *            card number
 	 * @return the type of the card using regex
@@ -164,7 +165,7 @@ public enum EmvCardScheme {
 
 	/**
 	 * Method used to get the field aidByte
-	 * 
+	 *
 	 * @return the aidByte
 	 */
 	public byte[][] getAidByte() {

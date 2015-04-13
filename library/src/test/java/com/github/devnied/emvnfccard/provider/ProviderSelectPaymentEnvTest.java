@@ -7,6 +7,12 @@ import com.github.devnied.emvnfccard.parser.IProvider;
 
 import fr.devnied.bitlib.BytesUtils;
 
+/**
+ * Provider used to mock card response
+ *
+ * @author MILLAU julien
+ *
+ */
 public class ProviderSelectPaymentEnvTest implements IProvider {
 
 	/**
@@ -27,7 +33,7 @@ public class ProviderSelectPaymentEnvTest implements IProvider {
 
 	/**
 	 * Setter for the field expectedData
-	 * 
+	 *
 	 * @param expectedData
 	 *            the expectedData to set
 	 */
@@ -37,7 +43,7 @@ public class ProviderSelectPaymentEnvTest implements IProvider {
 
 	/**
 	 * Setter for the field returnedData
-	 * 
+	 *
 	 * @param returnedData
 	 *            the returnedData to set
 	 */

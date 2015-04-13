@@ -86,4 +86,21 @@ public class EmvCardTest {
 		Assertions.assertThat(card.getHolderFirstname()).isEqualTo("John");
 		Assertions.assertThat(card.getHolderLastname()).isEqualTo("Doe");
 	}
+
+	@Test
+	public void testApplication() {
+		Application app = new Application();
+		app.setPriority(1);
+
+		Application app2 = new Application();
+		app2.setPriority(2);
+
+		Assertions.assertThat(app2.compareTo(app)).isPositive();
+
+		Application app3 = new Application();
+		app3.setPriority(1);
+
+		Assertions.assertThat(app3.compareTo(app)).isZero();
+	}
+
 }

@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import com.github.devnied.emvnfccard.enums.EmvCardScheme;
 import com.github.devnied.emvnfccard.exception.CommunicationException;
 import com.github.devnied.emvnfccard.iso7816emv.TagAndLength;
+import com.github.devnied.emvnfccard.model.AbstractData;
 import com.github.devnied.emvnfccard.model.Afl;
 import com.github.devnied.emvnfccard.model.Application;
 import com.github.devnied.emvnfccard.model.EmvCard;
@@ -29,19 +30,8 @@ import com.github.devnied.emvnfccard.model.enums.TransactionTypeEnum;
 import com.github.devnied.emvnfccard.parser.EmvParser;
 import com.github.devnied.emvnfccard.parser.IProvider;
 import com.github.devnied.emvnfccard.provider.ExceptionProviderTest;
-import com.github.devnied.emvnfccard.provider.PpseProviderGeldKarteTest;
-import com.github.devnied.emvnfccard.provider.PpseProviderLockedCardTest;
-import com.github.devnied.emvnfccard.provider.PpseProviderMasterCard2Test;
-import com.github.devnied.emvnfccard.provider.PpseProviderMasterCard3Test;
-import com.github.devnied.emvnfccard.provider.PpseProviderMasterCardTest;
-import com.github.devnied.emvnfccard.provider.PpseProviderVisa2Test;
-import com.github.devnied.emvnfccard.provider.PpseProviderVisa3Test;
-import com.github.devnied.emvnfccard.provider.PpseProviderVisaNulTransactionsTest;
-import com.github.devnied.emvnfccard.provider.PpseProviderVisaTest;
-import com.github.devnied.emvnfccard.provider.ProviderAidTest;
 import com.github.devnied.emvnfccard.provider.ProviderSelectPaymentEnvTest;
-import com.github.devnied.emvnfccard.provider.ProviderVisaCardAidTest;
-import com.github.devnied.emvnfccard.provider.PseProviderTest;
+import com.github.devnied.emvnfccard.provider.TestProvider;
 
 import fr.devnied.bitlib.BytesUtils;
 
@@ -54,9 +44,7 @@ public class EmvParserTest {
 	@Test
 	public void testPPSEVisa() throws CommunicationException {
 
-		IProvider prov = new PpseProviderVisaTest();
-
-		EmvParser parser = new EmvParser(prov, true);
+		EmvParser parser = new EmvParser(new TestProvider("VisaCardPpse"), true);
 		EmvCard card = parser.readEmvCard();
 
 		if (card != null) {
@@ -67,11 +55,11 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getTrack2()).isNotNull();
 		Assertions.assertThat(card.getTrack2().getRaw()).isNotNull();
 		Assertions.assertThat(card.getTrack2().getService()).isNotNull();
-		Assertions.assertThat(card.getApplications().size()).isEqualTo(1);
-		Assertions.assertThat(card.getApplications().get(0).getApplicationLabel()).isEqualTo("VISA");
+		Assertions.assertThat(card.getApplications().size()).isEqualTo(2);
+		Assertions.assertThat(card.getApplications().get(0).getApplicationLabel()).isEqualTo("CB");
 		Assertions.assertThat(BytesUtils.bytesToStringNoSpace(card.getApplications().get(0).getAid())).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getApplications().get(0).getExtendedAid()).isNull();
-		Assertions.assertThat(card.getApplications().get(0).getListTransactions().size()).isEqualTo(30);
+		Assertions.assertThat(card.getApplications().get(0).getListTransactions().size()).isEqualTo(16);
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("4999999999999999");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.VISA);
 		Assertions.assertThat(card.getHolderLastname()).isNull();
@@ -84,9 +72,7 @@ public class EmvParserTest {
 	@Test
 	public void testPPSEVisa3() throws CommunicationException {
 
-		IProvider prov = new PpseProviderVisa3Test();
-
-		EmvParser parser = new EmvParser(prov, true);
+		EmvParser parser = new EmvParser(new TestProvider("VisaCardPpse3"), true);
 		EmvCard card = parser.readEmvCard();
 
 		if (card != null) {
@@ -98,7 +84,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getTrack2().getRaw()).isNotNull();
 		Assertions.assertThat(card.getTrack2().getService()).isNotNull();
 		Assertions.assertThat(card.getApplications().size()).isEqualTo(1);
-		Assertions.assertThat(card.getApplications().get(0).getApplicationLabel()).isEqualTo("VISA");
+		Assertions.assertThat(card.getApplications().get(0).getApplicationLabel()).isNull();
 		Assertions.assertThat(BytesUtils.bytesToStringNoSpace(card.getApplications().get(0).getAid())).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getApplications().get(0).getExtendedAid()).isNull();
 		Assertions.assertThat(card.getApplications().get(0).getListTransactions().size()).isEqualTo(0);
@@ -114,9 +100,7 @@ public class EmvParserTest {
 	@Test
 	public void testPPSEVisaNullLog() throws CommunicationException {
 
-		IProvider prov = new PpseProviderVisaNulTransactionsTest();
-
-		EmvParser parser = new EmvParser(prov, true);
+		EmvParser parser = new EmvParser(new TestProvider("VisaCardNullTransaction"), true);
 		EmvCard card = parser.readEmvCard();
 
 		if (card != null) {
@@ -127,8 +111,8 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getTrack2()).isNotNull();
 		Assertions.assertThat(card.getTrack2().getRaw()).isNotNull();
 		Assertions.assertThat(card.getTrack2().getService()).isNotNull();
-		Assertions.assertThat(card.getApplications().size()).isEqualTo(1);
-		Assertions.assertThat(card.getApplications().get(0).getApplicationLabel()).isEqualTo("VISA");
+		Assertions.assertThat(card.getApplications().size()).isEqualTo(2);
+		Assertions.assertThat(card.getApplications().get(0).getApplicationLabel()).isEqualTo("CB");
 		Assertions.assertThat(BytesUtils.bytesToStringNoSpace(card.getApplications().get(0).getAid())).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getApplications().get(0).getExtendedAid()).isNull();
 		Assertions.assertThat(card.getApplications().get(0).getListTransactions().size()).isEqualTo(0);
@@ -188,9 +172,7 @@ public class EmvParserTest {
 	@Test
 	public void testPPSEMasterCard() throws CommunicationException {
 
-		IProvider prov = new PpseProviderMasterCardTest();
-
-		EmvParser parser = new EmvParser(prov, true);
+		EmvParser parser = new EmvParser(new TestProvider("MasterCardPpse"), true);
 		EmvCard card = parser.readEmvCard();
 
 		if (card != null) {
@@ -201,7 +183,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getTrack2()).isNotNull();
 		Assertions.assertThat(card.getTrack2().getRaw()).isNotNull();
 		Assertions.assertThat(card.getTrack2().getService()).isNotNull();
-		Assertions.assertThat(card.getApplications().size()).isEqualTo(1);
+		Assertions.assertThat(card.getApplications().size()).isEqualTo(2);
 		Assertions.assertThat(card.getApplications().get(0).getApplicationLabel()).isEqualTo("CB");
 		Assertions.assertThat(BytesUtils.bytesToStringNoSpace(card.getApplications().get(0).getAid())).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getApplications().get(0).getExtendedAid()).isNull();
@@ -217,10 +199,7 @@ public class EmvParserTest {
 
 	@Test
 	public void testPPSEGeldKarte() throws CommunicationException {
-
-		IProvider prov = new PpseProviderGeldKarteTest();
-
-		EmvParser parser = new EmvParser(prov, true);
+		EmvParser parser = new EmvParser(new TestProvider("GeldKartePpse"), true);
 		EmvCard card = parser.readEmvCard();
 
 		if (card != null) {
@@ -234,12 +213,14 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getTrack2().getRaw()).isNotNull();
 		Assertions.assertThat(card.getTrack2().getService()).isNotNull();
 		Assertions.assertThat(card.getApplications().size()).isEqualTo(1);
-		Assertions.assertThat(card.getApplications().get(0).getApplicationLabel()).isEqualTo("Maestro");
-		Assertions.assertThat(BytesUtils.bytesToStringNoSpace(card.getApplications().get(0).getAid())).isEqualTo("A0000000043060");
+		Assertions.assertThat(card.getApplications().get(0).getLeftPinTry()).isEqualTo(3);
+		Assertions.assertThat(card.getApplications().get(0).getTransactionCounter()).isEqualTo(AbstractData.UNKNOWN);
+		Assertions.assertThat(card.getApplications().get(0).getApplicationLabel()).isEqualTo("GeldKarte");
+		Assertions.assertThat(BytesUtils.bytesToStringNoSpace(card.getApplications().get(0).getAid())).isEqualTo("D27600002545500200");
 		Assertions.assertThat(card.getApplications().get(0).getExtendedAid()).isNull();
-		Assertions.assertThat(card.getApplications().get(0).getListTransactions().size()).isEqualTo(10);
+		Assertions.assertThat(card.getApplications().get(0).getListTransactions().size()).isEqualTo(1);
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("5200000000000000");
-		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.MASTER_CARD);
+		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.GELDKARTE);
 		Assertions.assertThat(card.getHolderLastname()).isNull();
 		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
@@ -250,9 +231,7 @@ public class EmvParserTest {
 	@Test
 	public void testPPSEMasterCard2() throws CommunicationException {
 
-		IProvider prov = new PpseProviderMasterCard2Test();
-
-		EmvParser parser = new EmvParser(prov, true);
+		EmvParser parser = new EmvParser(new TestProvider("MasterCardPpse2"), true);
 		EmvCard card = parser.readEmvCard();
 
 		if (card != null) {
@@ -305,9 +284,7 @@ public class EmvParserTest {
 	@Test
 	public void testPPSEMasterCard3() throws CommunicationException {
 
-		IProvider prov = new PpseProviderMasterCard3Test();
-
-		EmvParser parser = new EmvParser(prov, true);
+		EmvParser parser = new EmvParser(new TestProvider("MasterCardPpse3"), true);
 		EmvCard card = parser.readEmvCard();
 
 		if (card != null) {
@@ -345,9 +322,7 @@ public class EmvParserTest {
 	@Test
 	public void testPPSEVisa2() throws CommunicationException {
 
-		IProvider prov = new PpseProviderVisa2Test();
-
-		EmvParser parser = new EmvParser(prov, true);
+		EmvParser parser = new EmvParser(new TestProvider("VisaCardPpse2"), true);
 		EmvCard card = parser.readEmvCard();
 
 		if (card != null) {
@@ -358,7 +333,8 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getTrack2()).isNotNull();
 		Assertions.assertThat(card.getTrack2().getRaw()).isNotNull();
 		Assertions.assertThat(card.getTrack2().getService()).isNotNull();
-		Assertions.assertThat(card.getApplications().get(0).getApplicationLabel()).isEqualTo("VISA");
+		Assertions.assertThat(card.getApplications().size()).isEqualTo(2);
+		Assertions.assertThat(card.getApplications().get(0).getApplicationLabel()).isEqualTo("CB");
 		Assertions.assertThat(BytesUtils.bytesToStringNoSpace(card.getApplications().get(0).getAid())).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getApplications().get(0).getLeftPinTry()).isEqualTo(3);
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("4999999999999999");
@@ -373,9 +349,7 @@ public class EmvParserTest {
 	@Test
 	public void testPSE() throws CommunicationException {
 
-		IProvider prov = new PseProviderTest();
-
-		EmvParser parser = new EmvParser(prov, false);
+		EmvParser parser = new EmvParser(new TestProvider("VisaCardPse"), false);
 		EmvCard card = parser.readEmvCard();
 
 		if (card != null) {
@@ -398,7 +372,7 @@ public class EmvParserTest {
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("02/2016");
 		Assertions.assertThat(card.getApplications().get(0).getListTransactions()).isNotNull();
-		Assertions.assertThat(card.getApplications().get(0).getListTransactions().size()).isEqualTo(30);
+		Assertions.assertThat(card.getApplications().get(0).getListTransactions().size()).isEqualTo(16);
 		EmvTransactionRecord record = card.getApplications().get(0).getListTransactions().get(0);
 		Assertions.assertThat(record.getAmount()).isEqualTo(4000);
 		Assertions.assertThat(record.getCyptogramData()).isEqualTo("80");
@@ -412,9 +386,7 @@ public class EmvParserTest {
 	@Test
 	public void testAid() throws CommunicationException {
 
-		IProvider prov = new ProviderAidTest();
-
-		EmvParser parser = new EmvParser(prov, true);
+		EmvParser parser = new EmvParser(new TestProvider("FailPpseVisaAid"), true);
 		EmvCard card = parser.readEmvCard();
 
 		if (card != null) {
@@ -560,7 +532,7 @@ public class EmvParserTest {
 
 	@Test
 	public void testReadWithAid() throws Exception {
-		EmvParser parser = new EmvParser(new ProviderVisaCardAidTest(), true);
+		EmvParser parser = new EmvParser(new TestProvider("VisaCardAid"), true);
 		Whitebox.invokeMethod(parser, EmvParser.class, "readWithAID");
 		EmvCard card = parser.getCard();
 
@@ -580,7 +552,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getApplications().get(0).getApplicationLabel()).isEqualTo("VISA DEBIT");
 		Assertions.assertThat(card.getApplications().get(0).getLeftPinTry()).isEqualTo(3);
 		Assertions.assertThat(card.getApplications().get(0).getListTransactions()).isNotNull();
-		Assertions.assertThat(card.getApplications().get(0).getListTransactions().size()).isEqualTo(30);
+		Assertions.assertThat(card.getApplications().get(0).getListTransactions().size()).isEqualTo(16);
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2014");
 		Assertions.assertThat(card.isNfcLocked()).isFalse();
@@ -588,7 +560,7 @@ public class EmvParserTest {
 
 	@Test
 	public void testextractCardHolderNameNull() throws Exception {
-		EmvParser parser = new EmvParser(new ProviderVisaCardAidTest(), true);
+		EmvParser parser = new EmvParser(new TestProvider("VisaCardAid"), true);
 		Whitebox.invokeMethod(parser, EmvParser.class, "extractCardHolderName", BytesUtils.fromString("5F 20 02 20 2F"));
 		EmvCard card = parser.getCard();
 
@@ -602,7 +574,7 @@ public class EmvParserTest {
 
 	@Test
 	public void testextractCardHolderNameEmpty() throws Exception {
-		EmvParser parser = new EmvParser(new ProviderVisaCardAidTest(), true);
+		EmvParser parser = new EmvParser(new TestProvider("VisaCardAid"), true);
 		Whitebox.invokeMethod(parser, EmvParser.class, "extractCardHolderName", BytesUtils.fromString("5F 20 02 20 20"));
 		EmvCard card = parser.getCard();
 
@@ -616,7 +588,7 @@ public class EmvParserTest {
 
 	@Test
 	public void testextractCardHolderName() throws Exception {
-		EmvParser parser = new EmvParser(new ProviderVisaCardAidTest(), true);
+		EmvParser parser = new EmvParser(new TestProvider("VisaCardAid"), true);
 		Whitebox.invokeMethod(parser, EmvParser.class, "extractCardHolderName", BytesUtils.fromString("5F2008446F652F4A6F686E"));
 		EmvCard card = parser.getCard();
 
@@ -651,7 +623,7 @@ public class EmvParserTest {
 
 	@Test
 	public void testLockedCard() throws Exception {
-		EmvParser parser = new EmvParser(new PpseProviderLockedCardTest(), true);
+		EmvParser parser = new EmvParser(new TestProvider("LockedCard"), true);
 		EmvCard card = parser.readEmvCard();
 
 		if (card != null) {

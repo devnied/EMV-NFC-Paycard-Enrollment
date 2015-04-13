@@ -23,7 +23,7 @@ import java.util.List;
  * @author MILLAU Julien
  *
  */
-public class Application extends AbstractData {
+public class Application extends AbstractData implements Comparable<Application> {
 
 	/**
 	 * Generated serial UID
@@ -48,12 +48,17 @@ public class Application extends AbstractData {
 	/**
 	 * Transaction counter ATC
 	 */
-	private int transactionCounter;
+	private int transactionCounter = UNKNOWN;
 
 	/**
 	 * Left PIN try
 	 */
-	private int leftPinTry;
+	private int leftPinTry = UNKNOWN;
+
+	/**
+	 * Application priority
+	 */
+	private int priority = 1;
 
 	/**
 	 * List of issued payment
@@ -174,5 +179,28 @@ public class Application extends AbstractData {
 		this.extendedAid = extendedAid;
 	}
 
+	/**
+	 * Method used to get the field priority
+	 *
+	 * @return the priority
+	 */
+	public int getPriority() {
+		return priority;
+	}
+
+	/**
+	 * Setter for the field priority
+	 *
+	 * @param priority
+	 *            the priority to set
+	 */
+	public void setPriority(final int priority) {
+		this.priority = priority;
+	}
+
+	@Override
+	public int compareTo(final Application arg0) {
+		return priority - arg0.getPriority();
+	}
 
 }
