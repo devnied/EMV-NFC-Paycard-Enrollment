@@ -19,6 +19,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -123,6 +124,8 @@ public class EmvParser {
 	public EmvCard readEmvCard() throws CommunicationException {
 		// use PSE first
 		if (!readWithPSE()) {
+			// Remove previously added Application template
+			card.getApplications().clear();
 			// Find with AID
 			readWithAID();
 		}
@@ -267,6 +270,7 @@ public class EmvParser {
 		if (ResponseUtils.isSucceed(data)) {
 			// Parse FCI Template
 			card.getApplications().addAll(parseFCIProprietaryTemplate(data));
+			Collections.sort(card.getApplications());
 			// For each application
 			for (Application app : card.getApplications()) {
 				if (ret = extractPublicData(app)) {
@@ -302,10 +306,12 @@ public class EmvParser {
 			Application application = new Application();
 			// Get AID, Kernel_Identifier and application label
 			List<TLV> listTlvData = TlvUtil.getlistTLV(tlv.getValueBytes(), EmvTags.AID_CARD, EmvTags.KERNEL_IDENTIFIER,
-					EmvTags.APPLICATION_LABEL);
+					EmvTags.APPLICATION_LABEL, EmvTags.APPLICATION_PRIORITY_INDICATOR);
 			// For each data
 			for (TLV data : listTlvData) {
-				if (data.getTag() == EmvTags.APPLICATION_LABEL) {
+				if (data.getTag() == EmvTags.APPLICATION_PRIORITY_INDICATOR) {
+					application.setPriority(BytesUtils.byteArrayToInt(data.getValueBytes()));
+				} else if (data.getTag() == EmvTags.APPLICATION_LABEL) {
 					application.setApplicationLabel(new String(data.getValueBytes()));
 				} else if (data.getTag() == EmvTags.KERNEL_IDENTIFIER && application.getAid() != null) {
 					application.setExtendedAid(ArrayUtils.addAll(application.getAid(), data.getValueBytes()));
