@@ -334,6 +334,7 @@ public final class TlvUtil {
 				TLV tlv = TlvUtil.getNextTLV(stream);
 
 				if (tlv == null) {
+					buf.setLength(0);
 					LOGGER.debug("TLV format error");
 					break;
 				}
