@@ -23,6 +23,8 @@ import com.github.devnied.emvnfccard.model.EmvCard;
 import com.github.devnied.emvnfccard.utils.CardUtils;
 import com.github.devnied.emvnfccard.utils.ViewUtils;
 
+import fr.devnied.bitlib.BytesUtils;
+
 /**
  * View pager fragment used to display card detail
  *
@@ -137,24 +139,29 @@ public class CardDetailFragment extends AbstractFragment {
 							StringUtils.join(mCard.getHolderFirstname(), " ", mCard.getHolderLastname()));
 				}
 
-				// card AID
-				if (StringUtils.isNotEmpty(mCard.getAid())) {
-					createRaw(getString(R.string.extended_title_AID), CardUtils.formatAid(mCard.getAid()));
-				}
+				if (mCard.getApplications() != null && mCard.getApplications().get(0) != null) {
 
-				// Card Application label
-				if (StringUtils.isNotEmpty(mCard.getApplicationLabel())) {
-					createRaw(getString(R.string.extended_title_application_label), mCard.getApplicationLabel());
-				}
+					// card AID
+					if (StringUtils.isNotEmpty(BytesUtils.bytesToString(mCard.getApplications().get(0).getAid()))) {
+						createRaw(getString(R.string.extended_title_AID),
+								CardUtils.formatAid(BytesUtils.bytesToString(mCard.getApplications().get(0).getAid())));
+					}
 
-				// Card type
-				if (mCard.getType() != null) {
-					createRaw(getString(R.string.extended_title_card_type), mCard.getType().getName());
-				}
+					// Card Application label
+					if (StringUtils.isNotEmpty(mCard.getApplications().get(0).getApplicationLabel())) {
+						createRaw(getString(R.string.extended_title_application_label), mCard.getApplications().get(0)
+								.getApplicationLabel());
+					}
 
-				// Pin try left
-				createRaw(getString(R.string.extended_title_pin_try), mCard.getLeftPinTry() + " "
-						+ getString(R.string.extended_title_times));
+					// Card type
+					if (mCard.getType() != null) {
+						createRaw(getString(R.string.extended_title_card_type), mCard.getType().getName());
+					}
+
+					// Pin try left
+					createRaw(getString(R.string.extended_title_pin_try), mCard.getApplications().get(0).getLeftPinTry() + " "
+							+ getString(R.string.extended_title_times));
+				}
 
 				// Atr desc
 				if (mCard.getAtrDescription() != null && !mCard.getAtrDescription().isEmpty()) {

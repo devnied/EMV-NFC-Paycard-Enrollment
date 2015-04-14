@@ -20,6 +20,8 @@ import com.github.devnied.emvnfccard.fragment.viewPager.IFragment;
 import com.github.devnied.emvnfccard.fragment.viewPager.impl.CardDetailFragment;
 import com.github.devnied.emvnfccard.fragment.viewPager.impl.LogFragment;
 import com.github.devnied.emvnfccard.fragment.viewPager.impl.TransactionHistoryFragment;
+import com.github.devnied.emvnfccard.model.Application;
+import com.github.devnied.emvnfccard.model.EmvCard;
 import com.github.devnied.emvnfccard.model.EmvTransactionRecord;
 import com.github.devnied.emvnfccard.view.SlidingTabLayout;
 import com.joanzapata.android.iconify.Iconify;
@@ -65,7 +67,7 @@ public class ViewPagerFragment extends Fragment implements IRefreshable {
 	public void onViewCreated(final View view, final Bundle savedInstanceState) {
 		List<EmvTransactionRecord> transactions = null;
 		if (mContentActivity.getCard() != null) {
-			transactions = mContentActivity.getCard().getListTransactions();
+			transactions = getAllTransactions(mContentActivity.getCard());
 		}
 
 		// Add fragments
@@ -115,8 +117,8 @@ public class ViewPagerFragment extends Fragment implements IRefreshable {
 			} else if (frag instanceof CardDetailFragment) {
 				((CardDetailFragment) frag).update(mContentActivity.getCard());
 			} else if (frag instanceof TransactionHistoryFragment) {
-				((TransactionHistoryFragment) frag).update(mContentActivity.getCard() != null ? mContentActivity.getCard()
-						.getListTransactions() : null);
+				((TransactionHistoryFragment) frag).update(mContentActivity.getCard() != null ? getAllTransactions(mContentActivity
+						.getCard()) : null);
 			}
 		}
 		if (mViewPagerAdapter != null) {
@@ -125,6 +127,24 @@ public class ViewPagerFragment extends Fragment implements IRefreshable {
 			}
 			mTabLayout.updateTabs();
 		}
+	}
+
+	private List<EmvTransactionRecord> getAllTransactions(final EmvCard pCard) {
+		List<EmvTransactionRecord> ret = null;
+
+		if (pCard != null && pCard.getApplications() != null) {
+			for (Application app : pCard.getApplications()) {
+				if (app.getListTransactions() != null) {
+					if (ret == null) {
+						ret = app.getListTransactions();
+					} else {
+						ret.addAll(app.getListTransactions());
+					}
+				}
+			}
+		}
+
+		return ret;
 	}
 
 }

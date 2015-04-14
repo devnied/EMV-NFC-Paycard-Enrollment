@@ -49,6 +49,7 @@ import com.github.devnied.emvnfccard.fragment.BillingFragment;
 import com.github.devnied.emvnfccard.fragment.ConfigurationFragment;
 import com.github.devnied.emvnfccard.fragment.IRefreshable;
 import com.github.devnied.emvnfccard.fragment.ViewPagerFragment;
+import com.github.devnied.emvnfccard.model.Application;
 import com.github.devnied.emvnfccard.model.EmvCard;
 import com.github.devnied.emvnfccard.model.EmvTrack2;
 import com.github.devnied.emvnfccard.model.EmvTransactionRecord;
@@ -403,10 +404,12 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 					buff.append("=============<br/>");
 				}
 				mReadCard = new EmvCard();
-				mReadCard.setAid("A0 00 00 000310 10");
-				mReadCard.setLeftPinTry(3);
+				Application app = new Application();
+				app.setAid(BytesUtils.fromString("A0 00 00 000310 10"));
+				app.setLeftPinTry(3);
+				app.setApplicationLabel("CB");
+				mReadCard.getApplications().add(app);
 				mReadCard.setAtrDescription(Arrays.asList("CB Visa Banque Populaire (France)"));
-				mReadCard.setApplicationLabel("CB");
 				mReadCard.setHolderFirstname("John");
 				mReadCard.setHolderFirstname("Doe");
 				mReadCard.setType(EmvCardScheme.UNIONPAY);
@@ -444,7 +447,7 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 				payment.setTransactionType(null);
 				records.add(payment);
 
-				mReadCard.setListTransactions(records);
+				app.setListTransactions(records);
 				refreshContent();
 				CroutonUtils.display(HomeActivity.this, getText(R.string.card_read), CoutonColor.GREEN);
 			} else if (mReadCard != null) {
