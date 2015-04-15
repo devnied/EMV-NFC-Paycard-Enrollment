@@ -57,13 +57,6 @@
 		<android.version>4.1.1.4</android.version>
 		<powermock.version>1.5.4</powermock.version>
 	</properties>
-	
-	<repositories>
-        <repository>
-            <id>parent-repo</id>
-            <url>file://${basedir}/../repo/</url>
-        </repository>
-    </repositories>
 
 	<dependencyManagement>
 		<dependencies>
@@ -97,7 +90,7 @@
 			<dependency>
 				<groupId>net.sf.scuba</groupId>
 				<artifactId>scuba-smartcards</artifactId>
-				<version>0.0.5_1</version>
+				<version>0.0.6</version>
 			</dependency>
 
 			<!-- Android -->
