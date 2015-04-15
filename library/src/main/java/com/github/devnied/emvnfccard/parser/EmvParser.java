@@ -452,7 +452,7 @@ public class EmvParser {
 		// Send GPO Command
 		byte[] gpo = getGetProcessingOptions(pdol, provider);
 		// Extract Bank data
-		extractBankDta(pSelectResponse);
+		extractBankData(pSelectResponse);
 
 		// Check empty PDOL
 		if (!ResponseUtils.isSucceed(gpo)) {
@@ -621,7 +621,7 @@ public class EmvParser {
 	 * @param pData
 	 *            card data
 	 */
-	protected void extractBankDta(final byte[] pData) {
+	protected void extractBankData(final byte[] pData) {
 		// Extract BIC data
 		byte[] bic = TlvUtil.getValue(pData, EmvTags.BANK_IDENTIFIER_CODE);
 		if (bic != null) {
