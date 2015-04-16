@@ -273,8 +273,9 @@ public class EmvParser {
 			Collections.sort(card.getApplications());
 			// For each application
 			for (Application app : card.getApplications()) {
-				if (ret = extractPublicData(app)) {
-					break;
+				boolean status = extractPublicData(app);
+				if (!ret){
+					ret = status;
 				}
 			}
 			if (!ret) {
@@ -460,7 +461,11 @@ public class EmvParser {
 				gpo = getGetProcessingOptions(null, provider);
 				// Check response
 				if (!ResponseUtils.isSucceed(gpo)) {
-					return false;
+					// Try to read EF 1 and record 1
+					gpo = provider.transceive(new CommandApdu(CommandEnum.READ_RECORD, 1, 0x0C, 0).toBytes());
+					if (!ResponseUtils.isSucceed(gpo)) {
+						return false;
+					}
 				}
 			} else {
 				return false;
