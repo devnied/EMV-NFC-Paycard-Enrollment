@@ -35,7 +35,7 @@ import com.github.devnied.emvnfccard.iso7816emv.EmvTags;
 import com.github.devnied.emvnfccard.iso7816emv.ITerminal;
 import com.github.devnied.emvnfccard.iso7816emv.TLV;
 import com.github.devnied.emvnfccard.iso7816emv.TagAndLength;
-import com.github.devnied.emvnfccard.iso7816emv.impl.EmvTerminalImpl;
+import com.github.devnied.emvnfccard.iso7816emv.impl.DefaultTerminalImpl;
 import com.github.devnied.emvnfccard.model.Afl;
 import com.github.devnied.emvnfccard.model.Application;
 import com.github.devnied.emvnfccard.model.EmvCard;
@@ -85,7 +85,7 @@ public class EmvParser {
 	/**
 	 * EMV Terminal
 	 */
-	private ITerminal terminal = new EmvTerminalImpl();
+	private ITerminal terminal;
 
 	/**
 	 * Provider
@@ -98,21 +98,138 @@ public class EmvParser {
 	private boolean contactLess;
 
 	/**
+	 * Boolean to indicate if the parser need to read transaction history
+	 */
+	private boolean readTransactions;
+
+	/**
+	 * Boolean used to indicate if you want to read all card aids
+	 */
+	private boolean readAllAids;
+
+	/**
 	 * Card data
 	 */
 	private EmvCard card;
 
+
+
+	public static Builder Builder() {
+		return new Builder();
+	}
+
+
 	/**
-	 * Constructor
+	 * Build a new {@link EmvParser}.
+	 * <p>
+	 * Calling {@link #setProvider} is required before calling {@link #build()}.
+	 * All other methods are optional.
+	 */
+	public static class Builder {
+
+		private IProvider provider;
+		private ITerminal terminal;
+		private boolean contactLess;
+		private boolean readTransactions;
+		private boolean readAllAids;
+
+		/**
+		 * Package private. Use {@link #Builder()} to build a new one
+		 *
+		 */
+		Builder() {
+		}
+
+		/**
+		 * Setter for the field provider
+		 *
+		 * @param provider
+		 *            the provider to set
+		 */
+		public Builder setProvider(final IProvider provider) {
+			this.provider = provider;
+			return this;
+		}
+
+		/**
+		 * Setter for the field terminal
+		 *
+		 * @param terminal
+		 *            the terminal to set
+		 */
+		public Builder setTerminal(final ITerminal terminal) {
+			this.terminal = terminal;
+			return this;
+		}
+
+		/**
+		 * Setter for the field contactLess
+		 *
+		 * @param contactLess
+		 *            the contactLess to set
+		 */
+		public Builder setContactLess(final boolean contactLess) {
+			this.contactLess = contactLess;
+			return this;
+		}
+
+		/**
+		 * Setter for the field readTransactions
+		 *
+		 * @param readTransactions
+		 *            the readTransactions to set
+		 */
+		public Builder setReadTransactions(final boolean readTransactions) {
+			this.readTransactions = readTransactions;
+			return this;
+		}
+
+		/**
+		 * Setter for the field readAllAids
+		 *
+		 * @param readAllAids
+		 *            the readAllAids to set
+		 */
+		public Builder setReadAllAids(final boolean readAllAids) {
+			this.readAllAids = readAllAids;
+			return this;
+		}
+
+		/** Create the {@link EmvParser} instances. */
+		public EmvParser build() {
+			if (provider == null) {
+				throw new IllegalArgumentException("Provider may not be null.");
+			}
+			// Set default terminal implementation
+			if (terminal == null) {
+				terminal = new DefaultTerminalImpl();
+			}
+			return new EmvParser(provider, terminal, contactLess, readTransactions, readAllAids);
+		}
+
+	}
+
+	/**
+	 * Call {@link EmvParser.build()} to create an new instance
 	 *
 	 * @param pProvider
-	 *            provider to launch command
+	 *            provider to launch command and communicate with the card
+	 * @param pTerminal
+	 *            terminal data
 	 * @param pContactLess
-	 *            boolean to indicate if the EMV card is contact less or not
+	 *            enable contact less interface
+	 * @param pReadTransactions
+	 *            read all transactions
+	 * @param pReadAllAids
+	 *            read all aids
 	 */
-	public EmvParser(final IProvider pProvider, final boolean pContactLess) {
+	private EmvParser(final IProvider pProvider, final ITerminal pTerminal, final boolean pContactLess, final boolean pReadTransactions,
+			final boolean pReadAllAids) {
 		provider = pProvider;
+		terminal = pTerminal;
 		contactLess = pContactLess;
+		readTransactions = pReadTransactions;
+		readAllAids = pReadAllAids;
 		card = new EmvCard();
 	}
 
@@ -274,8 +391,11 @@ public class EmvParser {
 			// For each application
 			for (Application app : card.getApplications()) {
 				boolean status = extractPublicData(app);
-				if (!ret){
+				if (!ret && status) {
 					ret = status;
+					if (!readAllAids) {
+						break;
+					}
 				}
 			}
 			if (!ret) {
@@ -559,7 +679,7 @@ public class EmvParser {
 	protected List<EmvTransactionRecord> extractLogEntry(final byte[] pLogEntry) throws CommunicationException {
 		List<EmvTransactionRecord> listRecord = new ArrayList<EmvTransactionRecord>();
 		// If log entry is defined
-		if (pLogEntry != null) {
+		if (readTransactions && pLogEntry != null) {
 			List<TagAndLength> tals = getLogFormat();
 			if (tals != null && !tals.isEmpty()) {
 				// read all records
@@ -694,15 +814,5 @@ public class EmvParser {
 		return card;
 	}
 
-	/**
-	 * Method used to set Terminal value
-	 *
-	 * @param terminal
-	 *            the terminal to set
-	 */
-	public EmvParser terminal(final ITerminal terminal) {
-		this.terminal = terminal;
-		return this;
-	}
 
 }

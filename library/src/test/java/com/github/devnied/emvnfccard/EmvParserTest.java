@@ -28,7 +28,6 @@ import com.github.devnied.emvnfccard.model.enums.ServiceCode2Enum;
 import com.github.devnied.emvnfccard.model.enums.ServiceCode3Enum;
 import com.github.devnied.emvnfccard.model.enums.TransactionTypeEnum;
 import com.github.devnied.emvnfccard.parser.EmvParser;
-import com.github.devnied.emvnfccard.parser.IProvider;
 import com.github.devnied.emvnfccard.provider.ExceptionProviderTest;
 import com.github.devnied.emvnfccard.provider.ProviderSelectPaymentEnvTest;
 import com.github.devnied.emvnfccard.provider.TestProvider;
@@ -44,7 +43,12 @@ public class EmvParserTest {
 	@Test
 	public void testPPSEVisa() throws CommunicationException {
 
-		EmvParser parser = new EmvParser(new TestProvider("VisaCardPpse"), true);
+		EmvParser parser = EmvParser.Builder() //
+				.setProvider(new TestProvider("VisaCardPpse")) //
+				.setContactLess(true) //
+				.setReadAllAids(true) //
+				.setReadTransactions(true) //
+				.build();
 		EmvCard card = parser.readEmvCard();
 
 		if (card != null) {
@@ -79,10 +83,61 @@ public class EmvParserTest {
 		Assertions.assertThat(card.isNfcLocked()).isFalse();
 	}
 
+	@Test(expected = IllegalArgumentException.class)
+	public void testBuilderNullProvider() throws CommunicationException {
+
+		EmvParser.Builder() //
+		.setContactLess(true) //
+		.setReadAllAids(false) //
+		.setReadTransactions(false) //
+		.build();
+	}
+
+	@Test
+	public void testPPSEVisaNoOptions() throws CommunicationException {
+
+		EmvParser parser = EmvParser.Builder() //
+				.setProvider(new TestProvider("VisaCardPpseNoOptions")) //
+				.setContactLess(true) //
+				.setReadAllAids(false) //
+				.setReadTransactions(false) //
+				.build();
+		EmvCard card = parser.readEmvCard();
+
+		if (card != null) {
+			LOGGER.debug(card.toString());
+		}
+		Assertions.assertThat(card).isNotNull();
+		Assertions.assertThat(card.getTrack1()).isNull();
+		Assertions.assertThat(card.getTrack2()).isNotNull();
+		Assertions.assertThat(card.getTrack2().getRaw()).isNotNull();
+		Assertions.assertThat(card.getTrack2().getService()).isNotNull();
+		Assertions.assertThat(card.getApplications().size()).isEqualTo(2);
+		Assertions.assertThat(card.getApplications().get(0).getApplicationLabel()).isEqualTo("CB");
+		Assertions.assertThat(card.getApplications().get(0).getLeftPinTry()).isEqualTo(3);
+		Assertions.assertThat(card.getApplications().get(0).getTransactionCounter()).isEqualTo(1580);
+		Assertions.assertThat(card.getApplications().get(0).getPriority()).isEqualTo(1);
+		Assertions.assertThat(BytesUtils.bytesToStringNoSpace(card.getApplications().get(0).getAid())).isEqualTo("A0000000421010");
+		Assertions.assertThat(card.getApplications().get(0).getExtendedAid()).isNull();
+		Assertions.assertThat(card.getApplications().get(0).getListTransactions().size()).isZero();
+		Assertions.assertThat(card.getCardNumber()).isEqualTo("4999999999999999");
+		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.VISA);
+		Assertions.assertThat(card.getHolderLastname()).isNull();
+		Assertions.assertThat(card.getHolderFirstname()).isNull();
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
+		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2015");
+		Assertions.assertThat(card.isNfcLocked()).isFalse();
+	}
+
 	@Test
 	public void testPPSEVisa3() throws CommunicationException {
 
-		EmvParser parser = new EmvParser(new TestProvider("VisaCardPpse3"), true);
+		EmvParser parser = EmvParser.Builder() //
+				.setProvider(new TestProvider("VisaCardPpse3")) //
+				.setContactLess(true) //
+				.setReadAllAids(true) //
+				.setReadTransactions(true) //
+				.build();
 		EmvCard card = parser.readEmvCard();
 
 		if (card != null) {
@@ -110,7 +165,12 @@ public class EmvParserTest {
 	@Test
 	public void testPPSEVisaNullLog() throws CommunicationException {
 
-		EmvParser parser = new EmvParser(new TestProvider("VisaCardNullTransaction"), true);
+		EmvParser parser = EmvParser.Builder() //
+				.setProvider(new TestProvider("VisaCardNullTransaction")) //
+				.setContactLess(true) //
+				.setReadAllAids(true) //
+				.setReadTransactions(true) //
+				.build();
 		EmvCard card = parser.readEmvCard();
 
 		if (card != null) {
@@ -148,9 +208,13 @@ public class EmvParserTest {
 	@Test
 	public void testGetApplicationTemplate() throws Exception {
 
+		EmvParser parser = EmvParser.Builder() //
+				.setProvider(new TestProvider("VisaCardNullTransaction")) //
+				.build();
+
 		List<Application> data = Whitebox
 				.invokeMethod(
-						new EmvParser(null, true),
+						parser,
 						EmvParser.class,
 						"getApplicationTemplate",
 						BytesUtils
@@ -168,7 +232,7 @@ public class EmvParserTest {
 
 		data = Whitebox
 				.invokeMethod(
-						new EmvParser(null, true),
+						parser,
 						EmvParser.class,
 						"getApplicationTemplate",
 						BytesUtils
@@ -178,9 +242,10 @@ public class EmvParserTest {
 		Assertions.assertThat(data.get(0).getApplicationLabel()).isEqualTo("Interac");
 		Assertions.assertThat(BytesUtils.bytesToString(data.get(0).getAid())).isEqualTo("A0 00 00 02 77 10 10");
 		Assertions.assertThat(data.get(0).getExtendedAid()).isNullOrEmpty();
+
 		data = Whitebox
 				.invokeMethod(
-						new EmvParser(null, true),
+						parser,
 						EmvParser.class,
 						"getApplicationTemplate",
 						BytesUtils
@@ -192,7 +257,12 @@ public class EmvParserTest {
 	@Test
 	public void testPPSEMasterCard() throws CommunicationException {
 
-		EmvParser parser = new EmvParser(new TestProvider("MasterCardPpse"), true);
+		EmvParser parser = EmvParser.Builder() //
+				.setProvider(new TestProvider("MasterCardPpse")) //
+				.setContactLess(true) //
+				.setReadAllAids(true) //
+				.setReadTransactions(true) //
+				.build();
 		EmvCard card = parser.readEmvCard();
 
 		if (card != null) {
@@ -229,7 +299,12 @@ public class EmvParserTest {
 
 	@Test
 	public void testPPSEGeldKarte() throws CommunicationException {
-		EmvParser parser = new EmvParser(new TestProvider("GeldKartePpse"), true);
+		EmvParser parser = EmvParser.Builder() //
+				.setProvider(new TestProvider("GeldKartePpse")) //
+				.setContactLess(true) //
+				.setReadAllAids(true) //
+				.setReadTransactions(true) //
+				.build();
 		EmvCard card = parser.readEmvCard();
 
 		if (card != null) {
@@ -261,7 +336,12 @@ public class EmvParserTest {
 	@Test
 	public void testPPSEMasterCard2() throws CommunicationException {
 
-		EmvParser parser = new EmvParser(new TestProvider("MasterCardPpse2"), true);
+		EmvParser parser = EmvParser.Builder() //
+				.setProvider(new TestProvider("MasterCardPpse2")) //
+				.setContactLess(true) //
+				.setReadAllAids(true) //
+				.setReadTransactions(true) //
+				.build();
 		EmvCard card = parser.readEmvCard();
 
 		if (card != null) {
@@ -314,7 +394,12 @@ public class EmvParserTest {
 	@Test
 	public void testPPSEMasterCard3() throws CommunicationException {
 
-		EmvParser parser = new EmvParser(new TestProvider("MasterCardPpse3"), true);
+		EmvParser parser = EmvParser.Builder() //
+				.setProvider(new TestProvider("MasterCardPpse3")) //
+				.setContactLess(true) //
+				.setReadAllAids(true) //
+				.setReadTransactions(true) //
+				.build();
 		EmvCard card = parser.readEmvCard();
 
 		if (card != null) {
@@ -352,7 +437,12 @@ public class EmvParserTest {
 	@Test
 	public void testPPSEVisa2() throws CommunicationException {
 
-		EmvParser parser = new EmvParser(new TestProvider("VisaCardPpse2"), true);
+		EmvParser parser = EmvParser.Builder() //
+				.setProvider(new TestProvider("VisaCardPpse2")) //
+				.setContactLess(true) //
+				.setReadAllAids(true) //
+				.setReadTransactions(true) //
+				.build();
 		EmvCard card = parser.readEmvCard();
 
 		if (card != null) {
@@ -390,7 +480,12 @@ public class EmvParserTest {
 	@Test
 	public void testPSE() throws CommunicationException {
 
-		EmvParser parser = new EmvParser(new TestProvider("VisaCardPse"), false);
+		EmvParser parser = EmvParser.Builder() //
+				.setProvider(new TestProvider("VisaCardPse")) //
+				.setContactLess(false) //
+				.setReadAllAids(true) //
+				.setReadTransactions(true) //
+				.build();
 		EmvCard card = parser.readEmvCard();
 
 		if (card != null) {
@@ -427,7 +522,12 @@ public class EmvParserTest {
 	@Test
 	public void testAid() throws CommunicationException {
 
-		EmvParser parser = new EmvParser(new TestProvider("FailPpseVisaAid"), true);
+		EmvParser parser = EmvParser.Builder() //
+				.setProvider(new TestProvider("FailPpseVisaAid")) //
+				.setContactLess(true) //
+				.setReadAllAids(true) //
+				.setReadTransactions(true) //
+				.build();
 		EmvCard card = parser.readEmvCard();
 
 		if (card != null) {
@@ -452,10 +552,12 @@ public class EmvParserTest {
 
 	@Test
 	public void testException() throws CommunicationException {
-
-		IProvider prov = new ExceptionProviderTest();
-
-		EmvParser parser = new EmvParser(prov, true);
+		EmvParser parser = EmvParser.Builder() //
+				.setProvider(new ExceptionProviderTest()) //
+				.setContactLess(true) //
+				.setReadAllAids(true) //
+				.setReadTransactions(true) //
+				.build();
 		try {
 			parser.readEmvCard();
 			Assert.fail();
@@ -468,7 +570,14 @@ public class EmvParserTest {
 	@Test
 	public void testAfl() throws Exception {
 
-		List<Afl> list = (List<Afl>) Whitebox.invokeMethod(new EmvParser(null, true), EmvParser.class, "extractAfl",
+		EmvParser parser = EmvParser.Builder() //
+				.setProvider(new ExceptionProviderTest()) //
+				.setContactLess(true) //
+				.setReadAllAids(true) //
+				.setReadTransactions(true) //
+				.build();
+
+		List<Afl> list = (List<Afl>) Whitebox.invokeMethod(parser, EmvParser.class, "extractAfl",
 				BytesUtils.fromString("10020301 18010500 20010200"));
 		Assertions.assertThat(list.size()).isEqualTo(3);
 		Assertions.assertThat(list.get(0).getSfi()).isEqualTo(2);
@@ -487,93 +596,143 @@ public class EmvParserTest {
 
 	@Test
 	public void testSelectPaymentEnvironment() throws Exception {
+
 		ProviderSelectPaymentEnvTest prov = new ProviderSelectPaymentEnvTest();
+
+		EmvParser parser = EmvParser.Builder() //
+				.setProvider(prov) //
+				.setContactLess(true) //
+				.setReadAllAids(true) //
+				.setReadTransactions(true) //
+				.build();
 		prov.setExpectedData("00A404000E325041592E5359532E444446303100");
-		Whitebox.invokeMethod(new EmvParser(prov, true), EmvParser.class, "selectPaymentEnvironment");
+		Whitebox.invokeMethod(parser, EmvParser.class, "selectPaymentEnvironment");
+
+		parser = EmvParser.Builder() //
+				.setProvider(prov) //
+				.setContactLess(false) //
+				.setReadAllAids(true) //
+				.setReadTransactions(true) //
+				.build();
 		prov.setExpectedData("00A404000E315041592E5359532E444446303100");
-		Whitebox.invokeMethod(new EmvParser(prov, false), EmvParser.class, "selectPaymentEnvironment");
+
+		Whitebox.invokeMethod(parser, EmvParser.class, "selectPaymentEnvironment");
 	}
 
 	@Test
 	public void testExtractApplicationLabel() throws Exception {
-		ProviderSelectPaymentEnvTest prov = new ProviderSelectPaymentEnvTest();
+		EmvParser parser = EmvParser.Builder() //
+				.setProvider(new ProviderSelectPaymentEnvTest()) //
+				.setContactLess(true) //
+				.setReadAllAids(true) //
+				.setReadTransactions(true) //
+				.build();
 		String value = (String) Whitebox
 				.invokeMethod(
-						new EmvParser(prov, true),
+						parser,
 						EmvParser.class,
 						"extractApplicationLabel",
 						BytesUtils
 						.fromString("6F 3B 84 0E 32 50 41 59 2E 53 59 53 2E 44 44 46 30 31 A5 29 BF 0C 26 61 10 4F 07 A0 00 00 00 42 10 10 50 02 43 42 87 01 01 61 12 4F 07 A0 00 00 00 03 10 10 50 04 56 49 53 41 87 01 02 90 00"));
 		Assertions.assertThat(value).isEqualTo("CB");
-		value = (String) Whitebox.invokeMethod(new EmvParser(prov, true), EmvParser.class, "extractApplicationLabel", (byte[]) null);
+		value = (String) Whitebox.invokeMethod(parser, EmvParser.class, "extractApplicationLabel", (byte[]) null);
 		Assertions.assertThat(value).isEqualTo(null);
 	}
 
 	@Test
 	public void testSelectAID() throws Exception {
 		ProviderSelectPaymentEnvTest prov = new ProviderSelectPaymentEnvTest();
+		EmvParser parser = EmvParser.Builder() //
+				.setProvider(prov) //
+				.setContactLess(true) //
+				.setReadAllAids(true) //
+				.setReadTransactions(true) //
+				.build();
 		prov.setExpectedData("00A4040007A000000042101000");
-		Whitebox.invokeMethod(new EmvParser(prov, true), EmvParser.class, "selectAID", BytesUtils.fromString("A0000000421010"));
+		Whitebox.invokeMethod(parser, EmvParser.class, "selectAID", BytesUtils.fromString("A0000000421010"));
 		prov.setExpectedData("00A4040000");
-		Whitebox.invokeMethod(new EmvParser(prov, true), EmvParser.class, "selectAID", (byte[]) null);
+		Whitebox.invokeMethod(parser, EmvParser.class, "selectAID", (byte[]) null);
 	}
 
 	@Test
 	public void testgetLeftPinTry() throws Exception {
 		ProviderSelectPaymentEnvTest prov = new ProviderSelectPaymentEnvTest();
+		EmvParser parser = EmvParser.Builder() //
+				.setProvider(prov) //
+				.setContactLess(true) //
+				.setReadAllAids(true) //
+				.setReadTransactions(true) //
+				.build();
 		prov.setExpectedData("80CA9F1700");
 		prov.setReturnedData("9F 17 01 03 90 00");
-		int val = Whitebox.invokeMethod(new EmvParser(prov, true), EmvParser.class, "getLeftPinTry");
+		int val = Whitebox.invokeMethod(parser, EmvParser.class, "getLeftPinTry");
 		Assertions.assertThat(val).isEqualTo(3);
 
 		prov.setExpectedData("80CA9F1700");
 		prov.setReturnedData("90 00");
-		val = Whitebox.invokeMethod(new EmvParser(prov, true), EmvParser.class, "getLeftPinTry");
+		val = Whitebox.invokeMethod(parser, EmvParser.class, "getLeftPinTry");
 		Assertions.assertThat(val).isEqualTo(EmvParser.UNKNOW);
 
 		prov.setReturnedData(null);
-		val = Whitebox.invokeMethod(new EmvParser(prov, true), EmvParser.class, "getLeftPinTry");
+		val = Whitebox.invokeMethod(parser, EmvParser.class, "getLeftPinTry");
 		Assertions.assertThat(val).isEqualTo(EmvParser.UNKNOW);
 
 		prov.setReturnedData("8090");
-		val = Whitebox.invokeMethod(new EmvParser(prov, true), EmvParser.class, "getLeftPinTry");
+		val = Whitebox.invokeMethod(parser, EmvParser.class, "getLeftPinTry");
 		Assertions.assertThat(val).isEqualTo(EmvParser.UNKNOW);
 	}
 
 	@Test
 	public void testgetLogFormat() throws Exception {
 		ProviderSelectPaymentEnvTest prov = new ProviderSelectPaymentEnvTest();
+		EmvParser parser = EmvParser.Builder() //
+				.setProvider(prov) //
+				.setContactLess(true) //
+				.setReadAllAids(true) //
+				.setReadTransactions(true) //
+				.build();
 		prov.setExpectedData("80CA9F4F00");
 		prov.setReturnedData("9F 4F 10 9F 02 06 9F 27 01 9F 1A 02 5F 2A 02 9A 03 9C 01 90 00");
-		List<TagAndLength> list = Whitebox.invokeMethod(new EmvParser(prov, true), EmvParser.class, "getLogFormat");
+		List<TagAndLength> list = Whitebox.invokeMethod(parser, EmvParser.class, "getLogFormat");
 		Assertions.assertThat(list.size()).isEqualTo(6);
 
 		prov.setExpectedData("80CA9F4F00");
 		prov.setReturnedData("0000");
-		list = Whitebox.invokeMethod(new EmvParser(prov, true), EmvParser.class, "getLogFormat");
+		list = Whitebox.invokeMethod(parser, EmvParser.class, "getLogFormat");
 		Assertions.assertThat(list.size()).isEqualTo(0);
 
 		prov.setExpectedData("80CA9F4F00");
 		prov.setReturnedData("9000");
-		list = Whitebox.invokeMethod(new EmvParser(prov, true), EmvParser.class, "getLogFormat");
+		list = Whitebox.invokeMethod(parser, EmvParser.class, "getLogFormat");
 		Assertions.assertThat(list.size()).isEqualTo(0);
 	}
 
 	@Test
 	public void testGetLogEntry() throws Exception {
+		EmvParser parser = EmvParser.Builder() //
+				.setProvider(new ProviderSelectPaymentEnvTest()) //
+				.setContactLess(true) //
+				.setReadAllAids(true) //
+				.setReadTransactions(true) //
+				.build();
 		byte[] selectResponse = BytesUtils
 				.fromString("6F 37 84 07 A0 00 00 00 42 10 10 A5 2C 9F 38 18 9F 66 04 9F 02 06 9F 03 06 9F 1A 02 95 05 5F 2A 02 9A 03 9C 01 9F 37 04 BF 0C 0E DF 62 02 0B 1E DF 61 01 03 9F 4D 02 0B 11 90 00");
-		byte[] data = Whitebox.invokeMethod(new EmvParser(null, true), EmvParser.class, "getLogEntry", selectResponse);
+		byte[] data = Whitebox.invokeMethod(parser, EmvParser.class, "getLogEntry", selectResponse);
 
 		selectResponse = BytesUtils
 				.fromString("6F 32 84 07 A0 00 00 00 42 10 10 A5 27 9F 38 18 9F 66 04 9F 02 06 9F 03 06 9F 1A 02 95 05 5F 2A 02 9A 03 9C 01 9F 37 04 BF 0C 09 DF 60 02 0B 1E DF 61 01 03 90 00");
-		data = Whitebox.invokeMethod(new EmvParser(null, true), EmvParser.class, "getLogEntry", selectResponse);
+		data = Whitebox.invokeMethod(parser, EmvParser.class, "getLogEntry", selectResponse);
 		Assertions.assertThat(BytesUtils.bytesToString(data)).isEqualTo("0B 1E");
 	}
 
 	@Test
 	public void testReadWithAid() throws Exception {
-		EmvParser parser = new EmvParser(new TestProvider("VisaCardAid"), true);
+		EmvParser parser = EmvParser.Builder() //
+				.setProvider(new TestProvider("VisaCardAid")) //
+				.setContactLess(true) //
+				.setReadAllAids(true) //
+				.setReadTransactions(true) //
+				.build();
 		Whitebox.invokeMethod(parser, EmvParser.class, "readWithAID");
 		EmvCard card = parser.getCard();
 
@@ -601,7 +760,12 @@ public class EmvParserTest {
 
 	@Test
 	public void testextractCardHolderNameNull() throws Exception {
-		EmvParser parser = new EmvParser(new TestProvider("VisaCardAid"), true);
+		EmvParser parser = EmvParser.Builder() //
+				.setProvider(new TestProvider("VisaCardAid")) //
+				.setContactLess(true) //
+				.setReadAllAids(true) //
+				.setReadTransactions(true) //
+				.build();
 		Whitebox.invokeMethod(parser, EmvParser.class, "extractCardHolderName", BytesUtils.fromString("5F 20 02 20 2F"));
 		EmvCard card = parser.getCard();
 
@@ -615,7 +779,12 @@ public class EmvParserTest {
 
 	@Test
 	public void testextractCardHolderNameEmpty() throws Exception {
-		EmvParser parser = new EmvParser(new TestProvider("VisaCardAid"), true);
+		EmvParser parser = EmvParser.Builder() //
+				.setProvider(new TestProvider("VisaCardAid")) //
+				.setContactLess(true) //
+				.setReadAllAids(true) //
+				.setReadTransactions(true) //
+				.build();
 		Whitebox.invokeMethod(parser, EmvParser.class, "extractCardHolderName", BytesUtils.fromString("5F 20 02 20 20"));
 		EmvCard card = parser.getCard();
 
@@ -629,7 +798,12 @@ public class EmvParserTest {
 
 	@Test
 	public void testextractCardHolderName() throws Exception {
-		EmvParser parser = new EmvParser(new TestProvider("VisaCardAid"), true);
+		EmvParser parser = EmvParser.Builder() //
+				.setProvider(new TestProvider("VisaCardAid")) //
+				.setContactLess(true) //
+				.setReadAllAids(true) //
+				.setReadTransactions(true) //
+				.build();
 		Whitebox.invokeMethod(parser, EmvParser.class, "extractCardHolderName", BytesUtils.fromString("5F2008446F652F4A6F686E"));
 		EmvCard card = parser.getCard();
 
@@ -644,27 +818,38 @@ public class EmvParserTest {
 	@Test
 	public void testTransactionCounter() throws Exception {
 		ProviderSelectPaymentEnvTest prov = new ProviderSelectPaymentEnvTest();
+		EmvParser parser = EmvParser.Builder() //
+				.setProvider(prov) //
+				.setContactLess(true) //
+				.setReadAllAids(true) //
+				.setReadTransactions(true) //
+				.build();
 		prov.setExpectedData("80CA9F3600");
 		prov.setReturnedData("9F 36 02 06 2C 90 00");
-		int ret = Whitebox.invokeMethod(new EmvParser(prov, true), EmvParser.class, "getTransactionCounter");
+		int ret = Whitebox.invokeMethod(parser, EmvParser.class, "getTransactionCounter");
 		Assertions.assertThat(ret).isEqualTo(1580);
 
 		prov.setReturnedData("9F 36 02 FF FF 90 00");
-		ret = Whitebox.invokeMethod(new EmvParser(prov, true), EmvParser.class, "getTransactionCounter");
+		ret = Whitebox.invokeMethod(parser, EmvParser.class, "getTransactionCounter");
 		Assertions.assertThat(ret).isEqualTo(65535);
 
 		prov.setReturnedData("0000");
-		ret = Whitebox.invokeMethod(new EmvParser(prov, true), EmvParser.class, "getTransactionCounter");
+		ret = Whitebox.invokeMethod(parser, EmvParser.class, "getTransactionCounter");
 		Assertions.assertThat(ret).isEqualTo(EmvParser.UNKNOW);
 
 		prov.setReturnedData("9000");
-		ret = Whitebox.invokeMethod(new EmvParser(prov, true), EmvParser.class, "getTransactionCounter");
+		ret = Whitebox.invokeMethod(parser, EmvParser.class, "getTransactionCounter");
 		Assertions.assertThat(ret).isEqualTo(EmvParser.UNKNOW);
 	}
 
 	@Test
 	public void testLockedCard() throws Exception {
-		EmvParser parser = new EmvParser(new TestProvider("LockedCard"), true);
+		EmvParser parser = EmvParser.Builder() //
+				.setProvider(new TestProvider("LockedCard")) //
+				.setContactLess(true) //
+				.setReadAllAids(true) //
+				.setReadTransactions(true) //
+				.build();
 		EmvCard card = parser.readEmvCard();
 
 		if (card != null) {

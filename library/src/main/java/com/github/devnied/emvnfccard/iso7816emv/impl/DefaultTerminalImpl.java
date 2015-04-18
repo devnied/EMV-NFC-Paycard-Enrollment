@@ -32,12 +32,12 @@ import com.github.devnied.emvnfccard.model.enums.TransactionTypeEnum;
 import fr.devnied.bitlib.BytesUtils;
 
 /**
- * Factory to create Tag value
+ * Factory to create default terminal implementation
  *
  * @author Millau Julien
  *
  */
-public final class EmvTerminalImpl implements ITerminal {
+public final class DefaultTerminalImpl implements ITerminal {
 
 	/**
 	 * Random

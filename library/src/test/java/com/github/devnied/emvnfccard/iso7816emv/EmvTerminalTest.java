@@ -3,13 +3,13 @@ package com.github.devnied.emvnfccard.iso7816emv;
 import org.fest.assertions.Assertions;
 import org.junit.Test;
 
-import com.github.devnied.emvnfccard.iso7816emv.impl.EmvTerminalImpl;
+import com.github.devnied.emvnfccard.iso7816emv.impl.DefaultTerminalImpl;
 
 import fr.devnied.bitlib.BytesUtils;
 
 public class EmvTerminalTest {
 
-	private ITerminal terminal = new EmvTerminalImpl();
+	private ITerminal terminal = new DefaultTerminalImpl();
 
 	@Test
 	public void testTerminalCapability() {

@@ -312,7 +312,12 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 
 						mProvider.setmTagCom(mTagcomm);
 
-						EmvParser parser = new EmvParser(mProvider, true);
+						EmvParser parser = EmvParser.Builder() //
+								.setProvider(mProvider) //
+								.setContactLess(true) //
+								.setReadAllAids(true) //
+								.setReadTransactions(true) //
+								.build();
 						mCard = parser.readEmvCard();
 						if (mCard != null) {
 							mCard.setAtrDescription(extractAtsDescription(lastAts));
