@@ -27,7 +27,7 @@
     <string name="viewpager_log">Log</string>
     
     <!-- Card Detail -->
-    <string name="paycard_back_text">Positionnez votre carte NFC\n à l\'arriére de votre téléphone</string>
+    <string name="paycard_back_text">Positionnez votre carte NFC\n à l\'arrière de votre téléphone</string>
     <string name="extended_card_detail_title">Information avancées</string>
     <string name="card_representation_title">Representation visuelle</string>
     
