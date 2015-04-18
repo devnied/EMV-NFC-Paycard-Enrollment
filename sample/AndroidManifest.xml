@@ -3,7 +3,7 @@
     package="com.github.devnied.emvnfccard"
     android:installLocation="auto"
     android:versionCode="33"
-    android:versionName="2.3.0" >
+    android:versionName="3.0.0" >
 
     <uses-sdk
         android:minSdkVersion="15"
