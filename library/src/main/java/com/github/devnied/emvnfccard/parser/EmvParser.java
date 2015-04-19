@@ -364,7 +364,13 @@ public class EmvParser {
 			LOGGER.debug("Extract Application label");
 		}
 		String label = null;
-		byte[] labelByte = TlvUtil.getValue(pData, EmvTags.APPLICATION_LABEL);
+		// Get Preferred name first
+		byte[] labelByte = TlvUtil.getValue(pData, EmvTags.APPLICATION_PREFERRED_NAME);
+		// Get Application label
+		if (labelByte == null) {
+			labelByte = TlvUtil.getValue(pData, EmvTags.APPLICATION_LABEL);
+		}
+		// Convert to String
 		if (labelByte != null) {
 			label = new String(labelByte);
 		}

@@ -281,7 +281,7 @@ public class EmvParserTest {
 		Assertions.assertThat(BytesUtils.bytesToStringNoSpace(card.getApplications().get(0).getAid())).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getApplications().get(0).getExtendedAid()).isNull();
 		Assertions.assertThat(card.getApplications().get(0).getListTransactions().size()).isEqualTo(0);
-		Assertions.assertThat(card.getApplications().get(1).getApplicationLabel()).isEqualTo("MASTERCARD");
+		Assertions.assertThat(card.getApplications().get(1).getApplicationLabel()).isEqualTo("CB");
 		Assertions.assertThat(card.getApplications().get(1).getLeftPinTry()).isEqualTo(2);
 		Assertions.assertThat(card.getApplications().get(1).getTransactionCounter()).isEqualTo(44);
 		Assertions.assertThat(card.getApplications().get(1).getPriority()).isEqualTo(2);
@@ -371,7 +371,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getHolderLastname()).isNull();
 		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		Assertions.assertThat(card.getApplications().size()).isEqualTo(1);
-		Assertions.assertThat(card.getApplications().get(0).getApplicationLabel()).isEqualTo("DEBIT MASTERCARD");
+		Assertions.assertThat(card.getApplications().get(0).getApplicationLabel()).isEqualTo("MASTERCARD");
 		Assertions.assertThat(BytesUtils.bytesToStringNoSpace(card.getApplications().get(0).getAid())).isEqualTo("A0000000041010");
 		Assertions.assertThat(card.getApplications().get(0).getExtendedAid()).isNull();
 		Assertions.assertThat(card.getApplications().get(0).getListTransactions().size()).isEqualTo(10);
@@ -497,7 +497,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getTrack2().getRaw()).isNotNull();
 		Assertions.assertThat(card.getTrack2().getService()).isNotNull();
 		Assertions.assertThat(card.getApplications().size()).isEqualTo(1);
-		Assertions.assertThat(card.getApplications().get(0).getApplicationLabel()).isEqualTo("CB");
+		Assertions.assertThat(card.getApplications().get(0).getApplicationLabel()).isEqualTo("TRANSACTION CB");
 		Assertions.assertThat(BytesUtils.bytesToStringNoSpace(card.getApplications().get(0).getAid())).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getApplications().get(0).getLeftPinTry()).isEqualTo(3);
 		Assertions.assertThat(card.getApplications().get(0).getTransactionCounter()).isEqualTo(1580);
@@ -749,7 +749,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getHolderLastname()).isNull();
 		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		Assertions.assertThat(BytesUtils.bytesToStringNoSpace(card.getApplications().get(0).getAid())).isEqualTo("A0000000031010");
-		Assertions.assertThat(card.getApplications().get(0).getApplicationLabel()).isEqualTo("VISA DEBIT");
+		Assertions.assertThat(card.getApplications().get(0).getApplicationLabel()).isEqualTo("VISA");
 		Assertions.assertThat(card.getApplications().get(0).getLeftPinTry()).isEqualTo(3);
 		Assertions.assertThat(card.getApplications().get(0).getListTransactions()).isNotNull();
 		Assertions.assertThat(card.getApplications().get(0).getListTransactions().size()).isEqualTo(16);
