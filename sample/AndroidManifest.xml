@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.github.devnied.emvnfccard"
     android:installLocation="auto"
-    android:versionCode="33"
-    android:versionName="3.0.0" >
+    android:versionCode="37"
+    android:versionName="3.0.1" >
 
     <uses-sdk
         android:minSdkVersion="15"

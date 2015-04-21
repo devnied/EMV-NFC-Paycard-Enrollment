@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.github.devnied.emvnfccard.enums.EmvCardScheme;
+import com.github.devnied.emvnfccard.model.enums.CardStateEnum;
 
 /**
  * Bean used to describe data in EMV card
@@ -81,9 +82,9 @@ public class EmvCard extends AbstractData {
 	private final List<Application> applications = new ArrayList<Application>();
 
 	/**
-	 * Indicate if the nfc is locked on the card
+	 * Card state
 	 */
-	private boolean nfcLocked;
+	private CardStateEnum state = CardStateEnum.UNKNOWN;
 
 	/**
 	 * Method used to get the field holderLastname
@@ -207,22 +208,22 @@ public class EmvCard extends AbstractData {
 	}
 
 	/**
-	 * Method used to get the field nfcLocked
+	 * Method used to get the field state
 	 *
-	 * @return the nfcLocked
+	 * @return the state
 	 */
-	public boolean isNfcLocked() {
-		return nfcLocked;
+	public CardStateEnum getState() {
+		return state;
 	}
 
 	/**
-	 * Setter for the field nfcLocked
+	 * Setter for the field state
 	 *
-	 * @param nfcLocked
-	 *            the nfcLocked to set
+	 * @param state
+	 *            the state to set
 	 */
-	public void setNfcLocked(final boolean nfcLocked) {
-		this.nfcLocked = nfcLocked;
+	public void setState(final CardStateEnum state) {
+		this.state = state;
 	}
 
 	/**

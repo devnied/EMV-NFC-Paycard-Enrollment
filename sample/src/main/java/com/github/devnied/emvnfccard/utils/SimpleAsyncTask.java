@@ -9,10 +9,10 @@ import android.util.Log;
  * @author Millau Julien
  *
  */
-public abstract class SimpleAsyncTask extends AsyncTask<Void, Void, Object> {
+public abstract class SimpleAsyncTask extends AsyncTask<Object, Void, Object> {
 
 	@Override
-	protected Object doInBackground(final Void... params) {
+	protected Object doInBackground(final Object... params) {
 
 		Object result = null;
 

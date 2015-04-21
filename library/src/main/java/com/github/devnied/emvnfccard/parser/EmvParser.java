@@ -40,6 +40,7 @@ import com.github.devnied.emvnfccard.model.Afl;
 import com.github.devnied.emvnfccard.model.Application;
 import com.github.devnied.emvnfccard.model.EmvCard;
 import com.github.devnied.emvnfccard.model.EmvTransactionRecord;
+import com.github.devnied.emvnfccard.model.enums.CardStateEnum;
 import com.github.devnied.emvnfccard.model.enums.CurrencyEnum;
 import com.github.devnied.emvnfccard.utils.CommandApdu;
 import com.github.devnied.emvnfccard.utils.ResponseUtils;
@@ -405,7 +406,7 @@ public class EmvParser {
 				}
 			}
 			if (!ret) {
-				card.setNfcLocked(true);
+				card.setState(CardStateEnum.LOCKED);
 			}
 		} else if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug((contactLess ? "PPSE" : "PSE") + " not found -> Use kown AID");
@@ -520,7 +521,7 @@ public class EmvParser {
 				pApplication.setApplicationLabel(applicationLabel);
 				pApplication.setLeftPinTry(getLeftPinTry());
 				pApplication.setTransactionCounter(getTransactionCounter());
-				card.setNfcLocked(false);
+				card.setState(CardStateEnum.ACTIVE);
 			}
 		}
 		return ret;

@@ -3,7 +3,6 @@ package com.github.devnied.emvpcsccard;
 import java.util.List;
 
 import javax.smartcardio.Card;
-import javax.smartcardio.CardChannel;
 import javax.smartcardio.CardException;
 import javax.smartcardio.CardTerminal;
 import javax.smartcardio.TerminalFactory;
@@ -25,23 +24,32 @@ public class Main {
 
 		TerminalFactory factory = TerminalFactory.getDefault();
 		List<CardTerminal> terminals = factory.terminals().list();
+		if (terminals.isEmpty()) {
+			throw new CardException("No card terminals available");
+		}
 		LOGGER.info("Terminals: " + terminals);
 
 		if (terminals != null && !terminals.isEmpty()) {
 			// Use the first terminal
 			CardTerminal terminal = terminals.get(0);
 
-			// Connect with the card
-			Card card = terminal.connect("*");
-			LOGGER.info("card: " + card);
-			CardChannel channel = card.getBasicChannel();
+			if (terminal.waitForCardPresent(0)) {
+				// Connect with the card
+				Card card = terminal.connect("*");
+				LOGGER.info("card: " + card);
 
-			PcscProvider provider = new PcscProvider(channel);
-			EmvParser parser = new EmvParser(provider, false);
-			parser.readEmvCard();
+				PcscProvider provider = new PcscProvider(card.getBasicChannel());
+				EmvParser parser = EmvParser.Builder() //
+						.setProvider(provider) //
+						.setContactLess(false) //
+						.setReadAllAids(true) //
+						.setReadTransactions(true) //
+						.build();
+				parser.readEmvCard();
 
-			// Disconnect the card
-			card.disconnect(false);
+				// Disconnect the card
+				card.disconnect(false);
+			}
 		} else {
 			LOGGER.error("No pcsc terminal found");
 		}

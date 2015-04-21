@@ -21,6 +21,7 @@ import com.github.devnied.emvnfccard.model.Afl;
 import com.github.devnied.emvnfccard.model.Application;
 import com.github.devnied.emvnfccard.model.EmvCard;
 import com.github.devnied.emvnfccard.model.EmvTransactionRecord;
+import com.github.devnied.emvnfccard.model.enums.CardStateEnum;
 import com.github.devnied.emvnfccard.model.enums.CountryCodeEnum;
 import com.github.devnied.emvnfccard.model.enums.CurrencyEnum;
 import com.github.devnied.emvnfccard.model.enums.ServiceCode1Enum;
@@ -80,7 +81,22 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2015");
-		Assertions.assertThat(card.isNfcLocked()).isFalse();
+		Assertions.assertThat(card.getState()).isEqualTo(CardStateEnum.ACTIVE);
+	}
+
+	@Test
+	public void testUnknownCard() throws CommunicationException {
+
+		EmvParser parser = EmvParser.Builder() //
+				.setProvider(new TestProvider("UnknownCard")) //
+				.setContactLess(true) //
+				.setReadAllAids(true) //
+				.setReadTransactions(true) //
+				.build();
+		EmvCard card = parser.readEmvCard();
+
+		Assertions.assertThat(card).isNotNull();
+		Assertions.assertThat(card.getState()).isEqualTo(CardStateEnum.UNKNOWN);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -126,7 +142,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2015");
-		Assertions.assertThat(card.isNfcLocked()).isFalse();
+		Assertions.assertThat(card.getState()).isEqualTo(CardStateEnum.ACTIVE);
 	}
 
 	@Test
@@ -159,7 +175,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getHolderLastname()).isNull();
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("06/2018");
-		Assertions.assertThat(card.isNfcLocked()).isFalse();
+		Assertions.assertThat(card.getState()).isEqualTo(CardStateEnum.ACTIVE);
 	}
 
 	@Test
@@ -202,7 +218,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2015");
-		Assertions.assertThat(card.isNfcLocked()).isFalse();
+		Assertions.assertThat(card.getState()).isEqualTo(CardStateEnum.ACTIVE);
 	}
 
 	@Test
@@ -294,7 +310,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2015");
-		Assertions.assertThat(card.isNfcLocked()).isFalse();
+		Assertions.assertThat(card.getState()).isEqualTo(CardStateEnum.ACTIVE);
 	}
 
 	@Test
@@ -330,7 +346,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("11/2019");
-		Assertions.assertThat(card.isNfcLocked()).isFalse();
+		Assertions.assertThat(card.getState()).isEqualTo(CardStateEnum.ACTIVE);
 	}
 
 	@Test
@@ -387,7 +403,7 @@ public class EmvParserTest {
 		Assertions.assertThat(record.getDate()).isNotNull();
 		SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");
 		Assertions.assertThat(sdf2.format(record.getDate())).isEqualTo("12/01/2011");
-		Assertions.assertThat(card.isNfcLocked()).isFalse();
+		Assertions.assertThat(card.getState()).isEqualTo(CardStateEnum.ACTIVE);
 
 	}
 
@@ -430,7 +446,7 @@ public class EmvParserTest {
 		Assertions.assertThat(record.getDate()).isNotNull();
 		SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");
 		Assertions.assertThat(sdf2.format(record.getDate())).isEqualTo("12/01/2011");
-		Assertions.assertThat(card.isNfcLocked()).isFalse();
+		Assertions.assertThat(card.getState()).isEqualTo(CardStateEnum.ACTIVE);
 
 	}
 
@@ -474,7 +490,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2015");
-		Assertions.assertThat(card.isNfcLocked()).isFalse();
+		Assertions.assertThat(card.getState()).isEqualTo(CardStateEnum.ACTIVE);
 	}
 
 	@Test
@@ -516,7 +532,7 @@ public class EmvParserTest {
 		Assertions.assertThat(record.getCurrency()).isEqualTo(CurrencyEnum.EUR);
 		Assertions.assertThat(record.getTerminalCountry()).isEqualTo(CountryCodeEnum.FR);
 		Assertions.assertThat(record.getDate()).isNotNull();
-		Assertions.assertThat(card.isNfcLocked()).isFalse();
+		Assertions.assertThat(card.getState()).isEqualTo(CardStateEnum.ACTIVE);
 	}
 
 	@Test
@@ -547,7 +563,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("08/2014");
-		Assertions.assertThat(card.isNfcLocked()).isFalse();
+		Assertions.assertThat(card.getState()).isEqualTo(CardStateEnum.ACTIVE);
 	}
 
 	@Test
@@ -755,7 +771,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getApplications().get(0).getListTransactions().size()).isEqualTo(16);
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2014");
-		Assertions.assertThat(card.isNfcLocked()).isFalse();
+		Assertions.assertThat(card.getState()).isEqualTo(CardStateEnum.ACTIVE);
 	}
 
 	@Test
@@ -856,6 +872,6 @@ public class EmvParserTest {
 			LOGGER.debug(card.toString());
 		}
 		Assertions.assertThat(card).isNotNull();
-		Assertions.assertThat(card.isNfcLocked()).isTrue();
+		Assertions.assertThat(card.getState()).isEqualTo(CardStateEnum.LOCKED);
 	}
 }

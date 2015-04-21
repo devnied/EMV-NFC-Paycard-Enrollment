@@ -53,6 +53,7 @@ import com.github.devnied.emvnfccard.model.Application;
 import com.github.devnied.emvnfccard.model.EmvCard;
 import com.github.devnied.emvnfccard.model.EmvTrack2;
 import com.github.devnied.emvnfccard.model.EmvTransactionRecord;
+import com.github.devnied.emvnfccard.model.enums.CardStateEnum;
 import com.github.devnied.emvnfccard.model.enums.CountryCodeEnum;
 import com.github.devnied.emvnfccard.model.enums.CurrencyEnum;
 import com.github.devnied.emvnfccard.model.enums.TransactionTypeEnum;
@@ -62,6 +63,7 @@ import com.github.devnied.emvnfccard.utils.AtrUtils;
 import com.github.devnied.emvnfccard.utils.ConstantUtils;
 import com.github.devnied.emvnfccard.utils.CroutonUtils;
 import com.github.devnied.emvnfccard.utils.CroutonUtils.CoutonColor;
+import com.github.devnied.emvnfccard.utils.LibraryException;
 import com.github.devnied.emvnfccard.utils.NFCUtils;
 import com.github.devnied.emvnfccard.utils.RateDialog;
 import com.github.devnied.emvnfccard.utils.SimpleAsyncTask;
@@ -278,6 +280,11 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 				 */
 				private boolean mException;
 
+				/**
+				 * Unknown error
+				 */
+				private Throwable unknownError;
+
 				@Override
 				protected void onPreExecute() {
 					super.onPreExecute();
@@ -325,6 +332,8 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 
 					} catch (IOException e) {
 						mException = true;
+					} catch (Throwable e) {
+						unknownError = e;
 					} finally {
 						// close tagcomm
 						IOUtils.closeQuietly(mTagcomm);
@@ -344,15 +353,20 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 						mDialog.cancel();
 					}
 
+					if (unknownError != null) {
+						throw new LibraryException(mProvider.getLog(), unknownError);
+					}
+
 					if (!mException) {
-						if (mCard != null) {
+						if (mCard != null && mCard.getState() != CardStateEnum.UNKNOWN) {
 							if (StringUtils.isNotBlank(mCard.getCardNumber())) {
 								CroutonUtils.display(HomeActivity.this, getText(R.string.card_read), CoutonColor.GREEN);
 								// rate dialog
 								new RateDialog(HomeActivity.this).init();
 								mReadCard = mCard;
-							} else if (mCard.isNfcLocked()) {
+							} else if (mCard.getState() == CardStateEnum.LOCKED) {
 								CroutonUtils.display(HomeActivity.this, getText(R.string.nfc_locked), CoutonColor.ORANGE);
+								throw new LibraryException(mProvider.getLog(), unknownError);
 							}
 						} else {
 							CroutonUtils.display(HomeActivity.this, getText(R.string.error_card_unknown), CoutonColor.BLACK);
@@ -410,7 +424,7 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 				}
 				mReadCard = new EmvCard();
 				Application app = new Application();
-				app.setAid(BytesUtils.fromString("A0 00 00 000310 10"));
+				app.setAid(BytesUtils.fromString("A0 00 00 00 03 10 10"));
 				app.setLeftPinTry(3);
 				app.setApplicationLabel("CB");
 				mReadCard.getApplications().add(app);

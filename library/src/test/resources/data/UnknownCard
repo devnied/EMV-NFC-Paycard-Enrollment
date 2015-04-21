@@ -1,0 +1,77 @@
+# Select PPSE
+send: 00 A4 04 00 0E 32 50 41 59 2E 53 59 53 2E 44 44 46 30 31 00
+resp: 69 85
+send:
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
