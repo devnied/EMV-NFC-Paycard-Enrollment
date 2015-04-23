@@ -429,11 +429,13 @@ public class EmvParser {
 		List<Application> ret = new ArrayList<Application>();
 		// Search Application template
 		List<TLV> listTlv = TlvUtil.getlistTLV(pData, EmvTags.APPLICATION_TEMPLATE);
+		// Search Kernel Identifier
+		List<TLV> listKernelId = TlvUtil.getlistTLV(pData, EmvTags.KERNEL_IDENTIFIER);
 		// For each application template
 		for (TLV tlv : listTlv) {
 			Application application = new Application();
 			// Get AID, Kernel_Identifier and application label
-			List<TLV> listTlvData = TlvUtil.getlistTLV(tlv.getValueBytes(), EmvTags.AID_CARD, EmvTags.KERNEL_IDENTIFIER,
+			List<TLV> listTlvData = TlvUtil.getlistTLV(tlv.getValueBytes(), EmvTags.AID_CARD,
 					EmvTags.APPLICATION_LABEL, EmvTags.APPLICATION_PRIORITY_INDICATOR);
 			// For each data
 			for (TLV data : listTlvData) {
@@ -441,11 +443,14 @@ public class EmvParser {
 					application.setPriority(BytesUtils.byteArrayToInt(data.getValueBytes()));
 				} else if (data.getTag() == EmvTags.APPLICATION_LABEL) {
 					application.setApplicationLabel(new String(data.getValueBytes()));
-				} else if (data.getTag() == EmvTags.KERNEL_IDENTIFIER && application.getAid() != null) {
-					application.setExtendedAid(ArrayUtils.addAll(application.getAid(), data.getValueBytes()));
 				} else {
 					application.setAid(data.getValueBytes());
 					ret.add(application);
+					// Add extended Aid
+					if (listKernelId != null && ret.size() <= listKernelId.size()) {
+						application
+						.setExtendedAid(ArrayUtils.addAll(application.getAid(), listKernelId.get(ret.size() - 1).getValueBytes()));
+					}
 				}
 			}
 		}

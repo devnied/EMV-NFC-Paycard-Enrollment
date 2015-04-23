@@ -252,6 +252,24 @@ public class EmvParserTest {
 						EmvParser.class,
 						"getApplicationTemplate",
 						BytesUtils
+								.fromString("6F57840E325041592E5359532E4444463031A545BF0C4261104F07A0000000421010500243428701019F2A08030000000000000061184F07A0000000031010500A564953412044454249548701029F2A0803000000000000009000"));
+		Assertions.assertThat(data).isNotNull();
+		Assertions.assertThat(data.size()).isEqualTo(2);
+		Assertions.assertThat(data.get(0).getApplicationLabel()).isEqualTo("CB");
+		Assertions.assertThat(BytesUtils.bytesToString(data.get(0).getAid())).isEqualTo("A0 00 00 00 42 10 10");
+		Assertions.assertThat(BytesUtils.bytesToString(data.get(0).getExtendedAid())).isEqualTo(
+				"A0 00 00 00 42 10 10 03 00 00 00 00 00 00 00");
+		Assertions.assertThat(data.get(1).getApplicationLabel()).isEqualTo("VISA DEBIT");
+		Assertions.assertThat(BytesUtils.bytesToString(data.get(1).getAid())).isEqualTo("A0 00 00 00 03 10 10");
+		Assertions.assertThat(BytesUtils.bytesToString(data.get(1).getExtendedAid())).isEqualTo(
+				"A0 00 00 00 03 10 10 03 00 00 00 00 00 00 00");
+
+		data = Whitebox
+				.invokeMethod(
+						parser,
+						EmvParser.class,
+						"getApplicationTemplate",
+						BytesUtils
 						.fromString("6F 2C 84 0E 32 50 41 59 2E 53 59 53 2E 44 44 46 30 31 A5 1A BF 0C 17 61 15 4F 07 A0 00 00 02 77 10 10 50 07 49 6E 74 65 72 61 63 87 01 01"));
 		Assertions.assertThat(data).isNotNull();
 		Assertions.assertThat(data.size()).isEqualTo(1);
