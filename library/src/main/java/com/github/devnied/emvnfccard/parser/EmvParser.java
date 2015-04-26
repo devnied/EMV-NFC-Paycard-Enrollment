@@ -505,11 +505,12 @@ public class EmvParser {
 		// Select AID
 		byte[] data = selectAID(pApplication.getAid());
 		// Use Extended card aid if exist
-		if (!ResponseUtils.isSucceed(data) && pApplication.getExtendedAid() != null) {
+		if (pApplication.getExtendedAid() != null && !ResponseUtils.contains(data, SwEnum.SW_9000, SwEnum.SW_6285)) {
 			data = selectAID(pApplication.getExtendedAid());
 		}
 		// check response
-		if (ResponseUtils.isSucceed(data)) {
+		// Add SW_6285 to fix Interact issue
+		if (ResponseUtils.contains(data, SwEnum.SW_9000, SwEnum.SW_6285)) {
 			// Parse select response
 			if ((ret = parse(data, pApplication)) == true) {
 				// Get AID
@@ -591,16 +592,15 @@ public class EmvParser {
 		if (!ResponseUtils.isSucceed(gpo)) {
 			if (pdol != null) {
 				gpo = getGetProcessingOptions(null, provider);
-				// Check response
+			}
+
+			// Check response
+			if (pdol == null || !ResponseUtils.isSucceed(gpo)) {
+				// Try to read EF 1 and record 1
+				gpo = provider.transceive(new CommandApdu(CommandEnum.READ_RECORD, 1, 0x0C, 0).toBytes());
 				if (!ResponseUtils.isSucceed(gpo)) {
-					// Try to read EF 1 and record 1
-					gpo = provider.transceive(new CommandApdu(CommandEnum.READ_RECORD, 1, 0x0C, 0).toBytes());
-					if (!ResponseUtils.isSucceed(gpo)) {
-						return false;
-					}
+					return false;
 				}
-			} else {
-				return false;
 			}
 		}
 

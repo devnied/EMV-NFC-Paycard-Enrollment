@@ -34,4 +34,12 @@ public class ResponseUtilsTest {
 		Assertions.assertThat(ResponseUtils.isEquals(null, SwEnum.SW_6D)).isEqualTo(false);
 	}
 
+	@Test
+	public void testResponseContains() {
+		Assertions.assertThat(ResponseUtils.contains(new byte[] { (byte) 0x90, 0 }, SwEnum.SW_6D, SwEnum.SW_9000)).isEqualTo(true);
+		Assertions.assertThat(ResponseUtils.contains(new byte[] { (byte) 0x6D, 18 }, SwEnum.SW_6D, SwEnum.SW_9000)).isEqualTo(true);
+		Assertions.assertThat(ResponseUtils.contains(new byte[] { (byte) 0x00, 0 }, SwEnum.SW_6D, SwEnum.SW_9000)).isEqualTo(false);
+		Assertions.assertThat(ResponseUtils.contains(null, SwEnum.SW_6D)).isEqualTo(false);
+	}
+
 }

@@ -17,6 +17,7 @@ package com.github.devnied.emvnfccard.utils;
 
 import java.util.Arrays;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,7 +46,7 @@ public final class ResponseUtils {
 	 * @return true if the status is 9000 false otherwise
 	 */
 	public static boolean isSucceed(final byte[] pByte) {
-		return isEquals(pByte, SwEnum.SW_9000);
+		return contains(pByte, SwEnum.SW_9000);
 	}
 
 	/**
@@ -58,13 +59,27 @@ public final class ResponseUtils {
 	 * @return true if the response of the last command is equals to pEnum
 	 */
 	public static boolean isEquals(final byte[] pByte, final SwEnum pEnum) {
+		return contains(pByte, pEnum);
+	}
+
+	/**
+	 * Method used to check equality with the last command return SW1SW2 ==
+	 * pEnum
+	 *
+	 * @param pByte
+	 *            response to the last command
+	 * @param pEnum
+	 *            responses to check
+	 * @return true if the response of the last command is contained in pEnum
+	 */
+	public static boolean contains(final byte[] pByte, final SwEnum... pEnum) {
 		SwEnum val = SwEnum.getSW(pByte);
 		if (LOGGER.isDebugEnabled() && pByte != null) {
 			LOGGER.debug("Response Status <"
 					+ BytesUtils.bytesToStringNoSpace(Arrays.copyOfRange(pByte, Math.max(pByte.length - 2, 0), pByte.length)) + "> : "
 					+ (val != null ? val.getDetail() : "Unknow"));
 		}
-		return val != null && val == pEnum;
+		return val != null && ArrayUtils.contains(pEnum, val);
 	}
 
 	/**

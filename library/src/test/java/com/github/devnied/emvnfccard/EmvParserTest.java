@@ -252,7 +252,7 @@ public class EmvParserTest {
 						EmvParser.class,
 						"getApplicationTemplate",
 						BytesUtils
-								.fromString("6F57840E325041592E5359532E4444463031A545BF0C4261104F07A0000000421010500243428701019F2A08030000000000000061184F07A0000000031010500A564953412044454249548701029F2A0803000000000000009000"));
+						.fromString("6F57840E325041592E5359532E4444463031A545BF0C4261104F07A0000000421010500243428701019F2A08030000000000000061184F07A0000000031010500A564953412044454249548701029F2A0803000000000000009000"));
 		Assertions.assertThat(data).isNotNull();
 		Assertions.assertThat(data.size()).isEqualTo(2);
 		Assertions.assertThat(data.get(0).getApplicationLabel()).isEqualTo("CB");
@@ -328,6 +328,42 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2015");
+		Assertions.assertThat(card.getState()).isEqualTo(CardStateEnum.ACTIVE);
+	}
+
+	@Test
+	public void testPPSEInteract() throws CommunicationException {
+		EmvParser parser = EmvParser.Builder() //
+				.setProvider(new TestProvider("InteractPpse")) //
+				.setContactLess(true) //
+				.setReadAllAids(true) //
+				.setReadTransactions(true) //
+				.build();
+		EmvCard card = parser.readEmvCard();
+
+		if (card != null) {
+			LOGGER.debug(card.toString());
+		}
+		Assertions.assertThat(card).isNotNull();
+		Assertions.assertThat(card.getBic()).isNull();
+		Assertions.assertThat(card.getIban()).isNull();
+		Assertions.assertThat(card.getTrack1()).isNull();
+		Assertions.assertThat(card.getTrack2()).isNotNull();
+		Assertions.assertThat(card.getTrack2().getRaw()).isNotNull();
+		Assertions.assertThat(card.getTrack2().getService()).isNotNull();
+		Assertions.assertThat(card.getApplications().size()).isEqualTo(1);
+		Assertions.assertThat(card.getApplications().get(0).getLeftPinTry()).isEqualTo(3);
+		Assertions.assertThat(card.getApplications().get(0).getTransactionCounter()).isEqualTo(AbstractData.UNKNOWN);
+		Assertions.assertThat(card.getApplications().get(0).getApplicationLabel()).isEqualTo("INTERAC");
+		Assertions.assertThat(BytesUtils.bytesToStringNoSpace(card.getApplications().get(0).getAid())).isEqualTo("A0000002771010");
+		Assertions.assertThat(card.getApplications().get(0).getExtendedAid()).isNull();
+		Assertions.assertThat(card.getApplications().get(0).getListTransactions().size()).isEqualTo(0);
+		Assertions.assertThat(card.getCardNumber()).isEqualTo("5200000000000000");
+		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.INTERAC);
+		Assertions.assertThat(card.getHolderLastname()).isNull();
+		Assertions.assertThat(card.getHolderFirstname()).isNull();
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
+		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("11/2019");
 		Assertions.assertThat(card.getState()).isEqualTo(CardStateEnum.ACTIVE);
 	}
 

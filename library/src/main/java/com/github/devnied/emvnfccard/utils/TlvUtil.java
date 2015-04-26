@@ -99,8 +99,11 @@ public final class TlvUtil {
 	public static TLV getNextTLV(final TLVInputStream stream) {
 		TLV tlv = null;
 		try {
-			if (stream.available() < 2) {
+			int left = stream.available();
+			if (left < 2) {
 				throw new TlvException("Error parsing data. Available bytes < 2 . Length=" + stream.available());
+			} else if (left == 2) {
+				return tlv;
 			}
 			ITag tag = searchTagById(stream.readTag());
 			int length = stream.readLength();
@@ -216,6 +219,9 @@ public final class TlvUtil {
 			while (stream.available() > 0) {
 
 				TLV tlv = TlvUtil.getNextTLV(stream);
+				if (tlv == null) {
+					break;
+				}
 				if (pAdd) {
 					list.add(tlv);
 				} else if (tlv.getTag().isConstructed()) {
@@ -251,6 +257,9 @@ public final class TlvUtil {
 			while (stream.available() > 0) {
 
 				TLV tlv = TlvUtil.getNextTLV(stream);
+				if (tlv == null) {
+					break;
+				}
 				if (ArrayUtils.contains(pTag, tlv.getTag())) {
 					list.add(tlv);
 				} else if (tlv.getTag().isConstructed()) {
@@ -286,6 +295,9 @@ public final class TlvUtil {
 				while (stream.available() > 0) {
 
 					TLV tlv = TlvUtil.getNextTLV(stream);
+					if (tlv == null) {
+						break;
+					}
 					if (ArrayUtils.contains(pTag, tlv.getTag())) {
 						return tlv.getValueBytes();
 					} else if (tlv.getTag().isConstructed()) {
@@ -294,6 +306,7 @@ public final class TlvUtil {
 							break;
 						}
 					}
+
 				}
 			} catch (IOException e) {
 				LOGGER.error(e.getMessage(), e);
