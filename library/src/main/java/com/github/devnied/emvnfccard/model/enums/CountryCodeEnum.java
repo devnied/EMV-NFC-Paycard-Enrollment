@@ -18,7 +18,7 @@ package com.github.devnied.emvnfccard.model.enums;
 
 /**
  * <a href="http://en.wikipedia.org/wiki/ISO_3166-1">ISO 3166-1</a> country code.
- * 
+ *
  * <p>
  * Enum names of this enum themselves are represented by <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">ISO 3166-1
  * alpha-2</a> codes. There are instance methods to get the country name ({@link #getName()} ), the <a
@@ -26,25 +26,25 @@ package com.github.devnied.emvnfccard.model.enums;
  * href="http://en.wikipedia.org/wiki/ISO_3166-1_numeric">ISO 3166-1 numeric</a> code ({@link #getNumeric()}). In addition, there
  * are static methods to get a CountryCode instance that corresponds to a given alpha-2/alpha-3/numeric code.
  * </p>
- * 
+ *
  * <pre style="background-color: #EEEEEE; margin-left: 2em; margin-right: 2em; border: 1px solid black;">
  * <span style="color: darkgreen;">// EXAMPLE</span>
- * 
+ *
  * CountryCode cc = CountryCode.{@link #getByCode(String) getByCode}("JP");
- * 
+ *
  * <span style="color: darkgreen;">// Country name</span>
  * System.out.println("Country name = " + cc.{@link #getName()});                  <span style="color: darkgreen;">// "Japan"</span>
- * 
+ *
  * <span style="color: darkgreen;">// ISO 3166-1 alpha-2 code</span>
  * System.out.println("ISO 3166-1 alpha-2 code = " + cc.{@link #getAlpha2()});     <span style="color: darkgreen;">// "JP"</span>
- * 
+ *
  * <span style="color: darkgreen;">// ISO 3166-1 alpha-3 code</span>
  * System.out.println("ISO 3166-1 alpha-3 code = " + cc.{@link #getAlpha3()});     <span style="color: darkgreen;">// "JPN"</span>
- * 
+ *
  * <span style="color: darkgreen;">// ISO 3166-1 numeric code</span>
  * System.out.println("ISO 3166-1 numeric code = " + cc.{@link #getNumeric()});    <span style="color: darkgreen;">// 392</span>
  * </pre>
- * 
+ *
  * @author Takahiko Kawasaki
  */
 public enum CountryCodeEnum implements IKeyEnum {
@@ -910,7 +910,7 @@ public enum CountryCodeEnum implements IKeyEnum {
 
 	/**
 	 * Get the country name.
-	 * 
+	 *
 	 * @return The country name.
 	 */
 	public String getName() {
@@ -919,7 +919,7 @@ public enum CountryCodeEnum implements IKeyEnum {
 
 	/**
 	 * Get the <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2" >ISO 3166-1 alpha-2</a> code.
-	 * 
+	 *
 	 * @return The <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2" >ISO 3166-1 alpha-2</a> code.
 	 */
 	public String getAlpha2() {
@@ -928,7 +928,7 @@ public enum CountryCodeEnum implements IKeyEnum {
 
 	/**
 	 * Get the <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3" >ISO 3166-1 alpha-3</a> code.
-	 * 
+	 *
 	 * @return The <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3" >ISO 3166-1 alpha-3</a> code.
 	 */
 	public String getAlpha3() {
@@ -937,7 +937,7 @@ public enum CountryCodeEnum implements IKeyEnum {
 
 	/**
 	 * Get the <a href="http://en.wikipedia.org/wiki/ISO_3166-1_numeric" >ISO 3166-1 numeric</a> code.
-	 * 
+	 *
 	 * @return The <a href="http://en.wikipedia.org/wiki/ISO_3166-1_numeric" >ISO 3166-1 numeric</a> code.
 	 */
 	public int getNumeric() {
@@ -947,6 +947,19 @@ public enum CountryCodeEnum implements IKeyEnum {
 	@Override
 	public int getKey() {
 		return numeric;
+	}
+
+	public static CountryCodeEnum getCountry(final String alpha3) {
+		CountryCodeEnum ret = null;
+
+		for (CountryCodeEnum country : values()) {
+			if (country.getAlpha3().equalsIgnoreCase(alpha3)) {
+				ret = country;
+				break;
+			}
+		}
+
+		return ret;
 	}
 
 }

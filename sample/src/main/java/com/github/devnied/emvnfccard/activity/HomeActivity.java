@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -49,6 +50,7 @@ import com.github.devnied.emvnfccard.fragment.BillingFragment;
 import com.github.devnied.emvnfccard.fragment.ConfigurationFragment;
 import com.github.devnied.emvnfccard.fragment.IRefreshable;
 import com.github.devnied.emvnfccard.fragment.ViewPagerFragment;
+import com.github.devnied.emvnfccard.iso7816emv.impl.DefaultTerminalImpl;
 import com.github.devnied.emvnfccard.model.Application;
 import com.github.devnied.emvnfccard.model.EmvCard;
 import com.github.devnied.emvnfccard.model.EmvTrack2;
@@ -285,6 +287,11 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 				 */
 				private Throwable unknownError;
 
+				/**
+				 * Terminal
+				 */
+				private DefaultTerminalImpl terminal = new DefaultTerminalImpl();
+
 				@Override
 				protected void onPreExecute() {
 					super.onPreExecute();
@@ -319,13 +326,18 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 
 						mProvider.setmTagCom(mTagcomm);
 
+						// Define country from device
+						terminal.setCountryCode(CountryCodeEnum.getCountry(Locale.getDefault().getISO3Country()));
+
 						EmvParser parser = EmvParser.Builder() //
 								.setProvider(mProvider) //
+								.setTerminal(terminal) //
 								.setContactLess(true) //
 								.setReadAllAids(true) //
 								.setReadTransactions(true) //
 								.build();
 						mCard = parser.readEmvCard();
+
 						if (mCard != null) {
 							mCard.setAtrDescription(extractAtsDescription(lastAts));
 						}

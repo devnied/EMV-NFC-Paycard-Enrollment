@@ -45,6 +45,11 @@ public final class DefaultTerminalImpl implements ITerminal {
 	private static final SecureRandom random = new SecureRandom();
 
 	/**
+	 * Country code
+	 */
+	private CountryCodeEnum countryCode = CountryCodeEnum.FR;
+
+	/**
 	 * Method used to construct value from tag and length
 	 *
 	 * @param pTagAndLength
@@ -67,7 +72,7 @@ public final class DefaultTerminalImpl implements ITerminal {
 			terminalQual.setConsumerDeviceCVMsupported(true);
 			val = terminalQual.getBytes();
 		} else if (pTagAndLength.getTag() == EmvTags.TERMINAL_COUNTRY_CODE) {
-			val = BytesUtils.fromString(StringUtils.leftPad(String.valueOf(CountryCodeEnum.FR.getNumeric()), pTagAndLength.getLength() * 2,
+			val = BytesUtils.fromString(StringUtils.leftPad(String.valueOf(countryCode.getNumeric()), pTagAndLength.getLength() * 2,
 					"0"));
 		} else if (pTagAndLength.getTag() == EmvTags.TRANSACTION_CURRENCY_CODE) {
 			val = BytesUtils.fromString(StringUtils.leftPad(String.valueOf(CurrencyEnum.EUR.getISOCodeNumeric()),
@@ -99,5 +104,18 @@ public final class DefaultTerminalImpl implements ITerminal {
 		}
 		return ret;
 	}
+
+	/**
+	 * Setter for the field countryCode
+	 *
+	 * @param countryCode
+	 *            the countryCode to set
+	 */
+	public void setCountryCode(final CountryCodeEnum countryCode) {
+		if (countryCode != null) {
+			this.countryCode = countryCode;
+		}
+	}
+
 
 }
