@@ -22,9 +22,9 @@ public class EmvTerminalTest {
 	@Test
 	public void testAmountAuthorized() {
 		Assertions.assertThat(terminal.constructValue(new TagAndLength(EmvTags.AMOUNT_AUTHORISED_NUMERIC, 1))).isEqualTo(
-				new byte[] { (byte) 0x00 });
+				new byte[] { (byte) 0x01 });
 		Assertions.assertThat(terminal.constructValue(new TagAndLength(EmvTags.AMOUNT_AUTHORISED_NUMERIC, 2))).isEqualTo(
-				new byte[] { 0x00, 0x00 });
+				new byte[] { 0x00, 0x01 });
 	}
 
 	@Test
@@ -45,7 +45,7 @@ public class EmvTerminalTest {
 		Assertions.assertThat(terminal.constructValue(new TagAndLength(EmvTags.TERMINAL_CAPABILITIES, 2))).isEqualTo(
 				new byte[] { (byte) 0xE0, (byte) 0xA0 });
 		Assertions.assertThat(terminal.constructValue(new TagAndLength(EmvTags.TERMINAL_CAPABILITIES, 4))).isEqualTo(
-				new byte[] { (byte) 0xE0, (byte) 0xA0, 0, 0 });
+				new byte[] { 0, (byte) 0xE0, (byte) 0xA0, 0 });
 	}
 
 	@Test

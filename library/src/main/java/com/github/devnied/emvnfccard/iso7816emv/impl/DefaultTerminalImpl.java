@@ -83,7 +83,7 @@ public final class DefaultTerminalImpl implements ITerminal {
 		} else if (pTagAndLength.getTag() == EmvTags.TRANSACTION_TYPE || pTagAndLength.getTag() == EmvTags.TERMINAL_TRANSACTION_TYPE) {
 			val = new byte[] { (byte) TransactionTypeEnum.PURCHASE.getKey() };
 		} else if (pTagAndLength.getTag() == EmvTags.AMOUNT_AUTHORISED_NUMERIC) {
-			val = BytesUtils.fromString("00");
+			val = BytesUtils.fromString("01");
 		} else if (pTagAndLength.getTag() == EmvTags.TERMINAL_TYPE) {
 			val = new byte[] { 0x22 };
 		} else if (pTagAndLength.getTag() == EmvTags.TERMINAL_CAPABILITIES) {
@@ -100,7 +100,7 @@ public final class DefaultTerminalImpl implements ITerminal {
 			val = new byte[] { (byte) 0xC0, (byte) 0x80, 0 };
 		}
 		if (val != null) {
-			System.arraycopy(val, 0, ret, 0, Math.min(val.length, ret.length));
+			System.arraycopy(val, 0, ret, Math.max(ret.length - val.length, 0), Math.min(val.length, ret.length));
 		}
 		return ret;
 	}

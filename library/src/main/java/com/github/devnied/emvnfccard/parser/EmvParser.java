@@ -429,8 +429,6 @@ public class EmvParser {
 		List<Application> ret = new ArrayList<Application>();
 		// Search Application template
 		List<TLV> listTlv = TlvUtil.getlistTLV(pData, EmvTags.APPLICATION_TEMPLATE);
-		// Search Kernel Identifier
-		List<TLV> listKernelId = TlvUtil.getlistTLV(pData, EmvTags.KERNEL_IDENTIFIER);
 		// For each application template
 		for (TLV tlv : listTlv) {
 			Application application = new Application();
@@ -446,11 +444,6 @@ public class EmvParser {
 				} else {
 					application.setAid(data.getValueBytes());
 					ret.add(application);
-					// Add extended Aid
-					if (listKernelId != null && ret.size() <= listKernelId.size()) {
-						application
-						.setExtendedAid(ArrayUtils.addAll(application.getAid(), listKernelId.get(ret.size() - 1).getValueBytes()));
-					}
 				}
 			}
 		}
@@ -504,10 +497,6 @@ public class EmvParser {
 		boolean ret = false;
 		// Select AID
 		byte[] data = selectAID(pApplication.getAid());
-		// Use Extended card aid if exist
-		if (pApplication.getExtendedAid() != null && !ResponseUtils.contains(data, SwEnum.SW_9000, SwEnum.SW_6285)) {
-			data = selectAID(pApplication.getExtendedAid());
-		}
 		// check response
 		// Add SW_6285 to fix Interact issue
 		if (ResponseUtils.contains(data, SwEnum.SW_9000, SwEnum.SW_6285)) {
@@ -708,8 +697,8 @@ public class EmvParser {
 								record.setAmount(record.getAmount() - 1500000000);
 							}
 
-							// Skip transaction with nul amount
-							if (record.getAmount() == null || record.getAmount() == 0) {
+							// Skip transaction with null amount
+							if (record.getAmount() == null || record.getAmount() <= 1) {
 								continue;
 							}
 						}
@@ -782,9 +771,11 @@ public class EmvParser {
 		byte[] cardHolderByte = TlvUtil.getValue(pData, EmvTags.CARDHOLDER_NAME);
 		if (cardHolderByte != null) {
 			String[] name = StringUtils.split(new String(cardHolderByte).trim(), TrackUtils.CARD_HOLDER_NAME_SEPARATOR);
-			if (name != null && name.length == 2) {
+			if (name != null && name.length > 0) {
 				card.setHolderLastname(StringUtils.trimToNull(name[0]));
-				card.setHolderFirstname(StringUtils.trimToNull(name[1]));
+				if (name.length == 2) {
+					card.setHolderFirstname(StringUtils.trimToNull(name[1]));
+				}
 			}
 		}
 	}

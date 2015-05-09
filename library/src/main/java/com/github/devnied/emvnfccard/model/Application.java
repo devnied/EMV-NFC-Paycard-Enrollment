@@ -36,11 +36,6 @@ public class Application extends AbstractData implements Comparable<Application>
 	private byte[] aid;
 
 	/**
-	 * Extended card aid
-	 */
-	private byte[] extendedAid;
-
-	/**
 	 * Application label
 	 */
 	private String applicationLabel;
@@ -158,25 +153,6 @@ public class Application extends AbstractData implements Comparable<Application>
 	 */
 	public void setAid(final byte[] aid) {
 		this.aid = aid;
-	}
-
-	/**
-	 * Method used to get the field extendedAid
-	 *
-	 * @return the extendedAid
-	 */
-	public byte[] getExtendedAid() {
-		return extendedAid;
-	}
-
-	/**
-	 * Setter for the field extendedAid
-	 *
-	 * @param extendedAid
-	 *            the extendedAid to set
-	 */
-	public void setExtendedAid(final byte[] extendedAid) {
-		this.extendedAid = extendedAid;
 	}
 
 	/**

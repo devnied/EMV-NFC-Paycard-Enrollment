@@ -100,9 +100,7 @@ public final class TlvUtil {
 		TLV tlv = null;
 		try {
 			int left = stream.available();
-			if (left < 2) {
-				throw new TlvException("Error parsing data. Available bytes < 2 . Length=" + stream.available());
-			} else if (left == 2) {
+			if (left <= 2) {
 				return tlv;
 			}
 			ITag tag = searchTagById(stream.readTag());

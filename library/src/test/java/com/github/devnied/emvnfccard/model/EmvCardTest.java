@@ -15,7 +15,6 @@ public class EmvCardTest {
 		EmvCard card = new EmvCard();
 		Application app = new Application();
 		app.setAid(BytesUtils.fromString("0000"));
-		app.setExtendedAid(BytesUtils.fromString("020034"));
 		app.setApplicationLabel("VISA");
 		app.setLeftPinTry(3);
 		app.setTransactionCounter(10);
@@ -41,7 +40,6 @@ public class EmvCardTest {
 		EmvCard card = new EmvCard();
 		Application app = new Application();
 		app.setAid(BytesUtils.fromString("0000"));
-		app.setExtendedAid(BytesUtils.fromString("020034"));
 		app.setApplicationLabel("VISA");
 		app.setLeftPinTry(3);
 		app.setTransactionCounter(10);
@@ -61,7 +59,6 @@ public class EmvCardTest {
 		EmvCard card = new EmvCard();
 		Application app = new Application();
 		app.setAid(BytesUtils.fromString("0000"));
-		app.setExtendedAid(BytesUtils.fromString("020034"));
 		app.setApplicationLabel("VISA");
 		app.setLeftPinTry(3);
 		app.setTransactionCounter(10);
