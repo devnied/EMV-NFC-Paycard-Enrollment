@@ -1,0 +1,79 @@
+# Select PPSE
+send: 00 A4 04 00 0E 32 50 41 59 2E 53 59 53 2E 44 44 46 30 31 00
+resp: 6F 57 84 0E 32 50 41 59 2E 53 59 53 2E 44 44 46 30 31 A5 45 BF 0C 42 61 10 4F 07 A0 00 00 00 42 10 10 50 02 43 42 87 01 01 9F 2A 08 03 00 00 00 00 00 00 00 61 18 4F 07 A0 00 00 00 03 10 10 50 0A 56 49 53 41 20 44 45 42 49 54 87 01 02 9F 2A 08 03 00 00 00 00 00 00 00 90 00
+# Select AID
+send: 00 A4 04 00 07 A0 00 00 00 42 10 10 00
+resp: 6F 29 84 07 A0 00 00 00 42 10 10 A5 1E 50 02 43 42 87 01 01 9F 11 01 01 9F 12 02 43 42 5F 2D 04 66 72 65 6E BF 0C 04 DF 61 01 04 90 00
+# GPO
+send: 80 A8 00 00 02 83 00 00
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85
+send: 
+resp: 69 85

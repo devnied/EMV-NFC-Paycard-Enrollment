@@ -17,6 +17,8 @@ package com.github.devnied.emvnfccard.model;
 
 import java.util.List;
 
+import com.github.devnied.emvnfccard.model.enums.ApplicationStepEnum;
+
 /**
  * Class used to describe Application
  *
@@ -34,6 +36,11 @@ public class Application extends AbstractData implements Comparable<Application>
 	 * Card AID
 	 */
 	private byte[] aid;
+	
+	/**
+	 * Reading step
+	 */
+	private ApplicationStepEnum readingStep =  ApplicationStepEnum.NOT_SELECTED;
 
 	/**
 	 * Application label
@@ -177,6 +184,23 @@ public class Application extends AbstractData implements Comparable<Application>
 	@Override
 	public int compareTo(final Application arg0) {
 		return priority - arg0.getPriority();
+	}
+
+	/**
+	 * Get the field readingStep
+	 * @return the readingStep
+	 */
+	public ApplicationStepEnum getReadingStep() {
+		return readingStep;
+	}
+
+	/**
+	 * Setter for the field readingStep
+	 *
+	 * @param readingStep the readingStep to set
+	 */
+	public void setReadingStep(ApplicationStepEnum readingStep) {
+		this.readingStep = readingStep;
 	}
 
 }

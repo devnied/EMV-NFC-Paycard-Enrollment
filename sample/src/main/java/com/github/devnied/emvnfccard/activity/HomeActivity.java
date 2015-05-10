@@ -11,6 +11,7 @@ import java.util.Locale;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
@@ -55,6 +56,7 @@ import com.github.devnied.emvnfccard.model.Application;
 import com.github.devnied.emvnfccard.model.EmvCard;
 import com.github.devnied.emvnfccard.model.EmvTrack2;
 import com.github.devnied.emvnfccard.model.EmvTransactionRecord;
+import com.github.devnied.emvnfccard.model.enums.ApplicationStepEnum;
 import com.github.devnied.emvnfccard.model.enums.CardStateEnum;
 import com.github.devnied.emvnfccard.model.enums.CountryCodeEnum;
 import com.github.devnied.emvnfccard.model.enums.CurrencyEnum;
@@ -378,7 +380,11 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 								mReadCard = mCard;
 							} else if (mCard.getState() == CardStateEnum.LOCKED) {
 								CroutonUtils.display(HomeActivity.this, getText(R.string.nfc_locked), CoutonColor.ORANGE);
-								throw new LibraryException(mProvider.getLog(), unknownError);
+								
+								// Throw exception on selected locked application
+								if (ApplicationStepEnum.isAtLeast(mCard.getApplications(), ApplicationStepEnum.SELECTED)) {
+									throw new LibraryException(mProvider.getLog(), unknownError);
+								}
 							}
 						} else {
 							CroutonUtils.display(HomeActivity.this, getText(R.string.error_card_unknown), CoutonColor.BLACK);
@@ -450,33 +456,19 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 				mReadCard.setTrack2(track2);
 
 				List<EmvTransactionRecord> records = new ArrayList<EmvTransactionRecord>();
-				// payment
-				EmvTransactionRecord payment = new EmvTransactionRecord();
-				payment.setAmount((float) 100.0);
-				payment.setCurrency(CurrencyEnum.EUR);
-				payment.setCyptogramData("12");
-				payment.setTerminalCountry(CountryCodeEnum.FR);
-				payment.setDate(new Date());
-				payment.setTransactionType(TransactionTypeEnum.REFUND);
-				records.add(payment);
-
-				payment = new EmvTransactionRecord();
-				payment.setAmount((float) 12.0);
-				payment.setCurrency(CurrencyEnum.USD);
-				payment.setCyptogramData("40");
-				payment.setTerminalCountry(CountryCodeEnum.US);
-				payment.setDate(new Date());
-				payment.setTransactionType(TransactionTypeEnum.PURCHASE);
-				records.add(payment);
-
-				payment = new EmvTransactionRecord();
-				payment.setAmount((float) 120.0);
-				payment.setCurrency(CurrencyEnum.USD);
-				payment.setCyptogramData("40");
-				payment.setTerminalCountry(null);
-				payment.setDate(new Date());
-				payment.setTransactionType(null);
-				records.add(payment);
+				
+				for (int i=0; i<100 ; i++){
+					// payment
+					EmvTransactionRecord payment = new EmvTransactionRecord();
+					payment.setAmount((float) i);
+					payment.setCurrency(CurrencyEnum.EUR);
+					payment.setCyptogramData("12");
+					payment.setTerminalCountry(CountryCodeEnum.FR);
+					payment.setDate(DateUtils.addDays(new Date(), i));
+					payment.setTransactionType(TransactionTypeEnum.REFUND);
+					records.add(payment);
+				}
+				
 
 				app.setListTransactions(records);
 				refreshContent();

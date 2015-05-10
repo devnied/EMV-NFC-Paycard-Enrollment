@@ -9,7 +9,7 @@
     <string name="card_reading">Lecture en cours&#8230;</string>
     <string name="card_deleted">Données supprimées</string>
     <string name="card_reading_desc">Veuillez ne pas enlever ou bouger votre carte pendant la lecture.</string>
-    <string name="nfc_locked">Paiement NFC désactivé sur votre carte</string>
+    <string name="nfc_locked">Paiement NFC désactivé sur votre carte ou carte non activée</string>
     <string name="msg_nfc_disable">Veuillez activer le NFC et appuyez sur retour pour revenir sur l\'application.</string>
     <string name="msg_activate_nfc">OK</string>
     <string name="msg_info">Info</string>

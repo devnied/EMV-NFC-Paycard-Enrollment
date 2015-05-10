@@ -40,6 +40,7 @@ import com.github.devnied.emvnfccard.model.Afl;
 import com.github.devnied.emvnfccard.model.Application;
 import com.github.devnied.emvnfccard.model.EmvCard;
 import com.github.devnied.emvnfccard.model.EmvTransactionRecord;
+import com.github.devnied.emvnfccard.model.enums.ApplicationStepEnum;
 import com.github.devnied.emvnfccard.model.enums.CardStateEnum;
 import com.github.devnied.emvnfccard.model.enums.CurrencyEnum;
 import com.github.devnied.emvnfccard.utils.CommandApdu;
@@ -242,8 +243,6 @@ public class EmvParser {
 	public EmvCard readEmvCard() throws CommunicationException {
 		// use PSE first
 		if (!readWithPSE()) {
-			// Remove previously added Application template
-			card.getApplications().clear();
 			// Find with AID
 			readWithAID();
 		}
@@ -464,6 +463,9 @@ public class EmvParser {
 				app.setAid(aid);
 				app.setApplicationLabel(type.getName());
 				if (extractPublicData(app)) {
+					// Remove previously added Application template
+					card.getApplications().clear();
+					// Replace Application
 					card.getApplications().add(app);
 					return;
 				}
@@ -500,6 +502,8 @@ public class EmvParser {
 		// check response
 		// Add SW_6285 to fix Interact issue
 		if (ResponseUtils.contains(data, SwEnum.SW_9000, SwEnum.SW_6285)) {
+			// Update reading state
+			pApplication.setReadingStep(ApplicationStepEnum.SELECTED);
 			// Parse select response
 			if ((ret = parse(data, pApplication)) == true) {
 				// Get AID
@@ -592,6 +596,8 @@ public class EmvParser {
 				}
 			}
 		}
+		// Update Reading state
+		pApplication.setReadingStep(ApplicationStepEnum.GPO_PERFORMED);
 
 		// Extract commons card data (number, expire date, ...)
 		if (extractCommonsCardData(gpo)) {

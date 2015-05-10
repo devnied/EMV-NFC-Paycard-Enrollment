@@ -91,7 +91,7 @@ public final class DefaultTerminalImpl implements ITerminal {
 		} else if (pTagAndLength.getTag() == EmvTags.ADDITIONAL_TERMINAL_CAPABILITIES) {
 			val = new byte[] { (byte) 0x8e, (byte) 0, (byte) 0xb0, 0x50, 0x05 };
 		} else if (pTagAndLength.getTag() == EmvTags.DS_REQUESTED_OPERATOR_ID) {
-			val = BytesUtils.fromString("7345123215904501");
+			val = BytesUtils.fromString("7A45123EE59C7F40");
 		} else if (pTagAndLength.getTag() == EmvTags.UNPREDICTABLE_NUMBER) {
 			random.nextBytes(ret);
 		} else if (pTagAndLength.getTag() == EmvTags.MERCHANT_TYPE_INDICATOR) {

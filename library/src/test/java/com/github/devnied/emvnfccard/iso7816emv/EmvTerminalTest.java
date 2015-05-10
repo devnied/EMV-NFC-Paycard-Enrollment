@@ -51,9 +51,9 @@ public class EmvTerminalTest {
 	@Test
 	public void test_DS_REQUESTED_OPERATOR_ID() {
 		Assertions.assertThat(terminal.constructValue(new TagAndLength(EmvTags.DS_REQUESTED_OPERATOR_ID, 2))).isEqualTo(
-				BytesUtils.fromString("7345"));
+				BytesUtils.fromString("7A45"));
 		Assertions.assertThat(terminal.constructValue(new TagAndLength(EmvTags.DS_REQUESTED_OPERATOR_ID, 8))).isEqualTo(
-				BytesUtils.fromString("7345123215904501"));
+				BytesUtils.fromString("7A45123EE59C7F40"));
 	}
 
 	@Test
