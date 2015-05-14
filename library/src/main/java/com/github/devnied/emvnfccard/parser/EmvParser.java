@@ -95,31 +95,95 @@ public class EmvParser {
 	private IProvider provider;
 
 	/**
-	 * use contact less mode
+	 * Config
 	 */
-	private boolean contactLess;
-
-	/**
-	 * Boolean to indicate if the parser need to read transaction history
-	 */
-	private boolean readTransactions;
-
-	/**
-	 * Boolean used to indicate if you want to read all card aids
-	 */
-	private boolean readAllAids;
+	private Config config;
 
 	/**
 	 * Card data
 	 */
 	private EmvCard card;
 
-
-
+	/**
+	 * Create builder
+	 * 
+	 * @return a new instance of builder
+	 */
 	public static Builder Builder() {
 		return new Builder();
 	}
 
+	/**
+	 * Create a new Config
+	 * 
+	 * @return a new instance of config
+	 */
+	public static Config Config() {
+		return new Config();
+	}
+
+	/**
+	 * Build a new Config.
+	 * <p>
+	 * All config are activated by default
+	 */
+	public static class Config {
+
+		/**
+		 * use contact less mode
+		 */
+		boolean contactLess = true;
+
+		/**
+		 * Boolean to indicate if the parser need to read transaction history
+		 */
+		boolean readTransactions = true;
+
+		/**
+		 * Boolean used to indicate if you want to read all card aids
+		 */
+		boolean readAllAids = true;
+
+		/**
+		 * Package private. Use {@link #Builder()} to build a new one
+		 *
+		 */
+		Config() {
+		}
+
+		/**
+		 * Setter for the field contactLess
+		 *
+		 * @param contactLess
+		 *            the contactLess to set
+		 */
+		public Config setContactLess(final boolean contactLess) {
+			this.contactLess = contactLess;
+			return this;
+		}
+
+		/**
+		 * Setter for the field readTransactions
+		 *
+		 * @param readTransactions
+		 *            the readTransactions to set
+		 */
+		public Config setReadTransactions(final boolean readTransactions) {
+			this.readTransactions = readTransactions;
+			return this;
+		}
+
+		/**
+		 * Setter for the field readAllAids
+		 *
+		 * @param readAllAids
+		 *            the readAllAids to set
+		 */
+		public Config setReadAllAids(final boolean readAllAids) {
+			this.readAllAids = readAllAids;
+			return this;
+		}
+	}
 
 	/**
 	 * Build a new {@link EmvParser}.
@@ -131,9 +195,7 @@ public class EmvParser {
 
 		private IProvider provider;
 		private ITerminal terminal;
-		private boolean contactLess;
-		private boolean readTransactions;
-		private boolean readAllAids;
+		private Config config;
 
 		/**
 		 * Package private. Use {@link #Builder()} to build a new one
@@ -165,35 +227,13 @@ public class EmvParser {
 		}
 
 		/**
-		 * Setter for the field contactLess
+		 * Setter for the field config
 		 *
-		 * @param contactLess
-		 *            the contactLess to set
+		 * @param config
+		 *            the config to set
 		 */
-		public Builder setContactLess(final boolean contactLess) {
-			this.contactLess = contactLess;
-			return this;
-		}
-
-		/**
-		 * Setter for the field readTransactions
-		 *
-		 * @param readTransactions
-		 *            the readTransactions to set
-		 */
-		public Builder setReadTransactions(final boolean readTransactions) {
-			this.readTransactions = readTransactions;
-			return this;
-		}
-
-		/**
-		 * Setter for the field readAllAids
-		 *
-		 * @param readAllAids
-		 *            the readAllAids to set
-		 */
-		public Builder setReadAllAids(final boolean readAllAids) {
-			this.readAllAids = readAllAids;
+		public Builder setConfig(Config config) {
+			this.config = config;
 			return this;
 		}
 
@@ -206,7 +246,7 @@ public class EmvParser {
 			if (terminal == null) {
 				terminal = new DefaultTerminalImpl();
 			}
-			return new EmvParser(provider, terminal, contactLess, readTransactions, readAllAids);
+			return new EmvParser(provider, terminal, config);
 		}
 
 	}
@@ -218,20 +258,16 @@ public class EmvParser {
 	 *            provider to launch command and communicate with the card
 	 * @param pTerminal
 	 *            terminal data
-	 * @param pContactLess
-	 *            enable contact less interface
-	 * @param pReadTransactions
-	 *            read all transactions
-	 * @param pReadAllAids
-	 *            read all aids
+	 * @param pConfig
+	 *            parser configuration (Default configuration used if null)
 	 */
-	private EmvParser(final IProvider pProvider, final ITerminal pTerminal, final boolean pContactLess, final boolean pReadTransactions,
-			final boolean pReadAllAids) {
+	private EmvParser(final IProvider pProvider, final ITerminal pTerminal, final Config pConfig) {
 		provider = pProvider;
 		terminal = pTerminal;
-		contactLess = pContactLess;
-		readTransactions = pReadTransactions;
-		readAllAids = pReadAllAids;
+		config = pConfig;
+		if (config == null) {
+			config = Config();
+		}
 		card = new EmvCard();
 	}
 
@@ -257,10 +293,10 @@ public class EmvParser {
 	 */
 	protected byte[] selectPaymentEnvironment() throws CommunicationException {
 		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Select " + (contactLess ? "PPSE" : "PSE") + " Application");
+			LOGGER.debug("Select " + (config.contactLess ? "PPSE" : "PSE") + " Application");
 		}
 		// Select the PPSE or PSE directory
-		return provider.transceive(new CommandApdu(CommandEnum.SELECT, contactLess ? PPSE : PSE, 0).toBytes());
+		return provider.transceive(new CommandApdu(CommandEnum.SELECT, config.contactLess ? PPSE : PSE, 0).toBytes());
 	}
 
 	/**
@@ -399,7 +435,7 @@ public class EmvParser {
 				boolean status = extractPublicData(app);
 				if (!ret && status) {
 					ret = status;
-					if (!readAllAids) {
+					if (!config.readAllAids) {
 						break;
 					}
 				}
@@ -408,7 +444,7 @@ public class EmvParser {
 				card.setState(CardStateEnum.LOCKED);
 			}
 		} else if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug((contactLess ? "PPSE" : "PSE") + " not found -> Use kown AID");
+			LOGGER.debug((config.contactLess ? "PPSE" : "PSE") + " not found -> Use kown AID");
 		}
 
 		return ret;
@@ -432,8 +468,8 @@ public class EmvParser {
 		for (TLV tlv : listTlv) {
 			Application application = new Application();
 			// Get AID, Kernel_Identifier and application label
-			List<TLV> listTlvData = TlvUtil.getlistTLV(tlv.getValueBytes(), EmvTags.AID_CARD,
-					EmvTags.APPLICATION_LABEL, EmvTags.APPLICATION_PRIORITY_INDICATOR);
+			List<TLV> listTlvData = TlvUtil.getlistTLV(tlv.getValueBytes(), EmvTags.AID_CARD, EmvTags.APPLICATION_LABEL,
+					EmvTags.APPLICATION_PRIORITY_INDICATOR);
 			// For each data
 			for (TLV data : listTlvData) {
 				if (data.getTag() == EmvTags.APPLICATION_PRIORITY_INDICATOR) {
@@ -558,7 +594,6 @@ public class EmvParser {
 		return TlvUtil.getValue(pSelectResponse, EmvTags.LOG_ENTRY, EmvTags.VISA_LOG_ENTRY);
 	}
 
-
 	/**
 	 * Method used to parse EMV card
 	 *
@@ -569,8 +604,7 @@ public class EmvParser {
 	 * @return true if the parsing succeed false otherwise
 	 * @throws CommunicationException
 	 */
-	protected boolean parse(final byte[] pSelectResponse, final Application pApplication)
-			throws CommunicationException {
+	protected boolean parse(final byte[] pSelectResponse, final Application pApplication) throws CommunicationException {
 		boolean ret = false;
 		// Get TLV log entry
 		byte[] logEntry = getLogEntry(pSelectResponse);
@@ -686,12 +720,13 @@ public class EmvParser {
 	protected List<EmvTransactionRecord> extractLogEntry(final byte[] pLogEntry) throws CommunicationException {
 		List<EmvTransactionRecord> listRecord = new ArrayList<EmvTransactionRecord>();
 		// If log entry is defined
-		if (readTransactions && pLogEntry != null) {
+		if (config.readTransactions && pLogEntry != null) {
 			List<TagAndLength> tals = getLogFormat();
 			if (tals != null && !tals.isEmpty()) {
 				// read all records
 				for (int rec = 1; rec <= pLogEntry[1]; rec++) {
-					byte[] response = provider.transceive(new CommandApdu(CommandEnum.READ_RECORD, rec, pLogEntry[0] << 3 | 4, 0).toBytes());
+					byte[] response = provider
+							.transceive(new CommandApdu(CommandEnum.READ_RECORD, rec, pLogEntry[0] << 3 | 4, 0).toBytes());
 					// Extract data
 					if (ResponseUtils.isSucceed(response)) {
 						EmvTransactionRecord record = new EmvTransactionRecord();
@@ -822,6 +857,5 @@ public class EmvParser {
 	public EmvCard getCard() {
 		return card;
 	}
-
 
 }

@@ -41,9 +41,7 @@ public class Main {
 				PcscProvider provider = new PcscProvider(card.getBasicChannel());
 				EmvParser parser = EmvParser.Builder() //
 						.setProvider(provider) //
-						.setContactLess(false) //
-						.setReadAllAids(true) //
-						.setReadTransactions(true) //
+						.setConfig(EmvParser.Config().setContactLess(false)) //
 						.build();
 				parser.readEmvCard();
 

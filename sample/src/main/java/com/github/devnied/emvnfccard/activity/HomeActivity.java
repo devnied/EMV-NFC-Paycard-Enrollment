@@ -179,12 +179,12 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 
 		// 2.1 create ActionBarDrawerToggle
 		mActionBarDrawerToggle = new ActionBarDrawerToggle(/* */
-				this, /* host Activity */
-				mDrawerLayout, /* DrawerLayout object */
-				R.drawable.ic_drawer, /* nav drawer icon to replace 'Up' caret */
-				R.string.navigation_menu_open, /* "open drawer" description */
-				R.string.navigation_menu_close /* "close drawer" description */
-				);
+		this, /* host Activity */
+		mDrawerLayout, /* DrawerLayout object */
+		R.drawable.ic_drawer, /* nav drawer icon to replace 'Up' caret */
+		R.string.navigation_menu_open, /* "open drawer" description */
+		R.string.navigation_menu_close /* "close drawer" description */
+		);
 
 		// 2.2 Set actionBarDrawerToggle as the DrawerListener
 		mDrawerLayout.setDrawerListener(mActionBarDrawerToggle);
@@ -334,9 +334,6 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 						EmvParser parser = EmvParser.Builder() //
 								.setProvider(mProvider) //
 								.setTerminal(terminal) //
-								.setContactLess(true) //
-								.setReadAllAids(true) //
-								.setReadTransactions(true) //
 								.build();
 						mCard = parser.readEmvCard();
 
@@ -380,8 +377,9 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 								mReadCard = mCard;
 							} else if (mCard.getState() == CardStateEnum.LOCKED) {
 								CroutonUtils.display(HomeActivity.this, getText(R.string.nfc_locked), CoutonColor.ORANGE);
-								
-								// Throw exception on selected locked application
+
+								// Throw exception on selected locked
+								// application
 								if (ApplicationStepEnum.isAtLeast(mCard.getApplications(), ApplicationStepEnum.SELECTED)) {
 									throw new LibraryException(mProvider.getLog(), unknownError);
 								}
@@ -391,7 +389,7 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 						}
 					} else {
 						CroutonUtils
-						.display(HomeActivity.this, getResources().getText(R.string.error_communication_nfc), CoutonColor.BLACK);
+								.display(HomeActivity.this, getResources().getText(R.string.error_communication_nfc), CoutonColor.BLACK);
 					}
 
 					refreshContent();
@@ -456,8 +454,8 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 				mReadCard.setTrack2(track2);
 
 				List<EmvTransactionRecord> records = new ArrayList<EmvTransactionRecord>();
-				
-				for (int i=0; i<100 ; i++){
+
+				for (int i = 0; i < 100; i++) {
 					// payment
 					EmvTransactionRecord payment = new EmvTransactionRecord();
 					payment.setAmount((float) i);
@@ -468,7 +466,6 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 					payment.setTransactionType(TransactionTypeEnum.REFUND);
 					records.add(payment);
 				}
-				
 
 				app.setListTransactions(records);
 				refreshContent();
