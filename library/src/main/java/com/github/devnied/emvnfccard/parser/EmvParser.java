@@ -729,27 +729,31 @@ public class EmvParser {
 							.transceive(new CommandApdu(CommandEnum.READ_RECORD, rec, pLogEntry[0] << 3 | 4, 0).toBytes());
 					// Extract data
 					if (ResponseUtils.isSucceed(response)) {
-						EmvTransactionRecord record = new EmvTransactionRecord();
-						record.parse(response, tals);
+						try {
+							EmvTransactionRecord record = new EmvTransactionRecord();
+							record.parse(response, tals);
 
-						if (record.getAmount() != null) {
-							// Fix artifact in EMV VISA card
-							if (record.getAmount() >= 1500000000) {
-								record.setAmount(record.getAmount() - 1500000000);
+							if (record.getAmount() != null) {
+								// Fix artifact in EMV VISA card
+								if (record.getAmount() >= 1500000000) {
+									record.setAmount(record.getAmount() - 1500000000);
+								}
+
+								// Skip transaction with null amount
+								if (record.getAmount() == null || record.getAmount() <= 1) {
+									continue;
+								}
 							}
 
-							// Skip transaction with null amount
-							if (record.getAmount() == null || record.getAmount() <= 1) {
-								continue;
+							if (record != null) {
+								// Unknown currency
+								if (record.getCurrency() == null) {
+									record.setCurrency(CurrencyEnum.XXX);
+								}
+								listRecord.add(record);
 							}
-						}
-
-						if (record != null) {
-							// Unknown currency
-							if (record.getCurrency() == null) {
-								record.setCurrency(CurrencyEnum.XXX);
-							}
-							listRecord.add(record);
+						} catch (Exception e) {
+							LOGGER.error("Error in transaction format: " + e.getMessage(), e);
 						}
 					} else {
 						// No more transaction log or transaction disabled
