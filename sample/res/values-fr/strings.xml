@@ -40,7 +40,7 @@
     <string name="extended_title_times">essai(s)</string>
     
     <!-- Transaction -->
-    <string name="transaction_empty">Votre carte ne donne pas accés à\n l\'historique des transactions</string>
+    <string name="transaction_empty">Votre carte ne donne pas accès à\n l\'historique des transactions</string>
     
     <!-- Transaction detail -->
     <string name="transaction_type">Type de transaction :</string>
