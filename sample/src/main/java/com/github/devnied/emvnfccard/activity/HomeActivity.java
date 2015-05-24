@@ -61,7 +61,7 @@ import com.github.devnied.emvnfccard.model.enums.CardStateEnum;
 import com.github.devnied.emvnfccard.model.enums.CountryCodeEnum;
 import com.github.devnied.emvnfccard.model.enums.CurrencyEnum;
 import com.github.devnied.emvnfccard.model.enums.TransactionTypeEnum;
-import com.github.devnied.emvnfccard.parser.EmvParser;
+import com.github.devnied.emvnfccard.parser.EmvTemplate;
 import com.github.devnied.emvnfccard.provider.Provider;
 import com.github.devnied.emvnfccard.utils.AtrUtils;
 import com.github.devnied.emvnfccard.utils.ConstantUtils;
@@ -331,7 +331,7 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 						// Define country from device
 						terminal.setCountryCode(CountryCodeEnum.getCountry(Locale.getDefault().getISO3Country()));
 
-						EmvParser parser = EmvParser.Builder() //
+						EmvTemplate parser = EmvTemplate.Builder() //
 								.setProvider(mProvider) //
 								.setTerminal(terminal) //
 								.build();

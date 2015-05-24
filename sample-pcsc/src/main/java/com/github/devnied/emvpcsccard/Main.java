@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.devnied.emvnfccard.exception.CommunicationException;
-import com.github.devnied.emvnfccard.parser.EmvParser;
+import com.github.devnied.emvnfccard.parser.EmvTemplate;
 
 public class Main {
 
@@ -39,9 +39,9 @@ public class Main {
 				LOGGER.info("card: " + card);
 
 				PcscProvider provider = new PcscProvider(card.getBasicChannel());
-				EmvParser parser = EmvParser.Builder() //
+				EmvTemplate parser = EmvTemplate.Builder() //
 						.setProvider(provider) //
-						.setConfig(EmvParser.Config().setContactLess(false)) //
+						.setConfig(EmvTemplate.Config().setContactLess(false)) //
 						.build();
 				parser.readEmvCard();
 
