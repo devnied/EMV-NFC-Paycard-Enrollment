@@ -87,7 +87,9 @@ public class TransactionsAdapter extends BaseAdapter {
 
 		// Set date
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-		date.setText(format.format(record.getDate()));
+		if (record.getDate() != null) {
+			date.setText(format.format(record.getDate()));
+		}
 
 		// set price amount
 		String amount = null;

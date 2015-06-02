@@ -64,6 +64,17 @@ public class CommandApdu {
 		mLeUsed = false;
 	}
 
+	public CommandApdu(final CommandEnum pEnum, final int p1, final int p2, final byte[] data, final int le) {
+		mCla = pEnum.getCla();
+		mIns = pEnum.getIns();
+		mP1 = p1;
+		mP2 = p2;
+		mLc = data == null ? 0 : data.length;
+		mData = data;
+		mLe = le;
+		mLeUsed = true;
+	}
+
 	public byte[] toBytes() {
 		int length = 4; // CLA, INS, P1, P2
 		if (mData != null && mData.length != 0) {

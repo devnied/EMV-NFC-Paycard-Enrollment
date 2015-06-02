@@ -48,6 +48,16 @@ import com.github.devnied.emvnfccard.utils.TrackUtils;
 
 import fr.devnied.bitlib.BytesUtils;
 
+/**
+ * Emv default Parser <br/>
+ * 
+ * Paypass: <br/>
+ * - https://www.paypass.com/pdf/public_documents/Terminal%20
+ * Optimization%20v2-0.pdf
+ * 
+ * @author julien
+ *
+ */
 public class EmvParser extends AbstractParser {
 
 	/**
@@ -61,6 +71,11 @@ public class EmvParser extends AbstractParser {
 	private static final Logger LOGGER = LoggerFactory.getLogger(EmvParser.class);
 
 	/**
+	 * Default EMV pattern
+	 */
+	private static final Pattern PATTERN = Pattern.compile(".*");
+
+	/**
 	 * Default constructor
 	 * 
 	 * @param pTemplate
@@ -72,7 +87,7 @@ public class EmvParser extends AbstractParser {
 
 	@Override
 	public Pattern getId() {
-		return Pattern.compile(".*");
+		return PATTERN;
 	}
 
 	@Override
