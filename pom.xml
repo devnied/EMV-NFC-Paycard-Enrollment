@@ -49,12 +49,10 @@
 
 	<modules>
 		<module>library</module>
-		<module>sample</module>
 		<module>sample-pcsc</module>
 	</modules>
 
 	<properties>
-		<android.version>4.1.1.4</android.version>
 		<powermock.version>1.5.4</powermock.version>
 	</properties>
 
@@ -91,14 +89,6 @@
 				<groupId>net.sf.scuba</groupId>
 				<artifactId>scuba-smartcards</artifactId>
 				<version>0.0.6</version>
-			</dependency>
-
-			<!-- Android -->
-			<dependency>
-				<groupId>com.google.android</groupId>
-				<artifactId>android</artifactId>
-				<version>${android.version}</version>
-				<scope>provided</scope>
 			</dependency>
 
 			<!-- Tests -->
@@ -143,79 +133,6 @@
 		<defaultGoal>install</defaultGoal>
 		<pluginManagement>
 			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-jarsigner-plugin</artifactId>
-					<version>1.4</version>
-					<executions>
-						<execution>
-							<id>signing</id>
-							<goals>
-								<goal>sign</goal>
-								<goal>verify</goal>
-							</goals>
-							<phase>package</phase>
-							<inherited>true</inherited>
-							<configuration>
-								<skip>${sign.skip}</skip>
-								<removeExistingSignatures>true</removeExistingSignatures>
-								<archiveDirectory />
-								<excludes>
-									<exclude>${project.build.directory}/*.apk</exclude>
-									<exclude>${project.build.directory}/*.jar</exclude>
-								</excludes>
-								<includes>
-									<include>${project.build.directory}/sample-signed-aligned.apk</include>
-								</includes>
-								<keystore>${sign.keystore}</keystore>
-								<alias>${sign.alias}</alias>
-								<storepass>${sign.storepass}</storepass>
-								<keypass>${sign.keypass}</keypass>
-								<arguments>
-									<argument>-sigalg</argument><argument>MD5withRSA</argument>
-									<argument>-digestalg</argument><argument>SHA1</argument>
-								</arguments>
-								<verbose>true</verbose>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>com.simpligility.maven.plugins</groupId>
-					<artifactId>android-maven-plugin</artifactId>
-					<version>4.1.0</version>
-					<configuration>
-						<release>true</release>
-						<sdk>
-							<platform>19</platform>
-						</sdk>
-						<androidManifestFile>AndroidManifest.xml</androidManifestFile>
-						<resourceDirectory>res</resourceDirectory>
-						<assetsDirectory>assets</assetsDirectory>
-						<proguard>
-							<skip>false</skip>
-						</proguard>
-						<sign>
-							<debug>false</debug>
-						</sign>
-						<zipalign>
-							<verbose>false</verbose>
-							<inputApk>${project.build.directory}/${project.artifactId}.apk</inputApk>
-							<outputApk>${project.build.directory}/${project.artifactId}-signed-aligned.apk</outputApk>
-							<skip>false</skip>
-						</zipalign>
-					</configuration>
-					<executions>
-						<execution>
-							<id>alignApk</id>
-							<phase>package</phase>
-							<goals>
-								<goal>zipalign</goal>
-							</goals>
-						</execution>
-					</executions>
-					<extensions>true</extensions>
-				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
@@ -285,18 +202,9 @@
 	<profiles>
 		<profile>
 			<id>ci</id>
-			<properties>
-				<sign.skip>true</sign.skip>
-			</properties>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
-		</profile>
-		<profile>
-			<id>release-apk</id>
-			<properties>
-				<sign.skip>false</sign.skip>
-			</properties>
 		</profile>
 		<profile>
 			<id>release-sign-artifacts</id>
@@ -306,9 +214,6 @@
 					<value>true</value>
 				</property>
 			</activation>
-			<properties>
-				<sign.skip>true</sign.skip>
-			</properties>
 			<build>
 				<plugins>
 					<plugin>

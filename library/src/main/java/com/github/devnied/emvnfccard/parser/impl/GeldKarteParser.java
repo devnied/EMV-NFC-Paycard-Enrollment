@@ -23,6 +23,7 @@ import com.github.devnied.emvnfccard.enums.CommandEnum;
 import com.github.devnied.emvnfccard.enums.EmvCardScheme;
 import com.github.devnied.emvnfccard.exception.CommunicationException;
 import com.github.devnied.emvnfccard.model.Application;
+import com.github.devnied.emvnfccard.model.enums.ApplicationStepEnum;
 import com.github.devnied.emvnfccard.parser.EmvTemplate;
 import com.github.devnied.emvnfccard.utils.CommandApdu;
 import com.github.devnied.emvnfccard.utils.ResponseUtils;
@@ -54,6 +55,8 @@ public class GeldKarteParser extends AbstractParser {
 	@Override
 	public boolean parse(Application pApplication) throws CommunicationException {
 		byte[] data = selectMasterFile();
+		// TODO improve step
+		pApplication.setReadingStep(ApplicationStepEnum.SELECTED);
 		// Check response
 		if (ResponseUtils.isSucceed(data)) {
 			data = selectEF();

@@ -11,7 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.devnied.emvnfccard.exception.CommunicationException;
+import com.github.devnied.emvnfccard.iso7816emv.ITerminal;
+import com.github.devnied.emvnfccard.model.EmvCard;
 import com.github.devnied.emvnfccard.parser.EmvTemplate;
+import com.github.devnied.emvnfccard.parser.EmvTemplate.Config;
 
 public class Main {
 
@@ -38,12 +41,27 @@ public class Main {
 				Card card = terminal.connect("*");
 				LOGGER.info("card: " + card);
 
+				// Create provider
 				PcscProvider provider = new PcscProvider(card.getBasicChannel());
+				
+				// Define config
+				Config config = EmvTemplate.Config()
+						.setContactLess(false) // Enable contact less reading
+						.setReadAllAids(true) // Read all aids in card
+						.setReadTransactions(true) // Read all transactions
+						.setRemoveDefaultParsers(false); // Remove default parsers (GeldKarte and Emv)
+				
+				// Create Parser
 				EmvTemplate parser = EmvTemplate.Builder() //
-						.setProvider(provider) //
-						.setConfig(EmvTemplate.Config().setContactLess(false)) //
+						.setProvider(provider) // Define provider
+						.setConfig(config) // Define config
+						//.setTerminal(terminal) (optional) you can define a custom terminal implementation to create APDU
 						.build();
-				parser.readEmvCard();
+				
+				// Read card
+				EmvCard emvCard = parser.readEmvCard();
+				
+				LOGGER.info(emvCard.toString());
 
 				// Disconnect the card
 				card.disconnect(false);

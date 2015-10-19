@@ -350,6 +350,7 @@ public class EmvParserTest {
 		if (card != null) {
 			LOGGER.debug(card.toString());
 		}
+
 		Assertions.assertThat(card).isNotNull();
 		Assertions.assertThat(card.getBic()).isEqualTo("SPKHDE2HXXX");
 		Assertions.assertThat(card.getIban()).isEqualTo("DE11111111111111111111");
