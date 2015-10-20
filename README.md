@@ -24,11 +24,26 @@ public class YourProvider implements IProvider {
 ```
 After that, create an instance of a parser and read the card.
 ```java
-IProvider prov = new YourProvider();
-// Create parser (true for contactless false otherwise)
-EMVParser parser = new EMVParser(prov, true);
+
+// Create provider
+IProvider provider = new YourProvider();
+
+// Define config
+Config config = EmvTemplate.Config()
+		.setContactLess(true) // Enable contact less reading (default: true)
+		.setReadAllAids(true) // Read all aids in card (default: true)
+		.setReadTransactions(true) // Read all transactions (default: true)
+		.setRemoveDefaultParsers(false); // Remove default parsers for GeldKarte and EmvCard (default: false)
+
+// Create Parser
+EmvTemplate parser = EmvTemplate.Builder() //
+		.setProvider(provider) // Define provider
+		.setConfig(config) // Define config
+		//.setTerminal(terminal) (optional) you can define a custom terminal implementation to create APDU
+		.build();
+
 // Read card
-EMVCard card = parser.readEmvCard();
+EmvCard emvCard = parser.readEmvCard();
 ```
 card object contains all data read (Aid, card number, expiration date, card type, transactions history)
 
@@ -62,7 +77,7 @@ You can download this library on [Maven central](http://search.maven.org/#search
 If you are not using Maven or some other dependency management tool that can understand Maven repositories, the list below is what you need to run EMV-NFC-Paycard-Enrollment.
 
 **Runtime Dependencies**
-* commons-lang3 3.3.2
+* commons-lang3 3.1
 * bit-lib4j 1.4.10
 * commons-io 2.4
 * commons-collections4 4.0
@@ -71,31 +86,6 @@ If you are not using Maven or some other dependency management tool that can und
 **To build the project launch:**
 ```xml
 mvn clean install
-```
-
-**To build the projet and sign the Android app**
-
-Add some properties to your settings.xml
-```xml
-<settings>
-  ...
-  <profiles>
-	<profile>
-	    <id>default</id>
-	    <properties>
-            <android.sdk.path>xxxx</android.sdk.path>
-            <sign.keystore>xxx</sign.keystore>
-            <sign.alias>xxx</sign.alias>
-            <sign.keypass>xxx</sign.keypass>
-            <sign.storepass>xxx</sign.storepass>
-	    </properties>
-	</profile>
-  </profiles>
-</settings>
-```
-And use the profile release-apk
-```xml
-mvn clean install -P release-apk
 ```
 
 ## Bugs
