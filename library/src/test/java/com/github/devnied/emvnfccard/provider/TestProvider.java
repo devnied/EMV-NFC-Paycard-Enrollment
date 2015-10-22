@@ -89,5 +89,10 @@ public class TestProvider implements IProvider {
 		}
 		return ret;
 	}
+	
+	@Override
+	public byte[] getAt() {
+		return BytesUtils.fromString("3B 65 00 00 20 63 CB A0 00");
+	}
 
 }

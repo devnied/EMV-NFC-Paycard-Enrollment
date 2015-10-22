@@ -50,6 +50,11 @@ public class EmvCard extends AbstractData {
 	 * Card type
 	 */
 	private EmvCardScheme type;
+	
+	/**
+	 * Card ATS (contact less) or ATR
+	 */
+	private String at;
 
 	/**
 	 * List of Atr description
@@ -205,6 +210,25 @@ public class EmvCard extends AbstractData {
 	 */
 	public void setAtrDescription(final Collection<String> atrDescription) {
 		this.atrDescription = atrDescription;
+	}
+	
+	/**
+	 * Method used to get the field at
+	 *
+	 * @return the at value
+	 */
+	public String getAt() {
+		return at;
+	}
+
+	/**
+	 * Setter for the field at
+	 *
+	 * @param atr
+	 *            the at value to set
+	 */
+	public void setAt(final String at) {
+		this.at = at;
 	}
 
 	/**

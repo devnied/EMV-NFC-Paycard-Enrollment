@@ -72,4 +72,9 @@ public class PcscProvider implements IProvider {
 		return ret;
 	}
 
+	@Override
+	public byte[] getAt() {
+		return channel.getCard().getATR().getBytes();
+	}
+
 }

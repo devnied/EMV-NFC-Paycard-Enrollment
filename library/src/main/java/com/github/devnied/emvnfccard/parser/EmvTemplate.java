@@ -35,6 +35,7 @@ import com.github.devnied.emvnfccard.model.EmvCard;
 import com.github.devnied.emvnfccard.model.enums.CardStateEnum;
 import com.github.devnied.emvnfccard.parser.impl.EmvParser;
 import com.github.devnied.emvnfccard.parser.impl.GeldKarteParser;
+import com.github.devnied.emvnfccard.utils.AtrUtils;
 import com.github.devnied.emvnfccard.utils.CommandApdu;
 import com.github.devnied.emvnfccard.utils.ResponseUtils;
 import com.github.devnied.emvnfccard.utils.TlvUtil;
@@ -132,6 +133,11 @@ public class EmvTemplate {
 		 * Boolean used to indicate if you want to read all card aids
 		 */
 		public boolean readAllAids = true;
+		
+		/**
+		 * Boolean used to indicate if you want to extract ATS or ATR
+		 */
+		public boolean readAt = true;
 
 		/**
 		 * Boolean used to indicate to not add provided parser implementation
@@ -186,6 +192,17 @@ public class EmvTemplate {
 		 */
 		public Config setRemoveDefaultParsers(boolean removeDefaultParsers) {
 			this.removeDefaultParsers = removeDefaultParsers;
+			return this;
+		}
+		
+		/**
+		 * Setter for the field readAt (default true)
+		 *
+		 * @param readAt
+		 *            the readAt to set
+		 */
+		public Config setReadAt(boolean readAt) {
+			this.readAt = readAt;
 			return this;
 		}
 
@@ -316,6 +333,12 @@ public class EmvTemplate {
 			// Find with AID
 			readWithAID();
 		}
+		// Update ATS or ATR
+		if (config.readAt){
+			card.setAt(BytesUtils.bytesToStringNoSpace(provider.getAt()));
+			card.setAtrDescription(config.contactLess ? AtrUtils.getDescriptionFromAts(card.getAt()) : AtrUtils.getDescription(card.getAt()));
+		}
+		
 		return card;
 	}
 

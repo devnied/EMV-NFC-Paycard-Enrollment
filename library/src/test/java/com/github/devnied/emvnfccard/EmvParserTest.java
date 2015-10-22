@@ -1,6 +1,7 @@
 package com.github.devnied.emvnfccard;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.List;
 
 import org.fest.assertions.Assertions;
@@ -82,6 +83,8 @@ public class EmvParserTest {
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2015");
 		Assertions.assertThat(card.getState()).isEqualTo(CardStateEnum.ACTIVE);
+		Assertions.assertThat(card.getAt()).isEqualTo("3B6500002063CBA000");
+		Assertions.assertThat(card.getAtrDescription()).isEqualTo(Arrays.asList("CB Visa Banque Populaire (France)"));
 	}
 
 	@Test
@@ -137,6 +140,8 @@ public class EmvParserTest {
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2015");
 		Assertions.assertThat(card.getState()).isEqualTo(CardStateEnum.ACTIVE);
+		Assertions.assertThat(card.getAt()).isEqualTo("3B6500002063CBA000");
+		Assertions.assertThat(card.getAtrDescription()).isEqualTo(Arrays.asList("CB Visa Banque Populaire (France)"));
 	}
 
 	@Test
@@ -167,6 +172,8 @@ public class EmvParserTest {
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("06/2018");
 		Assertions.assertThat(card.getState()).isEqualTo(CardStateEnum.ACTIVE);
+		Assertions.assertThat(card.getAt()).isEqualTo("3B6500002063CBA000");
+		Assertions.assertThat(card.getAtrDescription()).isEqualTo(Arrays.asList("CB Visa Banque Populaire (France)"));
 	}
 
 	@Test
@@ -207,6 +214,8 @@ public class EmvParserTest {
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2015");
 		Assertions.assertThat(card.getState()).isEqualTo(CardStateEnum.ACTIVE);
+		Assertions.assertThat(card.getAt()).isEqualTo("3B6500002063CBA000");
+		Assertions.assertThat(card.getAtrDescription()).isEqualTo(Arrays.asList("CB Visa Banque Populaire (France)"));
 	}
 
 	@Test
@@ -305,6 +314,8 @@ public class EmvParserTest {
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2015");
 		Assertions.assertThat(card.getState()).isEqualTo(CardStateEnum.ACTIVE);
+		Assertions.assertThat(card.getAt()).isEqualTo("3B6500002063CBA000");
+		Assertions.assertThat(card.getAtrDescription()).isEqualTo(Arrays.asList("CB Visa Banque Populaire (France)"));
 	}
 
 	@Test
@@ -338,6 +349,8 @@ public class EmvParserTest {
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("11/2019");
 		Assertions.assertThat(card.getState()).isEqualTo(CardStateEnum.ACTIVE);
+		Assertions.assertThat(card.getAt()).isEqualTo("3B6500002063CBA000");
+		Assertions.assertThat(card.getAtrDescription()).isEqualTo(Arrays.asList("CB Visa Banque Populaire (France)"));
 	}
 
 	@Test
@@ -372,6 +385,8 @@ public class EmvParserTest {
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("11/2019");
 		Assertions.assertThat(card.getState()).isEqualTo(CardStateEnum.ACTIVE);
+		Assertions.assertThat(card.getAt()).isEqualTo("3B6500002063CBA000");
+		Assertions.assertThat(card.getAtrDescription()).isEqualTo(Arrays.asList("CB Visa Banque Populaire (France)"));
 	}
 
 	@Test
@@ -426,6 +441,8 @@ public class EmvParserTest {
 		SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");
 		Assertions.assertThat(sdf2.format(record.getDate())).isEqualTo("12/01/2011");
 		Assertions.assertThat(card.getState()).isEqualTo(CardStateEnum.ACTIVE);
+		Assertions.assertThat(card.getAt()).isEqualTo("3B6500002063CBA000");
+		Assertions.assertThat(card.getAtrDescription()).isEqualTo(Arrays.asList("CB Visa Banque Populaire (France)"));
 
 	}
 
@@ -466,6 +483,8 @@ public class EmvParserTest {
 		SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");
 		Assertions.assertThat(sdf2.format(record.getDate())).isEqualTo("12/01/2011");
 		Assertions.assertThat(card.getState()).isEqualTo(CardStateEnum.ACTIVE);
+		Assertions.assertThat(card.getAt()).isEqualTo("3B6500002063CBA000");
+		Assertions.assertThat(card.getAtrDescription()).isEqualTo(Arrays.asList("CB Visa Banque Populaire (France)"));
 
 	}
 
@@ -507,6 +526,8 @@ public class EmvParserTest {
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2015");
 		Assertions.assertThat(card.getState()).isEqualTo(CardStateEnum.ACTIVE);
+		Assertions.assertThat(card.getAt()).isEqualTo("3B6500002063CBA000");
+		Assertions.assertThat(card.getAtrDescription()).isEqualTo(Arrays.asList("CB Visa Banque Populaire (France)"));
 	}
 
 	@Test
@@ -548,6 +569,8 @@ public class EmvParserTest {
 		Assertions.assertThat(record.getTerminalCountry()).isEqualTo(CountryCodeEnum.FR);
 		Assertions.assertThat(record.getDate()).isNotNull();
 		Assertions.assertThat(card.getState()).isEqualTo(CardStateEnum.ACTIVE);
+		Assertions.assertThat(card.getAt()).isEqualTo("3B6500002063CBA000");
+		Assertions.assertThat(card.getAtrDescription()).isEqualTo(Arrays.asList("CB Visa Banque Populaire (France)"));
 	}
 
 	@Test
@@ -555,7 +578,7 @@ public class EmvParserTest {
 
 		EmvTemplate parser = EmvTemplate.Builder() //
 				.setProvider(new TestProvider("FailPpseVisaAid")) //
-				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true)) //
+				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true).setReadAt(true)) //
 				.build();
 		EmvCard card = parser.readEmvCard();
 
@@ -578,6 +601,8 @@ public class EmvParserTest {
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("08/2014");
 		Assertions.assertThat(card.getState()).isEqualTo(CardStateEnum.ACTIVE);
+		Assertions.assertThat(card.getAt()).isEqualTo("3B6500002063CBA000");
+		Assertions.assertThat(card.getAtrDescription()).isEqualTo(Arrays.asList("CB Visa Banque Populaire (France)"));
 	}
 
 	@Test
@@ -749,7 +774,7 @@ public class EmvParserTest {
 	public void testReadWithAid() throws Exception {
 		EmvTemplate parser = EmvTemplate.Builder() //
 				.setProvider(new TestProvider("VisaCardAid")) //
-				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true)) //
+				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true).setReadAt(false)) //
 				.build();
 		Whitebox.invokeMethod(parser, EmvTemplate.class, "readWithAID");
 		EmvCard card = parser.getCard();
@@ -775,6 +800,8 @@ public class EmvParserTest {
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2014");
 		Assertions.assertThat(card.getState()).isEqualTo(CardStateEnum.ACTIVE);
+		Assertions.assertThat(card.getAt()).isEqualTo(null);
+		Assertions.assertThat(card.getAtrDescription()).isEqualTo(null);
 	}
 
 	@Test

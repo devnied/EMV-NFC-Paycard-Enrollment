@@ -33,5 +33,11 @@ public interface IProvider {
 	 * @return byte array returned by card
 	 */
 	byte[] transceive(byte[] pCommand) throws CommunicationException;
+	
+	/**
+	 * Method used to get the card ATR or ATS
+	 * @return the card Answer to reset or Answer to select
+	 */
+	byte[] getAt();
 
 }

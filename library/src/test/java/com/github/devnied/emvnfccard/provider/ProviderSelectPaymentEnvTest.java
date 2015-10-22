@@ -50,5 +50,10 @@ public class ProviderSelectPaymentEnvTest implements IProvider {
 	public void setReturnedData(final String returnedData) {
 		this.returnedData = returnedData;
 	}
+	
+	@Override
+	public byte[] getAt() {
+		return BytesUtils.fromString("3B 65 00 00 20 63 CB A0 00");
+	}
 
 }
