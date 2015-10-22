@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>sample-pcsc</artifactId>
 	<packaging>jar</packaging>
-	<name>EMV NFC pcsc paycard reader</name>
+	<name>EMV Paycard - PCSC sample</name>
 
 	<parent>
 		<groupId>com.github.devnied.emvnfccard</groupId>

@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>library</artifactId>
 	<packaging>jar</packaging>
-	<name>EMV paycard library</name>
+	<name>EMV Paycard - Library</name>
 
 	<parent>
 		<groupId>com.github.devnied.emvnfccard</groupId>
