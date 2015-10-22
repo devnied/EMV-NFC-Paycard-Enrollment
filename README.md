@@ -33,7 +33,9 @@ Config config = EmvTemplate.Config()
 		.setContactLess(true) // Enable contact less reading (default: true)
 		.setReadAllAids(true) // Read all aids in card (default: true)
 		.setReadTransactions(true) // Read all transactions (default: true)
-		.setRemoveDefaultParsers(false); // Remove default parsers for GeldKarte and EmvCard (default: false)
+		.setRemoveDefaultParsers(false) // Remove default parsers for GeldKarte and EmvCard (default: false)
+		.setReadAt(true) // Read and extract ATR/ATS and description
+		; 
 
 // Create Parser
 EmvTemplate parser = EmvTemplate.Builder() //
