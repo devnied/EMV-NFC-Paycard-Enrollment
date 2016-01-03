@@ -328,15 +328,15 @@ public class EmvTemplate {
 	 * @return data read from card or null if any provider match the card type
 	 */
 	public EmvCard readEmvCard() throws CommunicationException {
-		// use PSE first
-		if (!readWithPSE()) {
-			// Find with AID
-			readWithAID();
-		}
 		// Update ATS or ATR
 		if (config.readAt){
 			card.setAt(BytesUtils.bytesToStringNoSpace(provider.getAt()));
 			card.setAtrDescription(config.contactLess ? AtrUtils.getDescriptionFromAts(card.getAt()) : AtrUtils.getDescription(card.getAt()));
+		}
+		// use PSE first
+		if (!readWithPSE()) {
+			// Find with AID
+			readWithAID();
 		}
 		
 		return card;
