@@ -36,6 +36,7 @@ import com.github.devnied.emvnfccard.model.enums.CardStateEnum;
 import com.github.devnied.emvnfccard.parser.impl.EmvParser;
 import com.github.devnied.emvnfccard.parser.impl.GeldKarteParser;
 import com.github.devnied.emvnfccard.utils.AtrUtils;
+import com.github.devnied.emvnfccard.utils.CPLCUtils;
 import com.github.devnied.emvnfccard.utils.CommandApdu;
 import com.github.devnied.emvnfccard.utils.ResponseUtils;
 import com.github.devnied.emvnfccard.utils.TlvUtil;
@@ -138,6 +139,11 @@ public class EmvTemplate {
 		 * Boolean used to indicate if you want to extract ATS or ATR
 		 */
 		public boolean readAt = true;
+		
+		/**
+		 * Boolean used to indicate if you want to read CPLC data
+		 */
+		public boolean readCplc = false;
 
 		/**
 		 * Boolean used to indicate to not add provided parser implementation
@@ -203,6 +209,17 @@ public class EmvTemplate {
 		 */
 		public Config setReadAt(boolean readAt) {
 			this.readAt = readAt;
+			return this;
+		}
+		
+		/**
+		 * Setter for the field readCplc (default true)
+		 *
+		 * @param readCplc
+		 *            the readCplc to set
+		 */
+		public Config setReadCplc(boolean readCplc) {
+			this.readCplc = readCplc;
 			return this;
 		}
 
@@ -328,6 +345,11 @@ public class EmvTemplate {
 	 * @return data read from card or null if any provider match the card type
 	 */
 	public EmvCard readEmvCard() throws CommunicationException {
+		// Read CPLC Infos
+		if (config.readCplc){
+			readCPLCInfos();
+		}
+		
 		// Update ATS or ATR
 		if (config.readAt){
 			card.setAt(BytesUtils.bytesToStringNoSpace(provider.getAt()));
@@ -340,6 +362,17 @@ public class EmvTemplate {
 		}
 		
 		return card;
+	}
+
+	/**
+	 * 
+	 * Try to read generic infos about the SmartCard as defined in the 
+	 * "GlobalPlatform Card Specification" (GPCS).
+	 * @throws CommunicationException 
+	 * 
+	 */
+	protected void readCPLCInfos() throws CommunicationException {
+		card.setCplc(CPLCUtils.parse(provider.transceive(new CommandApdu(CommandEnum.GET_DATA, 0x9F, 0x7F, null, 0).toBytes())));
 	}
 
 	/**

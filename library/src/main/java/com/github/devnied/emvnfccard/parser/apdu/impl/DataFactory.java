@@ -15,6 +15,7 @@
  */
 package com.github.devnied.emvnfccard.parser.apdu.impl;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import org.slf4j.Logger;
@@ -42,6 +43,8 @@ public final class DataFactory {
 	 * Constant for EN1545-1 (Date format)
 	 */
 	public static final int BCD_DATE = 1;
+	
+	public static final int CPCL_DATE = 2;
 
 	/**
 	 * Half byte size
@@ -66,12 +69,54 @@ public final class DataFactory {
 		Date date = null;
 		if (pAnnotation.getDateStandard() == BCD_DATE) {
 			date = pBit.getNextDate(pAnnotation.getSize(), pAnnotation.getFormat(), true);
+		} else if (pAnnotation.getDateStandard() == CPCL_DATE) {
+			date = calculateCplcDate(pBit.getNextByte(pAnnotation.getSize()));
 		} else {
 			date = pBit.getNextDate(pAnnotation.getSize(), pAnnotation.getFormat());
 		}
 		return date;
 	}
 
+	
+	/**
+	 * Takes a date value as used in CPLC Date fields (represented by 2 bytes)
+	 * 
+	 * @param paramByte1
+	 * @param paramByte2
+	 * @throws IllegalArgumentException
+	 * @return
+	 */
+	public static Date calculateCplcDate(byte[] dateBytes)
+			throws IllegalArgumentException {
+		if (dateBytes == null || dateBytes.length != 2) {
+			throw new IllegalArgumentException(
+					"Error! CLCP Date values consist always of exactly 2 bytes");
+		}
+		// current time
+		Calendar now = Calendar.getInstance();
+
+		int year = now.get(Calendar.YEAR);
+		int startYearOfCurrentDecade = year - (year % 10);
+
+		int days = 100 * (dateBytes[0] & 0xF) + 10 * (0xF & dateBytes[1] >>> 4)
+				+ (dateBytes[1] & 0xF);
+
+		if (days > 366) {
+			throw new IllegalArgumentException(
+					"Invalid date (or are we parsing it wrong??)");
+		}
+
+		Calendar calculatedDate = Calendar.getInstance();
+		calculatedDate.clear();
+		calculatedDate.set(Calendar.YEAR, startYearOfCurrentDecade
+				+ (0xF & dateBytes[0] >>> 4));
+		calculatedDate.set(Calendar.DAY_OF_YEAR, days);
+		while (calculatedDate.after(now)) {
+			calculatedDate.add(Calendar.YEAR, -10);
+		}
+		return calculatedDate.getTime();
+	}
+	
 	/**
 	 * This method is used to get an integer
 	 * 

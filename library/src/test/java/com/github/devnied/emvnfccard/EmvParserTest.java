@@ -49,7 +49,7 @@ public class EmvParserTest {
 
 		EmvTemplate parser = EmvTemplate.Builder() //
 				.setProvider(new TestProvider("VisaCardPpse")) //
-				.setConfig(EmvTemplate.Config()) //
+				.setConfig(EmvTemplate.Config().setReadCplc(true)) //
 				.build();
 		EmvCard card = parser.readEmvCard();
 
@@ -92,7 +92,7 @@ public class EmvParserTest {
 
 		EmvTemplate parser = EmvTemplate.Builder() //
 				.setProvider(new TestProvider("UnknownCard")) //
-				.setConfig(EmvTemplate.Config()) //
+				.setConfig(EmvTemplate.Config().setReadCplc(true)) //
 				.build();
 		EmvCard card = parser.readEmvCard();
 
@@ -113,7 +113,7 @@ public class EmvParserTest {
 
 		EmvTemplate parser = EmvTemplate.Builder() //
 				.setProvider(new TestProvider("VisaCardPpseNoOptions")) //
-				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(false).setReadTransactions(false)) //
+				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(false).setReadTransactions(false).setReadCplc(true)) //
 				.build();
 		EmvCard card = parser.readEmvCard();
 
@@ -149,7 +149,7 @@ public class EmvParserTest {
 
 		EmvTemplate parser = EmvTemplate.Builder() //
 				.setProvider(new TestProvider("VisaCardPpse3")) //
-				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true)).build();
+				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true).setReadCplc(true)).build();
 		EmvCard card = parser.readEmvCard();
 
 		if (card != null) {
@@ -181,7 +181,7 @@ public class EmvParserTest {
 
 		EmvTemplate parser = EmvTemplate.Builder() //
 				.setProvider(new TestProvider("VisaCardNullTransaction")) //
-				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true)).build();
+				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true).setReadCplc(true)).build();
 		EmvCard card = parser.readEmvCard();
 
 		if (card != null) {
@@ -281,7 +281,7 @@ public class EmvParserTest {
 
 		EmvTemplate parser = EmvTemplate.Builder() //
 				.setProvider(new TestProvider("MasterCardPpse")) //
-				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true)).build();
+				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true).setReadCplc(true)).build();
 		EmvCard card = parser.readEmvCard();
 
 		if (card != null) {
@@ -322,7 +322,7 @@ public class EmvParserTest {
 	public void testPPSEInteract() throws CommunicationException {
 		EmvTemplate parser = EmvTemplate.Builder() //
 				.setProvider(new TestProvider("InteractPpse")) //
-				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true)).build();
+				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true).setReadCplc(true)).build();
 		EmvCard card = parser.readEmvCard();
 
 		if (card != null) {
@@ -357,7 +357,7 @@ public class EmvParserTest {
 	public void testPPSEGeldKarte() throws CommunicationException {
 		EmvTemplate parser = EmvTemplate.Builder() //
 				.setProvider(new TestProvider("GeldKartePpse")) //
-				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true)).build();
+				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true).setReadCplc(true)).build();
 		EmvCard card = parser.readEmvCard();
 
 		if (card != null) {
@@ -394,7 +394,7 @@ public class EmvParserTest {
 
 		EmvTemplate parser = EmvTemplate.Builder() //
 				.setProvider(new TestProvider("MasterCardPpse2")) //
-				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true)).build();
+				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true).setReadCplc(true)).build();
 		EmvCard card = parser.readEmvCard();
 
 		if (card != null) {
@@ -451,7 +451,7 @@ public class EmvParserTest {
 
 		EmvTemplate parser = EmvTemplate.Builder() //
 				.setProvider(new TestProvider("MasterCardPpse3")) //
-				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true)).build();
+				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true).setReadCplc(true)).build();
 		EmvCard card = parser.readEmvCard();
 
 		if (card != null) {
@@ -493,7 +493,7 @@ public class EmvParserTest {
 
 		EmvTemplate parser = EmvTemplate.Builder() //
 				.setProvider(new TestProvider("VisaCardPpse2")) //
-				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true)).build();
+				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true).setReadCplc(true)).build();
 		EmvCard card = parser.readEmvCard();
 
 		if (card != null) {
@@ -535,7 +535,7 @@ public class EmvParserTest {
 
 		EmvTemplate parser = EmvTemplate.Builder() //
 				.setProvider(new TestProvider("VisaCardPse")) //
-				.setConfig(EmvTemplate.Config().setContactLess(false)) //
+				.setConfig(EmvTemplate.Config().setContactLess(false).setReadCplc(true)) //
 				.build();
 		EmvCard card = parser.readEmvCard();
 
@@ -578,7 +578,7 @@ public class EmvParserTest {
 
 		EmvTemplate parser = EmvTemplate.Builder() //
 				.setProvider(new TestProvider("FailPpseVisaAid")) //
-				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true).setReadAt(true)) //
+				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true).setReadAt(true).setReadCplc(true)) //
 				.build();
 		EmvCard card = parser.readEmvCard();
 
@@ -803,6 +803,23 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getAt()).isEqualTo(null);
 		Assertions.assertThat(card.getAtrDescription()).isEqualTo(null);
 	}
+	
+	@Test
+	public void testReadCpcl() throws Exception {
+		EmvTemplate template = EmvTemplate.Builder() //
+				.setProvider(new TestProvider("VisaCardPpseNoCplc")) //
+				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true).setReadCplc(false)) //
+				.build();
+		EmvCard card = template.readEmvCard();
+
+		if (card != null) {
+			LOGGER.debug(card.toString());
+		}
+		Assertions.assertThat(card).isNotNull();
+		Assertions.assertThat(card.getCplc()).isNull();
+		Assertions.assertThat(card.getHolderLastname()).isNull();
+		Assertions.assertThat(card.getHolderFirstname()).isNull();
+	}
 
 	@Test
 	public void testextractCardHolderNameNull() throws Exception {
@@ -888,7 +905,7 @@ public class EmvParserTest {
 	public void testLockedCard() throws Exception {
 		EmvTemplate parser = EmvTemplate.Builder() //
 				.setProvider(new TestProvider("LockedCard")) //
-				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true)) //
+				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true).setReadCplc(true)) //
 				.build();
 		EmvCard card = parser.readEmvCard();
 
@@ -903,7 +920,7 @@ public class EmvParserTest {
 	public void testFailErrorCard() throws Exception {
 		EmvTemplate parser = EmvTemplate.Builder() //
 				.setProvider(new TestProvider("FailErrorCard")) //
-				.setConfig(EmvTemplate.Config()).build();
+				.setConfig(EmvTemplate.Config().setReadCplc(true)).build();
 		EmvCard card = parser.readEmvCard();
 
 		if (card != null) {

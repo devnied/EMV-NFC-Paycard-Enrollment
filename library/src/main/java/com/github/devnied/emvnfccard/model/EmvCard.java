@@ -37,6 +37,11 @@ public class EmvCard extends AbstractData {
 	private static final long serialVersionUID = 736740432469989941L;
 
 	/**
+	 * CPLC data
+	 */
+	private CPLC cplc;
+	
+	/**
 	 * Holder Lastname
 	 */
 	private String holderLastname;
@@ -334,4 +339,22 @@ public class EmvCard extends AbstractData {
 	public List<Application> getApplications() {
 		return applications;
 	}
+
+	/**
+	 * Get the field cplc
+	 * @return the cplc
+	 */
+	public CPLC getCplc() {
+		return cplc;
+	}
+
+	/**
+	 * Setter for the field cplc
+	 *
+	 * @param cplc the cplc to set
+	 */
+	public void setCplc(CPLC cplc) {
+		this.cplc = cplc;
+	}
+	
 }

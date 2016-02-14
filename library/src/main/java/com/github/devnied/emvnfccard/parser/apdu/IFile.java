@@ -15,6 +15,7 @@
  */
 package com.github.devnied.emvnfccard.parser.apdu;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.github.devnied.emvnfccard.iso7816emv.TagAndLength;
@@ -35,6 +36,6 @@ public interface IFile {
 	 * @param pList
 	 *            Tag and length
 	 */
-	void parse(final byte[] pData, final List<TagAndLength> pList);
+	void parse(final byte[] pData, final Collection<TagAndLength> pList);
 
 }

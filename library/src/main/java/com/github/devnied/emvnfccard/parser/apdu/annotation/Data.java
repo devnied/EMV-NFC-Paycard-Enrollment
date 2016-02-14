@@ -60,5 +60,5 @@ public @interface Data {
 	/**
 	 * Tag Name
 	 */
-	String tag();
+	String tag() default "";
 }

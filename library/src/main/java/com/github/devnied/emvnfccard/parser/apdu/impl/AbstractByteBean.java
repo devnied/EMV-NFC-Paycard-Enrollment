@@ -19,7 +19,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -56,7 +55,7 @@ public abstract class AbstractByteBean<T> extends AbstractData implements IFile 
 	 * 
 	 * @return An annotation set which contain all annotation data
 	 */
-	private Collection<AnnotationData> getAnnotationSet(final List<TagAndLength> pTags) {
+	private Collection<AnnotationData> getAnnotationSet(final Collection<TagAndLength> pTags) {
 		Collection<AnnotationData> ret = null;
 		if (pTags != null) {
 			Map<ITag, AnnotationData> data = AnnotationUtils.getInstance().getMap().get(getClass().getName());
@@ -86,7 +85,7 @@ public abstract class AbstractByteBean<T> extends AbstractData implements IFile 
 	 * @param pTags
 	 */
 	@Override
-	public void parse(final byte[] pData, final List<TagAndLength> pTags) {
+	public void parse(final byte[] pData, final Collection<TagAndLength> pTags) {
 		Collection<AnnotationData> set = getAnnotationSet(pTags);
 		BitUtils bit = new BitUtils(pData);
 		Iterator<AnnotationData> it = set.iterator();
