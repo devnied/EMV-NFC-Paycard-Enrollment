@@ -24,21 +24,29 @@ public final class CPLCUtils {
 	 */
 	private static final ITag CPLC_TAG = new TagImpl("9f7f", TagValueTypeEnum.BINARY, "Card Production Life Cycle Data", "");
 
+	/**
+	 * Method used to parse and extract CPLC data
+	 * @param raw raw data
+	 * @return CPLC data 
+	 */
 	public static CPLC parse(byte[] raw) {
-		CPLC ret = new CPLC();
-		byte[] cplc = null;
-		// try to interpret as raw data (not TLV)
-		if (raw.length == CPLC.SIZE + 2) {
-			cplc = raw;
+		CPLC ret = null;
+		if (raw != null) {
+			byte[] cplc = null;
+			// try to interpret as raw data (not TLV)
+			if (raw.length == CPLC.SIZE + 2) {
+				cplc = raw;
+			}
+			// or maybe it's prepended with CPLC tag:
+			else if (raw.length == CPLC.SIZE + 5) {
+				cplc = TlvUtil.getValue(raw, CPLC_TAG);
+			} else {
+				LOGGER.error("CPLC data not valid");
+				return null;
+			}
+			ret = new CPLC();
+			ret.parse(cplc,null);
 		}
-		// or maybe it's prepended with CPLC tag:
-		else if (raw.length == CPLC.SIZE + 5) {
-			cplc = TlvUtil.getValue(raw, CPLC_TAG);
-		} else {
-			LOGGER.error("CPLC data not valid");
-			return null;
-		}
-		ret.parse(cplc,null);
 		return ret;
 	}
 	

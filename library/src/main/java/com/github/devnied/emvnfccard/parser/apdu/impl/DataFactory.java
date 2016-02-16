@@ -92,14 +92,17 @@ public final class DataFactory {
 			throw new IllegalArgumentException(
 					"Error! CLCP Date values consist always of exactly 2 bytes");
 		}
+		// Check empty date
+		if (dateBytes[0] == 0 && dateBytes[1] == 0){
+			return null;
+		}
 		// current time
 		Calendar now = Calendar.getInstance();
 
-		int year = now.get(Calendar.YEAR);
-		int startYearOfCurrentDecade = year - (year % 10);
+		int currenctYear = now.get(Calendar.YEAR);
+		int startYearOfCurrentDecade = currenctYear - (currenctYear % 10);
 
-		int days = 100 * (dateBytes[0] & 0xF) + 10 * (0xF & dateBytes[1] >>> 4)
-				+ (dateBytes[1] & 0xF);
+		int days = 100 * (dateBytes[0] & 0xF) + 10 * (0xF & dateBytes[1] >>> 4) + (dateBytes[1] & 0xF);
 
 		if (days > 366) {
 			throw new IllegalArgumentException(
@@ -108,11 +111,14 @@ public final class DataFactory {
 
 		Calendar calculatedDate = Calendar.getInstance();
 		calculatedDate.clear();
-		calculatedDate.set(Calendar.YEAR, startYearOfCurrentDecade
-				+ (0xF & dateBytes[0] >>> 4));
+		int year = startYearOfCurrentDecade + (0xF & dateBytes[0] >>> 4);
+		calculatedDate.set(Calendar.YEAR, year);
 		calculatedDate.set(Calendar.DAY_OF_YEAR, days);
 		while (calculatedDate.after(now)) {
-			calculatedDate.add(Calendar.YEAR, -10);
+			year = year - 10;
+			calculatedDate.clear();
+			calculatedDate.set(Calendar.YEAR, year);
+			calculatedDate.set(Calendar.DAY_OF_YEAR, days);
 		}
 		return calculatedDate.getTime();
 	}

@@ -27,58 +27,58 @@ public class CPLC extends AbstractByteBean<CPLC> implements Serializable {
 	
 	
 	@Data(index = 1, size = 16)
-	private String ic_fabricator;
+	private Integer ic_fabricator;
 	
 	@Data(index = 2, size = 16)
-	private String ic_type;
+	private Integer ic_type;
 	
 	@Data(index = 3, size = 16)
-	private String os;
+	private Integer os;
 	
 	@Data(index = 4, size = 16, dateStandard = DataFactory.CPCL_DATE)
 	private Date os_release_date;
 	
 	@Data(index = 5, size = 16)
-	private String os_release_level;
+	private Integer os_release_level;
 	
 	@Data(index = 6, size = 16, dateStandard = DataFactory.CPCL_DATE)
 	private Date ic_fabric_date;
 	
 	@Data(index = 7, size = 32)
-	private String ic_serial_number;
+	private Integer ic_serial_number;
 	
 	@Data(index = 8, size = 16)
-	private String ic_batch_id;
+	private Integer ic_batch_id;
 	
 	@Data(index = 9, size = 16)
-	private String ic_module_fabricator;
+	private Integer ic_module_fabricator;
 	
 	@Data(index = 10, size = 16, dateStandard = DataFactory.CPCL_DATE)
 	private Date ic_packaging_date;
 	
 	@Data(index = 11, size = 16)
-	private String icc_manufacturer;
+	private Integer icc_manufacturer;
 	
 	@Data(index = 12, size = 16, dateStandard = DataFactory.CPCL_DATE)
 	private Date ic_embedding_date;
 	
 	@Data(index = 13, size = 16)
-	private String preperso_id;
+	private Integer preperso_id;
 	
 	@Data(index = 14, size = 16, dateStandard = DataFactory.CPCL_DATE)
 	private Date preperso_date;
 	
 	@Data(index = 15, size = 32)
-	private String preperso_equipment;
+	private Integer preperso_equipment;
 	
 	@Data(index = 16, size = 16)
-	private String perso_id;
+	private Integer perso_id;
 	
 	@Data(index = 17, size = 16, dateStandard = DataFactory.CPCL_DATE)
 	private Date perso_date;
 	
 	@Data(index = 18, size = 32)
-	private String perso_equipment;
+	private Integer perso_equipment;
 	
 	
 
@@ -86,7 +86,7 @@ public class CPLC extends AbstractByteBean<CPLC> implements Serializable {
 	 * Get the field ic_fabricator
 	 * @return the ic_fabricator
 	 */
-	public String getIc_fabricator() {
+	public Integer getIcFabricator() {
 		return ic_fabricator;
 	}
 
@@ -94,7 +94,7 @@ public class CPLC extends AbstractByteBean<CPLC> implements Serializable {
 	 * Get the field ic_type
 	 * @return the ic_type
 	 */
-	public String getIc_type() {
+	public Integer getIcType() {
 		return ic_type;
 	}
 
@@ -102,7 +102,7 @@ public class CPLC extends AbstractByteBean<CPLC> implements Serializable {
 	 * Get the field os
 	 * @return the os
 	 */
-	public String getOs() {
+	public Integer getOs() {
 		return os;
 	}
 
@@ -110,7 +110,7 @@ public class CPLC extends AbstractByteBean<CPLC> implements Serializable {
 	 * Get the field os_release_date
 	 * @return the os_release_date
 	 */
-	public Date getOs_release_date() {
+	public Date getOsReleaseDate() {
 		return os_release_date;
 	}
 
@@ -118,7 +118,7 @@ public class CPLC extends AbstractByteBean<CPLC> implements Serializable {
 	 * Get the field os_release_level
 	 * @return the os_release_level
 	 */
-	public String getOs_release_level() {
+	public Integer getOsReleaseLevel() {
 		return os_release_level;
 	}
 
@@ -126,7 +126,7 @@ public class CPLC extends AbstractByteBean<CPLC> implements Serializable {
 	 * Get the field ic_fabric_date
 	 * @return the ic_fabric_date
 	 */
-	public Date getIc_fabric_date() {
+	public Date getIcFabricDate() {
 		return ic_fabric_date;
 	}
 
@@ -134,7 +134,7 @@ public class CPLC extends AbstractByteBean<CPLC> implements Serializable {
 	 * Get the field ic_serial_number
 	 * @return the ic_serial_number
 	 */
-	public String getIc_serial_number() {
+	public Integer getIcSerialNumber() {
 		return ic_serial_number;
 	}
 
@@ -142,7 +142,7 @@ public class CPLC extends AbstractByteBean<CPLC> implements Serializable {
 	 * Get the field ic_batch_id
 	 * @return the ic_batch_id
 	 */
-	public String getIc_batch_id() {
+	public Integer getIcBatchId() {
 		return ic_batch_id;
 	}
 
@@ -150,7 +150,7 @@ public class CPLC extends AbstractByteBean<CPLC> implements Serializable {
 	 * Get the field ic_module_fabricator
 	 * @return the ic_module_fabricator
 	 */
-	public String getIc_module_fabricator() {
+	public Integer getIcModuleFabricator() {
 		return ic_module_fabricator;
 	}
 
@@ -158,7 +158,7 @@ public class CPLC extends AbstractByteBean<CPLC> implements Serializable {
 	 * Get the field ic_packaging_date
 	 * @return the ic_packaging_date
 	 */
-	public Date getIc_packaging_date() {
+	public Date getIcPackagingDate() {
 		return ic_packaging_date;
 	}
 
@@ -166,7 +166,7 @@ public class CPLC extends AbstractByteBean<CPLC> implements Serializable {
 	 * Get the field icc_manufacturer
 	 * @return the icc_manufacturer
 	 */
-	public String getIcc_manufacturer() {
+	public Integer getIccManufacturer() {
 		return icc_manufacturer;
 	}
 
@@ -174,7 +174,7 @@ public class CPLC extends AbstractByteBean<CPLC> implements Serializable {
 	 * Get the field ic_embedding_date
 	 * @return the ic_embedding_date
 	 */
-	public Date getIc_embedding_date() {
+	public Date getIcEmbeddingDate() {
 		return ic_embedding_date;
 	}
 
@@ -182,7 +182,7 @@ public class CPLC extends AbstractByteBean<CPLC> implements Serializable {
 	 * Get the field preperso_id
 	 * @return the preperso_id
 	 */
-	public String getPreperso_id() {
+	public Integer getPrepersoId() {
 		return preperso_id;
 	}
 
@@ -190,7 +190,7 @@ public class CPLC extends AbstractByteBean<CPLC> implements Serializable {
 	 * Get the field preperso_date
 	 * @return the preperso_date
 	 */
-	public Date getPreperso_date() {
+	public Date getPrepersoDate() {
 		return preperso_date;
 	}
 
@@ -198,7 +198,7 @@ public class CPLC extends AbstractByteBean<CPLC> implements Serializable {
 	 * Get the field preperso_equipment
 	 * @return the preperso_equipment
 	 */
-	public String getPreperso_equipment() {
+	public Integer getPrepersoEquipment() {
 		return preperso_equipment;
 	}
 
@@ -206,7 +206,7 @@ public class CPLC extends AbstractByteBean<CPLC> implements Serializable {
 	 * Get the field perso_id
 	 * @return the perso_id
 	 */
-	public String getPerso_id() {
+	public Integer getPersoId() {
 		return perso_id;
 	}
 
@@ -214,7 +214,7 @@ public class CPLC extends AbstractByteBean<CPLC> implements Serializable {
 	 * Get the field perso_date
 	 * @return the perso_date
 	 */
-	public Date getPerso_date() {
+	public Date getPersoDate() {
 		return perso_date;
 	}
 
@@ -222,7 +222,7 @@ public class CPLC extends AbstractByteBean<CPLC> implements Serializable {
 	 * Get the field perso_equipment
 	 * @return the perso_equipment
 	 */
-	public String getPerso_equipment() {
+	public Integer getPersoEquipment() {
 		return perso_equipment;
 	}
 
