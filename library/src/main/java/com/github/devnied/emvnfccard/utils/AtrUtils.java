@@ -20,13 +20,16 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.regex.Pattern;
 
-import org.apache.commons.collections4.MultiMap;
-import org.apache.commons.collections4.map.MultiValueMap;
+import org.apache.commons.collections4.MultiValuedMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.CharEncoding;
 import org.apache.commons.lang3.StringUtils;
+import org.hamcrest.core.SubstringMatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +49,7 @@ public final class AtrUtils {
 	/**
 	 * MultiMap containing ATR
 	 */
-	private static final MultiMap<String, String> MAP = new MultiValueMap<String, String>();
+	private static final MultiValuedMap<String, String> MAP = new ArrayListValuedHashMap<String, String>();
 
 	static {
 		InputStream is = null;
@@ -68,7 +71,7 @@ public final class AtrUtils {
 				} else if (line.startsWith("\t") && currentATR != null) {
 					MAP.put(currentATR, line.replace("\t", "").trim());
 				} else if (line.startsWith("3")) { // ATR hex
-					currentATR = StringUtils.deleteWhitespace(line.toUpperCase());
+					currentATR = StringUtils.deleteWhitespace(line.toUpperCase()).replaceAll("9000$", "");
 				} else {
 					LOGGER.error("Encountered unexpected line in atr list: currentATR=" + currentATR + " Line(" + lineNumber
 							+ ") = " + line);
@@ -90,11 +93,10 @@ public final class AtrUtils {
 	 *            Card ATR
 	 * @return list of description
 	 */
-	@SuppressWarnings("unchecked")
 	public static final Collection<String> getDescription(final String pAtr) {
 		Collection<String> ret = null;
 		if (StringUtils.isNotBlank(pAtr)) {
-			String val = StringUtils.deleteWhitespace(pAtr);
+			String val = StringUtils.deleteWhitespace(pAtr).toUpperCase();
 			for (String key : MAP.keySet()) {
 				if (val.matches("^" + key + "$")) {
 					ret = (Collection<String>) MAP.get(key);
@@ -112,15 +114,30 @@ public final class AtrUtils {
 	 *            EMV card ATS
 	 * @return card description
 	 */
-	@SuppressWarnings("unchecked")
 	public static final Collection<String> getDescriptionFromAts(final String pAts) {
-		Collection<String> ret = null;
+		Collection<String> ret = new ArrayList<String>();
 		if (StringUtils.isNotBlank(pAts)) {
-			String val = StringUtils.deleteWhitespace(pAts);
+			String val = StringUtils.deleteWhitespace(pAts).replaceAll("9000$", "");
 			for (String key : MAP.keySet()) {
-				if (key.contains(val)) { // TODO Fix this
-					ret = (Collection<String>) MAP.get(key);
-					break;
+				int j = val.length() - 1;
+				int i = key.length() - 1;
+				while (i >= 0) {
+					if (key.charAt(i) == '.' || key.charAt(i) == val.charAt(j)  ){
+						j--;
+						i--;
+						if (j < 0){
+							if (!key.substring(key.length() - val.length(), key.length()).replace(".", "").isEmpty()){
+								ret.addAll(MAP.get(key));
+							}
+							break;
+						}
+					} else if (j != val.length() - 1) {
+						j = val.length() - 1;
+					} else if (i == key.length() - 1){
+						break;
+					} else {
+						i--;
+					}
 				}
 			}
 		}

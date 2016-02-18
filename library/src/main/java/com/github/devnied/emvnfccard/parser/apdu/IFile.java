@@ -16,7 +16,6 @@
 package com.github.devnied.emvnfccard.parser.apdu;
 
 import java.util.Collection;
-import java.util.List;
 
 import com.github.devnied.emvnfccard.iso7816emv.TagAndLength;
 

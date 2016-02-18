@@ -22,8 +22,15 @@ public class AtrTest {
 	@Test
 	public void testDescriptionFromATS() {
 
-		Assertions.assertThat(AtrUtils.getDescriptionFromAts("20 63 CB A3 A0")).isEqualTo(
-				Arrays.asList("VISA card from Banque Populaire"));
+		Assertions.assertThat(AtrUtils.getDescriptionFromAts("20 63 CB A3 A0")).contains(
+				"VISA card from Banque Populaire");
 		Assertions.assertThat(AtrUtils.getDescription(null)).isEqualTo(null);
+	}
+	
+	@Test
+	public void testDescriptionFromATS2() {
+
+		Assertions.assertThat(AtrUtils.getDescriptionFromAts("0F 55 B0 11 69 FF 4A 50 D0 80 00 49 54 03")).contains(
+				"Sky (Italy) VideoGuard CAM card");
 	}
 }

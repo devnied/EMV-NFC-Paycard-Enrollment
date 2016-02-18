@@ -50,6 +50,7 @@ public class Main {
 						.setReadAllAids(true) // Read all aids in card
 						.setReadTransactions(true) // Read all transactions
 						.setRemoveDefaultParsers(false) // Remove default parsers (GeldKarte and Emv)
+						.setReadAt(true)
 						.setReadCplc(true); 
 				
 				// Create Parser

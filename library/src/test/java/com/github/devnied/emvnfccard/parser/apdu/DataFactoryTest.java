@@ -2,7 +2,6 @@ package com.github.devnied.emvnfccard.parser.apdu;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import org.fest.assertions.Assertions;
