@@ -40,7 +40,6 @@ import com.github.devnied.emvnfccard.model.enums.ApplicationStepEnum;
 import com.github.devnied.emvnfccard.model.enums.CardStateEnum;
 import com.github.devnied.emvnfccard.model.enums.CurrencyEnum;
 import com.github.devnied.emvnfccard.parser.EmvTemplate;
-import com.github.devnied.emvnfccard.parser.IProvider;
 import com.github.devnied.emvnfccard.utils.CommandApdu;
 import com.github.devnied.emvnfccard.utils.ResponseUtils;
 import com.github.devnied.emvnfccard.utils.TlvUtil;
@@ -265,14 +264,14 @@ public class EmvParser extends AbstractParser {
 		// Get PDOL
 		byte[] pdol = TlvUtil.getValue(pSelectResponse, EmvTags.PDOL);
 		// Send GPO Command
-		byte[] gpo = getGetProcessingOptions(pdol, template.get().getProvider());
+		byte[] gpo = getGetProcessingOptions(pdol);
 		// Extract Bank data
 		extractBankData(pSelectResponse);
 
 		// Check empty PDOL
 		if (!ResponseUtils.isSucceed(gpo)) {
 			if (pdol != null) {
-				gpo = getGetProcessingOptions(null, template.get().getProvider());
+				gpo = getGetProcessingOptions(null);
 			}
 
 			// Check response
@@ -327,15 +326,6 @@ public class EmvParser extends AbstractParser {
 				for (int index = afl.getFirstRecord(); index <= afl.getLastRecord(); index++) {
 					byte[] info = template.get().getProvider()
 							.transceive(new CommandApdu(CommandEnum.READ_RECORD, index, afl.getSfi() << 3 | 4, 0).toBytes());
-					if (ResponseUtils.isEquals(info, SwEnum.SW_6C)) {
-						info = template
-								.get()
-								.getProvider()
-								.transceive(
-										new CommandApdu(CommandEnum.READ_RECORD, index, afl.getSfi() << 3 | 4, info[info.length - 1])
-												.toBytes());
-					}
-
 					// Extract card data
 					if (ResponseUtils.isSucceed(info)) {
 						extractCardHolderName(info);
@@ -493,7 +483,7 @@ public class EmvParser extends AbstractParser {
 	 *            provider
 	 * @return return data
 	 */
-	protected byte[] getGetProcessingOptions(final byte[] pPdol, final IProvider pProvider) throws CommunicationException {
+	protected byte[] getGetProcessingOptions(final byte[] pPdol) throws CommunicationException {
 		// List Tag and length from PDOL
 		List<TagAndLength> list = TlvUtil.parseTagAndLength(pPdol);
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -509,6 +499,6 @@ public class EmvParser extends AbstractParser {
 		} catch (IOException ioe) {
 			LOGGER.error("Construct GPO Command:" + ioe.getMessage(), ioe);
 		}
-		return pProvider.transceive(new CommandApdu(CommandEnum.GPO, out.toByteArray(), 0).toBytes());
+		return template.get().getProvider().transceive(new CommandApdu(CommandEnum.GPO, out.toByteArray(), 0).toBytes());
 	}
 }

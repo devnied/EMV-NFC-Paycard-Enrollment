@@ -24,7 +24,6 @@ import org.slf4j.LoggerFactory;
 
 import com.github.devnied.emvnfccard.enums.CommandEnum;
 import com.github.devnied.emvnfccard.enums.EmvCardScheme;
-import com.github.devnied.emvnfccard.enums.SwEnum;
 import com.github.devnied.emvnfccard.exception.CommunicationException;
 import com.github.devnied.emvnfccard.iso7816emv.EmvTags;
 import com.github.devnied.emvnfccard.iso7816emv.ITerminal;
@@ -35,6 +34,7 @@ import com.github.devnied.emvnfccard.model.EmvCard;
 import com.github.devnied.emvnfccard.model.enums.CardStateEnum;
 import com.github.devnied.emvnfccard.parser.impl.EmvParser;
 import com.github.devnied.emvnfccard.parser.impl.GeldKarteParser;
+import com.github.devnied.emvnfccard.parser.impl.ProviderWrapper;
 import com.github.devnied.emvnfccard.utils.AtrUtils;
 import com.github.devnied.emvnfccard.utils.CPLCUtils;
 import com.github.devnied.emvnfccard.utils.CommandApdu;
@@ -302,7 +302,7 @@ public class EmvTemplate {
 	 *            parser configuration (Default configuration used if null)
 	 */
 	private EmvTemplate(final IProvider pProvider, final ITerminal pTerminal, final Config pConfig) {
-		provider = pProvider;
+		provider = new ProviderWrapper(pProvider);
 		terminal = pTerminal;
 		config = pConfig;
 		if (config == null) {
@@ -441,11 +441,6 @@ public class EmvTemplate {
 			// For each records
 			for (int rec = 0; rec < MAX_RECORD_SFI; rec++) {
 				data = provider.transceive(new CommandApdu(CommandEnum.READ_RECORD, rec, sfi << 3 | 4, 0).toBytes());
-				// If LE is not correct
-				if (ResponseUtils.isEquals(data, SwEnum.SW_6C)) {
-					data = provider
-							.transceive(new CommandApdu(CommandEnum.READ_RECORD, rec, sfi << 3 | 4, data[data.length - 1]).toBytes());
-				}
 				// Check response
 				if (ResponseUtils.isSucceed(data)) {
 					// Get applications Tags
