@@ -75,7 +75,7 @@ public final class DefaultTerminalImpl implements ITerminal {
 			val = BytesUtils.fromString(StringUtils.leftPad(String.valueOf(countryCode.getNumeric()), pTagAndLength.getLength() * 2,
 					"0"));
 		} else if (pTagAndLength.getTag() == EmvTags.TRANSACTION_CURRENCY_CODE) {
-			val = BytesUtils.fromString(StringUtils.leftPad(String.valueOf(CurrencyEnum.EUR.getISOCodeNumeric()),
+			val = BytesUtils.fromString(StringUtils.leftPad(String.valueOf(CurrencyEnum.find(countryCode, CurrencyEnum.EUR).getISOCodeNumeric()),
 					pTagAndLength.getLength() * 2, "0"));
 		} else if (pTagAndLength.getTag() == EmvTags.TRANSACTION_DATE) {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
