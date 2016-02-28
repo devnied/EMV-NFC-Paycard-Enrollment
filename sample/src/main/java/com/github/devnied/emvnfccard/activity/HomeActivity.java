@@ -215,7 +215,7 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 			AlertDialog.Builder alertbox = new AlertDialog.Builder(this);
 			alertbox.setTitle(getString(R.string.msg_info));
 			alertbox.setMessage(getString(R.string.msg_nfc_not_available));
-			alertbox.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+			alertbox.setPositiveButton(getString(R.string.msg_ok), new DialogInterface.OnClickListener() {
 				
 				@Override
 				public void onClick(final DialogInterface dialog, final int which) {
@@ -233,7 +233,7 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 			AlertDialog.Builder alertbox = new AlertDialog.Builder(this);
 			alertbox.setTitle(getString(R.string.msg_info));
 			alertbox.setMessage(getString(R.string.msg_nfc_not_enabled));
-			alertbox.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+			alertbox.setPositiveButton(getString(R.string.msg_ok), new DialogInterface.OnClickListener() {
 
 				@Override
 				public void onClick(final DialogInterface dialog, final int which) {
