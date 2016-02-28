@@ -10,8 +10,9 @@
     <string name="card_deleted">Données supprimées</string>
     <string name="card_reading_desc">Veuillez ne pas enlever ou bouger votre carte pendant la lecture.</string>
     <string name="nfc_locked">Paiement NFC désactivé sur votre carte</string>
-    <string name="msg_nfc_disable">Veuillez activer le NFC et appuyez sur retour pour revenir sur l\'application.</string>
-    <string name="msg_activate_nfc">OK</string>
+    <string name="msg_nfc_not_available">Votre appareil n\'est pas compatible NFC. Cela est nécessaire pour le fonctionnement de l\'application.</string>
+    <string name="msg_nfc_not_enabled">Veuillez activer le NFC et appuyez sur retour pour revenir sur l\'application.</string>
+    <string name="msg_ok">OK</string>
     <string name="msg_info">Info</string>
     <string name="donate_banner">Aidez nous à améliorer l\'application avec un don !</string>
     

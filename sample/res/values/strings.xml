@@ -10,8 +10,9 @@
     <string name="card_deleted">Card data deleted</string>
     <string name="card_reading_desc">Please do not remove or move card during reading.</string>
     <string name="nfc_locked">NFC is locked on your card</string>
-    <string name="msg_nfc_disable">Please enable NFC and press back to return to this application.</string>
-    <string name="msg_activate_nfc">OK</string>
+    <string name="msg_nfc_not_available">This device doesn\'t have NFC which is required to run this application.</string>
+    <string name="msg_nfc_not_enabled">Please enable NFC and press back to return to this application.</string>
+    <string name="msg_ok">OK</string>
     <string name="msg_info">Info</string>
     <string name="donate_banner">Help us to improve this app, donate !</string>
     

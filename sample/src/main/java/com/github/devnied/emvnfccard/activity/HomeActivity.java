@@ -207,14 +207,33 @@ public class HomeActivity extends FragmentActivity implements OnItemClickListene
 		if (mAlertDialog != null && mAlertDialog.isShowing()) {
 			mAlertDialog.cancel();
 		}
-		// Check NFC enable
-		if (!NFCUtils.isNfcEnable(getApplicationContext())) {
+		
+		// Check if NFC is available
+		if (!NFCUtils.isNfcAvailable(getApplicationContext())) {
 			backToHomeScreen();
 
 			AlertDialog.Builder alertbox = new AlertDialog.Builder(this);
 			alertbox.setTitle(getString(R.string.msg_info));
-			alertbox.setMessage(getString(R.string.msg_nfc_disable));
-			alertbox.setPositiveButton(getString(R.string.msg_activate_nfc), new DialogInterface.OnClickListener() {
+			alertbox.setMessage(getString(R.string.msg_nfc_not_available));
+			alertbox.setPositiveButton(getString(R.string.msg_ok), new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(final DialogInterface dialog, final int which) {
+					dialog.dismiss();
+				}
+			});
+			alertbox.setCancelable(false);
+			mAlertDialog = alertbox.show();
+		}
+		
+		// Check if NFC is enabled
+		if (!NFCUtils.isNfcEnabled(getApplicationContext())) {
+			backToHomeScreen();
+
+			AlertDialog.Builder alertbox = new AlertDialog.Builder(this);
+			alertbox.setTitle(getString(R.string.msg_info));
+			alertbox.setMessage(getString(R.string.msg_nfc_not_enabled));
+			alertbox.setPositiveButton(getString(R.string.msg_ok), new DialogInterface.OnClickListener() {
 
 				@Override
 				public void onClick(final DialogInterface dialog, final int which) {
