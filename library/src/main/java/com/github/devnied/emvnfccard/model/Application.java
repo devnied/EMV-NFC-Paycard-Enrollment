@@ -61,6 +61,11 @@ public class Application extends AbstractData implements Comparable<Application>
 	 * Application priority
 	 */
 	private int priority = 1;
+	
+	/**
+	 * Application amount
+	 */
+	private double amount = UNKNOWN;
 
 	/**
 	 * List of issued payment
@@ -203,4 +208,20 @@ public class Application extends AbstractData implements Comparable<Application>
 		this.readingStep = readingStep;
 	}
 
+	/**
+	 * Get the field amount
+	 * @return the amount
+	 */
+	public double getAmount() {
+		return amount;
+	}
+
+	/**
+	 * Setter for the field amount
+	 *
+	 * @param amount the amount to set
+	 */
+	public void setAmount(double amount) {
+		this.amount = amount;
+	}
 }

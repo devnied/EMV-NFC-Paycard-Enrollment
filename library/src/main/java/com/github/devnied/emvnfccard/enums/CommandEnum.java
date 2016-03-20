@@ -41,7 +41,12 @@ public enum CommandEnum {
 	/**
 	 * GPO Command
 	 */
-	GET_DATA(0x80, 0xCA, 0x00, 0x00);
+	GET_DATA(0x80, 0xCA, 0x00, 0x00),
+	
+	/**
+	 * GET RESPONSE command
+	 */
+	GET_RESPONSE(0x00, 0x0C, 0x00, 0x00);
 
 	/**
 	 * Class byte

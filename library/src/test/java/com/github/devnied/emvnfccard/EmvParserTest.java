@@ -31,6 +31,7 @@ import com.github.devnied.emvnfccard.model.enums.ServiceCode2Enum;
 import com.github.devnied.emvnfccard.model.enums.ServiceCode3Enum;
 import com.github.devnied.emvnfccard.model.enums.TransactionTypeEnum;
 import com.github.devnied.emvnfccard.parser.EmvTemplate;
+import com.github.devnied.emvnfccard.parser.impl.AbstractParser;
 import com.github.devnied.emvnfccard.parser.impl.EmvParser;
 import com.github.devnied.emvnfccard.provider.ExceptionProviderTest;
 import com.github.devnied.emvnfccard.provider.ProviderSelectPaymentEnvTest;
@@ -675,12 +676,12 @@ public class EmvParserTest {
 		String value = (String) Whitebox
 				.invokeMethod(
 						parser,
-						EmvParser.class,
+						AbstractParser.class,
 						"extractApplicationLabel",
 						BytesUtils
 						.fromString("6F 3B 84 0E 32 50 41 59 2E 53 59 53 2E 44 44 46 30 31 A5 29 BF 0C 26 61 10 4F 07 A0 00 00 00 42 10 10 50 02 43 42 87 01 01 61 12 4F 07 A0 00 00 00 03 10 10 50 04 56 49 53 41 87 01 02 90 00"));
 		Assertions.assertThat(value).isEqualTo("CB");
-		value = (String) Whitebox.invokeMethod(parser, EmvParser.class, "extractApplicationLabel", (byte[]) null);
+		value = (String) Whitebox.invokeMethod(parser, AbstractParser.class, "extractApplicationLabel", (byte[]) null);
 		Assertions.assertThat(value).isEqualTo(null);
 	}
 
@@ -695,9 +696,9 @@ public class EmvParserTest {
 		EmvParser parser = (EmvParser) template.getParsers().get(template.getParsers().size() - 1);
 
 		prov.setExpectedData("00A4040007A000000042101000");
-		Whitebox.invokeMethod(parser, EmvParser.class, "selectAID", BytesUtils.fromString("A0000000421010"));
+		Whitebox.invokeMethod(parser, AbstractParser.class, "selectAID", BytesUtils.fromString("A0000000421010"));
 		prov.setExpectedData("00A4040000");
-		Whitebox.invokeMethod(parser, EmvParser.class, "selectAID", (byte[]) null);
+		Whitebox.invokeMethod(parser, AbstractParser.class, "selectAID", (byte[]) null);
 	}
 
 	@Test
@@ -712,20 +713,20 @@ public class EmvParserTest {
 
 		prov.setExpectedData("80CA9F1700");
 		prov.setReturnedData("9F 17 01 03 90 00");
-		int val = Whitebox.invokeMethod(parser, EmvParser.class, "getLeftPinTry");
+		int val = Whitebox.invokeMethod(parser, AbstractParser.class, "getLeftPinTry");
 		Assertions.assertThat(val).isEqualTo(3);
 
 		prov.setExpectedData("80CA9F1700");
 		prov.setReturnedData("90 00");
-		val = Whitebox.invokeMethod(parser, EmvParser.class, "getLeftPinTry");
+		val = Whitebox.invokeMethod(parser, AbstractParser.class, "getLeftPinTry");
 		Assertions.assertThat(val).isEqualTo(EmvParser.UNKNOW);
 
 		prov.setReturnedData(null);
-		val = Whitebox.invokeMethod(parser, EmvParser.class, "getLeftPinTry");
+		val = Whitebox.invokeMethod(parser, AbstractParser.class, "getLeftPinTry");
 		Assertions.assertThat(val).isEqualTo(EmvParser.UNKNOW);
 
 		prov.setReturnedData("8090");
-		val = Whitebox.invokeMethod(parser, EmvParser.class, "getLeftPinTry");
+		val = Whitebox.invokeMethod(parser, AbstractParser.class, "getLeftPinTry");
 		Assertions.assertThat(val).isEqualTo(EmvParser.UNKNOW);
 	}
 
@@ -739,17 +740,17 @@ public class EmvParserTest {
 		EmvParser parser = (EmvParser) template.getParsers().get(template.getParsers().size() - 1);
 		prov.setExpectedData("80CA9F4F00");
 		prov.setReturnedData("9F 4F 10 9F 02 06 9F 27 01 9F 1A 02 5F 2A 02 9A 03 9C 01 90 00");
-		List<TagAndLength> list = Whitebox.invokeMethod(parser, EmvParser.class, "getLogFormat");
+		List<TagAndLength> list = Whitebox.invokeMethod(parser, AbstractParser.class, "getLogFormat");
 		Assertions.assertThat(list.size()).isEqualTo(6);
 
 		prov.setExpectedData("80CA9F4F00");
 		prov.setReturnedData("0000");
-		list = Whitebox.invokeMethod(parser, EmvParser.class, "getLogFormat");
+		list = Whitebox.invokeMethod(parser, AbstractParser.class, "getLogFormat");
 		Assertions.assertThat(list.size()).isEqualTo(0);
 
 		prov.setExpectedData("80CA9F4F00");
 		prov.setReturnedData("9000");
-		list = Whitebox.invokeMethod(parser, EmvParser.class, "getLogFormat");
+		list = Whitebox.invokeMethod(parser, AbstractParser.class, "getLogFormat");
 		Assertions.assertThat(list.size()).isEqualTo(0);
 	}
 
@@ -762,11 +763,11 @@ public class EmvParserTest {
 		EmvParser parser = (EmvParser) template.getParsers().get(template.getParsers().size() - 1);
 		byte[] selectResponse = BytesUtils
 				.fromString("6F 37 84 07 A0 00 00 00 42 10 10 A5 2C 9F 38 18 9F 66 04 9F 02 06 9F 03 06 9F 1A 02 95 05 5F 2A 02 9A 03 9C 01 9F 37 04 BF 0C 0E DF 62 02 0B 1E DF 61 01 03 9F 4D 02 0B 11 90 00");
-		byte[] data = Whitebox.invokeMethod(parser, EmvParser.class, "getLogEntry", selectResponse);
+		byte[] data = Whitebox.invokeMethod(parser, AbstractParser.class, "getLogEntry", selectResponse);
 
 		selectResponse = BytesUtils
 				.fromString("6F 32 84 07 A0 00 00 00 42 10 10 A5 27 9F 38 18 9F 66 04 9F 02 06 9F 03 06 9F 1A 02 95 05 5F 2A 02 9A 03 9C 01 9F 37 04 BF 0C 09 DF 60 02 0B 1E DF 61 01 03 90 00");
-		data = Whitebox.invokeMethod(parser, EmvParser.class, "getLogEntry", selectResponse);
+		data = Whitebox.invokeMethod(parser, AbstractParser.class, "getLogEntry", selectResponse);
 		Assertions.assertThat(BytesUtils.bytesToString(data)).isEqualTo("0B 1E");
 	}
 
@@ -828,7 +829,7 @@ public class EmvParserTest {
 				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true)) //
 				.build();
 		EmvParser parser = (EmvParser) template.getParsers().get(template.getParsers().size() - 1);
-		Whitebox.invokeMethod(parser, EmvParser.class, "extractCardHolderName", BytesUtils.fromString("5F 20 02 20 2F"));
+		Whitebox.invokeMethod(parser, AbstractParser.class, "extractCardHolderName", BytesUtils.fromString("5F 20 02 20 2F"));
 		EmvCard card = template.getCard();
 
 		if (card != null) {
@@ -846,7 +847,7 @@ public class EmvParserTest {
 				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true)) //
 				.build();
 		EmvParser parser = (EmvParser) template.getParsers().get(template.getParsers().size() - 1);
-		Whitebox.invokeMethod(parser, EmvParser.class, "extractCardHolderName", BytesUtils.fromString("5F 20 02 20 20"));
+		Whitebox.invokeMethod(parser, AbstractParser.class, "extractCardHolderName", BytesUtils.fromString("5F 20 02 20 20"));
 		EmvCard card = template.getCard();
 
 		if (card != null) {
@@ -864,7 +865,7 @@ public class EmvParserTest {
 				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true)) //
 				.build();
 		EmvParser parser = (EmvParser) template.getParsers().get(template.getParsers().size() - 1);
-		Whitebox.invokeMethod(parser, EmvParser.class, "extractCardHolderName", BytesUtils.fromString("5F2008446F652F4A6F686E"));
+		Whitebox.invokeMethod(parser, AbstractParser.class, "extractCardHolderName", BytesUtils.fromString("5F2008446F652F4A6F686E"));
 		EmvCard card = template.getCard();
 
 		if (card != null) {
@@ -885,19 +886,19 @@ public class EmvParserTest {
 		EmvParser parser = (EmvParser) template.getParsers().get(template.getParsers().size() - 1);
 		prov.setExpectedData("80CA9F3600");
 		prov.setReturnedData("9F 36 02 06 2C 90 00");
-		int ret = Whitebox.invokeMethod(parser, EmvParser.class, "getTransactionCounter");
+		int ret = Whitebox.invokeMethod(parser, AbstractParser.class, "getTransactionCounter");
 		Assertions.assertThat(ret).isEqualTo(1580);
 
 		prov.setReturnedData("9F 36 02 FF FF 90 00");
-		ret = Whitebox.invokeMethod(parser, EmvParser.class, "getTransactionCounter");
+		ret = Whitebox.invokeMethod(parser, AbstractParser.class, "getTransactionCounter");
 		Assertions.assertThat(ret).isEqualTo(65535);
 
 		prov.setReturnedData("0000");
-		ret = Whitebox.invokeMethod(parser, EmvParser.class, "getTransactionCounter");
+		ret = Whitebox.invokeMethod(parser, AbstractParser.class, "getTransactionCounter");
 		Assertions.assertThat(ret).isEqualTo(EmvParser.UNKNOW);
 
 		prov.setReturnedData("9000");
-		ret = Whitebox.invokeMethod(parser, EmvParser.class, "getTransactionCounter");
+		ret = Whitebox.invokeMethod(parser, AbstractParser.class, "getTransactionCounter");
 		Assertions.assertThat(ret).isEqualTo(EmvParser.UNKNOW);
 	}
 

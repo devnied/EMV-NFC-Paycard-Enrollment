@@ -48,7 +48,7 @@ public enum EmvCardScheme {
 	TENN("The Exchange Network ATM Network", null, "A0 00 00 04 39"), //
 	RUPAY("Rupay", null, "A0 00 00 05 24 10 10"), //
 	ПРО100("ПРО100", null, "A0 00 00 04 32 00 01"), //
-	GELDKARTE("GeldKarte/ZKA", null, "D2 76 00 00 25", "D2 76 00 00 25 45 50 01 00", "D2 76 00 00 25 45 50 02 00"), //
+	GELDKARTE("GeldKarte/ZKA", null, "D2 76 00 00 25 45 50 02 00", "D2 76 00 00 25 45 50 01 00", "D2 76 00 00 25"), //
 	BANKAXEPT("Bankaxept", null, "D5 78 00 00 02 10 10"), //
 	BRADESCO("BRADESCO", null, "F0 00 00 00 03 00 01"),
 	MIDLAND("Midland", null, "A0 00 00 00 24 01"), //
