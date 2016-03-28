@@ -1,7 +1,249 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6cf385d4-e8b8-43ac-9f52-2a5404c9eed5" name="Default" comment="" />
+    <list default="true" id="6cf385d4-e8b8-43ac-9f52-2a5404c9eed5" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/README.md" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/images/demo.gif" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/.gitignore" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/pom.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/enums/CommandEnum.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/enums/EmvCardScheme.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/enums/SwEnum.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/enums/TagTypeEnum.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/enums/TagValueTypeEnum.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/exception/CommunicationException.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/exception/TlvException.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/iso7816emv/ByteArrayWrapper.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/iso7816emv/EmvTags.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/iso7816emv/EmvTerminal.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/iso7816emv/ITag.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/iso7816emv/TLV.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/iso7816emv/TagAndLength.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/iso7816emv/TerminalTransactionQualifiers.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/iso7816emv/impl/TagImpl.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/model/AbstractData.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/model/Afl.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/model/EmvCard.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/model/EmvTransactionRecord.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/model/Service.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/model/enums/CountryCodeEnum.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/model/enums/CurrencyEnum.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/model/enums/IKeyEnum.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/model/enums/ServiceCode1Enum.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/model/enums/ServiceCode2Enum.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/model/enums/ServiceCode3Enum.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/model/enums/TransactionTypeEnum.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/parser/EmvParser.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/parser/IProvider.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/parser/apdu/IFile.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/parser/apdu/annotation/AnnotationData.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/parser/apdu/annotation/AnnotationUtils.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/parser/apdu/annotation/Data.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/parser/apdu/impl/AbstractByteBean.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/parser/apdu/impl/DataFactory.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/utils/AtrUtils.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/utils/CommandApdu.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/utils/EnumUtils.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/utils/ResponseUtils.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/utils/TlvUtil.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/com/github/devnied/emvnfccard/utils/TrackUtils.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/resources/smartcard_list.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/EmvParserTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/enums/CurrencyEnumTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/enums/EmvCardSchemeTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/enums/SwEnumTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/exception/ExceptionTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/iso7816emv/ByteArrayWrapperTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/iso7816emv/EmvTerminalTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/iso7816emv/TagAndLengthTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/iso7816emv/TagImplTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/iso7816emv/TerminalTransactionQualifiersTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/iso7816emv/TlvTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/model/EmvCardTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/model/EmvPaymentCardTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/parser/EmvTransactionRecordTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/parser/apdu/AnnotationDataTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/provider/ExceptionProviderTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/provider/PpseProviderLockedCardTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/provider/PpseProviderMasterCard2Test.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/provider/PpseProviderMasterCard3Test.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/provider/PpseProviderMasterCardTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/provider/PpseProviderVisa2Test.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/provider/PpseProviderVisa3Test.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/provider/PpseProviderVisaNulTransactionsTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/provider/PpseProviderVisaTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/provider/ProviderAidTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/provider/ProviderSelectPaymentEnvTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/provider/ProviderVisaCardAidTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/provider/PseProviderTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/utils/AtrTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/utils/CommandApduTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/utils/EnumUtilsTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/utils/ResponseUtilsTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/utils/TlvUtilTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/java/com/github/devnied/emvnfccard/utils/TrackUtilsTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/resources/log4j.properties" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/test/resources/smartcard_list.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/licence.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lint.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/pom.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample-pcsc/.gitignore" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample-pcsc/pom.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample-pcsc/src/main/java/com/github/devnied/emvpcsccard/Main.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample-pcsc/src/main/java/com/github/devnied/emvpcsccard/PcscProvider.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample-pcsc/src/main/ressources/log4j.properties" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/.gitignore" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/AndroidManifest.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/assets/OCR-A.ttf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/pom.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/proguard.cfg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/project.properties" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/repo/com/android/support/v4/21.0.1/v4-21.0.1.jar" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/repo/com/android/support/v4/21.0.1/v4-21.0.1.jar.md5" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/repo/com/android/support/v4/21.0.1/v4-21.0.1.jar.sha1" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/repo/com/android/support/v4/21.0.1/v4-21.0.1.pom" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/repo/com/android/support/v4/21.0.1/v4-21.0.1.pom.md5" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/repo/com/android/support/v4/21.0.1/v4-21.0.1.pom.sha1" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/repo/com/android/support/v4/maven-metadata-local.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/repo/com/android/support/v4/maven-metadata-local.xml.md5" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/repo/com/android/support/v4/maven-metadata-local.xml.sha1" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/repo/install-file" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-hdpi/amex.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-hdpi/contactless.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-hdpi/donation.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-hdpi/emv_card_background.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-hdpi/expander_close_holo_light.9.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-hdpi/expander_open_holo_light.9.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-hdpi/github.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-hdpi/ic_drawer.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-hdpi/ic_fa_credit_card.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-hdpi/ic_fa_gear.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-hdpi/ic_fa_info_circle.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-hdpi/ic_launcher.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-hdpi/ic_menu_share.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-hdpi/invoice.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-hdpi/jcb.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-hdpi/mastercard.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-hdpi/unionpay.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-hdpi/visa.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-ldpi/amex.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-ldpi/contactless.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-ldpi/donation.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-ldpi/emv_card_background.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-ldpi/expander_close_holo_light.9.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-ldpi/expander_open_holo_light.9.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-ldpi/github.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-ldpi/ic_drawer.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-ldpi/ic_fa_credit_card.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-ldpi/ic_fa_gear.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-ldpi/ic_fa_info_circle.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-ldpi/ic_launcher.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-ldpi/ic_menu_share.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-ldpi/invoice.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-ldpi/jcb.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-ldpi/mastercard.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-ldpi/unionpay.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-ldpi/visa.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-mdpi/amex.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-mdpi/contactless.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-mdpi/donation.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-mdpi/emv_card_background.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-mdpi/expander_close_holo_light.9.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-mdpi/expander_open_holo_light.9.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-mdpi/github.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-mdpi/ic_drawer.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-mdpi/ic_fa_credit_card.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-mdpi/ic_fa_gear.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-mdpi/ic_fa_info_circle.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-mdpi/ic_launcher.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-mdpi/ic_menu_share.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-mdpi/invoice.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-mdpi/jcb.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-mdpi/mastercard.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-mdpi/unionpay.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-mdpi/visa.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-xhdpi/amex.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-xhdpi/contactless.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-xhdpi/donation.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-xhdpi/emv_card_background.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-xhdpi/expander_close_holo_light.9.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-xhdpi/expander_open_holo_light.9.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-xhdpi/github.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-xhdpi/ic_drawer.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-xhdpi/ic_fa_credit_card.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-xhdpi/ic_fa_gear.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-xhdpi/ic_fa_info_circle.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-xhdpi/ic_launcher.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-xhdpi/ic_menu_share.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-xhdpi/invoice.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-xhdpi/jcb.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-xhdpi/mastercard.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-xhdpi/unionpay.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable-xhdpi/visa.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable/button_back.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable/card_border.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable/cardui.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable/cardui_no_bottom_shadow.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable/cardui_no_radius_top.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/drawable/menu_back.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/layout/about.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/layout/card_detail.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/layout/card_representation.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/layout/donate.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/layout/drawer_listview_item.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/layout/inapp_listview_item.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/layout/log.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/layout/main.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/layout/preference_list_fragment.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/layout/tablelayout_raw.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/layout/transaction_detail.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/layout/transaction_item.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/layout/transaction_list_history.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/layout/viewpager.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/menu/menu.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/values-fr/strings.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/values-v19/theme.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/values/attrs.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/values/color.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/values/dimension.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/values/strings.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/values/theme.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/xml/nfc_tech_list.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/res/xml/preferences.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/android/support/v4/preference/PreferenceFragment.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/android/support/v4/preference/PreferenceManagerCompat.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/com/android/vending/billing/IInAppBillingService.aidl" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/com/github/devnied/emvnfccard/EmvApplication.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/com/github/devnied/emvnfccard/activity/HomeActivity.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/com/github/devnied/emvnfccard/activity/IContentActivity.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/com/github/devnied/emvnfccard/adapter/MenuDrawerAdapter.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/com/github/devnied/emvnfccard/adapter/SortablePagerAdapter.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/com/github/devnied/emvnfccard/adapter/TransactionsAdapter.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/com/github/devnied/emvnfccard/adapter/ViewPagerAdapter.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/com/github/devnied/emvnfccard/billing/SkuDetails.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/com/github/devnied/emvnfccard/fragment/AboutFragment.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/com/github/devnied/emvnfccard/fragment/BillingFragment.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/com/github/devnied/emvnfccard/fragment/ConfigurationFragment.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/com/github/devnied/emvnfccard/fragment/IRefreshable.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/com/github/devnied/emvnfccard/fragment/ViewPagerFragment.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/com/github/devnied/emvnfccard/fragment/viewPager/AbstractFragment.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/com/github/devnied/emvnfccard/fragment/viewPager/IFragment.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/com/github/devnied/emvnfccard/fragment/viewPager/impl/CardDetailFragment.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/com/github/devnied/emvnfccard/fragment/viewPager/impl/LogFragment.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/com/github/devnied/emvnfccard/fragment/viewPager/impl/TransactionHistoryFragment.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/com/github/devnied/emvnfccard/provider/Provider.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/com/github/devnied/emvnfccard/utils/CardUtils.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/com/github/devnied/emvnfccard/utils/ConstantUtils.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/com/github/devnied/emvnfccard/utils/CroutonUtils.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/com/github/devnied/emvnfccard/utils/NFCUtils.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/com/github/devnied/emvnfccard/utils/SimpleAsyncTask.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/com/github/devnied/emvnfccard/utils/ViewHolder.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/com/github/devnied/emvnfccard/utils/ViewUtils.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/com/github/devnied/emvnfccard/view/DirectionScrollListener.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/com/github/devnied/emvnfccard/view/FloatingActionButton.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/com/github/devnied/emvnfccard/view/SlidingTabLayout.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sample/src/main/java/com/github/devnied/emvnfccard/view/SlidingTabStrip.java" afterPath="" />
+    </list>
     <ignored path="NFC-CardReader.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -188,7 +430,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="27" width="1366" height="741" extended-state="1" />
+    <frame x="0" y="27" width="1366" height="741" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -198,10 +440,10 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32991454" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24244712" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24244712" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
