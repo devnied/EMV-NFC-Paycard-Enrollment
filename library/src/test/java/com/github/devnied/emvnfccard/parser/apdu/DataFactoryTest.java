@@ -30,7 +30,7 @@ public class DataFactoryTest {
 		Date date = DataFactory.calculateCplcDate(new byte[]{0x60,0x66});
 		Assertions.assertThat(date).isNotNull();
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-		Assertions.assertThat(date).isEqualTo(format.parse("07/03/2006"));
+		Assertions.assertThat(date).isEqualTo(format.parse("06/03/2016"));
 	}
 	
 	

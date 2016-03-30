@@ -20,11 +20,11 @@ public class ApplicationStepEnumTest {
 		Assertions.assertThat(ApplicationStepEnum.isAtLeast(null, ApplicationStepEnum.SELECTED)).isFalse();
 		Assertions.assertThat(ApplicationStepEnum.isAtLeast(Arrays.asList((Application) null), ApplicationStepEnum.SELECTED)).isFalse();
 		Assertions.assertThat(ApplicationStepEnum.isAtLeast(Arrays.asList(app,app2), ApplicationStepEnum.SELECTED)).isTrue();
-		Assertions.assertThat(ApplicationStepEnum.isAtLeast(Arrays.asList(app,app2), ApplicationStepEnum.GPO_PERFORMED)).isFalse();
+		Assertions.assertThat(ApplicationStepEnum.isAtLeast(Arrays.asList(app,app2), ApplicationStepEnum.READ)).isFalse();
 		
 		app.setReadingStep(null);
 		
-		Assertions.assertThat(ApplicationStepEnum.isAtLeast(Arrays.asList(app,app2), ApplicationStepEnum.GPO_PERFORMED)).isFalse();
+		Assertions.assertThat(ApplicationStepEnum.isAtLeast(Arrays.asList(app,app2), ApplicationStepEnum.READ)).isFalse();
 		Assertions.assertThat(ApplicationStepEnum.isAtLeast(Arrays.asList(app,app2), null)).isFalse();
 	}
 

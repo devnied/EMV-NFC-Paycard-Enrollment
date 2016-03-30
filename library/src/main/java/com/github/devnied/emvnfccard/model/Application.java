@@ -164,7 +164,9 @@ public class Application extends AbstractData implements Comparable<Application>
 	 *            the aid to set
 	 */
 	public void setAid(final byte[] aid) {
-		this.aid = aid;
+		if( aid != null) {
+			this.aid = aid;
+		}
 	}
 
 	/**

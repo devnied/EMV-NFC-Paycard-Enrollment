@@ -28,7 +28,7 @@ public enum TransactionTypeEnum implements IKeyEnum {
 	 */
 	PURCHASE(0x00),
 	/**
-	 * '01' Cach advance
+	 * '01' Cash advance
 	 */
 	CASH_ADVANCE(0x01),
 	/**
@@ -38,7 +38,16 @@ public enum TransactionTypeEnum implements IKeyEnum {
 	/**
 	 * '20' for a refund transaction
 	 */
-	REFUND(0x20);
+	REFUND(0x20),
+	
+	/**
+	 * Loaded transaction (Geldkarte)
+	 */
+	LOADED(0xFE),
+	/**
+	 * Unloaded transaction (Geldkarte)
+	 */
+	UNLOADED(0xFF);
 
 	/**
 	 * Value

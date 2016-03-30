@@ -33,9 +33,9 @@ public enum ApplicationStepEnum implements IKeyEnum {
 	 */
 	SELECTED(1), 
 	/**
-	 * GPO Performed
+	 * Application read
 	 */
-	GPO_PERFORMED(2);
+	READ(2);
 	
 	/**
 	 * Step key

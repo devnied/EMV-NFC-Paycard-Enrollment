@@ -184,7 +184,7 @@ public class EmvParser extends AbstractParser {
 			}
 		}
 		// Update Reading state
-		pApplication.setReadingStep(ApplicationStepEnum.GPO_PERFORMED);
+		pApplication.setReadingStep(ApplicationStepEnum.READ);
 
 		// Extract commons card data (number, expire date, ...)
 		if (extractCommonsCardData(gpo)) {

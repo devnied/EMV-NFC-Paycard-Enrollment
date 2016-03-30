@@ -69,12 +69,12 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getApplications().get(0).getPriority()).isEqualTo(1);
 		Assertions.assertThat(BytesUtils.bytesToStringNoSpace(card.getApplications().get(0).getAid())).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getApplications().get(0).getListTransactions().size()).isEqualTo(16);
-		Assertions.assertThat(card.getApplications().get(0).getReadingStep()).isEqualTo(ApplicationStepEnum.GPO_PERFORMED);
+		Assertions.assertThat(card.getApplications().get(0).getReadingStep()).isEqualTo(ApplicationStepEnum.READ);
 		Assertions.assertThat(card.getApplications().get(1).getApplicationLabel()).isEqualTo("VISA");
 		Assertions.assertThat(card.getApplications().get(1).getLeftPinTry()).isEqualTo(2);
 		Assertions.assertThat(card.getApplications().get(1).getTransactionCounter()).isEqualTo(44);
 		Assertions.assertThat(card.getApplications().get(1).getPriority()).isEqualTo(2);
-		Assertions.assertThat(card.getApplications().get(1).getReadingStep()).isEqualTo(ApplicationStepEnum.GPO_PERFORMED);
+		Assertions.assertThat(card.getApplications().get(1).getReadingStep()).isEqualTo(ApplicationStepEnum.READ);
 		Assertions.assertThat(BytesUtils.bytesToStringNoSpace(card.getApplications().get(1).getAid())).isEqualTo("A0000000031010");
 		Assertions.assertThat(card.getApplications().get(1).getListTransactions().size()).isEqualTo(1);
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("4999999999999999");
@@ -133,7 +133,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getApplications().get(0).getPriority()).isEqualTo(1);
 		Assertions.assertThat(BytesUtils.bytesToStringNoSpace(card.getApplications().get(0).getAid())).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getApplications().get(0).getListTransactions().size()).isZero();
-		Assertions.assertThat(card.getApplications().get(0).getReadingStep()).isEqualTo(ApplicationStepEnum.GPO_PERFORMED);
+		Assertions.assertThat(card.getApplications().get(0).getReadingStep()).isEqualTo(ApplicationStepEnum.READ);
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("4999999999999999");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.VISA);
 		Assertions.assertThat(card.getHolderLastname()).isNull();
@@ -165,7 +165,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getApplications().get(0).getApplicationLabel()).isNull();
 		Assertions.assertThat(BytesUtils.bytesToStringNoSpace(card.getApplications().get(0).getAid())).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getApplications().get(0).getListTransactions().size()).isEqualTo(0);
-		Assertions.assertThat(card.getApplications().get(0).getReadingStep()).isEqualTo(ApplicationStepEnum.GPO_PERFORMED);
+		Assertions.assertThat(card.getApplications().get(0).getReadingStep()).isEqualTo(ApplicationStepEnum.READ);
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("4999999999999999");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.VISA);
 		Assertions.assertThat(card.getHolderFirstname()).isNull();
@@ -200,14 +200,14 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getApplications().get(0).getPriority()).isEqualTo(1);
 		Assertions.assertThat(BytesUtils.bytesToStringNoSpace(card.getApplications().get(0).getAid())).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getApplications().get(0).getListTransactions().size()).isEqualTo(0);
-		Assertions.assertThat(card.getApplications().get(0).getReadingStep()).isEqualTo(ApplicationStepEnum.GPO_PERFORMED);
+		Assertions.assertThat(card.getApplications().get(0).getReadingStep()).isEqualTo(ApplicationStepEnum.READ);
 		Assertions.assertThat(card.getApplications().get(1).getApplicationLabel()).isEqualTo("VISA");
 		Assertions.assertThat(card.getApplications().get(1).getLeftPinTry()).isEqualTo(2);
 		Assertions.assertThat(card.getApplications().get(1).getTransactionCounter()).isEqualTo(44);
 		Assertions.assertThat(card.getApplications().get(1).getPriority()).isEqualTo(2);
 		Assertions.assertThat(BytesUtils.bytesToStringNoSpace(card.getApplications().get(1).getAid())).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getApplications().get(1).getListTransactions().size()).isEqualTo(0);
-		Assertions.assertThat(card.getApplications().get(1).getReadingStep()).isEqualTo(ApplicationStepEnum.GPO_PERFORMED);
+		Assertions.assertThat(card.getApplications().get(1).getReadingStep()).isEqualTo(ApplicationStepEnum.READ);
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("4999999999999999");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.VISA);
 		Assertions.assertThat(card.getHolderLastname()).isNull();
@@ -300,14 +300,14 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getApplications().get(0).getPriority()).isEqualTo(1);
 		Assertions.assertThat(BytesUtils.bytesToStringNoSpace(card.getApplications().get(0).getAid())).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getApplications().get(0).getListTransactions().size()).isEqualTo(0);
-		Assertions.assertThat(card.getApplications().get(0).getReadingStep()).isEqualTo(ApplicationStepEnum.GPO_PERFORMED);
+		Assertions.assertThat(card.getApplications().get(0).getReadingStep()).isEqualTo(ApplicationStepEnum.READ);
 		Assertions.assertThat(card.getApplications().get(1).getApplicationLabel()).isEqualTo("CB");
 		Assertions.assertThat(card.getApplications().get(1).getLeftPinTry()).isEqualTo(2);
 		Assertions.assertThat(card.getApplications().get(1).getTransactionCounter()).isEqualTo(44);
 		Assertions.assertThat(card.getApplications().get(1).getPriority()).isEqualTo(2);
 		Assertions.assertThat(BytesUtils.bytesToStringNoSpace(card.getApplications().get(1).getAid())).isEqualTo("A0000000041010");
 		Assertions.assertThat(card.getApplications().get(1).getListTransactions().size()).isEqualTo(0);
-		Assertions.assertThat(card.getApplications().get(1).getReadingStep()).isEqualTo(ApplicationStepEnum.GPO_PERFORMED);
+		Assertions.assertThat(card.getApplications().get(1).getReadingStep()).isEqualTo(ApplicationStepEnum.READ);
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("5599999999999999");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.MASTER_CARD);
 		Assertions.assertThat(card.getHolderLastname()).isNull();
@@ -342,7 +342,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getApplications().get(0).getApplicationLabel()).isEqualTo("INTERAC");
 		Assertions.assertThat(BytesUtils.bytesToStringNoSpace(card.getApplications().get(0).getAid())).isEqualTo("A0000002771010");
 		Assertions.assertThat(card.getApplications().get(0).getListTransactions().size()).isEqualTo(0);
-		Assertions.assertThat(card.getApplications().get(0).getReadingStep()).isEqualTo(ApplicationStepEnum.GPO_PERFORMED);
+		Assertions.assertThat(card.getApplications().get(0).getReadingStep()).isEqualTo(ApplicationStepEnum.READ);
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("5200000000000000");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.INTERAC);
 		Assertions.assertThat(card.getHolderLastname()).isNull();
@@ -361,30 +361,31 @@ public class EmvParserTest {
 				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true).setReadCplc(true)).build();
 		EmvCard card = parser.readEmvCard();
 
+		
 		if (card != null) {
 			LOGGER.debug(card.toString());
 		}
 
 		Assertions.assertThat(card).isNotNull();
-		Assertions.assertThat(card.getBic()).isEqualTo("SPKHDE2HXXX");
-		Assertions.assertThat(card.getIban()).isEqualTo("DE11111111111111111111");
+		Assertions.assertThat(card.getBic()).isEqualTo("NOLADE21SHO");
+		Assertions.assertThat(card.getIban()).isEqualTo("DE01130510300000000000");
 		Assertions.assertThat(card.getTrack1()).isNull();
 		Assertions.assertThat(card.getTrack2()).isNotNull();
-		Assertions.assertThat(card.getTrack2().getRaw()).isNotNull();
-		Assertions.assertThat(card.getTrack2().getService()).isNotNull();
+		Assertions.assertThat(card.getTrack2().getRaw()).isNull();
+		Assertions.assertThat(card.getTrack2().getService()).isNull();
 		Assertions.assertThat(card.getApplications().size()).isEqualTo(1);
 		Assertions.assertThat(card.getApplications().get(0).getLeftPinTry()).isEqualTo(3);
 		Assertions.assertThat(card.getApplications().get(0).getTransactionCounter()).isEqualTo(AbstractData.UNKNOWN);
-		Assertions.assertThat(card.getApplications().get(0).getApplicationLabel()).isEqualTo("GeldKarte");
-		Assertions.assertThat(BytesUtils.bytesToStringNoSpace(card.getApplications().get(0).getAid())).isEqualTo("D27600002545500200");
+		Assertions.assertThat(card.getApplications().get(0).getApplicationLabel()).isEqualTo("girocard");
+		Assertions.assertThat(BytesUtils.bytesToStringNoSpace(card.getApplications().get(0).getAid())).isEqualTo("D27600002547410100");
 		Assertions.assertThat(card.getApplications().get(0).getListTransactions().size()).isEqualTo(1);
-		Assertions.assertThat(card.getApplications().get(0).getReadingStep()).isEqualTo(ApplicationStepEnum.GPO_PERFORMED);
-		Assertions.assertThat(card.getCardNumber()).isEqualTo("5200000000000000");
+		Assertions.assertThat(card.getApplications().get(0).getReadingStep()).isEqualTo(ApplicationStepEnum.READ);
+		Assertions.assertThat(card.getCardNumber()).isEqualTo("1500001111");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.GELDKARTE);
 		Assertions.assertThat(card.getHolderLastname()).isNull();
 		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
-		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("11/2019");
+		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("12/2017");
 		Assertions.assertThat(card.getState()).isEqualTo(CardStateEnum.ACTIVE);
 		Assertions.assertThat(card.getAt()).isEqualTo("3B6500002063CBA000");
 		Assertions.assertThat(card.getAtrDescription()).isEqualTo(Arrays.asList("CB Visa Banque Populaire (France)"));
@@ -433,7 +434,7 @@ public class EmvParserTest {
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("07/2002");
 		Assertions.assertThat(card.getApplications().get(0).getListTransactions()).isNotEmpty();
 		Assertions.assertThat(card.getApplications().get(0).getListTransactions().size()).isEqualTo(10);
-		Assertions.assertThat(card.getApplications().get(0).getReadingStep()).isEqualTo(ApplicationStepEnum.GPO_PERFORMED);
+		Assertions.assertThat(card.getApplications().get(0).getReadingStep()).isEqualTo(ApplicationStepEnum.READ);
 		EmvTransactionRecord record = card.getApplications().get(0).getListTransactions().get(0);
 		Assertions.assertThat(record.getAmount()).isEqualTo(2200);
 		Assertions.assertThat(record.getCyptogramData()).isEqualTo("40");
@@ -475,7 +476,7 @@ public class EmvParserTest {
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("11/2019");
 		Assertions.assertThat(card.getApplications().get(0).getListTransactions().size()).isEqualTo(10);
-		Assertions.assertThat(card.getApplications().get(0).getReadingStep()).isEqualTo(ApplicationStepEnum.GPO_PERFORMED);
+		Assertions.assertThat(card.getApplications().get(0).getReadingStep()).isEqualTo(ApplicationStepEnum.READ);
 		EmvTransactionRecord record = card.getApplications().get(0).getListTransactions().get(0);
 		Assertions.assertThat(record.getAmount()).isEqualTo(2200);
 		Assertions.assertThat(record.getCyptogramData()).isEqualTo("40");
@@ -512,14 +513,14 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getApplications().get(0).getPriority()).isEqualTo(1);
 		Assertions.assertThat(BytesUtils.bytesToStringNoSpace(card.getApplications().get(0).getAid())).isEqualTo("A0000000421010");
 		Assertions.assertThat(card.getApplications().get(0).getListTransactions().size()).isEqualTo(16);
-		Assertions.assertThat(card.getApplications().get(0).getReadingStep()).isEqualTo(ApplicationStepEnum.GPO_PERFORMED);
+		Assertions.assertThat(card.getApplications().get(0).getReadingStep()).isEqualTo(ApplicationStepEnum.READ);
 		Assertions.assertThat(card.getApplications().get(1).getApplicationLabel()).isEqualTo("VISA");
 		Assertions.assertThat(card.getApplications().get(1).getLeftPinTry()).isEqualTo(2);
 		Assertions.assertThat(card.getApplications().get(1).getTransactionCounter()).isEqualTo(44);
 		Assertions.assertThat(card.getApplications().get(1).getPriority()).isEqualTo(2);
 		Assertions.assertThat(BytesUtils.bytesToStringNoSpace(card.getApplications().get(1).getAid())).isEqualTo("A0000000031010");
 		Assertions.assertThat(card.getApplications().get(1).getListTransactions().size()).isEqualTo(1);
-		Assertions.assertThat(card.getApplications().get(1).getReadingStep()).isEqualTo(ApplicationStepEnum.GPO_PERFORMED);
+		Assertions.assertThat(card.getApplications().get(1).getReadingStep()).isEqualTo(ApplicationStepEnum.READ);
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("4999999999999999");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.VISA);
 		Assertions.assertThat(card.getHolderLastname()).isNull();
@@ -561,7 +562,7 @@ public class EmvParserTest {
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("02/2016");
 		Assertions.assertThat(card.getApplications().get(0).getListTransactions()).isNotNull();
 		Assertions.assertThat(card.getApplications().get(0).getListTransactions().size()).isEqualTo(16);
-		Assertions.assertThat(card.getApplications().get(0).getReadingStep()).isEqualTo(ApplicationStepEnum.GPO_PERFORMED);
+		Assertions.assertThat(card.getApplications().get(0).getReadingStep()).isEqualTo(ApplicationStepEnum.READ);
 		EmvTransactionRecord record = card.getApplications().get(0).getListTransactions().get(0);
 		Assertions.assertThat(record.getAmount()).isEqualTo(4000);
 		Assertions.assertThat(record.getCyptogramData()).isEqualTo("80");
@@ -596,7 +597,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getApplications().size()).isEqualTo(1);
 		Assertions.assertThat(BytesUtils.bytesToStringNoSpace(card.getApplications().get(0).getAid())).isEqualTo("A0000000031010");
 		Assertions.assertThat(card.getApplications().get(0).getApplicationLabel()).isEqualTo("VISA");
-		Assertions.assertThat(card.getApplications().get(0).getReadingStep()).isEqualTo(ApplicationStepEnum.GPO_PERFORMED);
+		Assertions.assertThat(card.getApplications().get(0).getReadingStep()).isEqualTo(ApplicationStepEnum.READ);
 		Assertions.assertThat(card.getHolderLastname()).isNull();
 		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
@@ -797,7 +798,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getApplications().get(0).getLeftPinTry()).isEqualTo(3);
 		Assertions.assertThat(card.getApplications().get(0).getListTransactions()).isNotNull();
 		Assertions.assertThat(card.getApplications().get(0).getListTransactions().size()).isEqualTo(16);
-		Assertions.assertThat(card.getApplications().get(0).getReadingStep()).isEqualTo(ApplicationStepEnum.GPO_PERFORMED);
+		Assertions.assertThat(card.getApplications().get(0).getReadingStep()).isEqualTo(ApplicationStepEnum.READ);
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2014");
 		Assertions.assertThat(card.getState()).isEqualTo(CardStateEnum.ACTIVE);
