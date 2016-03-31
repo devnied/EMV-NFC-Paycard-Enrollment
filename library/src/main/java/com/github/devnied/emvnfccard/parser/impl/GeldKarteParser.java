@@ -43,7 +43,6 @@ import com.github.devnied.emvnfccard.utils.CommandApdu;
 import com.github.devnied.emvnfccard.utils.ResponseUtils;
 import com.github.devnied.emvnfccard.utils.TlvUtil;
 
-import fr.devnied.bitlib.BitUtils;
 import fr.devnied.bitlib.BytesUtils;
 
 /**
@@ -175,8 +174,7 @@ public class GeldKarteParser extends AbstractParser {
 				.transceive(new CommandApdu(CommandEnum.READ_RECORD, 0x01, 0xC4, 0).toBytes());
 		// Check response
 		if (ResponseUtils.isSucceed(data)) {
-			BitUtils bits = new BitUtils(data);
-			pApplication.setAmount(Float.parseFloat(bits.getNextHexaString(3))/100.0);
+			pApplication.setAmount(Float.parseFloat(String.format("%02x%02x%02x", data[0], data[1], data[2]))/100.0f);
 		}
 	}
 
@@ -197,7 +195,7 @@ public class GeldKarteParser extends AbstractParser {
 			EmvTrack2 track2 = new EmvTrack2();
 			track2.setCardNumber(BytesUtils.bytesToStringNoSpace(Arrays.copyOfRange(data, 4, 9)));
 			try {
-				track2.setExpireDate(format.parse(String.format("%02x", data[11])+"/"+String.format("%02x", data[10])));
+				track2.setExpireDate(format.parse(String.format("%02x/%02x", data[11], data[10])));
 			} catch (ParseException e) {
 				LOGGER.error(e.getMessage(),e);
 			}

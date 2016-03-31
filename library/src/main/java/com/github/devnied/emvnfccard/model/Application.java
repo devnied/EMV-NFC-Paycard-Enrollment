@@ -65,7 +65,7 @@ public class Application extends AbstractData implements Comparable<Application>
 	/**
 	 * Application amount
 	 */
-	private double amount = UNKNOWN;
+	private float amount = UNKNOWN;
 
 	/**
 	 * List of issued payment
@@ -214,7 +214,7 @@ public class Application extends AbstractData implements Comparable<Application>
 	 * Get the field amount
 	 * @return the amount
 	 */
-	public double getAmount() {
+	public float getAmount() {
 		return amount;
 	}
 
@@ -223,7 +223,7 @@ public class Application extends AbstractData implements Comparable<Application>
 	 *
 	 * @param amount the amount to set
 	 */
-	public void setAmount(double amount) {
+	public void setAmount(float amount) {
 		this.amount = amount;
 	}
 }

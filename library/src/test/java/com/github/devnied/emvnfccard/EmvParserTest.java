@@ -356,6 +356,10 @@ public class EmvParserTest {
 
 	@Test
 	public void testPPSEGeldKarte() throws CommunicationException {
+		
+		SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss");
+		SimpleDateFormat date = new SimpleDateFormat("dd/MM/yyy");
+		
 		EmvTemplate parser = EmvTemplate.Builder() //
 				.setProvider(new TestProvider("GeldKartePpse")) //
 				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true).setReadCplc(true)).build();
@@ -374,12 +378,19 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getTrack2().getRaw()).isNull();
 		Assertions.assertThat(card.getTrack2().getService()).isNull();
 		Assertions.assertThat(card.getApplications().size()).isEqualTo(1);
+		Assertions.assertThat(card.getApplications().get(0).getAmount()).isEqualTo(6.83f);
 		Assertions.assertThat(card.getApplications().get(0).getLeftPinTry()).isEqualTo(3);
 		Assertions.assertThat(card.getApplications().get(0).getTransactionCounter()).isEqualTo(AbstractData.UNKNOWN);
 		Assertions.assertThat(card.getApplications().get(0).getApplicationLabel()).isEqualTo("girocard");
 		Assertions.assertThat(BytesUtils.bytesToStringNoSpace(card.getApplications().get(0).getAid())).isEqualTo("D27600002547410100");
 		Assertions.assertThat(card.getApplications().get(0).getListTransactions().size()).isEqualTo(1);
 		Assertions.assertThat(card.getApplications().get(0).getReadingStep()).isEqualTo(ApplicationStepEnum.READ);
+		Assertions.assertThat(card.getApplications().get(0).getListTransactions().size()).isEqualTo(1);
+		Assertions.assertThat(card.getApplications().get(0).getListTransactions().get(0).getAmount()).isEqualTo(180);
+		Assertions.assertThat(card.getApplications().get(0).getListTransactions().get(0).getCurrency()).isEqualTo(CurrencyEnum.EUR);
+		Assertions.assertThat(card.getApplications().get(0).getListTransactions().get(0).getTransactionType()).isEqualTo(TransactionTypeEnum.PURCHASE);
+		Assertions.assertThat(date.format(card.getApplications().get(0).getListTransactions().get(0).getDate())).isEqualTo("06/07/2001");
+		Assertions.assertThat(time.format(card.getApplications().get(0).getListTransactions().get(0).getTime())).isEqualTo("10:47:27");
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("1500001111");
 		Assertions.assertThat(card.getType()).isEqualTo(EmvCardScheme.GELDKARTE);
 		Assertions.assertThat(card.getHolderLastname()).isNull();
