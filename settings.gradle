@@ -1,1 +1,1 @@
-include ':app', ':nfccardreader'
+include ':app', ':creditCardNfcReader'

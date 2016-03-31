@@ -1,12 +1,9 @@
 package com.pro100svitlo.nfccardread;
 
-import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.nfc.NfcAdapter;
-import android.nfc.tech.NfcA;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -17,7 +14,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.pro100svitlo.nfccardreader.CardNfcAsyncTask;
+import com.pro100svitlo.creditCardNfcReader.CardNfcAsyncTask;
+import com.pro100svitlo.creditCardNfcReader.CardNfcUtils;
+
 
 public class MainActivity extends AppCompatActivity implements CardNfcAsyncTask.CardNfcInterface {
 
@@ -30,18 +29,13 @@ public class MainActivity extends AppCompatActivity implements CardNfcAsyncTask.
     private ImageView mCardLogoIcon;
     private NfcAdapter mNfcAdapter;
     private AlertDialog mTurnNfcDialog;
-    private IntentFilter[] mIntentFilter = {new IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED),
-            new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED)};
-    private String[][] mNfcTechFilter = new String[][] { new String[] {
-            NfcA.class.getName()
-    } };
-    private PendingIntent mNfcPIntent;
     private ProgressDialog mProgressDialog;
     private String mDoNotMoveCardMessage;
     private String mUnknownEmvCardMessage;
     private String mCardWithLockedNfcMessage;
     private boolean mIsScanNow;
     private boolean mIntentFromCreate;
+    private CardNfcUtils mCardNfcUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,16 +48,14 @@ public class MainActivity extends AppCompatActivity implements CardNfcAsyncTask.
             TextView noNfc = (TextView)findViewById(android.R.id.candidatesArea);
             noNfc.setVisibility(View.VISIBLE);
         } else {
+            mCardNfcUtils = new CardNfcUtils(this);
             mPutCardContent = (LinearLayout) findViewById(R.id.content_putCard);
             mCardReadyContent = (LinearLayout) findViewById(R.id.content_cardReady);
             mCardNumberText = (TextView) findViewById(android.R.id.text1);
             mExpireDateText = (TextView) findViewById(android.R.id.text2);
             mCardLogoIcon = (ImageView) findViewById(android.R.id.icon);
-            mNfcPIntent = PendingIntent.getActivity(this, 0, new Intent(this,
-                    getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
             createProgressDialog();
             initNfcMessages();
-
             mIntentFromCreate = true;
             onNewIntent(getIntent());
         }
@@ -79,8 +71,9 @@ public class MainActivity extends AppCompatActivity implements CardNfcAsyncTask.
         } else if (mNfcAdapter != null){
             if (!mIsScanNow){
                 mPutCardContent.setVisibility(View.VISIBLE);
+                mCardReadyContent.setVisibility(View.GONE);
             }
-            mNfcAdapter.enableForegroundDispatch(this, mNfcPIntent, mIntentFilter, mNfcTechFilter);
+            mCardNfcUtils.enableDispatch();
         }
     }
 
@@ -88,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements CardNfcAsyncTask.
     public void onPause() {
         super.onPause();
         if (mNfcAdapter != null) {
-            mNfcAdapter.disableForegroundDispatch(this);
+            mCardNfcUtils.disableDispatch();
         }
     }
 
