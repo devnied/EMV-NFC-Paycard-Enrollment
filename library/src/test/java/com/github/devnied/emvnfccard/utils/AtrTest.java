@@ -15,8 +15,7 @@ public class AtrTest {
 		Assertions
 				.assertThat(AtrUtils.getDescription("3B 07 64 11.........."))
 				.isEqualTo(
-						Arrays.asList("HID Corporate 1000 Format",
-								"http://www.hidglobal.com/sites/hidglobal.com/files/resource_files/omnikey_contactless_developer_guide.pdf"));
+						Arrays.asList("HID Corporate 1000 Format"));
 	}
 
 	@Test
