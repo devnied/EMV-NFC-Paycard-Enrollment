@@ -1,5 +1,7 @@
 package com.github.devnied.emvnfccard.utils;
 
+import java.text.SimpleDateFormat;
+
 import org.fest.assertions.Assertions;
 import org.junit.Test;
 
@@ -25,6 +27,7 @@ public final class CPLCUtilsTest {
 	
 	@Test
 	public void testRawDataCPLC(){
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		// interpret as raw data
 		CPLC cplc = CPLCUtils.parse(BytesUtils.fromString("47 90 50 40 47 91 81 02 31 00 83 58 00 11 68 91 45 81 48 12 83 65 00 00 00 00 01 2F 31 30 31 31 36 38 00 00 00 00 00 00 00 00 90 00"));		
 		Assertions.assertThat(cplc).isNotNull();
@@ -41,6 +44,13 @@ public final class CPLCUtilsTest {
 		Assertions.assertThat(cplc.getPrepersoEquipment()).isEqualTo(0x31313638);
 		Assertions.assertThat(cplc.getPersoId()).isEqualTo(0x0000);
 		Assertions.assertThat(cplc.getPersoEquipment()).isEqualTo(0x0000);
+		// Date will change each 10 years
+		Assertions.assertThat(format.format(cplc.getOsReleaseDate())).isEqualTo("11/04/2008");
+		Assertions.assertThat(format.format(cplc.getIcFabricDate())).isEqualTo("23/12/2008");
+		Assertions.assertThat(format.format(cplc.getPrepersoDate())).isEqualTo("10/05/2013");
+		Assertions.assertThat(format.format(cplc.getIcPackagingDate())).isEqualTo("30/12/2008");
+		Assertions.assertThat(cplc.getPersoDate()).isNull();
+		
 	}
 	
 	@Test

@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import com.github.devnied.emvnfccard.enums.EmvCardScheme;
 import com.github.devnied.emvnfccard.exception.CommunicationException;
 import com.github.devnied.emvnfccard.iso7816emv.TagAndLength;
+import com.github.devnied.emvnfccard.iso7816emv.impl.DefaultTerminalImpl;
 import com.github.devnied.emvnfccard.model.AbstractData;
 import com.github.devnied.emvnfccard.model.Afl;
 import com.github.devnied.emvnfccard.model.Application;
@@ -407,6 +408,7 @@ public class EmvParserTest {
 
 		EmvTemplate parser = EmvTemplate.Builder() //
 				.setProvider(new TestProvider("MasterCardPpse2")) //
+				.setTerminal(new DefaultTerminalImpl()) //
 				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true).setReadCplc(true)).build();
 		EmvCard card = parser.readEmvCard();
 
@@ -416,6 +418,8 @@ public class EmvParserTest {
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		Assertions.assertThat(card).isNotNull();
 		Assertions.assertThat(card.getTrack1()).isNotNull();
+		Assertions.assertThat(card.getTrack1().getFormatCode()).isEqualTo("B");
+		Assertions.assertThat(card.getTrack1().getRaw()).isNotEmpty();
 		Assertions.assertThat(sdf.format(card.getTrack1().getExpireDate())).isEqualTo("07/2002");
 		Assertions.assertThat(card.getTrack1().getCardNumber()).isEqualTo("5200000000000000");
 		Assertions.assertThat(card.getTrack1().getHolderFirstname()).isNull();

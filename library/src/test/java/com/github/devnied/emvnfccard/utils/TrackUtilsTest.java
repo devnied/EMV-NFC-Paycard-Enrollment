@@ -95,6 +95,34 @@ public class TrackUtilsTest {
 		Assertions.assertThat(card.getTrack1().getService().getServiceCode3().getAllowedServices()).isNotNull();
 		Assertions.assertThat(card.getTrack1().getService().getServiceCode3().getPinRequirements()).isNotNull();
 	}
+	
+	@Test
+	public void track1FormatNullUser() {
+		EmvCard card = new EmvCard();
+		boolean ret = TrackUtils
+				.extractTrack1Data(
+						card,
+						BytesUtils
+								.fromString("564C42353231313131313131313131313131315E22202020202020202020202020202020202020202020202020205E31363038323032303030303030303030303030312020303030202020202030"));
+
+		Assertions.assertThat(ret).isTrue();
+		Assertions.assertThat(card).isNotNull();
+		Assertions.assertThat(card.getCardNumber()).isEqualTo("5211111111111111");
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
+		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("08/2016");
+		Assertions.assertThat(card.getTrack1()).isNotNull();
+		Assertions.assertThat(card.getTrack1().getHolderFirstname()).isNull();
+		Assertions.assertThat(card.getTrack1().getHolderLastname()).isNull();
+		Assertions.assertThat(card.getTrack1().getService()).isNotNull();
+		Assertions.assertThat(card.getTrack1().getService().getServiceCode1()).isEqualTo(ServiceCode1Enum.INTERNATIONNAL_ICC);
+		Assertions.assertThat(card.getTrack1().getService().getServiceCode1().getInterchange()).isNotNull();
+		Assertions.assertThat(card.getTrack1().getService().getServiceCode1().getTechnology()).isNotNull();
+		Assertions.assertThat(card.getTrack1().getService().getServiceCode2()).isEqualTo(ServiceCode2Enum.NORMAL);
+		Assertions.assertThat(card.getTrack1().getService().getServiceCode2().getAuthorizationProcessing()).isNotNull();
+		Assertions.assertThat(card.getTrack1().getService().getServiceCode3()).isEqualTo(ServiceCode3Enum.GOODS_SERVICES);
+		Assertions.assertThat(card.getTrack1().getService().getServiceCode3().getAllowedServices()).isNotNull();
+		Assertions.assertThat(card.getTrack1().getService().getServiceCode3().getPinRequirements()).isNotNull();
+	}
 
 	@Test
 	public void track2Test() {
@@ -153,6 +181,17 @@ public class TrackUtilsTest {
 		Assertions.assertThat(card.getTrack2().getService().getServiceCode1()).isNull();
 		Assertions.assertThat(card.getTrack2().getService().getServiceCode2()).isNull();
 		Assertions.assertThat(card.getTrack2().getService().getServiceCode3()).isNull();
+	}
+	
+	@Test
+	public void track2TestNull() {
+		EmvCard card = new EmvCard();
+		boolean ret = TrackUtils.extractTrack2Data(card,
+				BytesUtils.fromString("00"));
+
+		Assertions.assertThat(ret).isFalse();
+		Assertions.assertThat(card).isNotNull();
+		Assertions.assertThat(card.getTrack2()).isNull();
 	}
 
 }

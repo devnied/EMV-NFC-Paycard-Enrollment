@@ -191,12 +191,6 @@ public final class TlvUtil {
 		return prettyPrintAPDUResponse(data, 0);
 	}
 
-	public static String prettyPrintAPDUResponse(final byte[] data, final int startPos, final int length) {
-		byte[] tmp = new byte[length - startPos];
-		System.arraycopy(data, startPos, tmp, 0, length);
-		return prettyPrintAPDUResponse(tmp, 0);
-	}
-
 	/**
 	 * Method used to get the list of TLV inside the parameter tag specified in parameter
 	 *
@@ -398,14 +392,6 @@ public final class TlvUtil {
 
 	public static String prettyPrintHex(final String in, final int indent) {
 		return prettyPrintHex(in, indent, true);
-	}
-
-	public static String prettyPrintHex(final byte[] data, final int indent) {
-		return prettyPrintHex(BytesUtils.bytesToStringNoSpace(data), indent, true);
-	}
-
-	public static String prettyPrintHex(final String in) {
-		return prettyPrintHex(in, 0, true);
 	}
 
 	public static String prettyPrintHex(final byte[] data) {

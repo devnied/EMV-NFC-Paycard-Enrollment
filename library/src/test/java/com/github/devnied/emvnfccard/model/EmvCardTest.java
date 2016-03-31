@@ -40,6 +40,7 @@ public class EmvCardTest {
 		EmvCard card = new EmvCard();
 		Application app = new Application();
 		app.setAid(BytesUtils.fromString("0000"));
+		app.setAid(null);
 		app.setApplicationLabel("VISA");
 		app.setLeftPinTry(3);
 		app.setTransactionCounter(10);
@@ -51,6 +52,7 @@ public class EmvCardTest {
 		card.setHolderLastname("Lastname");
 
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("12345678");
+		Assertions.assertThat(card.getApplications().get(0).getAid()).isNotNull();
 	}
 
 	@Test

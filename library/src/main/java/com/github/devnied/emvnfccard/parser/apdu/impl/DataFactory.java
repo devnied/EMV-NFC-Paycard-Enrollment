@@ -158,8 +158,6 @@ public final class DataFactory {
 			obj = getString(pAnnotation, pBit);
 		} else if (clazz.equals(Date.class)) {
 			obj = getDate(pAnnotation, pBit);
-		} else if (clazz.equals(Boolean.class)) {
-			obj = pBit.getNextBoolean();
 		} else if (clazz.isEnum()) {
 			obj = getEnum(pAnnotation, pBit);
 		}
