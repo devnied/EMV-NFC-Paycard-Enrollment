@@ -106,7 +106,7 @@ public class GeldKarteParser extends AbstractParser {
 			pApplication.setLeftPinTry(getLeftPinTry());
 			pApplication.setTransactionCounter(getTransactionCounter());
 			// TODO remove this
-			extractLogEntry(logEntry);
+			pApplication.getListTransactions().addAll(extractLogEntry(logEntry));
 			// Update ret
 			template.get().getCard().setState(CardStateEnum.ACTIVE);
 			ret = true;
