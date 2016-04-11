@@ -48,8 +48,12 @@ import fr.devnied.bitlib.BytesUtils;
 /**
  * GeldKarte parser <br/>
  * Documentation: <br/>
- * - ftp://ftp.ccc.de/documentation/cards/geldkarte.pdf -
+ * - ftp://ftp.ccc.de/documentation/cards/geldkarte.pdf
  * - http://www.bensin.org/haxor/haxor_src/ic35/crap/stash/scinfo_khf%20-%20geldkarte%20ic35/doku/gk.log
+ * - http://ftp.chaos-darmstadt.de/docs/cards/geldkarte.pdf
+ * - https://code.google.com/p/android/issues/detail?id=62976
+ * - http://www.openscdp.org/scripts/geldkarte/jsdoc/symbols/src/dump_girogo.js.html
+ * - http://www.wrankl.de/UThings/Geldkarte.pdf
  * 
  * @author MILLAU Julien
  *
