@@ -88,6 +88,10 @@
 	prepaid payphone card, issued by TelefÃ³nica Comunicaciones PÃºblicas
 	http://www.cabitel.es
 
+3B 04 17 D4 C8 82
+	prepaid payphone card, issued by Lietuvos Telekomas (now Teo LT)
+	https://www.teo.lt/
+
 3B 04 2A FF 32 00
 	Mac Gray Intelligent Laundry Systems laundry card
 
@@ -985,6 +989,9 @@
 3B 65 00 00 20 63 CB AE 80
 	Visa Premier (HelloBank), Gemalto SGP U1074311B 1214 (Bank)
 
+3B 65 00 00 20 63 CB B6 20
+	MasterCard credit card, issued by Swedbank LT (Bank)
+
 3B 65 00 00 26 40 00 90 00
 	Alacard Petroltech (Transport)
 	http://www.alacard.kz/
@@ -1282,6 +1289,8 @@
 3B 68 00 00 80 66 B0 07 01 01 77 07
 	TÃ©cnico Lisboa Student Card (Bank)
 	http://www.tecnico.ulisboa.pt/
+	Santander Totta Student Card - Portugal (Bank)
+	https://www.santandertotta.pt
 
 3B 68 00 00 9D 03 02 01 01 56 49 53
 	Visa Card - SberBank / Russia
@@ -1369,6 +1378,9 @@
 3B 69 00 FF 32 33 32 43 53 43 53 33 36
 	CSCS smart card. Must be read using CSCS go smart software.
 	https://download.cscsreader.co.uk/
+
+3B 69 00 FF 4A 43 4F 50 32 34 32 52 32
+	MCD 20 (Other)
 
 3B 69 00 FF 4A 43 4F 50 33 31 56 32 32
 	JCOP 31 v22 72K - S/C I/F
@@ -1490,7 +1502,8 @@
 	Nationwide InvestDirect (UK)
 
 3B 6C 00 00 0F 31 C0 71 D6 64 3E 67 01 01 5D 84
-	VISA GOLD Card issued by Swedbank AB, Lithuania (Bank)
+	VISA GOLD or Maestro, issued by Swedbank Lithuania (Bank)
+	VISA credit card, issued by HSBC Commercial Card UK (Bank)
 	http://www.swedbank.lt/lt/pages/privatiems/auksine_kredito_kortele
 	HSBC Commercial Card (UK) VISA
 
@@ -1531,6 +1544,7 @@
 	Capital One (UK) MasterCard
 	VISA card, issued by Swedbank Latvia
 	VISA issued by Citibank International plc (manufacturer Oberthur)
+	VISA/Maestro/MasterCard, issued by Swedbank LT/EE (manufacturer: Oberthur)
 	MasterCard issued by Swedbank Estonia (manufacturer Oberthur)
 	Santander Business Visa Debit
 
@@ -2123,6 +2137,9 @@
 	ALSEO, the Alsacian Express Regional Train card (Transport)
 	http://www.ter.sncf.com/alsace/gares/preparer-son-voyage/carte-alseo/
 
+3B 6F 00 00 80 5A 08 03 14 00 02 00 .. .. .. .. 82 90 00
+	Metro do Porto, public transport card of Oporto - Portugal (Transport)
+
 3B 6F 00 00 80 5A 08 06 08 20 02 00 .. .. .. .. 82 90 00
 	Lisboa Viva, public transport card of Lisbon (Portugal)
 
@@ -2620,6 +2637,7 @@
 
 3B 7D 94 00 00 80 31 80 65 B0 83 11 C0 A9 83 00 90 00
 	GemXpresso R4 72K
+	National ID card of Republic of Lithuania (2007-2012)
 
 3B 7D 95 00 00 80 31 80 65 B0 83 02 04 7E 83 00 90 00
 	Gemalto's Classic TPC HM CC Mifare 1K White PVC
@@ -2690,6 +2708,10 @@
 3B 7D 96 00 00 80 31 80 65 B0 A3 11 00 C8 83 00 90 00
 	Swedish eID (Telia IP5a)
 	http://www.telia.se/privat/katalog/VisaProdukt.do?productRef=/privat/produkter_tjanster/bredband/tjanster/sakerhetstjanster/teliae-legitimation.1537014385.product
+
+3B 7D 96 00 00 80 31 80 65 B0 A3 11 01 F3 83 00 90 00
+	Telia EID IP5a (eID)
+	https://cve.trust.telia.com/TeliaElegNG
 
 3B 7E 11 00 00 00 6A 11 63 54 08 30 24 01 .. .. 21 90 01
 	Sagem Windows for smart cards
@@ -2992,6 +3014,9 @@
 	CERES Spanish SmartCard from the "Fabrica Nacional de Moneda y Timbre" (FNMT) (eID)
 	http://www.cert.fnmt.es/
 
+3B 7F 96 00 00 80 31 80 65 55 85 03 00 EF 12 41 40 82 90 00
+	Civil ID  (eID)
+
 3B 7F 96 00 00 80 31 80 65 B0 84 23 27 E5 12 0F FE 82 90 00
 	Gemalto IDPrime MD 3810 dual interface smartcard ISO 7816, ISO 14443 and NFC (PKI)
 	http://www.smartcardfocus.com/shop/ilp/id~672/gemalto-idprime-md-3810-dual-interface-smartcard/p/index.shtml
@@ -3035,6 +3060,9 @@
 	Kaba Legic Advant 4k
 	Sydney Opal card public transport ticket (Transport)
 	https://www.opal.com.au
+
+3B 81 80 01 81 81
+	Ticket (Transport)
 
 3B 82 00 55 18
 	GSM SIM of TIM ITalian mobile company
@@ -3593,6 +3621,10 @@
 	OPUS STM CANADA (Transport)
 	http://stm.info/
 
+3B 8C 80 01 50 A2 21 FA A0 31 CC CC 01 77 81 C1 83
+	Morpho (eID)
+	http://www.morpho.com/
+
 3B 8C 80 01 50 B1 56 D8 BB 00 00 00 11 00 81 85 CC
 	TI rf430cl330h (Other)
 	http://www.ti.com/product/rf430cl330h
@@ -3644,6 +3676,9 @@
 
 3B 8E 80 01 10 38 77 A7 80 91 E1 65 D0 00 42 00 00 82 72
 	Czech Republic e-Passport (issued Feb 2009)
+
+3B 8E 80 01 11 78 B3 C0 02 4F 54 49 44 28 94 B3 FF FF 0E
+	Civilian passport NFC tag (passport)
 
 3B 8E 80 01 13 78 80 72 02 80 31 80 66 B1 84 0C 01 FF 04
 	Optelio Contactless Gemalto (Bank)
@@ -4110,6 +4145,9 @@
 
 3B 96 18 80 01 80 51 00 61 10 30 9F 00 61 10 30 9E
 	Atmel/Athena T0 PC/SC Compliance Test Card No. 1 (warm reset)
+
+3B 97 11 80 1F 42 80 31 A0 73 BE 21 00 A6
+	ETSI 102 230 Test case 5.2.5.3. Comprion IT3 SIM emulator (Telecommunication)
 
 3B 97 11 C0 FF B1 FE 35 1F 83 A5 05 01 01 02 A3 01 5F
 	digital chronotachygraphe card: conducteur/driver, entreprise, contrÃ´leur/controler et atelier/workshop, 2006-2010
@@ -4585,7 +4623,7 @@
 	Telus 3G SIM Card
 
 3B 9F 95 80 1F 47 80 31 E0 73 FE 21 13 57 4A 33 05 2C 32 34 00 3D
-	Subscription SIM card issued by TELE2, Lithuania (Telecommunication)
+	GSM SIM / LTE UICC card issued by TELE2, Lithuania (Telecommunication)
 
 3B 9F 95 80 1F C3 80 31 A0 73 BE 21 13 67 47 01 03 01 02 00 00 99
 	T-Mobile (UK) SIM
@@ -4779,6 +4817,9 @@
 	H3G (Italy) UMTS USIM
 	Vodafone (UK) SIM
 
+3B 9F 96 80 1F C7 80 31 E0 73 FE 21 11 63 40 72 62 83 07 90 00 9A
+	GSM SIM / LTE UICC card issued by Omnitel, Lithuania (Telecomunications)
+
 3B 9F 96 80 1F C7 80 31 E0 73 FE 21 13 57 4A 33 05 31 33 30 00 A6
 	AT&T eUICC (Telecommunication)
 
@@ -4801,6 +4842,10 @@
 3B 9F 96 80 1F C7 80 31 E0 73 FE 21 13 67 93 30 01 03 04 03 02 7C
 	Comprion test U(SIM): model 128K/J LTE Test (U)SIM - Mini-UICC, product number Prod. No.: 10432006 (Telecommunication)
 	http://www.comprion.com/en/products/test__u_sims/3g_test_usim_cards
+
+3B 9F 96 80 1F C7 80 31 E0 73 FE 21 13 67 93 30 01 11 02 01 02 6A
+	R&S CMW-Z04 Mini-UICC Test Card (Telecommunication)
+	http://www.rhode-schwartz.com
 
 3B 9F 96 80 1F C7 80 31 E0 73 FE 21 13 67 94 03 07 03 04 04 04 4F
 	GSM-SIM EMT (3G modem 2011, Estonia)
@@ -5509,6 +5554,10 @@
 	Russian Federation driver card for the digital tachograph
 	Polish driver card for digital tachograph
 
+3B DD 18 FF C0 80 B1 FE 45 1F C3 00 68 D2 76 00 00 28 04 09 71 00 90 00 A4
+	Worktime/driving style monitoring card (Transport)
+	http://www.paetronics.fi/en/
+
 3B DD 96 00 80 10 FE 80 31 80 63 01 FF C0 73 B3 21 1B 81 05
 	BIFIT iBank 2 USB Key (Bank)
 	http://bifit.ua
@@ -5768,6 +5817,10 @@
 
 3B E9 00 00 81 31 FE 45 4D 43 41 20 30 33 20 20 06 88
 	PayLife Gold MasterCard -- an unbranded version of the master card
+
+3B E9 00 FF 81 31 FE 45 43 4C 61 69 72 65 32 20 36 29
+	UB(SK) Visa Vusiness card with PayWave (Bank)
+	https://www.vub.sk/en/companies-entrepreneurs/cards/debit-cards/visa-business/
 
 3B E9 00 FF C1 10 31 FE 55 00 64 05 00 C8 02 31 80 00 47
 	Identity card of Italian Republic
@@ -6056,6 +6109,10 @@
 
 3B F5 91 00 FF 91 81 71 FE 40 00 42 00 01 77 D1 A1
 	German Passport (ePass) (issued May 2008)
+
+3B F5 96 00 00 8. 31 FE 45 4D 79 45 49 44 1.
+	MyEID card (Infineon chip) (PKI)
+	https://services.aventra.fi/English/products_MyEID_E.php
 
 3B F6 18 00 FF 81 31 FE 45 4A 32 41 30 38 30 1B
 	NXP J2A080 - 80K (blank)
