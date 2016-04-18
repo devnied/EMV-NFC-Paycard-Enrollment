@@ -62,6 +62,9 @@ public final class DefaultTerminalImpl implements ITerminal {
 		byte val[] = null;
 		if (pTagAndLength.getTag() == EmvTags.TERMINAL_TRANSACTION_QUALIFIERS) {
 			TerminalTransactionQualifiers terminalQual = new TerminalTransactionQualifiers();
+			terminalQual.setContactlessVSDCsupported(true);
+            terminalQual.setContactEMVsupported(true);
+			            
 			terminalQual.setMagneticStripeSupported(true);
 			terminalQual.setContactlessEMVmodeSupported(true);
 			terminalQual.setOnlinePINsupported(true);
