@@ -64,9 +64,9 @@ public final class AtrUtils {
 			String currentATR = null;
 			while ((line = br.readLine()) != null) {
 				++lineNumber;
-				if (line.startsWith("#") || line.trim().length() == 0) { // comment ^#/ empty line ^$/
+				if (line.startsWith("#") || line.trim().length() == 0 || line.contains("http")) { // comment ^#/ empty line ^$/
 					continue;
-				} else if (line.startsWith("\t") && currentATR != null && !line.contains("http")) {
+				} else if (line.startsWith("\t") && currentATR != null ) {
 					MAP.put(currentATR, line.replace("\t", "").trim());
 				} else if (line.startsWith("3")) { // ATR hex
 					currentATR = StringUtils.deleteWhitespace(line.toUpperCase()).replaceAll("9000$", "");
