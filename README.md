@@ -1,4 +1,5 @@
 # Credit Card NFC Reader
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Credit--Card--NFC--Reader-green.svg?style=true)](https://android-arsenal.com/details/1/3501)
 
 This library helps developer to read data from credit card: card number, expired date, card type.
 
