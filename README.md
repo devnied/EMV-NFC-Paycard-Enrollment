@@ -7,7 +7,8 @@ This library helps developer to read data from credit card: card number, expired
 2. [Screenshots](#screenshots)
 3. [Usage](#usage)
 4. [Callbacks](#callbacks)
-5. [License](#license)
+5. [Used In](#used-in)
+6. [License](#license)
 
 # Screenshots
 ![alt text](screenshots/Screenshot_20160428-122024.png "Start")
@@ -137,6 +138,13 @@ This is the main callback for managing:
         //notify user that scannig finished
     }
 ```
+### Used in
+Please, let me know (pro100svitlo@gmail.com) if you use this library and also please provide me with the link on googlePlay :)
+
+Thanks!
+
+1. [SendUa](https://play.google.com/store/apps/details?id=com.sendua)
+2. [PayHub](https://play.google.com/store/apps/details?id=com.payhub)
 
 ### License
 The MIT License (MIT)
