@@ -1,0 +1,80 @@
+# Directories #
+/build/
+*/bin/*
+*/gen/*
+*/target/*
+target/*
+target/*.pom
+target/*.asc
+*/proguard/*
+
+# OS Files #
+.DS_Store
+ 
+*.class
+ 
+# Package Files #
+*.war
+*.ear
+*.db
+ 
+######################
+# Windows
+######################
+ 
+# Windows image file caches
+Thumbs.db 
+ 
+# Folder config file
+Desktop.ini
+ 
+######################
+# OSX
+######################
+ 
+.DS_Store
+.svn
+ 
+# Thumbnails
+._*
+ 
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+ 
+ 
+######################
+# Eclipse
+######################
+ 
+*.pydevproject
+.project
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+/src/main/resources/rebel.xml
+# External tool builders
+.externalToolBuilders/
+ 
+# Locally stored "Eclipse launch configurations"
+*.launch
+ 
+# CDT-specific
+.cproject
+ 
+# PDT-specific
+.buildpath
+pom.xml.releaseBackup
+
+release.properties
+target/parent-1.0.0-SNAPSHOT.jar
+Status 
