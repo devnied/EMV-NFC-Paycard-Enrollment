@@ -88,8 +88,10 @@ public class MainActivity extends AppCompatActivity implements CardNfcAsyncTask.
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        mCardNfcAsyncTask = new CardNfcAsyncTask.Builder(this, intent, mIntentFromCreate)
-                .build();
+        if (mNfcAdapter != null && mNfcAdapter.isEnabled()) {
+            mCardNfcAsyncTask = new CardNfcAsyncTask.Builder(this, intent, mIntentFromCreate)
+                    .build();
+        }
     }
 
     @Override
