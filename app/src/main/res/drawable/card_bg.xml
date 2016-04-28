@@ -8,4 +8,10 @@
         android:width="2dp"
         android:color="@color/colorPrimaryDark"
         />
+    <gradient
+        android:startColor="@color/colorPrimary"
+        android:endColor="@color/colorPrimaryDark"
+        android:type="linear"
+        android:angle="90"
+        />
 </shape>

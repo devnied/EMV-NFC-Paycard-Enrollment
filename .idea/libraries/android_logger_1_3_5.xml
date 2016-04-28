@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="android-logger-1.3.5">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.noveogroup.android/android-logger/1.3.5/7dc7b6018c0156966f2418c3047da2c716a0b32f/android-logger-1.3.5.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.noveogroup.android/android-logger/1.3.5/61d438de6cbb065153458072661aafa6a27c7b90/android-logger-1.3.5-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

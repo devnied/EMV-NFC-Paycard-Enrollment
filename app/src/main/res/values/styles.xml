@@ -18,10 +18,10 @@
 
 
     <style name="custom_tv" parent="@android:style/TextAppearance.DeviceDefault.Large">
+        <item name="android:textColor">@android:color/white</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:gravity">center</item>
-        <item name="android:layout_marginLeft">@dimen/activity_vertical_margin</item>
+        <item name="android:gravity">left</item>
         <item name="android:layout_marginRight">@dimen/activity_vertical_margin</item>
     </style>
 

@@ -22,8 +22,8 @@ public class MainActivity extends AppCompatActivity implements CardNfcAsyncTask.
 
     private CardNfcAsyncTask mCardNfcAsyncTask;
     private Toolbar mToolbar;
-    private LinearLayout mPutCardContent;
     private LinearLayout mCardReadyContent;
+    private TextView mPutCardContent;
     private TextView mCardNumberText;
     private TextView mExpireDateText;
     private ImageView mCardLogoIcon;
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements CardNfcAsyncTask.
             noNfc.setVisibility(View.VISIBLE);
         } else {
             mCardNfcUtils = new CardNfcUtils(this);
-            mPutCardContent = (LinearLayout) findViewById(R.id.content_putCard);
+            mPutCardContent = (TextView) findViewById(R.id.content_putCard);
             mCardReadyContent = (LinearLayout) findViewById(R.id.content_cardReady);
             mCardNumberText = (TextView) findViewById(android.R.id.text1);
             mExpireDateText = (TextView) findViewById(android.R.id.text2);

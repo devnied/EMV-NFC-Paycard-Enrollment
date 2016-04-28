@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="commons-collections4-4.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/creditCardNfcReader/libs/commons-collections4-4.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

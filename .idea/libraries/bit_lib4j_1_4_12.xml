@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="bit-lib4j-1.4.12">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/creditCardNfcReader/libs/bit-lib4j-1.4.12.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
