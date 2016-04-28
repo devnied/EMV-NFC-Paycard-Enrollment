@@ -2,7 +2,7 @@
 
 This library helps developer to read data from credit card: card number, expired date, card type.
 
-1. [Demo](#usage)
+1. [Demo](https://play.google.com/store/apps/details?id=com.pro100svitlo.nfccardread)
 2. [Screenshots](#screenshots)
 3. [Usage](#usage)
 4. [Callbacks](#callbacks)
