@@ -34,6 +34,7 @@ import com.github.devnied.emvnfccard.iso7816emv.EmvTags;
 import com.github.devnied.emvnfccard.iso7816emv.TagAndLength;
 import com.github.devnied.emvnfccard.model.Afl;
 import com.github.devnied.emvnfccard.model.Application;
+import com.github.devnied.emvnfccard.model.EmvCard;
 import com.github.devnied.emvnfccard.model.enums.ApplicationStepEnum;
 import com.github.devnied.emvnfccard.model.enums.CardStateEnum;
 import com.github.devnied.emvnfccard.parser.EmvTemplate;
@@ -209,7 +210,7 @@ public class EmvParser extends AbstractParser {
 		if (data != null) {
 			data = ArrayUtils.subarray(data, 2, data.length);
 		} else { // Extract AFL data from Message template 2
-			ret = TrackUtils.extractTrackData(template.get().getCard(), pGpo);
+			ret = extractTrackData(template.get().getCard(), pGpo);
 			if (!ret) {
 				data = TlvUtil.getValue(pGpo, EmvTags.APPLICATION_FILE_LOCATOR);
 			} else {
@@ -229,7 +230,7 @@ public class EmvParser extends AbstractParser {
 					// Extract card data
 					if (ResponseUtils.isSucceed(info)) {
 						extractCardHolderName(info);
-						if (TrackUtils.extractTrackData(template.get().getCard(), info)) {
+						if (extractTrackData(template.get().getCard(), info)) {
 							return true;
 						}
 					}
@@ -288,4 +289,21 @@ public class EmvParser extends AbstractParser {
 		}
 		return template.get().getProvider().transceive(new CommandApdu(CommandEnum.GPO, out.toByteArray(), 0).toBytes());
 	}
+	
+	/**
+	 * Method used to extract track data from response
+	 *
+	 * @param pEmvCard
+	 *            Card data
+	 * @param pData
+	 *            data send by card
+	 * @return true if track 1 or track 2 can be read
+	 */
+	protected boolean extractTrackData(final EmvCard pEmvCard, final byte[] pData) {
+		template.get().getCard().setTrack1(TrackUtils.extractTrack1Data(TlvUtil.getValue(pData, EmvTags.TRACK1_DATA)));
+		template.get().getCard().setTrack2(TrackUtils.extractTrack2EquivalentData(TlvUtil.getValue(pData, EmvTags.TRACK_2_EQV_DATA, EmvTags.TRACK2_DATA)));
+		return pEmvCard.getTrack1() != null || pEmvCard.getTrack2() != null;
+	}
+
+	
 }

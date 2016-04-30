@@ -27,13 +27,12 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.devnied.emvnfccard.iso7816emv.EmvTags;
-import com.github.devnied.emvnfccard.model.EmvCard;
 import com.github.devnied.emvnfccard.model.EmvTrack1;
 import com.github.devnied.emvnfccard.model.EmvTrack2;
 import com.github.devnied.emvnfccard.model.Service;
 
 import fr.devnied.bitlib.BytesUtils;
+
 
 /**
  * Extract track data
@@ -54,9 +53,9 @@ public final class TrackUtils {
 	public static final String CARD_HOLDER_NAME_SEPARATOR = "/";
 
 	/**
-	 * Track 2 pattern
+	 * Track 2 Equivalent pattern
 	 */
-	private static final Pattern TRACK2_PATTERN = Pattern.compile("([0-9]{1,19})D([0-9]{4})([0-9]{3})?(.*)");
+	private static final Pattern TRACK2_EQUIVALENT_PATTERN = Pattern.compile("([0-9]{1,19})D([0-9]{4})([0-9]{3})?(.*)");
 
 	/**
 	 * Track 1 pattern
@@ -65,38 +64,19 @@ public final class TrackUtils {
 			.compile("%?([A-Z])([0-9]{1,19})(\\?[0-9])?\\^([^\\^]{2,26})\\^([0-9]{4}|\\^)([0-9]{3}|\\^)([^\\?]+)\\??");
 
 	/**
-	 * Method used to extract track data from response
+	 * Extract track 2 Equivalent data
 	 *
-	 * @param pEmvCard
-	 *            Card data
-	 * @param pData
-	 *            data send by card
-	 * @return true if track 1 or track 2 can be read
+	 * @param pRawTrack1 Raw track 2 data
+	 * @return EmvTrack2 object data or null
 	 */
-	public static boolean extractTrackData(final EmvCard pEmvCard, final byte[] pData) {
-		boolean extractTrack1 = extractTrack1Data(pEmvCard, pData);
-		boolean extractTrack2 = extractTrack2Data(pEmvCard, pData);
-		return extractTrack1 || extractTrack2;
-	}
+	public static EmvTrack2 extractTrack2EquivalentData(final byte[] pRawTrack2) {
+		EmvTrack2 ret = null;
 
-	/**
-	 * Extract track 2 data
-	 *
-	 * @param pEmvCard
-	 *            Object card representation
-	 * @param pData
-	 *            data to parse
-	 * @return true if the extraction succeed false otherwise
-	 */
-	public static boolean extractTrack2Data(final EmvCard pEmvCard, final byte[] pData) {
-		boolean ret = false;
-		byte[] rawTrack2 = TlvUtil.getValue(pData, EmvTags.TRACK_2_EQV_DATA, EmvTags.TRACK2_DATA);
-
-		if (rawTrack2 != null) {
+		if (pRawTrack2 != null) {
 			EmvTrack2 track2 = new EmvTrack2();
-			track2.setRaw(rawTrack2);
-			String data = BytesUtils.bytesToStringNoSpace(rawTrack2);
-			Matcher m = TRACK2_PATTERN.matcher(data);
+			track2.setRaw(pRawTrack2);
+			String data = BytesUtils.bytesToStringNoSpace(pRawTrack2);
+			Matcher m = TRACK2_EQUIVALENT_PATTERN.matcher(data);
 			// Check pattern
 			if (m.find()) {
 				// read card number
@@ -111,8 +91,7 @@ public final class TrackUtils {
 				}
 				// Read service
 				track2.setService(new Service(m.group(3)));
-				pEmvCard.setTrack2(track2);
-				ret = true;
+				ret = track2;
 			}
 		}
 		return ret;
@@ -120,22 +99,18 @@ public final class TrackUtils {
 
 	/**
 	 * Extract track 1 data
-	 *
-	 * @param pEmvCard
-	 *            Object card representation
-	 * @param pData
-	 *            data to parse
-	 * @return true if the extraction succeed false otherwise
+	 * 
+	 * @param pRawTrack1
+	 *            track1 raw data
+	 * @return EmvTrack1 object
 	 */
-	public static boolean extractTrack1Data(final EmvCard pEmvCard, final byte[] pData) {
-		boolean ret = false;
-		byte[] rawTrack1 = TlvUtil.getValue(pData, EmvTags.TRACK1_DATA);
+	public static EmvTrack1 extractTrack1Data(final byte[] pRawTrack1) {
+		EmvTrack1 ret = null;
 
-		if (rawTrack1 != null) {
+		if (pRawTrack1 != null) {
 			EmvTrack1 track1 = new EmvTrack1();
-			track1.setRaw(rawTrack1);
-			String data = new String(rawTrack1);
-			Matcher m = TRACK1_PATTERN.matcher(data);
+			track1.setRaw(pRawTrack1);
+			Matcher m = TRACK1_PATTERN.matcher(new String(pRawTrack1));
 			// Check pattern
 			if (m.find()) {
 				// Set format code
@@ -158,10 +133,7 @@ public final class TrackUtils {
 				}
 				// Read service
 				track1.setService(new Service(m.group(6)));
-
-				// Set track 1
-				pEmvCard.setTrack1(track1);
-				ret = true;
+				ret = track1;
 			}
 		}
 		return ret;
