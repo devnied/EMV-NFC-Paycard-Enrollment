@@ -88,7 +88,7 @@
 			<dependency>
 				<groupId>net.sf.scuba</groupId>
 				<artifactId>scuba-smartcards</artifactId>
-				<version>0.0.8</version>
+				<version>0.0.9</version>
 			</dependency>
 
 			<!-- Tests -->
