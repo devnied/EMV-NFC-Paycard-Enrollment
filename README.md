@@ -21,7 +21,7 @@ This library helps developer to read data from credit card: card number, expired
 ##### Add the dependencies to your gradle file:
 ```sh
     dependencies {
-        compile 'com.github.pro100svitlo:creditCardNfcReader:0.9.1'
+        compile 'com.github.pro100svitlo:creditCardNfcReader:1.0.0'
     }
 ```
 
@@ -151,7 +151,6 @@ If you have some problems with using this library or something doesn't work corr
 
 ### Used in
 Please, let me know (pro100svitlo@gmail.com) if you use this library and also please provide me with the link on googlePlay :)
-
 Thanks!
 
 1. [SendUa](https://play.google.com/store/apps/details?id=com.sendua)
