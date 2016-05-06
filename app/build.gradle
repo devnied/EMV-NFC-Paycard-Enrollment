@@ -24,5 +24,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.android.support:design:23.2.1'
-    compile 'com.github.pro100svitlo:creditCardNfcReader:0.9.1'
+    compile 'com.github.pro100svitlo:creditCardNfcReader:1.0.0'
 }

@@ -1,8 +1,10 @@
 package com.pro100svitlo.nfccardread;
 
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -13,9 +15,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pro100svitlo.creditCardNfcReader.CardNfcAsyncTask;
 import com.pro100svitlo.creditCardNfcReader.CardNfcUtils;
+import com.pro100svitlo.creditCardNfcReader.enums.EmvCardScheme;
 
 
 public class MainActivity extends AppCompatActivity implements CardNfcAsyncTask.CardNfcInterface {
@@ -187,7 +191,15 @@ public class MainActivity extends AppCompatActivity implements CardNfcAsyncTask.
 
 
     private void parseCardType(String cardType){
-        if (cardType.equals(CardNfcAsyncTask.CARD_VISA)){
+        if (cardType.equals(CardNfcAsyncTask.CARD_UNKNOWN)){
+            Snackbar.make(mToolbar, getString(R.string.snack_unknown_bank_card), Snackbar.LENGTH_LONG)
+                    .setAction("GO", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            goToRepo();
+                        }
+                    });
+        } else if (cardType.equals(CardNfcAsyncTask.CARD_VISA)){
             mCardLogoIcon.setImageResource(R.mipmap.visa_logo);
         } else if (cardType.equals(CardNfcAsyncTask.CARD_MASTER_CARD)){
             mCardLogoIcon.setImageResource(R.mipmap.master_logo);
@@ -198,5 +210,17 @@ public class MainActivity extends AppCompatActivity implements CardNfcAsyncTask.
         String div = " - ";
         return  card.substring(0,4) + div + card.substring(4,8) + div + card.substring(8,12)
                 +div + card.substring(12,16);
+    }
+
+    private void goToRepo(){
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.repoUrl)));
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.setPackage("com.android.chrome");
+        try{
+            startActivity(i);
+        } catch (ActivityNotFoundException e){
+            i.setPackage(null);
+            startActivity(i);
+        }
     }
 }

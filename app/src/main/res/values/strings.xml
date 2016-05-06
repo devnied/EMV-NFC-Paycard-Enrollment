@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name">NFC Credit Card Reader</string>
+    <string name="repoUrl">https://github.com/pro100svitlo/Credit-Card-NFC-Reader#questions-and-help</string>
     <string name="tv_noNfc">There is no NFC module on this device</string>
     <string name="tv_tapYourCard">Please put your card to back panel of the phone</string>
     <string name="ad_progressBar_title">Scanning ...</string>
     <string name="ad_progressBar_mess">Please do not remove or move card during reading.</string>
+    <string name="snack_unknown_bank_card">This is unknown bank card. Please, go to my github repo!</string>
     <string name="snack_doNotMoveCard">Please do not move card, try again !</string>
     <string name="snack_unknownEmv">Unknown EMV card</string>
     <string name="snack_lockedNfcCard">NFC is locked on this card.</string>
