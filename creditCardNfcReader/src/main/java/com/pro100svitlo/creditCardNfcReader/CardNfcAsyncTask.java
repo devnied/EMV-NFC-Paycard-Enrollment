@@ -52,7 +52,9 @@ public class CardNfcAsyncTask extends AsyncTask<Void, Void, Object>{
         void finishNfcReadCard();
     }
 
+    public final static String CARD_UNKNOWN = EmvCardScheme.UNKNOWN.toString();
     public final static String CARD_VISA = EmvCardScheme.VISA.toString();
+    public final static String CARD_NAB_VISA = EmvCardScheme.NAB_VISA.toString();
     public final static String CARD_MASTER_CARD = EmvCardScheme.MASTER_CARD.toString();
     public final static String CARD_AMERICAN_EXPRESS = EmvCardScheme.AMERICAN_EXPRESS.toString();
     public final static String CARD_CB = EmvCardScheme.CB.toString();
@@ -82,6 +84,15 @@ public class CardNfcAsyncTask extends AsyncTask<Void, Void, Object>{
 
     private final static String NFC_A_TAG = "TAG: Tech [android.nfc.tech.IsoDep, android.nfc.tech.NfcA]";
     private final static String NFC_B_TAG = "TAG: Tech [android.nfc.tech.IsoDep, android.nfc.tech.NfcB]";
+    private final String UNKNOWN_CARD_MESS =
+            "===========================================================================\n\n"+
+            "Hi! This library is not familiar with your credit card. \n " +
+            "Please, write me an email with information of your bank: \n" +
+            "country, bank name, card type, etc) and i will try to do my best, \n" +
+            "to add your bank as a known one into this lib. \n" +
+            "Great thanks for using and reporting!!! \n" +
+            "Here is my email: pro100svitlo@gmail.com. \n\n" +
+            "===========================================================================";
 
     private Provider mProvider = new Provider();
     private boolean mException;
@@ -148,13 +159,15 @@ public class CardNfcAsyncTask extends AsyncTask<Void, Void, Object>{
 
     @Override
     protected void onPostExecute(final Object result) {
-
         if (!mException) {
             if (mCard != null) {
                 if (StringUtils.isNotBlank(mCard.getCardNumber())) {
                     mCardNumber = mCard.getCardNumber();
                     mExpireDate = mCard.getExpireDate();
                     mCardType = mCard.getType().toString();
+                    if (mCardType.equals(EmvCardScheme.UNKNOWN.toString())){
+                        Log.d("creditCardNfcReader", UNKNOWN_CARD_MESS);
+                    }
                     mInterface.cardIsReadyToRead();
                 } else if (mCard.isNfcLocked()) {
                     mInterface.cardWithLockedNfc();

@@ -8,8 +8,8 @@ android {
         multiDexEnabled true
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.0.0"
     }
     buildTypes {
         release {
@@ -30,7 +30,7 @@ dependencies {
 publish {
     groupId = 'com.github.pro100svitlo'
     artifactId = 'creditCardNfcReader'
-    publishVersion = '0.9.1'
+    publishVersion = '1.0.0'
     desc = 'Library that help developer to get data from credit card with NFC'
     licences = ['MIT']
     website = 'https://github.com/pro100svitlo/Credit-Card-NFC-Reader'

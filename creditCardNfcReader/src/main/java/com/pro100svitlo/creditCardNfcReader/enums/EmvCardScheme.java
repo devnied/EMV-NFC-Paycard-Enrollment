@@ -13,7 +13,10 @@ import java.util.regex.Pattern;
  */
 public enum EmvCardScheme {
 
+	UNKNOWN("",""),
+
 	VISA("VISA", "^4[0-9]{6,}$", "A0 00 00 00 03", "A0 00 00 00 03 10 10", "A0 00 00 00 98 08 48"), //
+	NAB_VISA("VISA", "^4[0-9]{6,}$", "A0 00 00 00 03", "A0 00 00 03", "A0 00 00 00 03 10 10", "A0 00 00 00 98 08 48"),
 	MASTER_CARD("Master card", "^5[1-5][0-9]{5,}$", "A0 00 00 00 04", "A0 00 00 00 05"), //
 	AMERICAN_EXPRESS("American express", "^3[47][0-9]{5,}$", "A0 00 00 00 25"), //
 	CB("CB", null, "A0 00 00 00 42"), //
@@ -71,7 +74,7 @@ public enum EmvCardScheme {
 	 * @param pRegex
 	 *            Card regex
 	 */
-	private EmvCardScheme(final String pScheme, final String pRegex, final String... pAids) {
+	EmvCardScheme(final String pScheme, final String pRegex, final String... pAids) {
 		aids = pAids;
 		aidsByte = new byte[pAids.length][];
 		for (int i = 0; i < aids.length; i++) {
@@ -111,7 +114,7 @@ public enum EmvCardScheme {
 	 * @return CardType or null
 	 */
 	public static EmvCardScheme getCardTypeByAid(final String pAid) {
-		EmvCardScheme ret = null;
+		EmvCardScheme ret = EmvCardScheme.UNKNOWN ;
 		if (pAid != null) {
 			String aid = StringUtils.deleteWhitespace(pAid);
 			for (EmvCardScheme val : EmvCardScheme.values()) {
@@ -134,7 +137,7 @@ public enum EmvCardScheme {
 	 * @return the type of the card using regex
 	 */
 	public static EmvCardScheme getCardTypeByCardNumber(final String pCardNumber) {
-		EmvCardScheme ret = null;
+		EmvCardScheme ret = EmvCardScheme.UNKNOWN;
 		if (pCardNumber != null) {
 			for (EmvCardScheme val : EmvCardScheme.values()) {
 				if (val.pattern != null && val.pattern.matcher(StringUtils.deleteWhitespace(pCardNumber)).matches()) {
