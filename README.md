@@ -2,17 +2,15 @@
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Credit--Card--NFC--Reader-green.svg?style=true)](https://android-arsenal.com/details/1/3501)
 
 This library helps developer to read data from credit card: card number, expired date, card type.
-##### Questions and help
-If you have some problems with using this library or something doesn't work correctly - just write me an email and describe your question or problem. I will try to do my best to help you and fix the problem if it is. Here is my email: pro100svitlo@gmail.com
-
 
 1. [Demo](https://play.google.com/store/apps/details?id=com.pro100svitlo.nfccardread)
 2. [Screenshots](#screenshots)
 3. [Usage](#usage)
 4. [Callbacks](#callbacks)
-5. [Used In](#used-in)
-6. [Updates](#updates)
-7. [License](#license)
+5. [Updates](#updates)
+6. [Used In](#used-in)
+7. [Questions and help]()
+8. [License](#license)
 
 # Screenshots
 ![alt text](screenshots/Screenshot_20160428-122024.png "Start")
@@ -142,6 +140,15 @@ This is the main callback for managing:
         //notify user that scannig finished
     }
 ```
+
+### Updates
+* v.1.0.0
+    1. Add Ingdirect Bank visa card (Australian Bank)
+    2. Add default card type as <b>UNKNOWN</b>. If you receive such card type, please [see this](#questions-and-help);
+
+### Questions and help
+If you have some problems with using this library or something doesn't work correctly - just write me an email and describe your question or problem. I will try to do my best to help you and fix the problem if it is. Here is my email: pro100svitlo@gmail.com
+
 ### Used in
 Please, let me know (pro100svitlo@gmail.com) if you use this library and also please provide me with the link on googlePlay :)
 
@@ -150,10 +157,6 @@ Thanks!
 1. [SendUa](https://play.google.com/store/apps/details?id=com.sendua)
 2. [PayHub](https://play.google.com/store/apps/details?id=com.payhub)
 
-### Updates
-* v.1.0.0
-    1. Add Ingdirect Bank visa card (Australian Bank)
-    2. Add default card type as <b>UNKNOWN</b>. If you receive such card type, please [see this](#questions-and-help); 
 
 ### License
 The MIT License (MIT)
