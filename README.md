@@ -9,7 +9,7 @@ This library helps developer to read data from credit card: card number, expired
 4. [Callbacks](#callbacks)
 5. [Updates](#updates)
 6. [Used In](#used-in)
-7. [Questions and help]()
+7. [Questions and help](#questions-and-help)
 8. [License](#license)
 
 # Screenshots
