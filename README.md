@@ -21,7 +21,7 @@ This library helps developer to read data from credit card: card number, expired
 ##### Add the dependencies to your gradle file:
 ```sh
     dependencies {
-        compile 'com.github.pro100svitlo:creditCardNfcReader:1.0.0'
+        compile 'com.github.pro100svitlo:creditCardNfcReader:1.0.1'
     }
 ```
 
