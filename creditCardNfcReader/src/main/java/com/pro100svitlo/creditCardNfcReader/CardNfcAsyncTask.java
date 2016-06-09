@@ -24,13 +24,14 @@ import java.io.IOException;
 public class CardNfcAsyncTask extends AsyncTask<Void, Void, Object>{
 
     public static class Builder {
-        private Intent mIntent;
+        private Tag mTag;
         private CardNfcInterface mInterface;
         private boolean mFromStart;
 
+
         public Builder(CardNfcInterface i, Intent intent, boolean fromCreate) {
             mInterface = i;
-            mIntent = intent;
+            mTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             mFromStart = fromCreate;
         }
 
@@ -103,24 +104,23 @@ public class CardNfcAsyncTask extends AsyncTask<Void, Void, Object>{
     private String mCardNumber;
     private String mExpireDate;
     private String mCardType;
-    private Intent mIntent;
 
     private CardNfcAsyncTask(Builder b) {
-        mInterface = b.mInterface;
-        mIntent = b.mIntent;
-        mTag = mIntent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-
-        try {
-            if (mTag.toString().equals(NFC_A_TAG) || mTag.toString().equals(NFC_B_TAG)) {
-                execute();
-            } else {
-                if (!b.mFromStart) {
-                    mInterface.unknownEmvCard();
+        mTag = b.mTag;
+        if (mTag != null) {
+            mInterface = b.mInterface;
+            try {
+                if (mTag.toString().equals(NFC_A_TAG) || mTag.toString().equals(NFC_B_TAG)) {
+                    execute();
+                } else {
+                    if (!b.mFromStart) {
+                        mInterface.unknownEmvCard();
+                    }
+                    clearAll();
                 }
-                clearAll();
+            } catch (NullPointerException e) {
+                e.printStackTrace();
             }
-        } catch (NullPointerException e){
-            e.printStackTrace();
         }
     }
 
@@ -214,6 +214,5 @@ public class CardNfcAsyncTask extends AsyncTask<Void, Void, Object>{
         mCardNumber = null;
         mExpireDate = null;
         mCardType = null;
-        mIntent = null;
     }
 }

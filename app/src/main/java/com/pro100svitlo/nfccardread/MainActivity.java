@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements CardNfcAsyncTask.
 
     @Override
     public void finishNfcReadCard() {
-        mProgressDialog.hide();
+        mProgressDialog.dismiss();
         mCardNfcAsyncTask = null;
         mIsScanNow = false;
     }
