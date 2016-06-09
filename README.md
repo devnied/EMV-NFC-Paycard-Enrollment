@@ -21,7 +21,7 @@ This library helps developer to read data from credit card: card number, expired
 ##### Add the dependencies to your gradle file:
 ```sh
     dependencies {
-        compile 'com.github.pro100svitlo:creditCardNfcReader:1.0.1'
+        compile 'com.github.pro100svitlo:creditCardNfcReader:1.0.2'
     }
 ```
 
@@ -94,6 +94,9 @@ This library helps developer to read data from credit card: card number, expired
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         if (mNfcAdapter != null && mNfcAdapter.isEnabled()) {
+            //this - interface for callbacks
+            //intent = intent :)
+            //mIntentFromCreate - boolean flag, for understanding if onNewIntent() was called from onCreate or not
             mCardNfcAsyncTask = new CardNfcAsyncTask.Builder(this, intent, mIntentFromCreate)
                     .build();
         }
