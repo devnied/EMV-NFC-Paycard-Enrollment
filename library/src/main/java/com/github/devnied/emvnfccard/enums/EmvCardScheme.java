@@ -42,7 +42,7 @@ public enum EmvCardScheme {
 	SPAN("Saudi Payments Network", null, "A0 00 00 02 28"), //
 	INTERAC("Interac", null, "A0 00 00 02 77"), //
 	ZIP("Discover Card", null, "A0 00 00 03 24"), //
-	UNIONPAY("UnionPay", "^62[0-9]{14,17}", "A0 00 00 03 33"), //
+	UNIONPAY("UnionPay", "^62[0-5]{13,16}", "A0 00 00 03 33"), //
 	EAPS("Euro Alliance of Payment Schemes", null, "A0 00 00 03 59"), //
 	VERVE("Verve", null, "A0 00 00 03 71"), //
 	TENN("The Exchange Network ATM Network", null, "A0 00 00 04 39"), //
