@@ -14,7 +14,10 @@ android {
   }
   
   lintOptions {
-    abortOnError false
+    textReport true
+    textOutput 'stdout'
+
+    abortOnError false // TODO fix lint errors
   }
 }
 

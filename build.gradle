@@ -31,3 +31,21 @@ ext {
 
 def androidToolsVersion = '25.2.0'
 def supportLibraryVersion = '25.3.0'
+
+ext.deps = [
+    // Android
+    android: 'com.google.android:android:4.1.1.4',
+    appcompatv7: "com.android.support:appcompat-v7:$supportLibraryVersion",
+    supportCompat: "com.android.support:support-compat:$supportLibraryVersion",
+    supportAnnotations: "com.android.support:support-annotations:$supportLibraryVersion",
+    supportTestRunner: 'com.android.support.test:runner:0.5',
+    androidGradle: 'com.android.tools.build:gradle:2.2.0',
+    lint: "com.android.tools.lint:lint:$androidToolsVersion",
+    lintApi: "com.android.tools.lint:lint-api:$androidToolsVersion",
+    lintChecks: "com.android.tools.lint:lint-checks:$androidToolsVersion",
+    lintTests: "com.android.tools.lint:lint-tests:$androidToolsVersion",
+
+    // Test dependencies
+    junit: 'junit:junit:4.12',
+    compiletesting: 'com.google.testing.compile:compile-testing:0.9',
+]
