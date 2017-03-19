@@ -1,0 +1,33 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+subprojects { project ->
+  group = GROUP
+  version = VERSION_NAME
+
+  repositories {
+    jcenter()
+  }
+
+    buildscript {
+    repositories {
+      mavenCentral()
+      maven {
+        url "https://plugins.gradle.org/m2/"
+      }
+    }
+    dependencies {
+      classpath 'com.android.tools.build:gradle:2.4.0-alpha1'
+    }
+  }
+}
+
+ext {
+  minSdkVersion = 9
+  targetSdkVersion = 25
+  compileSdkVersion = 25
+  buildToolsVersion = '25.0.2'
+  sourceCompatibilityVersion = JavaVersion.VERSION_1_7
+  targetCompatibilityVersion = JavaVersion.VERSION_1_7
+}
+
+def androidToolsVersion = '25.2.0'
+def supportLibraryVersion = '25.3.0'
