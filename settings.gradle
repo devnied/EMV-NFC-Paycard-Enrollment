@@ -1,5 +1,4 @@
 include ':library'
 include ':sample'
-// include ':sample-pcsc'
 
 rootProject.name = 'emvnfccard-parent'
