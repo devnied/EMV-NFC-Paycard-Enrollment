@@ -83,4 +83,15 @@
     <!-- Optional button to Skip a PreferenceActivity [CHAR LIMIT=20] -->
     <string name="skip_button_label">Skip</string>
 
+    <string name="card_bank">Bank</string>
+    <string name="card_expire">Expire</string>
+    <string name="card_view_description">Bank card illustration</string>
+    <string name="card_type_description">Card type logo</string>
+    <string name="card_contactless_description">Contactless logo</string>
+    <string name="detail_key">key :</string>
+    <string name="detail_value">value</string>
+
+    <string name="about_description_logo">App logo</string>
+    <string name="about_description_github">Github logo</string>
+
 </resources>

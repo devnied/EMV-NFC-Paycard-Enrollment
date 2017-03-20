@@ -32,9 +32,12 @@
                 android:layout_width="50dp"
                 android:layout_height="30dp"
                 android:paddingRight="5dp"
+                android:paddingLeft="5dp"
                 android:scaleType="centerCrop"
                 android:layout_marginBottom="10dp"
-                android:src="@drawable/ic_launcher" />
+                android:src="@drawable/ic_launcher"
+                android:contentDescription="@string/about_description_logo"
+                />
             
             <TextView
                 android:id="@+id/about_version"
@@ -53,11 +56,12 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_centerHorizontal="true"
                 android:layout_marginBottom="15dp"
                 android:layout_marginTop="15dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/github" />
+                android:src="@drawable/github"
+                android:contentDescription="@string/about_description_github"
+                />
 
             
             <TextView

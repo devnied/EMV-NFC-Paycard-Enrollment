@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    >
 
     <LinearLayout
         android:id="@+id/transaction_group_card"
@@ -19,7 +21,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="-10dp"
+            android:importantForAccessibility="no"
             android:src="@drawable/expander_open_holo_light"
+            tools:ignore="RtlHardcoded,UnusedAttribute"
             />
         
         <TextView
@@ -27,20 +31,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15sp"
-            android:text="10/10/2014"
+            tools:text="10/10/2014"
              />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right|center_vertical" >
+            android:gravity="start|center_vertical" >
 
             <TextView
                 android:id="@+id/transaction_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
-                android:text="13"
+                tools:text="13"
                  />
 
             <TextView
@@ -48,6 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="3dp"
+                android:paddingRight="3dp"
                 android:textSize="15sp" />
         </LinearLayout>
     </LinearLayout>

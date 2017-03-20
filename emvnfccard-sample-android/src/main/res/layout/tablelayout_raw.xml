@@ -4,24 +4,25 @@
      android:layout_height="wrap_content"
      android:layout_marginBottom="5dp"
       >
-     
+
      <TextView
        android:id="@+id/extended_raw_title"
 	   android:layout_width="wrap_content"
 	   android:layout_height="wrap_content"
-	   android:text="key :"
+	   android:text="@string/detail_key"
 	   android:textColor="#222"
 	   android:textSize="13sp"
 	   android:textStyle="bold" />
-     
-     
+
+
      <TextView
        android:id="@+id/extended_raw_content"
 	   android:layout_width="wrap_content"
 	   android:layout_height="wrap_content"
 	   android:paddingLeft="7dp"
-	   android:text=" value"
+	   android:paddingRight="7dp"
+	   android:text="@string/detail_value"
 	   android:textColor="#222"
 	   android:textSize="12sp" />
-     
+
 </TableRow>

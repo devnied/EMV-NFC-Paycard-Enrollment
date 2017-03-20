@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
@@ -14,16 +15,19 @@
         android:background="@drawable/card_border"
         android:gravity="center"
         android:scaleType="centerCrop"
-        android:src="@drawable/emv_card_background" />
+        android:src="@drawable/emv_card_background"
+        android:contentDescription="@string/card_view_description"
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/card"
         android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         android:layout_marginTop="25dp"
         android:gravity="center"
-        android:text="Bank"
+        android:text="@string/card_bank"
         android:textColor="#999999"
         android:textScaleX="1"
         android:textSize="25sp"
@@ -40,7 +44,9 @@
         android:text="3456 5456 6578 6543"
         android:textColor="@android:color/black"
         android:textSize="21sp"
-        android:textStyle="bold" >
+        android:textStyle="bold"
+        tools:ignore="HardcodedText"
+        >
     </TextView>
 
     <LinearLayout
@@ -48,6 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/cardNumber"
         android:layout_marginLeft="95dp"
+        android:layout_marginRight="95dp"
         android:layout_marginTop="35dp"
         android:gravity="center"
         android:orientation="horizontal" >
@@ -57,10 +64,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginRight="5dp"
-            android:gravity="left|center_vertical"
-            android:text="Expire"
+            android:layout_marginLeft="5dp"
+            android:gravity="start|center_vertical"
+            android:text="@string/card_expire"
             android:textColor="@android:color/black"
-            android:textSize="11sp"
+            android:textSize="12sp"
             android:textStyle="bold" >
         </TextView>
 
@@ -69,11 +77,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="left"
+            android:gravity="start"
             android:text="12/14"
             android:textColor="@android:color/black"
             android:textSize="14sp"
-            android:textStyle="bold" >
+            android:textStyle="bold"
+            tools:ignore="HardcodedText"
+            >
         </TextView>
     </LinearLayout>
 
@@ -83,8 +93,12 @@
         android:layout_height="34dp"
         android:layout_alignBottom="@+id/card"
         android:layout_alignRight="@+id/card"
+        android:layout_alignEnd="@+id/card"
         android:layout_marginBottom="15dp"
         android:layout_marginRight="10dp"
-        android:scaleType="fitCenter" />
+        android:layout_marginLeft="10dp"
+        android:scaleType="fitCenter"
+        android:contentDescription="@string/card_type_description"
+        />
 
 </RelativeLayout>

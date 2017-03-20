@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
@@ -32,7 +33,9 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="7dp"
                 android:textColor="#222"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded,RtlSymmetry"
+                />
         </TableRow>
         
 
@@ -56,7 +59,9 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="7dp"
                 android:textColor="#222"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded,RtlSymmetry"
+                />
         </TableRow>
 
         <TableRow
@@ -79,7 +84,9 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="7dp"
                 android:textColor="#222"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded,RtlSymmetry"
+                />
         </TableRow>
     </TableLayout>
 
