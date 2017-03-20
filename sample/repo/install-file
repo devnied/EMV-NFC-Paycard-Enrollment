@@ -1,6 +1,0 @@
-## Command sample to create local repo
-
-mvn install:install-file -DlocalRepositoryPath=repo/ \
-  -DcreateChecksum=true -Dpackaging=jar \
-  -Dfile=jar/android-support-v4.jar -DgroupId=com.android.support \
-  -DartifactId=v4 -Dversion=21.0.1

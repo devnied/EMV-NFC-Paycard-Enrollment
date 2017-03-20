@@ -1,0 +1,5 @@
+include ':emvnfccard'
+include ':emvnfccard-sample-android'
+include ':emvnfccard-sample-java'
+
+rootProject.name = 'emvnfccard-parent'

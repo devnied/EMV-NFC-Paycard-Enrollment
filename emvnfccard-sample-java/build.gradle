@@ -1,0 +1,10 @@
+apply plugin: 'java'
+
+dependencies {
+  compile project(':emvnfccard')
+}
+
+sourceCompatibility = rootProject.ext.sourceCompatibilityVersion
+targetCompatibility = rootProject.ext.targetCompatibilityVersion
+
+apply from: rootProject.file('gradle/gradle-mvn-push.gradle')

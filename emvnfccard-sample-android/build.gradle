@@ -1,0 +1,48 @@
+apply plugin: 'com.android.application'
+
+android {
+  compileSdkVersion rootProject.ext.compileSdkVersion
+  buildToolsVersion rootProject.ext.buildToolsVersion
+
+  compileOptions {
+    sourceCompatibility = rootProject.ext.sourceCompatibilityVersion
+    targetCompatibility = rootProject.ext.targetCompatibilityVersion
+  }
+
+  defaultConfig {
+    applicationId 'com.github.devnied.emvnfccard'
+    minSdkVersion 15
+    targetSdkVersion rootProject.ext.targetSdkVersion
+    versionCode 28
+    versionName '2.1.9'
+  }
+
+  lintOptions {
+    textReport true
+    textOutput 'stdout'
+
+    abortOnError false // TODO fix lint errors
+  }
+}
+
+dependencies {
+  compile project(':emvnfccard')
+  compile deps.appcompatv7
+  
+  compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
+  compile('de.keyboardsurfer.android.widget:crouton:1.8.5@aar') {
+    // exclusion is not necessary, but generally a good idea.
+    exclude group: 'com.google.android', module: 'support-v4'
+  }
+}
+
+afterEvaluate {
+  tasks.withType(com.android.build.gradle.internal.tasks.AndroidTestTask) { task ->
+    task.doFirst {
+      logging.level = LogLevel.INFO
+    }
+    task.doLast {
+      logging.level = LogLevel.LIFECYCLE
+    }
+  }
+}
