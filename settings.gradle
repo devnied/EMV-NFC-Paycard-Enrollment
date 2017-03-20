@@ -1,4 +1,4 @@
-include ':library'
-include ':sample'
+include ':emvnfccard'
+include ':emvnfccard-sample'
 
 rootProject.name = 'emvnfccard-parent'

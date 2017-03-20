@@ -24,7 +24,7 @@ android {
 }
 
 dependencies {
-  compile project(':library')
+  compile project(':emvnfccard')
   compile deps.appcompatv7
   
   compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
