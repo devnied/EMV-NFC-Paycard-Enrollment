@@ -16,6 +16,7 @@
 
 package android.support.v4.preference;
 
+import android.annotation.SuppressLint;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
@@ -30,6 +31,11 @@ import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.util.Log;
 
+@SuppressWarnings({
+		"JavadocReference", "unused", "UnnecessaryLocalVariable", "UnnecessaryBoxing", "JavaDoc"
+		, "WeakerAccess"
+})
+@SuppressLint("PrivateApi")
 public class PreferenceManagerCompat {
 
 	private static final String TAG = PreferenceManagerCompat.class.getSimpleName();

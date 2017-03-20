@@ -22,7 +22,7 @@ public class TrackUtilsTest {
 
 		Assertions.assertThat(card).isNotNull();
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("5566887766556677");
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy", java.util.Locale.US);
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("06/2015");
 		Assertions.assertThat(card.getService()).isNotNull();
 		Assertions.assertThat(card.getService().getServiceCode1()).isEqualTo(ServiceCode1Enum.INTERNATIONNAL_ICC);
@@ -43,7 +43,7 @@ public class TrackUtilsTest {
 
 		Assertions.assertThat(card).isNotNull();
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("5555556688776655667");
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy", java.util.Locale.US);
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("05/2011");
 		Assertions.assertThat(card.getService()).isNotNull();
 		Assertions.assertThat(card.getService().getServiceCode1()).isEqualTo(ServiceCode1Enum.NATIONAL_ICC);
@@ -59,7 +59,7 @@ public class TrackUtilsTest {
 
 		Assertions.assertThat(card).isNotNull();
 		Assertions.assertThat(card.getCardNumber()).isEqualTo("5555556688776655667");
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy", java.util.Locale.US);
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("05/2011");
 		Assertions.assertThat(card.getService()).isNotNull();
 		Assertions.assertThat(card.getService().getServiceCode1()).isNull();

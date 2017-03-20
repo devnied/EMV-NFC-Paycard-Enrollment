@@ -3,6 +3,7 @@ package com.github.devnied.emvnfccard.parser;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import java.util.Locale;
 import org.fest.assertions.Assertions;
 import org.junit.Test;
 
@@ -19,7 +20,7 @@ public class EmvTransactionRecordTest {
 
 	@Test
 	public void test() {
-		SimpleDateFormat time = new SimpleDateFormat("HHmmss");
+		SimpleDateFormat time = new SimpleDateFormat("HHmmss", Locale.US);
 		EmvTransactionRecord record = new EmvTransactionRecord();
 		record.parse(BytesUtils.fromString("00 00 00 00 00 00 80 02 50 09 78 14 07 14 00 10 23 45 90 00"), null);
 		Assertions.assertThat(record.getAmount()).isEqualTo(0);
@@ -75,7 +76,7 @@ public class EmvTransactionRecordTest {
 
 	@Test
 	public void testCurrency() {
-		SimpleDateFormat time = new SimpleDateFormat("HHmmss");
+		SimpleDateFormat time = new SimpleDateFormat("HHmmss", Locale.US);
 		List<TagAndLength> list = TlvUtil.parseTagAndLength(BytesUtils
 				.fromString("9F 27 01 9F 02 06 5F 2A 02 9A 03 9F 36 02 9F 52 06 DF 3E 01 9F 21 03 9F 7C 14"));
 

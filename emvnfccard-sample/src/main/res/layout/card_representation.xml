@@ -17,7 +17,6 @@
         android:src="@drawable/emv_card_background" />
 
     <TextView
-        android:id="@+id/bankName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/card"
@@ -54,7 +53,6 @@
         android:orientation="horizontal" >
 
         <TextView
-            android:id="@+id/cardValidityLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

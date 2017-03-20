@@ -7,6 +7,7 @@
     android:background="@drawable/button_back"
     android:padding="10dp"
     android:clickable="true"
+    android:focusable="true"
     android:orientation="horizontal" >
 
 	<TextView

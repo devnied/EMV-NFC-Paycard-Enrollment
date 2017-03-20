@@ -19,6 +19,7 @@ import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import java.util.Locale;
 import org.apache.commons.lang3.StringUtils;
 
 import com.github.devnied.emvnfccard.model.enums.CountryCodeEnum;
@@ -62,7 +63,7 @@ public final class EmvTerminal {
 			val = BytesUtils.fromString(StringUtils.leftPad(String.valueOf(CurrencyEnum.EUR.getISOCodeNumeric()),
 					pTagAndLength.getLength() * 2, "0"));
 		} else if (pTagAndLength.getTag() == EmvTags.TRANSACTION_DATE) {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd", Locale.US);
 			val = BytesUtils.fromString(sdf.format(new Date()));
 		} else if (pTagAndLength.getTag() == EmvTags.TRANSACTION_TYPE) {
 			val = new byte[] { (byte) TransactionTypeEnum.PURCHASE.getKey() };

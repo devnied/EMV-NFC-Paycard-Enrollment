@@ -18,10 +18,12 @@
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_height="fill_parent"
     android:layout_width="fill_parent"
-    android:background="@android:color/transparent">
+    android:background="@android:color/transparent"
+    >
 
     <ListView android:id="@android:id/list"
         android:layout_width="fill_parent"
@@ -44,13 +46,14 @@
         android:gravity="center"
         android:visibility="gone" />
 
-    <RelativeLayout android:id="@+id/button_bar"
+    <RelativeLayout
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:layout_weight="0"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:visibility="visible">
 
-        <Button android:id="@+id/back_button"
+        <Button
             android:layout_width="150dip"
             android:layout_height="wrap_content"
             android:layout_margin="5dip"
@@ -63,7 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true">
 
-            <Button android:id="@+id/skip_button"
+            <Button
                 android:layout_width="150dip"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dip"
@@ -71,7 +74,7 @@
                 android:visibility="gone"
             />
 
-            <Button android:id="@+id/next_button"
+            <Button
                 android:layout_width="150dip"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dip"

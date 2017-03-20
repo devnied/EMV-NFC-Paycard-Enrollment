@@ -47,15 +47,10 @@
     <string name="transaction_type">Type de transaction :</string>
     <string name="transaction_cryptogram">Cryptogram :</string>
     <string name="transaction_country">Pays :</string>
-    <string name="transaction_unknown">Unknown</string>
-    
-    <!-- Transaction type -->
-    <string name="transaction_type_0">Achat</string>
-    <string name="transaction_type_1">Avance</string>
-    <string name="transaction_type_9">Retrait d\'espèces</string>
-    <string name="transaction_type_32">Remboursement</string>
-    
-    <!-- Logs -->
+
+  <!-- Transaction type -->
+
+  <!-- Logs -->
     <string name="mail_subject">[EMV Reader] Log détail</string>
     <string name="mail_popup_title">Envoyer par email...</string>
     <string name="mail_to">android@julien-millau.fr</string>
@@ -78,9 +73,7 @@
     
     <!-- Preferences -->
     <string name="general_category">Préférences générales</string>
-    <string name="pref_save_read_card">Sauvegarde de la carte</string>
-    <string name="pref_sum_save_card">Save detail on file system</string>
-    <string name="pref_remove_all_stored_cards">Supprimer les données sauvegardées</string>
+  <string name="pref_remove_all_stored_cards">Supprimer les données sauvegardées</string>
     
         <!--  Strings for possible PreferenceActivity Back/Next buttons -->
     <string name="back_button_label">Back</string>

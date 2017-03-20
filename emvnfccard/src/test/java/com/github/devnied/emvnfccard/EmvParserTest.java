@@ -65,7 +65,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		Assertions.assertThat(card.getApplicationLabel()).isEqualTo("CB");
 		Assertions.assertThat(card.getListTransactions().size()).isEqualTo(30);
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy", java.util.Locale.US);
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2015");
 		Assertions.assertThat(card.isNfcLocked()).isFalse();
 	}
@@ -89,7 +89,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getHolderLastname()).isNull();
 		Assertions.assertThat(card.getApplicationLabel()).isEqualTo(null);
 		Assertions.assertThat(card.getListTransactions().size()).isEqualTo(0);
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy", java.util.Locale.US);
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("06/2018");
 		Assertions.assertThat(card.isNfcLocked()).isFalse();
 	}
@@ -113,7 +113,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		Assertions.assertThat(card.getApplicationLabel()).isEqualTo("CB");
 		Assertions.assertThat(card.getListTransactions().size()).isEqualTo(0);
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy", java.util.Locale.US);
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2015");
 		Assertions.assertThat(card.isNfcLocked()).isFalse();
 	}
@@ -175,7 +175,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		Assertions.assertThat(card.getApplicationLabel()).isEqualTo("CB");
 		Assertions.assertThat(card.getListTransactions()).isEmpty();
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy", java.util.Locale.US);
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2015");
 		Assertions.assertThat(card.isNfcLocked()).isFalse();
 	}
@@ -199,7 +199,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		Assertions.assertThat(card.getLeftPinTry()).isEqualTo(2);
 		Assertions.assertThat(card.getApplicationLabel()).isEqualTo(null);
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy", java.util.Locale.US);
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("07/2002");
 		Assertions.assertThat(card.getListTransactions()).isNotEmpty();
 		Assertions.assertThat(card.getListTransactions().size()).isEqualTo(10);
@@ -208,7 +208,7 @@ public class EmvParserTest {
 		Assertions.assertThat(record.getCyptogramData()).isEqualTo("40");
 		Assertions.assertThat(record.getCurrency()).isEqualTo(CurrencyEnum.TRY);
 		Assertions.assertThat(record.getDate()).isNotNull();
-		SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy", java.util.Locale.US);
 		Assertions.assertThat(sdf2.format(record.getDate())).isEqualTo("12/01/2011");
 		Assertions.assertThat(card.isNfcLocked()).isFalse();
 
@@ -233,7 +233,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		Assertions.assertThat(card.getLeftPinTry()).isEqualTo(2);
 		Assertions.assertThat(card.getApplicationLabel()).isEqualTo(null);
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy", java.util.Locale.US);
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("11/2019");
 		Assertions.assertThat(card.getListTransactions()).isNotEmpty();
 		Assertions.assertThat(card.getListTransactions().size()).isEqualTo(10);
@@ -242,7 +242,7 @@ public class EmvParserTest {
 		Assertions.assertThat(record.getCyptogramData()).isEqualTo("40");
 		Assertions.assertThat(record.getCurrency()).isEqualTo(CurrencyEnum.TRY);
 		Assertions.assertThat(record.getDate()).isNotNull();
-		SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy", java.util.Locale.US);
 		Assertions.assertThat(sdf2.format(record.getDate())).isEqualTo("12/01/2011");
 		Assertions.assertThat(card.isNfcLocked()).isFalse();
 
@@ -266,7 +266,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getHolderLastname()).isNull();
 		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		Assertions.assertThat(card.getApplicationLabel()).isEqualTo("CB");
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy", java.util.Locale.US);
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2015");
 		Assertions.assertThat(card.isNfcLocked()).isFalse();
 	}
@@ -290,7 +290,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getHolderFirstname()).isNull();
 		Assertions.assertThat(card.getApplicationLabel()).isEqualTo("CB");
 		Assertions.assertThat(card.getLeftPinTry()).isEqualTo(3);
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy", java.util.Locale.US);
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("02/2016");
 		Assertions.assertThat(card.getListTransactions()).isNotNull();
 		Assertions.assertThat(card.getListTransactions().size()).isEqualTo(30);
@@ -322,7 +322,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getApplicationLabel()).isEqualTo("VISA");
 		Assertions.assertThat(card.getHolderLastname()).isNull();
 		Assertions.assertThat(card.getHolderFirstname()).isNull();
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy", java.util.Locale.US);
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("08/2014");
 		Assertions.assertThat(card.isNfcLocked()).isFalse();
 	}
@@ -467,7 +467,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getLeftPinTry()).isEqualTo(3);
 		Assertions.assertThat(card.getListTransactions()).isNotNull();
 		Assertions.assertThat(card.getListTransactions().size()).isEqualTo(30);
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy", java.util.Locale.US);
 		Assertions.assertThat(sdf.format(card.getExpireDate())).isEqualTo("09/2014");
 		Assertions.assertThat(card.isNfcLocked()).isFalse();
 	}

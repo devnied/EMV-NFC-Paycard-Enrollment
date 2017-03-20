@@ -31,14 +31,12 @@
         android:padding="10dp" >
 
         <ImageView
-            android:id="@+id/contactLessImg"
             android:layout_width="200dp"
             android:layout_height="140dp"
             android:scaleType="fitCenter"
             android:src="@drawable/invoice" />
 
         <TextView
-            android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"

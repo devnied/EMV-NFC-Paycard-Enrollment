@@ -1,5 +1,6 @@
 package com.github.devnied.emvnfccard.adapter;
 
+import android.annotation.SuppressLint;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -30,7 +31,7 @@ public abstract class SortablePagerAdapter extends PagerAdapter {
 	 */
 	public abstract long getItemId(int position);
 
-	@Override
+	@SuppressLint("CommitTransaction") @Override
 	public Object instantiateItem(final ViewGroup container, final int position) {
 
 		if (mCurTransaction == null) {
@@ -46,7 +47,7 @@ public abstract class SortablePagerAdapter extends PagerAdapter {
 		return fragment;
 	}
 
-	@Override
+	@SuppressLint("CommitTransaction") @Override
 	public void destroyItem(final ViewGroup container, final int position, final Object object) {
 		Fragment fragment = (Fragment) object;
 
