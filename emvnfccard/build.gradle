@@ -1,25 +1,4 @@
-apply plugin: 'com.android.library'
-
-android {
-  compileSdkVersion rootProject.ext.compileSdkVersion
-  buildToolsVersion rootProject.ext.buildToolsVersion
-
-  defaultConfig {
-    minSdkVersion rootProject.ext.minSdkVersion
-
-    // TODO proguard file for consumers
-    // consumerProguardFiles 'proguard-rules.txt'
-
-    testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-  }
-  
-  lintOptions {
-    textReport true
-    textOutput 'stdout'
-
-    abortOnError false // TODO fix lint errors
-  }
-}
+apply plugin: 'java'
 
 dependencies {
   compile 'com.github.devnied:bit-lib4j:1.4.12'
@@ -36,5 +15,10 @@ dependencies {
   testCompile 'org.powermock:powermock-api-easymock:1.7.0RC4'
   testCompile 'cglib:cglib:3.2.5'
 }
+
+
+sourceCompatibility = rootProject.ext.sourceCompatibilityVersion
+targetCompatibility = rootProject.ext.targetCompatibilityVersion
+
 
 apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
