@@ -30,7 +30,7 @@ dependencies {
 publish {
     groupId = 'com.github.pro100svitlo'
     artifactId = 'creditCardNfcReader'
-    publishVersion = '1.0.2'
+    publishVersion = '1.0.3'
     desc = 'Library that help developer to get data from credit card with NFC'
     licences = ['MIT']
     website = 'https://github.com/pro100svitlo/Credit-Card-NFC-Reader'
