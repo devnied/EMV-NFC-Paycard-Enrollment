@@ -60,7 +60,7 @@ If you are not using Maven or some other dependency management tool that can und
 
 **Runtime Dependencies**
 * commons-lang3 3.3.2
-* bit-lib4j 1.4.10
+* bit-lib4j 1.5.0
 * commons-io 2.4
 * commons-collections4 4.0
 
@@ -69,32 +69,6 @@ If you are not using Maven or some other dependency management tool that can und
 ```xml
 mvn clean install
 ```
-
-**To build the projet and sign the Android app**
-
-Add some properties to your settings.xml
-```xml
-<settings>
-  ...
-  <profiles>
-	<profile>
-	    <id>default</id>
-	    <properties>
-            <android.sdk.path>xxxx</android.sdk.path>
-            <sign.keystore>xxx</sign.keystore>
-            <sign.alias>xxx</sign.alias>
-            <sign.keypass>xxx</sign.keypass>
-            <sign.storepass>xxx</sign.storepass>
-	    </properties>
-	</profile>
-  </profiles>
-</settings>
-```
-And use the profile release-apk
-```xml
-mvn clean install -P release-apk
-```
-
 ## Bugs
 
 Please report bugs and feature requests to the GitHub issue tracker.<br/>
