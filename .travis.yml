@@ -1,17 +1,4 @@
-language: android
+language: java
 jdk: openjdk7
-android:
-  components:
-    - build-tools-19.1.0
-    - android-19
-    - build-tools-20.0.0
-    - android-20
-    - sysimg-20
-    - extra-android-support
-  licenses:
-    - android-sdk-license-bcbbd656
-    - android-sdk-license-5be876d5
-    - android-sdk-preview-license-52d11cd2
-    - '.*intel.+'
 after_success:
   - mvn clean cobertura:cobertura coveralls:cobertura
