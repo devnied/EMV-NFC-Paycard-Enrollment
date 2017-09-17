@@ -9,7 +9,7 @@ Android sample app available on Play store.
 
 ### Getting started
 
-First you need to create a custom Provider to exchange APDU with an NFC EMV credit card.
+First you need to create a custom Provider to exchange APDU with an NFC EMV credit card ([sample here](https://github.com/devnied/EMV-NFC-Paycard-Enrollment/blob/master/sample/src/main/java/com/github/devnied/emvnfccard/provider/Provider.java)).
 ```java
 public class YourProvider implements IProvider {
 
