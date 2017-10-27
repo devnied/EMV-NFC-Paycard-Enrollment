@@ -145,6 +145,12 @@ This is the main callback for managing:
     }
 ```
 
+### Proguard
+If you are using Proguard, please add this line to your proguard-rules.pro file
+```
+-keep class com.noveogroup.android.log.** { *; }
+```
+
 ### Updates
 * v.1.0.0
     1. Add Ingdirect Bank visa card (Australian Bank)
