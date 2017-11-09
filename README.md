@@ -8,7 +8,7 @@ This library helps developer to read data from credit card: card number, expired
 2. [Screenshots](#screenshots)
 3. [Usage](#usage)
 4. [Callbacks](#callbacks)
-5. [Proguard](proguard)
+5. [Proguard](#proguard)
 5. [Updates](#updates)
 6. [Used In](#used-in)
 7. [Questions and help](#questions-and-help)
