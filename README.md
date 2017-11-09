@@ -8,6 +8,7 @@ This library helps developer to read data from credit card: card number, expired
 2. [Screenshots](#screenshots)
 3. [Usage](#usage)
 4. [Callbacks](#callbacks)
+5. [Proguard](proguard)
 5. [Updates](#updates)
 6. [Used In](#used-in)
 7. [Questions and help](#questions-and-help)
@@ -143,6 +144,12 @@ This is the main callback for managing:
     public void finishNfcReadCard() {
         //notify user that scannig finished
     }
+```
+
+### Proguard
+If you are using Proguard, please add this line to your proguard-rules.pro file
+```
+-keep class com.noveogroup.android.log.** { *; }
 ```
 
 ### Updates
