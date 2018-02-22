@@ -10,9 +10,7 @@ This library helps developer to read data from credit card: card number, expired
 4. [Callbacks](#callbacks)
 5. [Proguard](#proguard)
 5. [Updates](#updates)
-6. [Used In](#used-in)
-7. [Questions and help](#questions-and-help)
-8. [License](#license)
+6. [License](#license)
 
 # Screenshots
 ![alt text](screenshots/Screenshot_20160428-122024.png "Start")
@@ -155,17 +153,7 @@ If you are using Proguard, please add this line to your proguard-rules.pro file
 ### Updates
 * v.1.0.0
     1. Add Ingdirect Bank visa card (Australian Bank)
-    2. Add default card type as <b>UNKNOWN</b>. If you receive such card type, please [see this](#questions-and-help);
-
-### Questions and help
-If you have some problems with using this library or something doesn't work correctly - just write me an email and describe your question or problem. I will try to do my best to help you and fix the problem if it is. Here is my email: pro100svitlo@gmail.com
-
-### Used in
-Please, let me know (pro100svitlo@gmail.com) if you use this library and also please provide me with the link on googlePlay :)
-Thanks!
-
-1. [SendUa](https://play.google.com/store/apps/details?id=com.sendua)
-2. [PayHub](https://play.google.com/store/apps/details?id=com.payhub)
+    2. Add default card type as <b>UNKNOWN</b>.
 
 
 ### License
