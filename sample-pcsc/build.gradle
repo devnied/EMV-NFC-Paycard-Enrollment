@@ -1,0 +1,9 @@
+apply plugin: 'application'
+
+mainClassName = 'com.github.devnied.emvpcsccard.Main'
+
+dependencies {
+    implementation project(':library')
+
+    implementation 'org.slf4j:slf4j-simple:1.7.25'
+}

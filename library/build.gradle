@@ -1,0 +1,13 @@
+apply plugin: 'java'
+
+dependencies {
+    compile 'com.github.devnied:bit-lib4j:1.5.0'
+    compile 'org.apache.commons:commons-lang3:3.8'
+    compile 'org.apache.commons:commons-collections4:4.2'
+    compile 'commons-io:commons-io:2.6'
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.easytesting:fest-assert:1.4'
+    testCompile 'org.powermock:powermock-module-junit4:1.7.4'
+    testCompile 'org.powermock:powermock-api-easymock:1.7.4'
+}

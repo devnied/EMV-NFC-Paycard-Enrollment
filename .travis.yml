@@ -1,4 +1,10 @@
-language: java
-jdk: openjdk7
-after_success:
-  - mvn clean cobertura:cobertura coveralls:cobertura
+language: android
+jdk:
+  - oraclejdk8
+android:
+  components:
+    - tools
+    - platform-tools
+    - build-tools-28.0.2
+    - android-27
+script: ./gradlew assembleDebug library:test

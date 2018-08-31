@@ -1,5 +1,5 @@
 # Directories #
-/build/
+build/
 */bin/*
 */gen/*
 */target/*
@@ -77,3 +77,8 @@ pom.xml.releaseBackup
 
 release.properties
 target/parent-1.0.0-SNAPSHOT.jar
+
+local.properties
+.idea/
+.gradle/
+*.iml
