@@ -22,7 +22,7 @@ public class DataFactoryTest {
 		Date date = DataFactory.calculateCplcDate(new byte[]{(byte) 0x81,0x02});
 		Assertions.assertThat(date).isNotNull();
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-		Assertions.assertThat(date).isEqualTo(format.parse("11/04/2008"));
+		Assertions.assertThat(date).isEqualTo(format.parse("12/04/2018"));
 	}
 	
 	@Test

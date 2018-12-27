@@ -45,8 +45,8 @@ public final class CPLCUtilsTest {
 		Assertions.assertThat(cplc.getPersoId()).isEqualTo(0x0000);
 		Assertions.assertThat(cplc.getPersoEquipment()).isEqualTo(0x0000);
 		// Date will change each 10 years
-		Assertions.assertThat(format.format(cplc.getOsReleaseDate())).isEqualTo("11/04/2008");
-		Assertions.assertThat(format.format(cplc.getIcFabricDate())).isEqualTo("23/12/2008");
+		Assertions.assertThat(format.format(cplc.getOsReleaseDate())).isEqualTo("12/04/2018");
+		Assertions.assertThat(format.format(cplc.getIcFabricDate())).isEqualTo("24/12/2018");
 		Assertions.assertThat(format.format(cplc.getPrepersoDate())).isEqualTo("10/05/2013");
 		Assertions.assertThat(format.format(cplc.getIcPackagingDate())).isEqualTo("30/12/2008");
 		Assertions.assertThat(cplc.getPersoDate()).isNull();

@@ -104,7 +104,8 @@ public class EmvParser extends AbstractParser {
 			// Update reading state
 			pApplication.setReadingStep(ApplicationStepEnum.SELECTED);
 			// Parse select response
-			if ((ret = parse(data, pApplication)) == true) {
+			ret = parse(data, pApplication);
+			if (ret) {
 				// Get AID
 				String aid = BytesUtils.bytesToStringNoSpace(TlvUtil.getValue(data, EmvTags.DEDICATED_FILE_NAME));
 				String applicationLabel = extractApplicationLabel(data);
