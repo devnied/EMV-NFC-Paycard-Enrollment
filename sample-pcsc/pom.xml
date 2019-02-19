@@ -8,6 +8,7 @@
 		<groupId>com.github.devnied.emvnfccard</groupId>
 		<artifactId>parent</artifactId>
 		<version>2.1.2-SNAPSHOT</version>
+        <relativePath>../</relativePath>
 	</parent>
 
 	<dependencies>
@@ -15,9 +16,8 @@
 		<dependency>
 			<groupId>com.github.devnied.emvnfccard</groupId>
 			<artifactId>library</artifactId>
-			<version>2.1.2-SNAPSHOT</version>
 		</dependency>
 
 	</dependencies>
-	
+
 </project>
