@@ -1,18 +1,15 @@
-## EMV NFC Paycard Enrollment [![Build Status](https://travis-ci.org/devnied/EMV-NFC-Paycard-Enrollment.png)](https://travis-ci.org/devnied/EMV-NFC-Paycard-Enrollment) [![Coverage Status](https://coveralls.io/repos/devnied/EMV-NFC-Paycard-Enrollment/badge.svg?branch=master)](https://coveralls.io/r/devnied/EMV-NFC-Paycard-Enrollment?branch=master)
+## EMV NFC Paycard Enrollment [![Build Status](https://travis-ci.org/devnied/EMV-NFC-Paycard-Enrollment.png)](https://travis-ci.org/devnied/EMV-NFC-Paycard-Enrollment) [![Coverage Status](https://coveralls.io/repos/devnied/EMV-NFC-Paycard-Enrollment/badge.svg?branch=master)](https://coveralls.io/r/devnied/EMV-NFC-Paycard-Enrollment?branch=master) [![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 ### Description
 Java library used to read and extract public data from NFC EMV credit cards.<br/>
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.devnied.emvnfccard/library/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/com.github.devnied.emvnfccard/library)<br/>
 <br/>
 Android sample app available on Play store.
 
-<a href="https://play.google.com/store/apps/details?id=com.github.devnied.emvnfccard">
-  <img alt="EMV NFC paycard reader Demo on Google Play"
-         src="http://developer.android.com/images/brand/en_generic_rgb_wo_60.png" />
-</a>
+<a href="https://play.google.com/store/apps/details?id=nfc.credit.card.reader.pro2&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-AC-global-none-all-co-pr-py-PartBadges-Oct1515-1"><img height="60px" alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" /></a>
 
 ### Getting started
 
-First you need to create a custom Provider to exchange APDU with an NFC EMV credit card.
+First you need to create a custom Provider to exchange APDU with an NFC EMV credit card ([sample here](https://github.com/devnied/EMV-NFC-Paycard-Enrollment/blob/master/sample/src/main/java/com/github/devnied/emvnfccard/provider/Provider.java)).
 ```java
 public class YourProvider implements IProvider {
 
@@ -24,29 +21,11 @@ public class YourProvider implements IProvider {
 ```
 After that, create an instance of a parser and read the card.
 ```java
-
-// Create provider
-IProvider provider = new YourProvider();
-
-// Define config
-Config config = EmvTemplate.Config()
-		.setContactLess(true) // Enable contact less reading (default: true)
-		.setReadAllAids(true) // Read all aids in card (default: true)
-		.setReadTransactions(true) // Read all transactions (default: true)
-		.setReadCPLC(false) // Read and extract CPCLC data (default: false)
-		.setRemoveDefaultParsers(false) // Remove default parsers for GeldKarte and EmvCard (default: false)
-		.setReadAt(true) // Read and extract ATR/ATS and description
-		; 
-
-// Create Parser
-EmvTemplate parser = EmvTemplate.Builder() //
-		.setProvider(provider) // Define provider
-		.setConfig(config) // Define config
-		//.setTerminal(terminal) (optional) you can define a custom terminal implementation to create APDU
-		.build();
-
+IProvider prov = new YourProvider();
+// Create parser (true for contactless false otherwise)
+EMVParser parser = new EMVParser(prov, true);
 // Read card
-EmvCard emvCard = parser.readEmvCard();
+EMVCard card = parser.readEmvCard();
 ```
 card object contains all data read (Aid, card number, expiration date, card type, transactions history)
 
@@ -80,8 +59,8 @@ You can download this library on [Maven central](http://search.maven.org/#search
 If you are not using Maven or some other dependency management tool that can understand Maven repositories, the list below is what you need to run EMV-NFC-Paycard-Enrollment.
 
 **Runtime Dependencies**
-* commons-lang3 3.1
-* bit-lib4j 1.4.10
+* commons-lang3 3.3.2
+* bit-lib4j 1.5.0
 * commons-io 2.4
 * commons-collections4 4.0
 
@@ -90,7 +69,6 @@ If you are not using Maven or some other dependency management tool that can und
 ```xml
 mvn clean install
 ```
-
 ## Bugs
 
 Please report bugs and feature requests to the GitHub issue tracker.<br/>
@@ -120,4 +98,4 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-[![Analytics](https://ga-beacon.appspot.com/UA-19411627-6/MV-NFC-Paycard-Enrollment)](https://github.com/igrigorik/ga-beacon)
+[![Analytics](https://ga-beacon.appspot.com/UA-19411627-6/EMV-NFC-Paycard-Enrollment)](https://github.com/igrigorik/ga-beacon)
