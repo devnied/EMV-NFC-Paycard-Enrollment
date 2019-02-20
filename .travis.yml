@@ -1,4 +1,4 @@
 language: java
 jdk: openjdk7
 after_success:
-  - mvn clean cobertura:cobertura coveralls:cobertura
+  - mvn clean cobertura:cobertura coveralls:report
