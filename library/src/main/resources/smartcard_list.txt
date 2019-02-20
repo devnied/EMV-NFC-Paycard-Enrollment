@@ -32,20 +32,6 @@
 # \t descriptive text
 # empty line
 
-3B .. .. .. .. .. .. .. 00 31 B8 64 00 00 00 00 73 .. .. .. 82 90 00
-	MultiApp ID IAS ECC 72K CC (with IAS XL / IAS ECC Applet) IAS ECC Type 3
-
-3B .. .. .. .. .. .. .. 00 31 B8 64 00 00 00 00 73 .. .. .. 82 90 00 ..
-	MultiApp ID IAS ECC 72K CC (with IAS XL / IAS ECC Applet) IAS ECC Type 4
-
-3B .. .. .. .. 00 31 B8 64 .. .. .. .. 73 .. .. .. 82 90 00
-	IDClassic IAS (old name: IAS TPC) IAS ECC Type 1
-	MultiApp ID IAS ECC 72K CC (with IAS XL / IAS ECC Applet) IAS ECC Type 1
-
-3B .. .. .. .. 81 31 80 43 00 31 B8 64 .. .. .. .. 73 .. .. .. 82 90 00
-	IDClassic IAS (old name: IAS TPC) IAS ECC Type 1, T=1
-	MultiApp ID IAS ECC 72K CC (with IAS XL / IAS ECC Applet) IAS ECC Type 2
-
 3B .. .. .. 00 31 B8 64 .. .. .. .. 73 .. .. .. 82 90 00 A3
 	IDClassic IAS (old name: IAS TPC)
 	IAS ECC Type 1 Contactless Prox-DU
