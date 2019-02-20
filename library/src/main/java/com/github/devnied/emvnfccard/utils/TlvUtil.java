@@ -16,21 +16,6 @@ package com.github.devnied.emvnfccard.utils;
  * limitations under the License.
  */
 
-import java.io.ByteArrayInputStream;
-import java.io.EOFException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import net.sf.scuba.tlv.TLVInputStream;
-import net.sf.scuba.tlv.TLVUtil;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.github.devnied.emvnfccard.enums.SwEnum;
 import com.github.devnied.emvnfccard.enums.TagValueTypeEnum;
 import com.github.devnied.emvnfccard.exception.TlvException;
@@ -38,8 +23,20 @@ import com.github.devnied.emvnfccard.iso7816emv.EmvTags;
 import com.github.devnied.emvnfccard.iso7816emv.ITag;
 import com.github.devnied.emvnfccard.iso7816emv.TLV;
 import com.github.devnied.emvnfccard.iso7816emv.TagAndLength;
-
 import fr.devnied.bitlib.BytesUtils;
+import net.sf.scuba.tlv.TLVInputStream;
+import net.sf.scuba.tlv.TLVUtil;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.ByteArrayInputStream;
+import java.io.EOFException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * List of utils methods to manipulate TLV
@@ -199,6 +196,7 @@ public final class TlvUtil {
 	 * @param pTag
 	 *            tag to find
 	 * @param pAdd
+	 *           boolean to indicate if we nned to add the tlv to the return list
 	 * @return the list of TLV tag inside
 	 */
 	public static List<TLV> getlistTLV(final byte[] pData, final ITag pTag, final boolean pAdd) {
@@ -236,7 +234,6 @@ public final class TlvUtil {
 	 *            data to parse
 	 * @param pTag
 	 *            tags to find
-	 * @param pAdd
 	 * @return the list of TLV
 	 */
 	public static List<TLV> getlistTLV(final byte[] pData, final ITag... pTag) {

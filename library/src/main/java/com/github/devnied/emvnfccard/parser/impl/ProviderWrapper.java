@@ -28,15 +28,15 @@ import com.github.devnied.emvnfccard.utils.ResponseUtils;
  *
  */
 public class ProviderWrapper implements IProvider{
-	
+
 	/**
 	 * Provider
 	 */
 	private IProvider provider;
-	
+
 	/**
-	 * Constructor 
-	 * @param pProvider
+	 * Constructor
+	 * @param pProvider provider
 	 */
 	public ProviderWrapper(IProvider pProvider) {
 		provider = pProvider;
@@ -49,7 +49,7 @@ public class ProviderWrapper implements IProvider{
 		if (ResponseUtils.isEquals(ret, SwEnum.SW_6C)) {
 			pCommand[pCommand.length - 1] = ret[ret.length - 1];
 			ret = provider.transceive(pCommand);
-		} else if (ResponseUtils.isEquals(ret, SwEnum.SW_61)) { // Perform get response command 
+		} else if (ResponseUtils.isEquals(ret, SwEnum.SW_61)) { // Perform get response command
 			ret = provider.transceive(new CommandApdu(CommandEnum.GET_RESPONSE, null, ret[ret.length - 1]).toBytes());
 		}
 		return ret;

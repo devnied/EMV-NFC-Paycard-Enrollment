@@ -15,23 +15,21 @@
  */
 package com.github.devnied.emvnfccard.utils;
 
+import com.github.devnied.emvnfccard.model.EmvTrack1;
+import com.github.devnied.emvnfccard.model.EmvTrack2;
+import com.github.devnied.emvnfccard.model.Service;
+import fr.devnied.bitlib.BytesUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.github.devnied.emvnfccard.model.EmvTrack1;
-import com.github.devnied.emvnfccard.model.EmvTrack2;
-import com.github.devnied.emvnfccard.model.Service;
-
-import fr.devnied.bitlib.BytesUtils;
 
 
 /**
@@ -66,7 +64,7 @@ public final class TrackUtils {
 	/**
 	 * Extract track 2 Equivalent data
 	 *
-	 * @param pRawTrack1 Raw track 2 data
+	 * @param pRawTrack2 Raw track 2 data
 	 * @return EmvTrack2 object data or null
 	 */
 	public static EmvTrack2 extractTrack2EquivalentData(final byte[] pRawTrack2) {
@@ -99,7 +97,7 @@ public final class TrackUtils {
 
 	/**
 	 * Extract track 1 data
-	 * 
+	 *
 	 * @param pRawTrack1
 	 *            track1 raw data
 	 * @return EmvTrack1 object

@@ -15,14 +15,14 @@
  */
 package com.github.devnied.emvnfccard.parser;
 
-import java.util.regex.Pattern;
-
 import com.github.devnied.emvnfccard.exception.CommunicationException;
 import com.github.devnied.emvnfccard.model.Application;
 
+import java.util.regex.Pattern;
+
 /**
  * Parser Interface
- * 
+ *
  * @author MILLAU Julien
  *
  */
@@ -30,17 +30,18 @@ public interface IParser {
 
 	/**
 	 * Get the RID or AID of the application to parse
-	 * 
+	 *
 	 * @return the RID or AID
 	 */
 	Pattern getId();
 
 	/**
 	 * Parse the card according to the
-	 * 
+	 *
 	 * @param pApplication
 	 *            current application
-	 * @return
+	 * @return true if the card was read without errors
+	 * @throws CommunicationException communication error
 	 */
 	boolean parse(Application pApplication) throws CommunicationException;
 

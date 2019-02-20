@@ -15,17 +15,6 @@
  */
 package com.github.devnied.emvnfccard.parser.impl;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
-
-import org.apache.commons.lang3.ArrayUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.github.devnied.emvnfccard.enums.CommandEnum;
 import com.github.devnied.emvnfccard.enums.EmvCardScheme;
 import com.github.devnied.emvnfccard.enums.SwEnum;
@@ -42,16 +31,25 @@ import com.github.devnied.emvnfccard.utils.CommandApdu;
 import com.github.devnied.emvnfccard.utils.ResponseUtils;
 import com.github.devnied.emvnfccard.utils.TlvUtil;
 import com.github.devnied.emvnfccard.utils.TrackUtils;
-
 import fr.devnied.bitlib.BytesUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
 
 /**
- * Emv default Parser <br/>
- * 
- * Paypass: <br/>
+ * Emv default Parser <br>
+ *
+ * Paypass: <br>
  * - https://www.paypass.com/pdf/public_documents/Terminal%20
  * Optimization%20v2-0.pdf
- * 
+ *
  * @author julien
  *
  */
@@ -69,7 +67,7 @@ public class EmvParser extends AbstractParser {
 
 	/**
 	 * Default constructor
-	 * 
+	 *
 	 * @param pTemplate
 	 *            parser template
 	 */
@@ -93,6 +91,7 @@ public class EmvParser extends AbstractParser {
 	 * @param pApplication
 	 *            application data
 	 * @return true if succeed false otherwise
+	 * @throws CommunicationException communication error
 	 */
 	protected boolean extractPublicData(final Application pApplication) throws CommunicationException {
 		boolean ret = false;
@@ -157,7 +156,7 @@ public class EmvParser extends AbstractParser {
 	 * @param pApplication
 	 *            application selected
 	 * @return true if the parsing succeed false otherwise
-	 * @throws CommunicationException
+	 * @throws CommunicationException communication error
 	 */
 	protected boolean parse(final byte[] pSelectResponse, final Application pApplication) throws CommunicationException {
 		boolean ret = false;
@@ -203,6 +202,8 @@ public class EmvParser extends AbstractParser {
 	 *
 	 * @param pGpo
 	 *            global processing options response
+	 * @return true if the extraction succeed
+	 * @throws CommunicationException communication error
 	 */
 	protected boolean extractCommonsCardData(final byte[] pGpo) throws CommunicationException {
 		boolean ret = false;
@@ -240,7 +241,7 @@ public class EmvParser extends AbstractParser {
 		}
 		return ret;
 	}
-	
+
 
 	/**
 	 * Extract list of application file locator from Afl response
@@ -267,10 +268,9 @@ public class EmvParser extends AbstractParser {
 	 * Method used to create GPO command and execute it
 	 *
 	 * @param pPdol
-	 *            PDOL data
-	 * @param pProvider
-	 *            provider
+	 *            PDOL raw data
 	 * @return return data
+	 * @throws CommunicationException communication error
 	 */
 	protected byte[] getGetProcessingOptions(final byte[] pPdol) throws CommunicationException {
 		// List Tag and length from PDOL
@@ -290,7 +290,7 @@ public class EmvParser extends AbstractParser {
 		}
 		return template.get().getProvider().transceive(new CommandApdu(CommandEnum.GPO, out.toByteArray(), 0).toBytes());
 	}
-	
+
 	/**
 	 * Method used to extract track data from response
 	 *
@@ -306,5 +306,4 @@ public class EmvParser extends AbstractParser {
 		return pEmvCard.getTrack1() != null || pEmvCard.getTrack2() != null;
 	}
 
-	
 }

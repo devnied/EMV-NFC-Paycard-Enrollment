@@ -15,18 +15,6 @@
  */
 package com.github.devnied.emvnfccard.parser.impl;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.regex.Pattern;
-
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.github.devnied.emvnfccard.enums.CommandEnum;
 import com.github.devnied.emvnfccard.enums.EmvCardScheme;
 import com.github.devnied.emvnfccard.exception.CommunicationException;
@@ -42,24 +30,34 @@ import com.github.devnied.emvnfccard.parser.EmvTemplate;
 import com.github.devnied.emvnfccard.utils.CommandApdu;
 import com.github.devnied.emvnfccard.utils.ResponseUtils;
 import com.github.devnied.emvnfccard.utils.TlvUtil;
-
 import fr.devnied.bitlib.BytesUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.regex.Pattern;
 
 /**
- * GeldKarte parser <br/>
- * Documentation: <br/>
+ * GeldKarte parser <br>
+ * Documentation: <br>
  * - ftp://ftp.ccc.de/documentation/cards/geldkarte.pdf
  * - http://www.bensin.org/haxor/haxor_src/ic35/crap/stash/scinfo_khf%20-%20geldkarte%20ic35/doku/gk.log
  * - http://ftp.chaos-darmstadt.de/docs/cards/geldkarte.pdf
  * - https://code.google.com/p/android/issues/detail?id=62976
  * - http://www.openscdp.org/scripts/geldkarte/jsdoc/symbols/src/dump_girogo.js.html
  * - http://www.wrankl.de/UThings/Geldkarte.pdf
- * 
+ *
  * @author MILLAU Julien
  *
  */
 public class GeldKarteParser extends AbstractParser {
-	
+
 	/**
 	 * Class Logger
 	 */
@@ -97,16 +95,16 @@ public class GeldKarteParser extends AbstractParser {
 			template.get().getCard().setType(EmvCardScheme.getCardTypeByAid(BytesUtils.bytesToStringNoSpace(pApplication.getAid())));
 			// Extract Bank data
 			extractBankData(data);
-			
+
 			// read Ef_ID
 			extractEF_ID(pApplication);
-			
+
 			// Read EF_BETRAG
 			readEfBetrag(pApplication);
-			
+
 			// Read EF_BLOG
 			readEF_BLOG(pApplication);
-			
+
 			pApplication.setLeftPinTry(getLeftPinTry());
 			pApplication.setTransactionCounter(getTransactionCounter());
 			// TODO remove this
@@ -118,12 +116,12 @@ public class GeldKarteParser extends AbstractParser {
 
 		return ret;
 	}
-	
+
 	/**
 	 * Read EF_BLOG
-	 * 
-	 * @param pApplication
-	 * @throws CommunicationException 
+	 *
+	 * @param pApplication emv application
+	 * @throws CommunicationException communication error
 	 */
 	protected void readEF_BLOG(final Application pApplication) throws CommunicationException{
 		List<EmvTransactionRecord> list = new ArrayList<EmvTransactionRecord>();
@@ -141,7 +139,7 @@ public class GeldKarteParser extends AbstractParser {
 				record.setCurrency(CurrencyEnum.EUR);
 				record.setTransactionType(getType(data[0]));
 				record.setAmount(Float.parseFloat(BytesUtils.bytesToStringNoSpace(Arrays.copyOfRange(data, 21, 24))) / 100L);
-				
+
 				try {
 					record.setDate(dateFormat.parse(String.format("%02x.%02x.%02x%02x", data[32], data[31], data[29], data[30])));
 					record.setTime(timeFormat.parse(String.format("%02x:%02x:%02x", data[33], data[34], data[35])));
@@ -155,7 +153,12 @@ public class GeldKarteParser extends AbstractParser {
 		}
 		pApplication.setListTransactions(list);
 	}
-	
+
+	/**
+	 * Method used to get the transaction type
+	 * @param logstate the log state
+	 * @return the transaction type or null
+	 */
 	protected TransactionTypeEnum getType(byte logstate) {
 		switch ( (logstate & 0x60) >> 5) {
 		case 0: return TransactionTypeEnum.LOADED;
@@ -168,9 +171,9 @@ public class GeldKarteParser extends AbstractParser {
 
 	/**
 	 * read EF_BETRAG
-	 * 
-	 * @return
-	 * @throws CommunicationException
+	 *
+	 * @param pApplication EMV application
+	 * @throws CommunicationException communication error
 	 */
 	protected void readEfBetrag(final Application pApplication) throws CommunicationException {
 		// 00 B2 01 C4 00
@@ -184,8 +187,10 @@ public class GeldKarteParser extends AbstractParser {
 
 	/**
 	 * Method used to extract Ef_iD record
-	 * 
-	 * @throws CommunicationException
+	 *
+	 * @param pApplication EMV application
+	 *
+	 * @throws CommunicationException communication error
 	 */
 	protected void extractEF_ID(final Application pApplication) throws CommunicationException {
 		// 00B201BC00
@@ -194,7 +199,7 @@ public class GeldKarteParser extends AbstractParser {
 			pApplication.setReadingStep(ApplicationStepEnum.READ);
 			// Date
 			SimpleDateFormat format = new SimpleDateFormat("MM/yy",Locale.getDefault());
-			
+
 			// Track 2
 			EmvTrack2 track2 = new EmvTrack2();
 			track2.setCardNumber(BytesUtils.bytesToStringNoSpace(Arrays.copyOfRange(data, 4, 9)));

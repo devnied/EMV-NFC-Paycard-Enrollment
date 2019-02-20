@@ -15,13 +15,6 @@
  */
 package com.github.devnied.emvnfccard.parser;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.github.devnied.emvnfccard.enums.CommandEnum;
 import com.github.devnied.emvnfccard.enums.EmvCardScheme;
 import com.github.devnied.emvnfccard.exception.CommunicationException;
@@ -35,16 +28,17 @@ import com.github.devnied.emvnfccard.model.enums.CardStateEnum;
 import com.github.devnied.emvnfccard.parser.impl.EmvParser;
 import com.github.devnied.emvnfccard.parser.impl.GeldKarteParser;
 import com.github.devnied.emvnfccard.parser.impl.ProviderWrapper;
-import com.github.devnied.emvnfccard.utils.AtrUtils;
-import com.github.devnied.emvnfccard.utils.CPLCUtils;
-import com.github.devnied.emvnfccard.utils.CommandApdu;
-import com.github.devnied.emvnfccard.utils.ResponseUtils;
-import com.github.devnied.emvnfccard.utils.TlvUtil;
-
+import com.github.devnied.emvnfccard.utils.*;
 import fr.devnied.bitlib.BytesUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
- * Emv Template.<br/>
+ * Emv Template.<br>
  * Class used to detect the EMV template of the card and select the right parser
  *
  * @author MILLAU Julien
@@ -99,7 +93,7 @@ public class EmvTemplate {
 
 	/**
 	 * Create builder
-	 * 
+	 *
 	 * @return a new instance of builder
 	 */
 	public static Builder Builder() {
@@ -108,7 +102,7 @@ public class EmvTemplate {
 
 	/**
 	 * Create a new Config
-	 * 
+	 *
 	 * @return a new instance of config
 	 */
 	public static Config Config() {
@@ -134,12 +128,12 @@ public class EmvTemplate {
 		 * Boolean used to indicate if you want to read all card aids
 		 */
 		public boolean readAllAids = true;
-		
+
 		/**
 		 * Boolean used to indicate if you want to extract ATS or ATR
 		 */
 		public boolean readAt = true;
-		
+
 		/**
 		 * Boolean used to indicate if you want to read CPLC data
 		 */
@@ -162,6 +156,7 @@ public class EmvTemplate {
 		 *
 		 * @param contactLess
 		 *            the contactLess to set
+		 * @return the config instance
 		 */
 		public Config setContactLess(final boolean contactLess) {
 			this.contactLess = contactLess;
@@ -173,6 +168,7 @@ public class EmvTemplate {
 		 *
 		 * @param readTransactions
 		 *            the readTransactions to set
+		 * @return the config instance
 		 */
 		public Config setReadTransactions(final boolean readTransactions) {
 			this.readTransactions = readTransactions;
@@ -184,6 +180,7 @@ public class EmvTemplate {
 		 *
 		 * @param readAllAids
 		 *            the readAllAids to set
+		 * @return the config instance
 		 */
 		public Config setReadAllAids(final boolean readAllAids) {
 			this.readAllAids = readAllAids;
@@ -195,28 +192,31 @@ public class EmvTemplate {
 		 *
 		 * @param removeDefaultParsers
 		 *            the removeDefaultParsers to set
+		 * @return the config instance
 		 */
 		public Config setRemoveDefaultParsers(boolean removeDefaultParsers) {
 			this.removeDefaultParsers = removeDefaultParsers;
 			return this;
 		}
-		
+
 		/**
 		 * Setter for the field readAt (default true)
 		 *
 		 * @param readAt
 		 *            the readAt to set
+		 * @return the config instance
 		 */
 		public Config setReadAt(boolean readAt) {
 			this.readAt = readAt;
 			return this;
 		}
-		
+
 		/**
 		 * Setter for the field readCplc (default true)
 		 *
 		 * @param readCplc
 		 *            the readCplc to set
+		 * @return the config instance
 		 */
 		public Config setReadCplc(boolean readCplc) {
 			this.readCplc = readCplc;
@@ -249,6 +249,7 @@ public class EmvTemplate {
 		 *
 		 * @param provider
 		 *            the provider to set
+		 * @return the config instance
 		 */
 		public Builder setProvider(final IProvider provider) {
 			this.provider = provider;
@@ -260,6 +261,7 @@ public class EmvTemplate {
 		 *
 		 * @param terminal
 		 *            the terminal to set
+		 * @return the config instance
 		 */
 		public Builder setTerminal(final ITerminal terminal) {
 			this.terminal = terminal;
@@ -271,6 +273,7 @@ public class EmvTemplate {
 		 *
 		 * @param config
 		 *            the config to set
+		 * @return the config instance
 		 */
 		public Builder setConfig(Config config) {
 			this.config = config;
@@ -325,7 +328,7 @@ public class EmvTemplate {
 
 	/**
 	 * Method used to add a list of parser to the current EMV template
-	 * 
+	 *
 	 * @param pParsers
 	 *            parser implementation to add
 	 * @return current EmvTemplate
@@ -343,13 +346,14 @@ public class EmvTemplate {
 	 * Method used to read public data from EMV card
 	 *
 	 * @return data read from card or null if any provider match the card type
+	 * @throws CommunicationException communication error
 	 */
 	public EmvCard readEmvCard() throws CommunicationException {
 		// Read CPLC Infos
 		if (config.readCplc){
 			readCPLCInfos();
 		}
-		
+
 		// Update ATS or ATR
 		if (config.readAt){
 			card.setAt(BytesUtils.bytesToStringNoSpace(provider.getAt()));
@@ -360,16 +364,16 @@ public class EmvTemplate {
 			// Find with AID
 			readWithAID();
 		}
-		
+
 		return card;
 	}
 
 	/**
-	 * 
-	 * Try to read generic infos about the SmartCard as defined in the 
+	 *
+	 * Try to read generic infos about the SmartCard as defined in the
 	 * "GlobalPlatform Card Specification" (GPCS).
-	 * @throws CommunicationException 
-	 * 
+	 * @throws CommunicationException communication error
+	 *
 	 */
 	protected void readCPLCInfos() throws CommunicationException {
 		card.setCplc(CPLCUtils.parse(provider.transceive(new CommandApdu(CommandEnum.GET_DATA, 0x9F, 0x7F, null, 0).toBytes())));
@@ -380,6 +384,7 @@ public class EmvTemplate {
 	 * Environment
 	 *
 	 * @return true is succeed false otherwise
+	 * @throws CommunicationException communication error
 	 */
 	protected boolean readWithPSE() throws CommunicationException {
 		boolean ret = false;
@@ -424,8 +429,8 @@ public class EmvTemplate {
 	 *
 	 * @param pData
 	 *            data to parse
-	 * @return
-	 * @throws CommunicationException
+	 * @return the list of EMV application in the card
+	 * @throws CommunicationException communication error
 	 */
 	protected List<Application> parseFCIProprietaryTemplate(final byte[] pData) throws CommunicationException {
 		List<Application> ret = new ArrayList<Application>();
@@ -462,8 +467,8 @@ public class EmvTemplate {
 
 	/**
 	 * Method used to get the application list, if the Kernel Identifier is
-	 * defined, <br/>
-	 * this value need to be appended to the ADF Name in the data field of <br/>
+	 * defined, <br>
+	 * this value need to be appended to the ADF Name in the data field of <br>
 	 * the SELECT command.
 	 *
 	 * @param pData
@@ -526,7 +531,7 @@ public class EmvTemplate {
 	 * Method used to select payment environment PSE or PPSE
 	 *
 	 * @return response byte array
-	 * @throws CommunicationException
+	 * @throws CommunicationException communication error
 	 */
 	protected byte[] selectPaymentEnvironment() throws CommunicationException {
 		if (LOGGER.isDebugEnabled()) {
@@ -547,7 +552,7 @@ public class EmvTemplate {
 
 	/**
 	 * Get the field provider
-	 * 
+	 *
 	 * @return the provider
 	 */
 	public IProvider getProvider() {
@@ -556,7 +561,7 @@ public class EmvTemplate {
 
 	/**
 	 * Get the field config
-	 * 
+	 *
 	 * @return the config
 	 */
 	public Config getConfig() {
@@ -565,7 +570,7 @@ public class EmvTemplate {
 
 	/**
 	 * Get the field terminal
-	 * 
+	 *
 	 * @return the terminal
 	 */
 	public ITerminal getTerminal() {
@@ -574,7 +579,7 @@ public class EmvTemplate {
 
 	/**
 	 * Get the field parsers
-	 * 
+	 *
 	 * @return the parsers
 	 */
 	public List<IParser> getParsers() {

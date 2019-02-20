@@ -15,14 +15,6 @@
  */
 package com.github.devnied.emvnfccard.parser.impl;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.github.devnied.emvnfccard.enums.CommandEnum;
 import com.github.devnied.emvnfccard.exception.CommunicationException;
 import com.github.devnied.emvnfccard.iso7816emv.EmvTags;
@@ -35,22 +27,28 @@ import com.github.devnied.emvnfccard.utils.CommandApdu;
 import com.github.devnied.emvnfccard.utils.ResponseUtils;
 import com.github.devnied.emvnfccard.utils.TlvUtil;
 import com.github.devnied.emvnfccard.utils.TrackUtils;
-
 import fr.devnied.bitlib.BytesUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Abstract Parser with provider attribute
- * 
+ *
  * @author MILLAU Julien
  *
  */
 public abstract class AbstractParser implements IParser {
-	
+
 	/**
 	 * Class Logger
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractParser.class);
-	
+
 	/**
 	 * Unknown response
 	 */
@@ -63,23 +61,21 @@ public abstract class AbstractParser implements IParser {
 
 	/**
 	 * Default protected constructor
-	 * 
-	 * @param pProvider
-	 *            card provider
-	 * @param pCard
-	 *            current card
+	 *
+	 * @param pTemplate
+	 *            Emv template
 	 */
 	protected AbstractParser(EmvTemplate pTemplate) {
 		template = new WeakReference<EmvTemplate>(pTemplate);
 	}
-	
+
 	/**
 	 * Select application with AID or RID
 	 *
 	 * @param pAid
 	 *            byte array containing AID or RID
 	 * @return response byte array
-	 * @throws CommunicationException
+	 * @throws CommunicationException communication error
 	 */
 	protected byte[] selectAID(final byte[] pAid) throws CommunicationException {
 		if (LOGGER.isDebugEnabled()) {
@@ -87,9 +83,12 @@ public abstract class AbstractParser implements IParser {
 		}
 		return template.get().getProvider().transceive(new CommandApdu(CommandEnum.SELECT, pAid, 0).toBytes());
 	}
-	
+
 	/**
 	 * Method used to extract application label
+	 *
+	 * @param pData
+	 * 			raw response data
 	 *
 	 * @return decoded application label or null
 	 */
@@ -110,7 +109,7 @@ public abstract class AbstractParser implements IParser {
 		}
 		return label;
 	}
-	
+
 	/**
 	 * Extract bank data (BIC and IBAN)
 	 *
@@ -149,7 +148,7 @@ public abstract class AbstractParser implements IParser {
 			}
 		}
 	}
-	
+
 	/**
 	 * Method used to extract Log Entry from Select response
 	 *
@@ -165,7 +164,7 @@ public abstract class AbstractParser implements IParser {
 	 * Method used to get Transaction counter
 	 *
 	 * @return the number of card transaction
-	 * @throws CommunicationException
+	 * @throws CommunicationException communication error
 	 */
 	protected int getTransactionCounter() throws CommunicationException {
 		int ret = UNKNOW;
@@ -187,7 +186,7 @@ public abstract class AbstractParser implements IParser {
 	 * Method used to get the number of pin try left
 	 *
 	 * @return the number of pin try left
-	 * @throws CommunicationException
+	 * @throws CommunicationException communication error
 	 */
 	protected int getLeftPinTry() throws CommunicationException {
 		int ret = UNKNOW;
@@ -205,12 +204,12 @@ public abstract class AbstractParser implements IParser {
 		}
 		return ret;
 	}
-	
+
 	/**
 	 * Method used to get log format
 	 *
 	 * @return list of tag and length for the log format
-	 * @throws CommunicationException
+	 * @throws CommunicationException communication error
 	 */
 	protected List<TagAndLength> getLogFormat() throws CommunicationException {
 		List<TagAndLength> ret = new ArrayList<TagAndLength>();
@@ -226,12 +225,14 @@ public abstract class AbstractParser implements IParser {
 		}
 		return ret;
 	}
-	
+
 	/**
 	 * Method used to extract log entry from card
 	 *
 	 * @param pLogEntry
 	 *            log entry position
+	 * @return list of transaction records
+	 * @throws CommunicationException communication error
 	 */
 	protected List<EmvTransactionRecord> extractLogEntry(final byte[] pLogEntry) throws CommunicationException {
 		List<EmvTransactionRecord> listRecord = new ArrayList<EmvTransactionRecord>();

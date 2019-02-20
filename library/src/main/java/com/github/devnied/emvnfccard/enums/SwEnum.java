@@ -18,11 +18,11 @@ package com.github.devnied.emvnfccard.enums;
 import fr.devnied.bitlib.BytesUtils;
 
 /**
- * List of status word (last 2 bytes) in APDU response<br/>
+ * List of status word (last 2 bytes) in APDU response <br>
  * https://www.eftlab.co.uk/index.php/site-map/knowledge-base/118-apdu-response-list
- * 
+ *
  * @author MILLAU Julien
- * 
+ *
  */
 public enum SwEnum {
 
@@ -212,7 +212,7 @@ public enum SwEnum {
 
 	/**
 	 * Constructor using field
-	 * 
+	 *
 	 * @param pStatus
 	 *            status word
 	 */
@@ -223,7 +223,7 @@ public enum SwEnum {
 
 	/**
 	 * Method used to get the field status
-	 * 
+	 *
 	 * @return the status
 	 */
 	public byte[] getStatus() {
@@ -232,7 +232,7 @@ public enum SwEnum {
 
 	/**
 	 * Method used to get the field detail
-	 * 
+	 *
 	 * @return the detail
 	 */
 	public String getDetail() {
@@ -241,7 +241,7 @@ public enum SwEnum {
 
 	/**
 	 * Method used to get the Status word
-	 * 
+	 *
 	 * @param pData
 	 *            bytes array
 	 * @return the status word

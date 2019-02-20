@@ -15,21 +15,19 @@
  */
 package com.github.devnied.emvnfccard.parser.apdu.impl;
 
-import java.util.Calendar;
-import java.util.Date;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.github.devnied.emvnfccard.model.enums.IKeyEnum;
 import com.github.devnied.emvnfccard.parser.apdu.annotation.AnnotationData;
 import com.github.devnied.emvnfccard.utils.EnumUtils;
-
 import fr.devnied.bitlib.BitUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Factory to parse data
- * 
+ *
  * @author MILLAU Julien
  */
 public final class DataFactory {
@@ -43,7 +41,7 @@ public final class DataFactory {
 	 * Constant for EN1545-1 (Date format)
 	 */
 	public static final int BCD_DATE = 1;
-	
+
 	public static final int CPCL_DATE = 2;
 
 	/**
@@ -58,7 +56,7 @@ public final class DataFactory {
 
 	/**
 	 * Method to get a date from the bytes array
-	 * 
+	 *
 	 * @param pAnnotation
 	 *            annotation data
 	 * @param pBit
@@ -77,14 +75,13 @@ public final class DataFactory {
 		return date;
 	}
 
-	
+
 	/**
 	 * Takes a date value as used in CPLC Date fields (represented by 2 bytes)
-	 * 
-	 * @param paramByte1
-	 * @param paramByte2
-	 * @throws IllegalArgumentException
-	 * @return
+	 *
+	 * @param dateBytes raw bytes
+	 * @throws IllegalArgumentException when the data size is wrong
+	 * @return the date
 	 */
 	public static Date calculateCplcDate(byte[] dateBytes)
 			throws IllegalArgumentException {
@@ -122,16 +119,15 @@ public final class DataFactory {
 		}
 		return calculatedDate.getTime();
 	}
-	
+
 	/**
 	 * This method is used to get an integer
-	 * 
+	 *
 	 * @param pAnnotation
 	 *            annotation
-	 * @param pObject
-	 *            the object to set
 	 * @param pBit
 	 *            bit array
+	 * @return the integer value
 	 */
 	private static int getInteger(final AnnotationData pAnnotation, final BitUtils pBit) {
 		return pBit.getNextInteger(pAnnotation.getSize());
@@ -139,7 +135,7 @@ public final class DataFactory {
 
 	/**
 	 * Method to read and object from the bytes tab
-	 * 
+	 *
 	 * @param pAnnotation
 	 *            all information data
 	 * @param pBit
@@ -166,7 +162,7 @@ public final class DataFactory {
 
 	/**
 	 * Method use to get float
-	 * 
+	 *
 	 * @param pAnnotation
 	 *            annotation
 	 * @param pBit
@@ -187,7 +183,7 @@ public final class DataFactory {
 
 	/**
 	 * This method is used to get an enum with his key
-	 * 
+	 *
 	 * @param pAnnotation
 	 *            annotation
 	 * @param pBit
@@ -206,7 +202,7 @@ public final class DataFactory {
 
 	/**
 	 * This method get a string (Hexa or ASCII) from a bit table
-	 * 
+	 *
 	 * @param pAnnotation
 	 *            annotation data
 	 * @param pBit

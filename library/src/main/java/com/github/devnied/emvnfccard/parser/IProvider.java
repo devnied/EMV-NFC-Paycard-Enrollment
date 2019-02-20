@@ -19,21 +19,22 @@ import com.github.devnied.emvnfccard.exception.CommunicationException;
 
 /**
  * Interface for provider for transmit command to card
- * 
+ *
  * @author MILLAU Julien
- * 
+ *
  */
 public interface IProvider {
 
 	/**
 	 * Method used to transmit and receive card response
-	 * 
+	 *
 	 * @param pCommand
 	 *            command to send to card
 	 * @return byte array returned by card
+	 * @throws CommunicationException communication error
 	 */
 	byte[] transceive(byte[] pCommand) throws CommunicationException;
-	
+
 	/**
 	 * Method used to get the card ATR or ATS
 	 * @return the card Answer to reset or Answer to select
