@@ -8,7 +8,7 @@ Android sample app available on Play store.
 
 ### Getting started
 
-First you need to create a custom Provider to exchange APDU with an NFC EMV credit card ([sample here](https://github.com/devnied/EMV-NFC-Paycard-Enrollment/blob/master/sample-pcsc/src/main/java/com/github/devnied/emvpcsccard/PcscProvider.java).
+First you need to create a custom Provider to exchange APDU with an NFC EMV credit card ([sample here](https://github.com/devnied/EMV-NFC-Paycard-Enrollment/blob/master/sample-pcsc/src/main/java/com/github/devnied/emvpcsccard/PcscProvider.java)).
 ```java
 public class YourProvider implements IProvider {
 
@@ -18,6 +18,7 @@ public class YourProvider implements IProvider {
   }
 }
 ```
+
 After that, create an instance of a parser and read the card.
 ```java
 // Create provider
@@ -42,6 +43,34 @@ EmvTemplate parser = EmvTemplate.Builder() //
 EMVCard card = parser.readEmvCard();
 ```
 card object contains all data read (Aid, card number, expiration date, card type, transactions history)
+
+#### Android usage
+For android, you can create a provider with [IsoDep](https://developer.android.com/reference/android/nfc/tech/IsoDep) class:
+```java
+public class Provider implements IProvider {
+
+	private IsoDep mTagCom;
+
+	@Override
+	public byte[] transceive(final byte[] pCommand) throws CommunicationException {
+		
+		byte[] response = null;
+		try {
+			// send command to emv card
+			response = mTagCom.transceive(pCommand);
+		} catch (IOException e) {
+			throw new CommunicationException(e.getMessage());
+		}
+
+		return response;
+	}
+
+	public void setmTagCom(final IsoDep mTagCom) {
+		this.mTagCom = mTagCom;
+	}
+
+}
+```
 
 ### Screens
 
