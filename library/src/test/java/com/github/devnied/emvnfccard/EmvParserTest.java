@@ -1,47 +1,30 @@
 package com.github.devnied.emvnfccard;
 
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.List;
-
-import org.fest.assertions.Assertions;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-import org.powermock.reflect.Whitebox;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.github.devnied.emvnfccard.enums.EmvCardScheme;
 import com.github.devnied.emvnfccard.exception.CommunicationException;
 import com.github.devnied.emvnfccard.iso7816emv.TagAndLength;
 import com.github.devnied.emvnfccard.iso7816emv.impl.DefaultTerminalImpl;
-import com.github.devnied.emvnfccard.model.AbstractData;
-import com.github.devnied.emvnfccard.model.Afl;
-import com.github.devnied.emvnfccard.model.Application;
-import com.github.devnied.emvnfccard.model.EmvCard;
-import com.github.devnied.emvnfccard.model.EmvTransactionRecord;
-import com.github.devnied.emvnfccard.model.enums.ApplicationStepEnum;
-import com.github.devnied.emvnfccard.model.enums.CardStateEnum;
-import com.github.devnied.emvnfccard.model.enums.CountryCodeEnum;
-import com.github.devnied.emvnfccard.model.enums.CurrencyEnum;
-import com.github.devnied.emvnfccard.model.enums.ServiceCode1Enum;
-import com.github.devnied.emvnfccard.model.enums.ServiceCode2Enum;
-import com.github.devnied.emvnfccard.model.enums.ServiceCode3Enum;
-import com.github.devnied.emvnfccard.model.enums.TransactionTypeEnum;
+import com.github.devnied.emvnfccard.model.*;
+import com.github.devnied.emvnfccard.model.enums.*;
 import com.github.devnied.emvnfccard.parser.EmvTemplate;
 import com.github.devnied.emvnfccard.parser.impl.AbstractParser;
 import com.github.devnied.emvnfccard.parser.impl.EmvParser;
 import com.github.devnied.emvnfccard.provider.ExceptionProviderTest;
 import com.github.devnied.emvnfccard.provider.ProviderSelectPaymentEnvTest;
 import com.github.devnied.emvnfccard.provider.TestProvider;
-
+import com.github.devnied.emvnfccard.utils.reflect.ReflectionTestUtils;
 import fr.devnied.bitlib.BytesUtils;
+import org.fest.assertions.Assertions;
+import org.junit.Assert;
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({ EmvTemplate.class })
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.List;
+
+
 public class EmvParserTest {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EmvParserTest.class);
@@ -227,10 +210,9 @@ public class EmvParserTest {
 				.setProvider(new TestProvider("VisaCardNullTransaction")) //
 				.build();
 
-		List<Application> data = Whitebox
+		List<Application> data = ReflectionTestUtils
 				.invokeMethod(
 						parser,
-						EmvTemplate.class,
 						"getApplicationTemplate",
 						BytesUtils
 						.fromString("6F 57 84 0E 32 50 41 59 2E 53 59 53 2E 44 44 46 30 31 A5 45 BF 0C 42 61 1B 4F 07 A0 00 00 00 42 10 10 50 02 43 42 87 01 01 9F 2A 08 03 00 00 00 00 00 00 00 61 23 4F 07 A0 00 00 00 03 10 10 50 0A 56 49 53 41 20 44 45 42 49 54 87 01 02 9F 2A 08 03 00 00 00 00 00 00 00"));
@@ -241,10 +223,9 @@ public class EmvParserTest {
 		Assertions.assertThat(data.get(1).getApplicationLabel()).isEqualTo("VISA DEBIT");
 		Assertions.assertThat(BytesUtils.bytesToString(data.get(1).getAid())).isEqualTo("A0 00 00 00 03 10 10");
 
-		data = Whitebox
+		data = ReflectionTestUtils
 				.invokeMethod(
 						parser,
-						EmvTemplate.class,
 						"getApplicationTemplate",
 						BytesUtils
 						.fromString("6F57840E325041592E5359532E4444463031A545BF0C4261104F07A0000000421010500243428701019F2A08030000000000000061184F07A0000000031010500A564953412044454249548701029F2A0803000000000000009000"));
@@ -255,10 +236,9 @@ public class EmvParserTest {
 		Assertions.assertThat(data.get(1).getApplicationLabel()).isEqualTo("VISA DEBIT");
 		Assertions.assertThat(BytesUtils.bytesToString(data.get(1).getAid())).isEqualTo("A0 00 00 00 03 10 10");
 
-		data = Whitebox
+		data = ReflectionTestUtils
 				.invokeMethod(
 						parser,
-						EmvTemplate.class,
 						"getApplicationTemplate",
 						BytesUtils
 						.fromString("6F 2C 84 0E 32 50 41 59 2E 53 59 53 2E 44 44 46 30 31 A5 1A BF 0C 17 61 15 4F 07 A0 00 00 02 77 10 10 50 07 49 6E 74 65 72 61 63 87 01 01"));
@@ -267,10 +247,9 @@ public class EmvParserTest {
 		Assertions.assertThat(data.get(0).getApplicationLabel()).isEqualTo("Interac");
 		Assertions.assertThat(BytesUtils.bytesToString(data.get(0).getAid())).isEqualTo("A0 00 00 02 77 10 10");
 
-		data = Whitebox
+		data = ReflectionTestUtils
 				.invokeMethod(
 						parser,
-						EmvTemplate.class,
 						"getApplicationTemplate",
 						BytesUtils
 						.fromString("6F 2C 84 0E 32 50 41 59 2E 53 59 53 2E 44 44 46 30 31 A5 1A BF 0C 17 61 15 41 07 A0 00 00 02 77 10 10 50 07 49 6E 74 65 72 61 63 87 01 01"));
@@ -357,16 +336,16 @@ public class EmvParserTest {
 
 	@Test
 	public void testPPSEGeldKarte() throws CommunicationException {
-		
+
 		SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss");
 		SimpleDateFormat date = new SimpleDateFormat("dd/MM/yyy");
-		
+
 		EmvTemplate parser = EmvTemplate.Builder() //
 				.setProvider(new TestProvider("GeldKartePpse")) //
 				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true).setReadCplc(true)).build();
 		EmvCard card = parser.readEmvCard();
 
-		
+
 		if (card != null) {
 			LOGGER.debug(card.toString());
 		}
@@ -642,7 +621,8 @@ public class EmvParserTest {
 
 		EmvParser parser = new EmvParser(null);
 
-		List<Afl> list = (List<Afl>) Whitebox.invokeMethod(parser, EmvParser.class, "extractAfl",
+		List<Afl> list = ReflectionTestUtils
+				.invokeMethod(parser, "extractAfl",
 				BytesUtils.fromString("10020301 18010500 20010200"));
 		Assertions.assertThat(list.size()).isEqualTo(3);
 		Assertions.assertThat(list.get(0).getSfi()).isEqualTo(2);
@@ -669,7 +649,7 @@ public class EmvParserTest {
 				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true)) //
 				.build();
 		prov.setExpectedData("00A404000E325041592E5359532E444446303100");
-		Whitebox.invokeMethod(parser, EmvTemplate.class, "selectPaymentEnvironment");
+		ReflectionTestUtils.invokeMethod(parser, "selectPaymentEnvironment");
 
 		parser = EmvTemplate.Builder() //
 				.setProvider(prov) //
@@ -677,7 +657,7 @@ public class EmvParserTest {
 				.build();
 		prov.setExpectedData("00A404000E315041592E5359532E444446303100");
 
-		Whitebox.invokeMethod(parser, EmvTemplate.class, "selectPaymentEnvironment");
+		ReflectionTestUtils.invokeMethod(parser, "selectPaymentEnvironment");
 	}
 
 	@Test
@@ -689,15 +669,13 @@ public class EmvParserTest {
 
 		EmvParser parser = (EmvParser) template.getParsers().get(template.getParsers().size() - 1);
 
-		String value = (String) Whitebox
-				.invokeMethod(
+		String value = ReflectionTestUtils.invokeMethod(
 						parser,
-						AbstractParser.class,
 						"extractApplicationLabel",
 						BytesUtils
 						.fromString("6F 3B 84 0E 32 50 41 59 2E 53 59 53 2E 44 44 46 30 31 A5 29 BF 0C 26 61 10 4F 07 A0 00 00 00 42 10 10 50 02 43 42 87 01 01 61 12 4F 07 A0 00 00 00 03 10 10 50 04 56 49 53 41 87 01 02 90 00"));
 		Assertions.assertThat(value).isEqualTo("CB");
-		value = (String) Whitebox.invokeMethod(parser, AbstractParser.class, "extractApplicationLabel", (byte[]) null);
+		value = ReflectionTestUtils.invokeMethod(parser, AbstractParser.class, "extractApplicationLabel", (byte[]) null);
 		Assertions.assertThat(value).isEqualTo(null);
 	}
 
@@ -712,9 +690,9 @@ public class EmvParserTest {
 		EmvParser parser = (EmvParser) template.getParsers().get(template.getParsers().size() - 1);
 
 		prov.setExpectedData("00A4040007A000000042101000");
-		Whitebox.invokeMethod(parser, AbstractParser.class, "selectAID", BytesUtils.fromString("A0000000421010"));
+		ReflectionTestUtils.invokeMethod(parser, "selectAID", BytesUtils.fromString("A0000000421010"));
 		prov.setExpectedData("00A4040000");
-		Whitebox.invokeMethod(parser, AbstractParser.class, "selectAID", (byte[]) null);
+		ReflectionTestUtils.invokeMethod(parser, AbstractParser.class, "selectAID", (byte[])null);
 	}
 
 	@Test
@@ -729,20 +707,20 @@ public class EmvParserTest {
 
 		prov.setExpectedData("80CA9F1700");
 		prov.setReturnedData("9F 17 01 03 90 00");
-		int val = Whitebox.invokeMethod(parser, AbstractParser.class, "getLeftPinTry");
+		int val = (int) ReflectionTestUtils.invokeMethod(parser, "getLeftPinTry");
 		Assertions.assertThat(val).isEqualTo(3);
 
 		prov.setExpectedData("80CA9F1700");
 		prov.setReturnedData("90 00");
-		val = Whitebox.invokeMethod(parser, AbstractParser.class, "getLeftPinTry");
+		val = (int) ReflectionTestUtils.invokeMethod(parser, "getLeftPinTry");
 		Assertions.assertThat(val).isEqualTo(EmvParser.UNKNOW);
 
 		prov.setReturnedData(null);
-		val = Whitebox.invokeMethod(parser, AbstractParser.class, "getLeftPinTry");
+		val = (int) ReflectionTestUtils.invokeMethod(parser, "getLeftPinTry");
 		Assertions.assertThat(val).isEqualTo(EmvParser.UNKNOW);
 
 		prov.setReturnedData("8090");
-		val = Whitebox.invokeMethod(parser, AbstractParser.class, "getLeftPinTry");
+		val = (int) ReflectionTestUtils.invokeMethod(parser, "getLeftPinTry");
 		Assertions.assertThat(val).isEqualTo(EmvParser.UNKNOW);
 	}
 
@@ -756,17 +734,17 @@ public class EmvParserTest {
 		EmvParser parser = (EmvParser) template.getParsers().get(template.getParsers().size() - 1);
 		prov.setExpectedData("80CA9F4F00");
 		prov.setReturnedData("9F 4F 10 9F 02 06 9F 27 01 9F 1A 02 5F 2A 02 9A 03 9C 01 90 00");
-		List<TagAndLength> list = Whitebox.invokeMethod(parser, AbstractParser.class, "getLogFormat");
+		List<TagAndLength> list = (List<TagAndLength>) ReflectionTestUtils.invokeMethod(parser, "getLogFormat");
 		Assertions.assertThat(list.size()).isEqualTo(6);
 
 		prov.setExpectedData("80CA9F4F00");
 		prov.setReturnedData("0000");
-		list = Whitebox.invokeMethod(parser, AbstractParser.class, "getLogFormat");
+		list = (List<TagAndLength>) ReflectionTestUtils.invokeMethod(parser, "getLogFormat");
 		Assertions.assertThat(list.size()).isEqualTo(0);
 
 		prov.setExpectedData("80CA9F4F00");
 		prov.setReturnedData("9000");
-		list = Whitebox.invokeMethod(parser, AbstractParser.class, "getLogFormat");
+		list = (List<TagAndLength>) ReflectionTestUtils.invokeMethod(parser, "getLogFormat");
 		Assertions.assertThat(list.size()).isEqualTo(0);
 	}
 
@@ -779,11 +757,11 @@ public class EmvParserTest {
 		EmvParser parser = (EmvParser) template.getParsers().get(template.getParsers().size() - 1);
 		byte[] selectResponse = BytesUtils
 				.fromString("6F 37 84 07 A0 00 00 00 42 10 10 A5 2C 9F 38 18 9F 66 04 9F 02 06 9F 03 06 9F 1A 02 95 05 5F 2A 02 9A 03 9C 01 9F 37 04 BF 0C 0E DF 62 02 0B 1E DF 61 01 03 9F 4D 02 0B 11 90 00");
-		byte[] data = Whitebox.invokeMethod(parser, AbstractParser.class, "getLogEntry", selectResponse);
+		byte[] data = (byte[]) ReflectionTestUtils.invokeMethod(parser, "getLogEntry", selectResponse);
 
 		selectResponse = BytesUtils
 				.fromString("6F 32 84 07 A0 00 00 00 42 10 10 A5 27 9F 38 18 9F 66 04 9F 02 06 9F 03 06 9F 1A 02 95 05 5F 2A 02 9A 03 9C 01 9F 37 04 BF 0C 09 DF 60 02 0B 1E DF 61 01 03 90 00");
-		data = Whitebox.invokeMethod(parser, AbstractParser.class, "getLogEntry", selectResponse);
+		data = (byte[]) ReflectionTestUtils.invokeMethod(parser, "getLogEntry", selectResponse);
 		Assertions.assertThat(BytesUtils.bytesToString(data)).isEqualTo("0B 1E");
 	}
 
@@ -793,7 +771,7 @@ public class EmvParserTest {
 				.setProvider(new TestProvider("VisaCardAid")) //
 				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true).setReadAt(false)) //
 				.build();
-		Whitebox.invokeMethod(parser, EmvTemplate.class, "readWithAID");
+		ReflectionTestUtils.invokeMethod(parser, "readWithAID");
 		EmvCard card = parser.getCard();
 
 		if (card != null) {
@@ -820,7 +798,7 @@ public class EmvParserTest {
 		Assertions.assertThat(card.getAt()).isEqualTo(null);
 		Assertions.assertThat(card.getAtrDescription()).isEqualTo(null);
 	}
-	
+
 	@Test
 	public void testReadCpcl() throws Exception {
 		EmvTemplate template = EmvTemplate.Builder() //
@@ -845,7 +823,7 @@ public class EmvParserTest {
 				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true)) //
 				.build();
 		EmvParser parser = (EmvParser) template.getParsers().get(template.getParsers().size() - 1);
-		Whitebox.invokeMethod(parser, AbstractParser.class, "extractCardHolderName", BytesUtils.fromString("5F 20 02 20 2F"));
+		ReflectionTestUtils.invokeMethod(parser, "extractCardHolderName", BytesUtils.fromString("5F 20 02 20 2F"));
 		EmvCard card = template.getCard();
 
 		if (card != null) {
@@ -863,7 +841,7 @@ public class EmvParserTest {
 				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true)) //
 				.build();
 		EmvParser parser = (EmvParser) template.getParsers().get(template.getParsers().size() - 1);
-		Whitebox.invokeMethod(parser, AbstractParser.class, "extractCardHolderName", BytesUtils.fromString("5F 20 02 20 20"));
+		ReflectionTestUtils.invokeMethod(parser, "extractCardHolderName", BytesUtils.fromString("5F 20 02 20 20"));
 		EmvCard card = template.getCard();
 
 		if (card != null) {
@@ -881,7 +859,7 @@ public class EmvParserTest {
 				.setConfig(EmvTemplate.Config().setContactLess(true).setReadAllAids(true).setReadTransactions(true)) //
 				.build();
 		EmvParser parser = (EmvParser) template.getParsers().get(template.getParsers().size() - 1);
-		Whitebox.invokeMethod(parser, AbstractParser.class, "extractCardHolderName", BytesUtils.fromString("5F2008446F652F4A6F686E"));
+		ReflectionTestUtils.invokeMethod(parser, "extractCardHolderName", BytesUtils.fromString("5F2008446F652F4A6F686E"));
 		EmvCard card = template.getCard();
 
 		if (card != null) {
@@ -902,19 +880,19 @@ public class EmvParserTest {
 		EmvParser parser = (EmvParser) template.getParsers().get(template.getParsers().size() - 1);
 		prov.setExpectedData("80CA9F3600");
 		prov.setReturnedData("9F 36 02 06 2C 90 00");
-		int ret = Whitebox.invokeMethod(parser, AbstractParser.class, "getTransactionCounter");
+		int ret = (int) ReflectionTestUtils.invokeMethod(parser, "getTransactionCounter");
 		Assertions.assertThat(ret).isEqualTo(1580);
 
 		prov.setReturnedData("9F 36 02 FF FF 90 00");
-		ret = Whitebox.invokeMethod(parser, AbstractParser.class, "getTransactionCounter");
+		ret = (int) ReflectionTestUtils.invokeMethod(parser, "getTransactionCounter");
 		Assertions.assertThat(ret).isEqualTo(65535);
 
 		prov.setReturnedData("0000");
-		ret = Whitebox.invokeMethod(parser, AbstractParser.class, "getTransactionCounter");
+		ret = (int) ReflectionTestUtils.invokeMethod(parser, "getTransactionCounter");
 		Assertions.assertThat(ret).isEqualTo(EmvParser.UNKNOW);
 
 		prov.setReturnedData("9000");
-		ret = Whitebox.invokeMethod(parser, AbstractParser.class, "getTransactionCounter");
+		ret = (int) ReflectionTestUtils.invokeMethod(parser, "getTransactionCounter");
 		Assertions.assertThat(ret).isEqualTo(EmvParser.UNKNOW);
 	}
 

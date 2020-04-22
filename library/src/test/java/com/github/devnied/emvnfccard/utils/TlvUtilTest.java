@@ -1,25 +1,18 @@
 package com.github.devnied.emvnfccard.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.fest.assertions.Assertions;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-import org.powermock.reflect.Whitebox;
-
 import com.github.devnied.emvnfccard.enums.TagTypeEnum;
 import com.github.devnied.emvnfccard.enums.TagValueTypeEnum;
 import com.github.devnied.emvnfccard.iso7816emv.EmvTags;
 import com.github.devnied.emvnfccard.iso7816emv.ITag;
 import com.github.devnied.emvnfccard.iso7816emv.TagAndLength;
-
+import com.github.devnied.emvnfccard.utils.reflect.ReflectionTestUtils;
 import fr.devnied.bitlib.BytesUtils;
+import org.fest.assertions.Assertions;
+import org.junit.Test;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({ TlvUtil.class })
+import java.util.ArrayList;
+import java.util.List;
+
 public class TlvUtilTest {
 
 	private static final byte[] DATA = BytesUtils.fromString("70 63 61 13 4f 09 a0 00 00 03 15 10 10 05 28 50"
@@ -79,9 +72,9 @@ public class TlvUtilTest {
 	@Test
 	public void testSearchTagById() throws Exception {
 
-		ITag tag = (ITag) Whitebox.invokeMethod(TlvUtil.class, "searchTagById", 0x9F6B);
+		ITag tag = (ITag) ReflectionTestUtils.invokeMethod(TlvUtil.class, "searchTagById", 0x9F6B);
 		Assertions.assertThat(tag).isEqualTo(EmvTags.TRACK2_DATA);
-		tag = (ITag) Whitebox.invokeMethod(TlvUtil.class, "searchTagById", 0xFFFF);
+		tag = (ITag) ReflectionTestUtils.invokeMethod(TlvUtil.class, "searchTagById", 0xFFFF);
 		Assertions.assertThat(tag.getName()).isEqualTo("[UNKNOWN TAG]");
 		Assertions.assertThat(tag.getDescription()).isEqualTo("");
 		Assertions.assertThat(tag.getTagBytes()).isEqualTo(BytesUtils.fromString("FFFF"));
@@ -99,10 +92,10 @@ public class TlvUtilTest {
 	public void testSearchTagByIdIn() throws Exception {
 
 
-		ITag tag = (ITag) Whitebox.invokeMethod(TlvUtil.class, "searchTagById", 0x9F6B);
+		ITag tag = ReflectionTestUtils.invokeMethod(TlvUtil.class, "searchTagById", 0x9F6B);
 		Assertions.assertThat(tag).isEqualTo(EmvTags.TRACK2_DATA);
 
-		tag = (ITag) Whitebox.invokeMethod(TlvUtil.class, "searchTagById", 0xFFFF);
+		tag = (ITag) ReflectionTestUtils.invokeMethod(TlvUtil.class, "searchTagById", 0xFFFF);
 		Assertions.assertThat(tag.getName()).isEqualTo("[UNKNOWN TAG]");
 		Assertions.assertThat(tag.getDescription()).isEqualTo("");
 		Assertions.assertThat(tag.getTagBytes()).isEqualTo(BytesUtils.fromString("FFFF"));
@@ -145,19 +138,19 @@ public class TlvUtilTest {
 	public void testGetTagValueAsString() throws Exception {
 		Assertions
 		.assertThat(
-				(String) Whitebox.invokeMethod(TlvUtil.class, "getTagValueAsString", EmvTags.ACQUIRER_IDENTIFIER,
+				(String) ReflectionTestUtils.invokeMethod(TlvUtil.class, "getTagValueAsString", EmvTags.ACQUIRER_IDENTIFIER,
 						"56".getBytes())).isEqualTo("NUMERIC");
 		Assertions.assertThat(
-				(String) Whitebox.invokeMethod(TlvUtil.class, "getTagValueAsString", EmvTags.ISSUER_COUNTRY_CODE_ALPHA3,
+				(String) ReflectionTestUtils.invokeMethod(TlvUtil.class, "getTagValueAsString", EmvTags.ISSUER_COUNTRY_CODE_ALPHA3,
 						"56".getBytes())).isEqualTo("=56");
 		Assertions.assertThat(
-				(String) Whitebox.invokeMethod(TlvUtil.class, "getTagValueAsString", EmvTags.APP_DISCRETIONARY_DATA,
+				(String) ReflectionTestUtils.invokeMethod(TlvUtil.class, "getTagValueAsString", EmvTags.APP_DISCRETIONARY_DATA,
 						"56".getBytes())).isEqualTo("BINARY");
 		Assertions.assertThat(
-				(String) Whitebox.invokeMethod(TlvUtil.class, "getTagValueAsString", EmvTags.BANK_IDENTIFIER_CODE,
+				(String) ReflectionTestUtils.invokeMethod(TlvUtil.class, "getTagValueAsString", EmvTags.BANK_IDENTIFIER_CODE,
 						"56".getBytes())).isEqualTo("=56");
 		Assertions
-		.assertThat((String) Whitebox.invokeMethod(TlvUtil.class, "getTagValueAsString", EmvTags.DDOL, "56".getBytes()))
+		.assertThat((String) ReflectionTestUtils.invokeMethod(TlvUtil.class, "getTagValueAsString", EmvTags.DDOL, "56".getBytes()))
 		.isEqualTo("");
 	}
 }
