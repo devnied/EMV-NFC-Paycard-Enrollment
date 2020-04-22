@@ -311,6 +311,7 @@ public class EmvTemplate {
 		if (config == null) {
 			config = Config();
 		}
+		parsers = new ArrayList<IParser>();
 		if (!config.removeDefaultParsers) {
 			addDefaultParsers();
 		}
@@ -321,7 +322,6 @@ public class EmvTemplate {
 	 * Add default parser implementation
 	 */
 	private void addDefaultParsers() {
-		parsers = new ArrayList<IParser>();
 		parsers.add(new GeldKarteParser(this));
 		parsers.add(new EmvParser(this));
 	}
