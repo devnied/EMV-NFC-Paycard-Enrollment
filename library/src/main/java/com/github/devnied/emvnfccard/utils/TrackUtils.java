@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -82,7 +83,7 @@ public final class TrackUtils {
 				// Read expire date
 				SimpleDateFormat sdf = new SimpleDateFormat("yyMM", Locale.getDefault());
 				try {
-					track2.setExpireDate(DateUtils.truncate(sdf.parse(m.group(2)), Calendar.MONTH));
+					track2.setExpireDate(lastDayOfMonth(sdf.parse(m.group(2))));
 				} catch (ParseException e) {
 					LOGGER.error("Unparsable expire card date : {}", e.getMessage());
 					return ret;
@@ -124,7 +125,7 @@ public final class TrackUtils {
 				// Read expire date
 				SimpleDateFormat sdf = new SimpleDateFormat("yyMM", Locale.getDefault());
 				try {
-					track1.setExpireDate(DateUtils.truncate(sdf.parse(m.group(5)), Calendar.MONTH));
+					track1.setExpireDate(lastDayOfMonth(sdf.parse(m.group(5))));
 				} catch (ParseException e) {
 					LOGGER.error("Unparsable expire card date : {}", e.getMessage());
 					return ret;
@@ -135,6 +136,18 @@ public final class TrackUtils {
 			}
 		}
 		return ret;
+	}
+
+	/**
+	 * Method used to truncate a date for the last day of the selected month.
+	 * @param date the date to truncate
+	 * @return the truncated date
+	 */
+	private static Date lastDayOfMonth(Date date){
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+		return DateUtils.truncate(calendar.getTime(), Calendar.DAY_OF_MONTH);
 	}
 
 	/**

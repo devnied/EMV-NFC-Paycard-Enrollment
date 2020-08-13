@@ -25,16 +25,16 @@ public class PcscProvider implements IProvider {
 	/**
 	 * CardChanel
 	 */
-	private CardChannel channel;
+	private final CardChannel channel;
 
 	/**
 	 * Buffer
 	 */
-	private ByteBuffer buffer = ByteBuffer.allocate(1024);
+	private final ByteBuffer buffer = ByteBuffer.allocate(1024);
 
 	/**
 	 * Constructor using field
-	 * 
+	 *
 	 * @param pChannel
 	 *            card channel
 	 */

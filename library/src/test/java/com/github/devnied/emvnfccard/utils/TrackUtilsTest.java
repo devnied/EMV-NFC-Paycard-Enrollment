@@ -24,8 +24,8 @@ public class TrackUtilsTest {
 
 		Assertions.assertThat(track1).isNotNull();
 		Assertions.assertThat(track1.getCardNumber()).isEqualTo("4111111111111111");
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
-		Assertions.assertThat(sdf.format(track1.getExpireDate())).isEqualTo("02/2017");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Assertions.assertThat(sdf.format(track1.getExpireDate())).isEqualTo("28/02/2017");
 		Assertions.assertThat(track1).isNotNull();
 		Assertions.assertThat(track1.getService()).isNotNull();
 		Assertions.assertThat(track1.getService().getServiceCode1()).isEqualTo(ServiceCode1Enum.INTERNATIONNAL_ICC);
@@ -47,8 +47,8 @@ public class TrackUtilsTest {
 
 		Assertions.assertThat(track1).isNotNull();
 		Assertions.assertThat(track1.getCardNumber()).isEqualTo("4111111111111111");
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
-		Assertions.assertThat(sdf.format(track1.getExpireDate())).isEqualTo("02/2017");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Assertions.assertThat(sdf.format(track1.getExpireDate())).isEqualTo("28/02/2017");
 		Assertions.assertThat(track1).isNotNull();
 		Assertions.assertThat(track1.getHolderFirstname()).isEqualTo("John");
 		Assertions.assertThat(track1.getHolderLastname()).isEqualTo("Doe");
@@ -72,8 +72,8 @@ public class TrackUtilsTest {
 
 		Assertions.assertThat(track1).isNotNull();
 		Assertions.assertThat(track1.getCardNumber()).isEqualTo("5211111111111111");
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
-		Assertions.assertThat(sdf.format(track1.getExpireDate())).isEqualTo("08/2016");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Assertions.assertThat(sdf.format(track1.getExpireDate())).isEqualTo("31/08/2016");
 		Assertions.assertThat(track1.getHolderFirstname()).isNull();
 		Assertions.assertThat(track1.getHolderLastname()).isNull();
 		Assertions.assertThat(track1.getService()).isNotNull();
@@ -86,7 +86,7 @@ public class TrackUtilsTest {
 		Assertions.assertThat(track1.getService().getServiceCode3().getAllowedServices()).isNotNull();
 		Assertions.assertThat(track1.getService().getServiceCode3().getPinRequirements()).isNotNull();
 	}
-	
+
 	@Test
 	public void track1FormatNullUser() {
 		EmvTrack1 track1 = TrackUtils
@@ -95,8 +95,8 @@ public class TrackUtilsTest {
 								.fromString("42353231313131313131313131313131315E22202020202020202020202020202020202020202020202020205E31363038323032303030303030303030303030312020303030202020202030"));
 
 		Assertions.assertThat(track1.getCardNumber()).isEqualTo("5211111111111111");
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
-		Assertions.assertThat(sdf.format(track1.getExpireDate())).isEqualTo("08/2016");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		Assertions.assertThat(sdf.format(track1.getExpireDate())).isEqualTo("31/08/2016 00:00:00");
 		Assertions.assertThat(track1.getHolderFirstname()).isNull();
 		Assertions.assertThat(track1.getHolderLastname()).isNull();
 		Assertions.assertThat(track1.getService()).isNotNull();
@@ -116,8 +116,8 @@ public class TrackUtilsTest {
 
 		Assertions.assertThat(track2).isNotNull();
 		Assertions.assertThat(track2.getCardNumber()).isEqualTo("5566887766556677");
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
-		Assertions.assertThat(sdf.format(track2.getExpireDate())).isEqualTo("06/2015");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Assertions.assertThat(sdf.format(track2.getExpireDate())).isEqualTo("30/06/2015");
 		Assertions.assertThat(track2.getService()).isNotNull();
 		Assertions.assertThat(track2.getService().getServiceCode1()).isEqualTo(ServiceCode1Enum.INTERNATIONNAL_ICC);
 		Assertions.assertThat(track2.getService().getServiceCode1().getInterchange()).isNotNull();
@@ -128,15 +128,15 @@ public class TrackUtilsTest {
 		Assertions.assertThat(track2.getService().getServiceCode3().getAllowedServices()).isNotNull();
 		Assertions.assertThat(track2.getService().getServiceCode3().getPinRequirements()).isNotNull();
 	}
-	
+
 	@Test
 	public void track2EquivalentTest2() {
 		EmvTrack2 track2 = TrackUtils.extractTrack2EquivalentData(BytesUtils.fromString("55 55 55 66 88 77 66 55 66 7D 11 05 62 01 69 28 07 65 90 00 0F"));
 
 		Assertions.assertThat(track2).isNotNull();
 		Assertions.assertThat(track2.getCardNumber()).isEqualTo("5555556688776655667");
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
-		Assertions.assertThat(sdf.format(track2.getExpireDate())).isEqualTo("05/2011");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Assertions.assertThat(sdf.format(track2.getExpireDate())).isEqualTo("31/05/2011");
 		Assertions.assertThat(track2.getService()).isNotNull();
 		Assertions.assertThat(track2.getService().getServiceCode1()).isEqualTo(ServiceCode1Enum.NATIONAL_ICC);
 		Assertions.assertThat(track2.getService().getServiceCode2()).isEqualTo(ServiceCode2Enum.BY_ISSUER);
@@ -149,14 +149,14 @@ public class TrackUtilsTest {
 
 		Assertions.assertThat(track2).isNotNull();
 		Assertions.assertThat(track2.getCardNumber()).isEqualTo("5555556688776655667");
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
-		Assertions.assertThat(sdf.format(track2.getExpireDate())).isEqualTo("05/2011");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Assertions.assertThat(sdf.format(track2.getExpireDate())).isEqualTo("31/05/2011");
 		Assertions.assertThat(track2.getService()).isNotNull();
 		Assertions.assertThat(track2.getService().getServiceCode1()).isNull();
 		Assertions.assertThat(track2.getService().getServiceCode2()).isNull();
 		Assertions.assertThat(track2.getService().getServiceCode3()).isNull();
 	}
-	
+
 	@Test
 	public void track2EquivalentTestNull() {
 		EmvTrack2 card = TrackUtils.extractTrack2EquivalentData(BytesUtils.fromString("00"));
