@@ -30,7 +30,7 @@ import fr.devnied.bitlib.BytesUtils;
 public enum EmvCardScheme {
 
 	VISA("VISA", "^4[0-9]{6,}$", "A0 00 00 00 03", "A0 00 00 00 03 10 10", "A0 00 00 00 98 08 48"), //
-	MASTER_CARD("Master card", "^5[1-5][0-9]{5,}$", "A0 00 00 00 04", "A0 00 00 00 05"), //
+	MASTER_CARD("Master card", "^5[1-5][0-9]{5,}$", "A0 00 00 00 04", "A0 00 00 00 05", "A0 00 00 00 04 10 10", "A00000000410101213", "A00000000410101215), //
 	AMERICAN_EXPRESS("American express", "^3[47][0-9]{5,}$", "A0 00 00 00 25"), //
 	CB("CB", null, "A0 00 00 00 42"), //
 	LINK("LINK", null, "A0 00 00 00 29"), //
@@ -55,8 +55,8 @@ public enum EmvCardScheme {
 	PBS("PBS", null, "A0 00 00 01 21 10 10"), //
 	ETRANZACT("eTranzact", null, "A0 00 00 04 54"), //
 	GOOGLE("Google", null, "A0 00 00 04 76 6C"), //
-	INTER_SWITCH("InterSwitch", null, "A0 00 00 03 71 00 01");
-
+	INTER_SWITCH("InterSwitch", null, "A0 00 00 03 71 00 01"),//
+	MEEZA("Meeza", "^50[0-9]{11}(?:[0-9]{3})?$", "A0 00 00 07 32 10 01 23"); // Card in Egypt
 	/**
 	 * array of Card AID or partial AID (RID)
 	 */
