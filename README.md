@@ -34,7 +34,7 @@ Config config = EmvTemplate.Config()
 		.setContactLess(true) // Enable contact less reading (default: true)
 		.setReadAllAids(true) // Read all aids in card (default: true)
 		.setReadTransactions(true) // Read all transactions (default: true)
-		.setReadCPLC(false) // Read and extract CPCLC data (default: false)
+		.setReadCplc(false) // Read and extract CPCLC data (default: false)
 		.setRemoveDefaultParsers(false) // Remove default parsers for GeldKarte and EmvCard (default: false)
 		.setReadAt(true) // Read and extract ATR/ATS and description
 		; 
@@ -60,7 +60,7 @@ public class Provider implements IProvider {
 	@Override
 	public byte[] transceive(final byte[] pCommand) throws CommunicationException {
 		
-		byte[] response = null;
+		byte[] response;
 		try {
 			// send command to emv card
 			response = mTagCom.transceive(pCommand);
