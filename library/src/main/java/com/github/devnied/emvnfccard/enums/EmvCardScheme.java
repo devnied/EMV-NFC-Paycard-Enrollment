@@ -56,6 +56,7 @@ public enum EmvCardScheme {
 	ETRANZACT("eTranzact", null, "A0 00 00 04 54"), //
 	GOOGLE("Google", null, "A0 00 00 04 76 6C"), //
 	INTER_SWITCH("InterSwitch", null, "A0 00 00 03 71 00 01");
+	HUMO("HUMO", null, "A0 86 00 01 00 00 01");
 
 	/**
 	 * array of Card AID or partial AID (RID)
