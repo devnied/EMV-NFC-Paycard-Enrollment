@@ -12,7 +12,7 @@
 		<version>7</version>
 	</parent>
 
-	<inceptionYear>2013</inceptionYear>
+	<inceptionYear>2025</inceptionYear>
 	<description>
 	 	A Java library used to read and extract data from EMV paycard.
 	</description>
