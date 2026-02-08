@@ -7,75 +7,125 @@ resp: 6F 57 84 0E 32 50 41 59 2E 53 59 53 2E 44 44 46 30 31 A5 45 BF 0C 42 61 10
 # Select AID
 send: 00 A4 04 00 07 A0 00 00 00 42 10 10 00
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
 resp: 69 85

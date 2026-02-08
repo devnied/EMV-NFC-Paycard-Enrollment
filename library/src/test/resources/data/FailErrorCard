@@ -10,89 +10,131 @@ resp: 6F 29 84 07 A0 00 00 00 42 10 10 A5 1E 50 02 43 42 87 01 01 9F 11 01 01 9F
 # GPO
 send: 80 A8 00 00 02 83 00 00
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
 resp: 69 85
-send: 
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
+resp: 69 85
+send:
 resp: 69 85

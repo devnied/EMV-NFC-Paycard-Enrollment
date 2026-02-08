@@ -1,4 +1,4 @@
-## EMV NFC Paycard Enrollment ![CI](https://github.com/devnied/EMV-NFC-Paycard-Enrollment/workflows/CI/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/devnied/EMV-NFC-Paycard-Enrollment/badge.svg?branch=master)](https://coveralls.io/github/devnied/EMV-NFC-Paycard-Enrollment?branch=master) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.devnied.emvnfccard/library/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/com.github.devnied.emvnfccard/library) [![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
+## EMV NFC Paycard Enrollment ![CI](https://github.com/devnied/EMV-NFC-Paycard-Enrollment/workflows/CI/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/devnied/EMV-NFC-Paycard-Enrollment/badge.svg?branch=master)](https://coveralls.io/github/devnied/EMV-NFC-Paycard-Enrollment?branch=master)
 ### Description
 Java library used to read and extract public data from NFC EMV credit cards.<br/>
 <br/>
@@ -136,7 +136,7 @@ Forks and Pull Requests are also welcome.
 
 ## Copyright and license
 
-Copyright 2020 Millau Julien.
+Copyright 2020-2026 Millau Julien.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this work except in compliance with the License.

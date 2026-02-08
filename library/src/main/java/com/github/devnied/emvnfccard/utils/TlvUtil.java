@@ -109,8 +109,6 @@ public final class TlvUtil {
 			LOGGER.debug(eof.getMessage(), eof);
 		} catch (IOException e) {
 			LOGGER.error(e.getMessage(), e);
-		} finally {
-			IOUtils.closeQuietly(stream);
 		}
 		return tlv;
 	}
@@ -143,7 +141,6 @@ public final class TlvUtil {
 			buf.append(getSafePrintChars(value));
 			break;
 		case DOL:
-			buf.append("");
 			break;
 		default:
 			break;

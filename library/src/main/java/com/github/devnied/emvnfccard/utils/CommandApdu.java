@@ -103,7 +103,7 @@ public class CommandApdu {
 			index += mData.length;
 		}
 		if (mLeUsed) {
-			apdu[index] += (byte) mLe; // LE
+			apdu[index] = (byte) mLe; // LE
 		}
 
 		return apdu;

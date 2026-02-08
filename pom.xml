@@ -54,7 +54,7 @@
 
 	<properties>
 		<additionalparam>-Xdoclint:none</additionalparam>
-		<powermock.version>2.0.7</powermock.version>
+		<powermock.version>2.0.9</powermock.version>
 	</properties>
 
 	<dependencyManagement>
@@ -70,32 +70,32 @@
 			<dependency>
 				<groupId>com.github.devnied</groupId>
 				<artifactId>bit-lib4j</artifactId>
-				<version>1.5.2</version>
+				<version>1.6.0</version>
 			</dependency>
 
 			<!-- Apache commons -->
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
-				<version>3.8.1</version>
+				<version>3.17.0</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-collections4</artifactId>
-				<version>4.2</version>
+				<version>4.4</version>
 			</dependency>
 
 			<dependency>
 				<groupId>commons-io</groupId>
 				<artifactId>commons-io</artifactId>
-				<version>2.6</version>
+				<version>2.18.0</version>
 			</dependency>
 
 			<dependency>
 				<groupId>net.sf.scuba</groupId>
 				<artifactId>scuba-smartcards</artifactId>
-				<version>0.0.18</version>
+				<version>0.0.20</version>
 			</dependency>
 
 			<!-- Tests -->
@@ -109,19 +109,6 @@
 		</dependencies>
 	</dependencyManagement>
 
-	<distributionManagement>
-		<snapshotRepository>
-			<id>sonatype-nexus-snapshots</id>
-			<name>Sonatype Nexus Snapshots</name>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-		<repository>
-			<id>sonatype-nexus-staging</id>
-			<name>Nexus Release Repository</name>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-		</repository>
-	</distributionManagement>
-
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<testSourceDirectory>src/test/java</testSourceDirectory>
@@ -129,19 +116,28 @@
 		<pluginManagement>
 			<plugins>
 				<plugin>
+					<groupId>org.sonatype.central</groupId>
+					<artifactId>central-publishing-maven-plugin</artifactId>
+					<version>0.9.0</version>
+					<extensions>true</extensions>
+					<configuration>
+						<publishingServerId>central</publishingServerId>
+					</configuration>
+				</plugin>
+				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.8.1</version>
+					<version>3.13.0</version>
 					<configuration>
-						<source>1.7</source>
-						<target>1.7</target>
+						<source>1.8</source>
+						<target>1.8</target>
 						<encoding>UTF-8</encoding>
 					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
-					<version>3.1.0</version>
+					<version>3.3.1</version>
 					<configuration>
 						<encoding>UTF-8</encoding>
 					</configuration>
@@ -149,7 +145,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-release-plugin</artifactId>
-					<version>2.5.3</version>
+					<version>3.1.1</version>
 					<configuration>
 						<mavenExecutorId>forked-path</mavenExecutorId>
 						<localCheckout>true</localCheckout>
@@ -157,7 +153,7 @@
 				</plugin>
 				<plugin>
 					<artifactId>maven-source-plugin</artifactId>
-					<version>3.2.1</version>
+					<version>3.3.1</version>
 					<executions>
 						<execution>
 							<id>attach-sources</id>

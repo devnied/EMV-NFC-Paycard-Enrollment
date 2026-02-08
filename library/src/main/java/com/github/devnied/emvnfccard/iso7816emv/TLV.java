@@ -43,7 +43,7 @@ public class TLV {
 	 * @param tag
 	 * @param length
 	 *            contains the number of value bytes (parsed from the rawEncodedLengthBytes)
-	 * @param rawLengthBytes
+	 * @param rawEncodedLengthBytes
 	 *            the raw encoded length bytes
 	 * @param valueBytes
 	 */

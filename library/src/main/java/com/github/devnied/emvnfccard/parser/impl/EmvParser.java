@@ -280,10 +280,8 @@ public class EmvParser extends AbstractParser {
 			out.write(EmvTags.COMMAND_TEMPLATE.getTagBytes()); // COMMAND
 			// TEMPLATE
 			out.write(TlvUtil.getLength(list)); // ADD total length
-			if (list != null) {
-				for (TagAndLength tl : list) {
-					out.write(template.get().getTerminal().constructValue(tl));
-				}
+			for (TagAndLength tl : list) {
+				out.write(template.get().getTerminal().constructValue(tl));
 			}
 		} catch (IOException ioe) {
 			LOGGER.error("Construct GPO Command:" + ioe.getMessage(), ioe);

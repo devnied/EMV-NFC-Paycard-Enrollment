@@ -32,7 +32,7 @@ public class ProviderWrapper implements IProvider{
 	/**
 	 * Provider
 	 */
-	private IProvider provider;
+	private final IProvider provider;
 
 	/**
 	 * Constructor

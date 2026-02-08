@@ -20,13 +20,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.CharEncoding;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +56,7 @@ public final class AtrUtils {
 
 		try {
 			is = AtrUtils.class.getResourceAsStream("/smartcard_list.txt");
-			isr = new InputStreamReader(is, CharEncoding.UTF_8);
+			isr = new InputStreamReader(is, StandardCharsets.UTF_8);
 			br = new BufferedReader(isr);
 
 			int lineNumber = 0;
@@ -91,7 +91,7 @@ public final class AtrUtils {
 	 *            Card ATR
 	 * @return list of description
 	 */
-	public static final Collection<String> getDescription(final String pAtr) {
+	public static Collection<String> getDescription(final String pAtr) {
 		Collection<String> ret = null;
 		if (StringUtils.isNotBlank(pAtr)) {
 			String val = StringUtils.deleteWhitespace(pAtr).toUpperCase();
@@ -112,7 +112,7 @@ public final class AtrUtils {
 	 *            EMV card ATS
 	 * @return card description
 	 */
-	public static final Collection<String> getDescriptionFromAts(final String pAts) {
+	public static Collection<String> getDescriptionFromAts(final String pAts) {
 		Collection<String> ret = new ArrayList<String>();
 		if (StringUtils.isNotBlank(pAts)) {
 			String val = StringUtils.deleteWhitespace(pAts).replaceAll("9000$", "");

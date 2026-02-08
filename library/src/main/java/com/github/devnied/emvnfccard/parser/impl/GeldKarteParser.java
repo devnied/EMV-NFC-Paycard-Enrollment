@@ -132,7 +132,7 @@ public class GeldKarteParser extends AbstractParser {
 			byte[] data = template.get().getProvider().transceive(new CommandApdu(CommandEnum.READ_RECORD, i, 0xEC, 0).toBytes());
 			// Check response
 			if (ResponseUtils.isSucceed(data)) {
-				if (data.length < 35){
+				if (data.length < 36){
 					continue;
 				}
 				EmvTransactionRecord record = new EmvTransactionRecord();

@@ -262,13 +262,11 @@ public abstract class AbstractParser implements IParser {
 								}
 							}
 
-							if (record != null) {
-								// Unknown currency
-								if (record.getCurrency() == null) {
-									record.setCurrency(CurrencyEnum.XXX);
-								}
-								listRecord.add(record);
+							// Unknown currency
+							if (record.getCurrency() == null) {
+								record.setCurrency(CurrencyEnum.XXX);
 							}
+							listRecord.add(record);
 						} catch (Exception e) {
 							LOGGER.error("Error in transaction format: " + e.getMessage(), e);
 						}

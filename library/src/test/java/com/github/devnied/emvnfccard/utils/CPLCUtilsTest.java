@@ -1,6 +1,8 @@
 package com.github.devnied.emvnfccard.utils;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.fest.assertions.Assertions;
 import org.junit.Test;
@@ -27,7 +29,7 @@ public final class CPLCUtilsTest {
 	
 	@Test
 	public void testRawDataCPLC(){
-		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat dayMonthFormat = new SimpleDateFormat("dd/MM");
 		// interpret as raw data
 		CPLC cplc = CPLCUtils.parse(BytesUtils.fromString("47 90 50 40 47 91 81 02 31 00 83 58 00 11 68 91 45 81 48 12 83 65 00 00 00 00 01 2F 31 30 31 31 36 38 00 00 00 00 00 00 00 00 90 00"));		
 		Assertions.assertThat(cplc).isNotNull();
@@ -44,11 +46,16 @@ public final class CPLCUtilsTest {
 		Assertions.assertThat(cplc.getPrepersoEquipment()).isEqualTo(0x31313638);
 		Assertions.assertThat(cplc.getPersoId()).isEqualTo(0x0000);
 		Assertions.assertThat(cplc.getPersoEquipment()).isEqualTo(0x0000);
-		// Date will change each 10 years
-		Assertions.assertThat(format.format(cplc.getOsReleaseDate())).isEqualTo("12/04/2018");
-		Assertions.assertThat(format.format(cplc.getIcFabricDate())).isEqualTo("24/12/2018");
-		Assertions.assertThat(format.format(cplc.getPrepersoDate())).isEqualTo("10/05/2013");
-		Assertions.assertThat(format.format(cplc.getIcPackagingDate())).isEqualTo("31/12/2018");
+		// Verify date day/month and year ending digit (avoids test failures every 10 years)
+		// CPLC dates encode only the last digit of the year, so we verify invariant parts
+		Assertions.assertThat(dayMonthFormat.format(cplc.getOsReleaseDate())).isEqualTo("12/04");
+		Assertions.assertThat(getYear(cplc.getOsReleaseDate()) % 10).isEqualTo(8);
+		Assertions.assertThat(dayMonthFormat.format(cplc.getIcFabricDate())).isEqualTo("24/12");
+		Assertions.assertThat(getYear(cplc.getIcFabricDate()) % 10).isEqualTo(8);
+		Assertions.assertThat(dayMonthFormat.format(cplc.getPrepersoDate())).isEqualTo("10/05");
+		Assertions.assertThat(getYear(cplc.getPrepersoDate()) % 10).isEqualTo(3);
+		Assertions.assertThat(dayMonthFormat.format(cplc.getIcPackagingDate())).isEqualTo("31/12");
+		Assertions.assertThat(getYear(cplc.getIcPackagingDate()) % 10).isEqualTo(8);
 		Assertions.assertThat(cplc.getPersoDate()).isNull();
 		
 	}
@@ -71,5 +78,14 @@ public final class CPLCUtilsTest {
 		Assertions.assertThat(cplc.getPrepersoEquipment()).isEqualTo(0x31313638);
 		Assertions.assertThat(cplc.getPersoId()).isEqualTo(0x0000);
 		Assertions.assertThat(cplc.getPersoEquipment()).isEqualTo(0x0000);
+	}
+
+	/**
+	 * Helper method to extract the year from a Date without using deprecated methods
+	 */
+	private static int getYear(Date date) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		return cal.get(Calendar.YEAR);
 	}
 }

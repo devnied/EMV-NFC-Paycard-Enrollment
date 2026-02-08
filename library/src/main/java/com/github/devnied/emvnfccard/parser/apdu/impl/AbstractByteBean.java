@@ -88,9 +88,7 @@ public abstract class AbstractByteBean<T> extends AbstractData implements IFile 
 	public void parse(final byte[] pData, final Collection<TagAndLength> pTags) {
 		Collection<AnnotationData> set = getAnnotationSet(pTags);
 		BitUtils bit = new BitUtils(pData);
-		Iterator<AnnotationData> it = set.iterator();
-		while (it.hasNext()) {
-			AnnotationData data = it.next();
+		for (AnnotationData data : set) {
 			if (data.isSkip()) {
 				bit.addCurrentBitIndex(data.getSize());
 			} else {
