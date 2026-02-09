@@ -139,6 +139,9 @@
 					<detectJavaApiLink>false</detectJavaApiLink>
 					<release>8</release>
 					<doclint>none</doclint>
+					<!-- Ensure javax.smartcardio is available to javadoc on Java 9+ -->
+					<additionalJOption>--add-modules</additionalJOption>
+					<additionalJOption>java.smartcardio</additionalJOption>
 				</configuration>
 			</plugin>
 			<plugin>
