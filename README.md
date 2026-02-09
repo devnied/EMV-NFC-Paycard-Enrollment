@@ -98,14 +98,14 @@ public class Provider implements IProvider {
 <dependency>
   <groupId>com.github.devnied.emvnfccard</groupId>
   <artifactId>library</artifactId>
-  <version>3.0.1</version>
+  <version>3.1.0</version>
 </dependency>
 ```
 
 ### Gradle
 ```groovy
 dependencies {
-	compile 'com.github.devnied.emvnfccard:library:3.0.1'
+	compile 'com.github.devnied.emvnfccard:library:3.1.0'
 }
 ```
 
