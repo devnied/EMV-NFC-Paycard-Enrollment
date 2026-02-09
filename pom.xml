@@ -3,7 +3,7 @@
 	<groupId>com.github.devnied.emvnfccard</groupId>
 	<artifactId>parent</artifactId>
 	<packaging>pom</packaging>
-	<version>3.0.2-SNAPSHOT</version>
+	<version>3.1.0</version>
 	<name>EMV Paycard - Parent</name>
 
 	<parent>
@@ -44,7 +44,7 @@
 		<connection>scm:git:git@github.com:devnied/EMV-NFC-Paycard-Enrollment.git</connection>
 		<developerConnection>scm:git:git@github.com:devnied/EMV-NFC-Paycard-Enrollment.git</developerConnection>
 		<url>scm:git:git@github.com:devnied/EMV-NFC-Paycard-Enrollment.git</url>
-		<tag>HEAD</tag>
+		<tag>parent-3.1.0</tag>
 	</scm>
 
 	<modules>
