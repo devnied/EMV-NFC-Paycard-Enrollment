@@ -33,5 +33,10 @@ jobs:
       with:
         java-version: 17
         distribution: 'temurin'
-    - name: Build with Maven
-      run: mvn -B clean cobertura:cobertura coveralls:report -DrepoToken=${{ secrets.COVERALLS_TOKEN }}
+    - name: Build and test with coverage
+      run: mvn -B clean verify
+    - name: Upload coverage to Coveralls
+      uses: coverallsapp/github-action@v2
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        file: library/target/site/jacoco/jacoco.xml
