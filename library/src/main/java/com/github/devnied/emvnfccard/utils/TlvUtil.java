@@ -18,21 +18,17 @@ package com.github.devnied.emvnfccard.utils;
 
 import com.github.devnied.emvnfccard.enums.SwEnum;
 import com.github.devnied.emvnfccard.enums.TagValueTypeEnum;
-import com.github.devnied.emvnfccard.exception.TlvException;
 import com.github.devnied.emvnfccard.iso7816emv.EmvTags;
 import com.github.devnied.emvnfccard.iso7816emv.ITag;
 import com.github.devnied.emvnfccard.iso7816emv.TLV;
 import com.github.devnied.emvnfccard.iso7816emv.TagAndLength;
 import fr.devnied.bitlib.BytesUtils;
-import net.sf.scuba.tlv.TLVInputStream;
-import net.sf.scuba.tlv.TLVUtil;
-import org.apache.commons.io.IOUtils;
+import com.github.devnied.emvnfccard.iso7816emv.BerTlvInputStream;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayInputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,60 +46,94 @@ public final class TlvUtil {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TlvUtil.class);
 
 	/**
+	 * Deepest nesting of constructed data objects the parsing follows. A card
+	 * is free to answer a template that contains a template, and nothing in
+	 * the encoding bounds that: without this, a response built for it exhausts
+	 * the stack, and the resulting error escapes the public reading method.
+	 */
+	public static final int MAX_DEPTH = 16;
+
+	/**
 	 * Method used to find Tag with ID
 	 *
 	 * @param tagIdBytes
 	 *            the tag to find
 	 * @return the tag found
 	 */
-	private static ITag searchTagById(final int tagId) {
-		return EmvTags.getNotNull(TLVUtil.getTagAsBytes(tagId));
+	private static ITag searchTagById(final byte[] tagBytes) {
+		return EmvTags.getNotNull(tagBytes);
 	}
 
-	// This is just a list of Tag And Lengths (eg DOLs)
+	/**
+	 * Method used to render a data object list (a PDOL, a CDOL, the log
+	 * format). The entries are read by {@link #parseTagAndLength(byte[])} so
+	 * that the two never disagree on the encoding.
+	 *
+	 * @param data
+	 *            raw data object list
+	 * @param indentLength
+	 *            number of spaces to indent each line with
+	 * @return the rendered list
+	 */
 	public static String getFormattedTagAndLength(final byte[] data, final int indentLength) {
 		StringBuilder buf = new StringBuilder();
 		String indent = getSpaces(indentLength);
-		TLVInputStream stream = new TLVInputStream(new ByteArrayInputStream(data));
-
 		boolean firstLine = true;
-		try {
-			while (stream.available() > 0) {
-				if (firstLine) {
-					firstLine = false;
-				} else {
-					buf.append("\n");
-				}
-				buf.append(indent);
-
-				ITag tag = searchTagById(stream.readTag());
-				int length = stream.readLength();
-
-				buf.append(prettyPrintHex(tag.getTagBytes()));
-				buf.append(" ");
-				buf.append(String.format("%02x", length));
-				buf.append(" -- ");
-				buf.append(tag.getName());
+		for (TagAndLength tagAndLength : parseTagAndLength(data)) {
+			if (firstLine) {
+				firstLine = false;
+			} else {
+				buf.append("\n");
 			}
-		} catch (IOException e) {
-			LOGGER.error(e.getMessage(), e);
-		} finally {
-			IOUtils.closeQuietly(stream);
+			buf.append(indent);
+			buf.append(prettyPrintHex(tagAndLength.getTag().getTagBytes()));
+			buf.append(" ");
+			buf.append(String.format("%02x", tagAndLength.getLength()));
+			buf.append(" -- ");
+			buf.append(tagAndLength.getTag().getName());
 		}
 		return buf.toString();
 	}
 
-	public static TLV getNextTLV(final TLVInputStream stream) {
+	public static TLV getNextTLV(final BerTlvInputStream stream) {
 		TLV tlv = null;
 		try {
+			// The shortest data object is a one byte tag followed by a length
+			// of '00' (EMV 4.3 Book 3 Annex B: "If L = '00', the value field is
+			// not present"), so two bytes are enough to read one
 			int left = stream.available();
-			if (left <= 2) {
+			if (left < 2) {
 				return tlv;
 			}
-			ITag tag = searchTagById(stream.readTag());
+			byte[] tagBytes = stream.readTag();
+			// ISO/IEC 7816-4 Annex D.1 lets '00' and 'FF' bytes appear before,
+			// between or after data objects without any meaning. They are not
+			// a tag, and a response that is not BER-TLV at all usually begins
+			// with one of them
+			if (isPadding(tagBytes)) {
+				return tlv;
+			}
+			ITag tag = searchTagById(tagBytes);
 			int length = stream.readLength();
-			if (stream.available() >= length) {
-				tlv = new TLV(tag, length, TLVUtil.getLengthAsBytes(length), stream.readValue());
+			int available = stream.available();
+			if (available >= length) {
+				tlv = new TLV(tag, length, BerTlvInputStream.encodeLength(length), stream.read(length));
+			} else if (tag.isConstructed() && available > 0) {
+				// A card that announces a template longer than what it sent
+				// still lets the objects it did send be read: the length of a
+				// constructed object is redundant with the lengths of the
+				// objects it holds. Only the constructed case is clamped, a
+				// truncated primitive value would be handed back as if the
+				// card had sent it, a shortened card number for instance.
+				// The content is clamped only when it does begin with a
+				// readable object, so that a response which is not BER-TLV at
+				// all is still reported as such rather than parsed as a
+				// truncated template
+				byte[] value = stream.read(available);
+				if (holdsReadableObject(value)) {
+					LOGGER.warn("The template " + tag.getName() + " announces " + length + " bytes, " + available + " were sent");
+					tlv = new TLV(tag, available, BerTlvInputStream.encodeLength(available), value);
+				}
 			}
 		} catch (EOFException eof) {
 			LOGGER.debug(eof.getMessage(), eof);
@@ -111,6 +141,60 @@ public final class TlvUtil {
 			LOGGER.error(e.getMessage(), e);
 		}
 		return tlv;
+	}
+
+	/**
+	 * Method used to know if the bytes read as a tag are the padding a card is
+	 * free to insert between data objects
+	 *
+	 * @param pTagBytes
+	 *            bytes read as a tag
+	 * @return true when every byte is '00' or every byte is 'FF'
+	 */
+	private static boolean isPadding(final byte[] pTagBytes) {
+		if (pTagBytes == null || pTagBytes.length == 0) {
+			return true;
+		}
+		return allEqual(pTagBytes, (byte) 0x00) || allEqual(pTagBytes, (byte) 0xFF);
+	}
+
+	/**
+	 * Method used to know if every byte of an array holds the same value
+	 *
+	 * @param pData
+	 *            array to test
+	 * @param pValue
+	 *            value to compare to
+	 * @return true when every byte equals the parameter
+	 */
+	private static boolean allEqual(final byte[] pData, final byte pValue) {
+		for (byte element : pData) {
+			if (element != pValue) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Method used to know if the parameter begins with a data object that can be
+	 * read, which tells a template the card truncated from a response that is
+	 * not BER-TLV encoded at all.
+	 *
+	 * @param pData
+	 *            candidate content of a constructed data object
+	 * @return true when the first tag and length of the parameter are readable
+	 *         and the value they announce is present
+	 */
+	private static boolean holdsReadableObject(final byte[] pData) {
+		BerTlvInputStream stream = new BerTlvInputStream(pData);
+		try {
+			stream.readTag();
+			return stream.readLength() <= stream.available();
+		} catch (IOException e) {
+			LOGGER.debug(e.getMessage(), e);
+			return false;
+		}
 	}
 
 	/**
@@ -159,23 +243,35 @@ public final class TlvUtil {
 	public static List<TagAndLength> parseTagAndLength(final byte[] data) {
 		List<TagAndLength> tagAndLengthList = new ArrayList<TagAndLength>();
 		if (data != null) {
-			TLVInputStream stream = new TLVInputStream(new ByteArrayInputStream(data));
+			BerTlvInputStream stream = new BerTlvInputStream(data);
 
 			try {
 				while (stream.available() > 0) {
+					// Every entry of a DOL is a tag followed by a length, so
+					// it is at least 2 bytes long (EMV 4.3 Book 3 section
+					// 5.4). A card padding its list with a trailing byte is
+					// not a reason to give up the whole reading: keep the
+					// entries already parsed and stop there
 					if (stream.available() < 2) {
-						throw new TlvException("Data length < 2 : " + stream.available());
+						LOGGER.warn("Malformed data object list, " + stream.available() + " byte left: " + BytesUtils.bytesToStringNoSpace(data));
+						break;
 					}
 
 					ITag tag = searchTagById(stream.readTag());
-					int tagValueLength = stream.readLength();
+					// The length of a data object list entry is a single byte
+					// (EMV 4.3 Book 3 section 5.4), it is not a BER length: a
+					// value of '82' asks for 130 bytes of data, it does not
+					// introduce a two bytes long form
+					int tagValueLength = stream.read();
+					if (tagValueLength < 0) {
+						LOGGER.warn("Truncated data object list: " + BytesUtils.bytesToStringNoSpace(data));
+						break;
+					}
 
 					tagAndLengthList.add(new TagAndLength(tag, tagValueLength));
 				}
 			} catch (IOException e) {
 				LOGGER.error(e.getMessage(), e);
-			} finally {
-				IOUtils.closeQuietly(stream);
 			}
 		}
 		return tagAndLengthList;
@@ -197,28 +293,29 @@ public final class TlvUtil {
 	 * @return the list of TLV tag inside
 	 */
 	public static List<TLV> getlistTLV(final byte[] pData, final ITag pTag, final boolean pAdd) {
+		return getlistTLV(pData, pTag, pAdd, 0);
+	}
+
+	private static List<TLV> getlistTLV(final byte[] pData, final ITag pTag, final boolean pAdd, final int pDepth) {
 
 		List<TLV> list = new ArrayList<TLV>();
+		if (pDepth > MAX_DEPTH) {
+			LOGGER.warn("Data objects nested deeper than " + MAX_DEPTH + ", the rest is not parsed");
+			return list;
+		}
 
-		TLVInputStream stream = new TLVInputStream(new ByteArrayInputStream(pData));
+		BerTlvInputStream stream = new BerTlvInputStream(pData);
 
-		try {
-			while (stream.available() > 0) {
-
-				TLV tlv = TlvUtil.getNextTLV(stream);
-				if (tlv == null) {
-					break;
-				}
-				if (pAdd) {
-					list.add(tlv);
-				} else if (tlv.getTag().isConstructed()) {
-					list.addAll(TlvUtil.getlistTLV(tlv.getValueBytes(), pTag, tlv.getTag() == pTag));
-				}
+		while (stream.available() > 0) {
+			TLV tlv = TlvUtil.getNextTLV(stream);
+			if (tlv == null) {
+				break;
 			}
-		} catch (IOException e) {
-			LOGGER.error(e.getMessage(), e);
-		} finally {
-			IOUtils.closeQuietly(stream);
+			if (pAdd) {
+				list.add(tlv);
+			} else if (tlv.getTag().isConstructed()) {
+				list.addAll(getlistTLV(tlv.getValueBytes(), pTag, tlv.getTag() == pTag, pDepth + 1));
+			}
 		}
 
 		return list;
@@ -234,28 +331,29 @@ public final class TlvUtil {
 	 * @return the list of TLV
 	 */
 	public static List<TLV> getlistTLV(final byte[] pData, final ITag... pTag) {
+		return getlistTLV(pData, 0, pTag);
+	}
+
+	private static List<TLV> getlistTLV(final byte[] pData, final int pDepth, final ITag... pTag) {
 
 		List<TLV> list = new ArrayList<TLV>();
+		if (pDepth > MAX_DEPTH) {
+			LOGGER.warn("Data objects nested deeper than " + MAX_DEPTH + ", the rest is not parsed");
+			return list;
+		}
 
-		TLVInputStream stream = new TLVInputStream(new ByteArrayInputStream(pData));
+		BerTlvInputStream stream = new BerTlvInputStream(pData);
 
-		try {
-			while (stream.available() > 0) {
-
-				TLV tlv = TlvUtil.getNextTLV(stream);
-				if (tlv == null) {
-					break;
-				}
-				if (ArrayUtils.contains(pTag, tlv.getTag())) {
-					list.add(tlv);
-				} else if (tlv.getTag().isConstructed()) {
-					list.addAll(TlvUtil.getlistTLV(tlv.getValueBytes(), pTag));
-				}
+		while (stream.available() > 0) {
+			TLV tlv = TlvUtil.getNextTLV(stream);
+			if (tlv == null) {
+				break;
 			}
-		} catch (IOException e) {
-			LOGGER.error(e.getMessage(), e);
-		} finally {
-			IOUtils.closeQuietly(stream);
+			if (ArrayUtils.contains(pTag, tlv.getTag())) {
+				list.add(tlv);
+			} else if (tlv.getTag().isConstructed()) {
+				list.addAll(getlistTLV(tlv.getValueBytes(), pDepth + 1, pTag));
+			}
 		}
 
 		return list;
@@ -271,58 +369,53 @@ public final class TlvUtil {
 	 * @return tag value or null
 	 */
 	public static byte[] getValue(final byte[] pData, final ITag... pTag) {
-
-		byte[] ret = null;
-
-		if (pData != null) {
-			TLVInputStream stream = new TLVInputStream(new ByteArrayInputStream(pData));
-
-			try {
-				while (stream.available() > 0) {
-
-					TLV tlv = TlvUtil.getNextTLV(stream);
-					if (tlv == null) {
-						break;
-					}
-					if (ArrayUtils.contains(pTag, tlv.getTag())) {
-						return tlv.getValueBytes();
-					} else if (tlv.getTag().isConstructed()) {
-						ret = TlvUtil.getValue(tlv.getValueBytes(), pTag);
-						if (ret != null) {
-							break;
-						}
-					}
-
-				}
-			} catch (IOException e) {
-				LOGGER.error(e.getMessage(), e);
-			} finally {
-				IOUtils.closeQuietly(stream);
-			}
-		}
-
-		return ret;
+		// The traversal of getlistTLV is depth first and in document order, so
+		// its first match is the one this method used to walk the tree for
+		List<TLV> list = getlistTLV(pData, pTag);
+		return list.isEmpty() ? null : list.get(0).getValueBytes();
 	}
 
 	public static String prettyPrintAPDUResponse(final byte[] data, final int indentLength) {
+		return prettyPrintAPDUResponse(data, indentLength, 0);
+	}
+
+	private static String prettyPrintAPDUResponse(final byte[] data, final int indentLength, final int pDepth) {
 		StringBuilder buf = new StringBuilder();
-		TLVInputStream stream = new TLVInputStream(new ByteArrayInputStream(data));
+		// True once a data object the dictionary knows has been rendered. It
+		// tells a response the reader stopped reading half way from bytes that
+		// were never BER-TLV: a transaction log record follows the Log Format
+		// and holds no tag at all, so it parses into nothing but unknown tags
+		// and must print nothing rather than a plausible looking tree
+		boolean recognised = false;
+		if (pDepth > MAX_DEPTH) {
+			// Saying nothing here would read as an empty template, when the
+			// card did send something the reader chose not to follow
+			LOGGER.warn("Data objects nested deeper than " + MAX_DEPTH + ", the rest is not printed");
+			return "\n" + getSpaces(indentLength) + "> nested deeper than " + MAX_DEPTH
+					+ " data objects, the rest is not shown";
+		}
+		BerTlvInputStream stream = new BerTlvInputStream(data);
 
 		try {
 			while (stream.available() > 0) {
+				// Where this data object starts in the output, so that a
+				// reading error rolls back its own line alone
+				int mark = buf.length();
 				buf.append("\n");
 				if (stream.available() == 2) {
-					stream.mark(0);
-					byte[] value = new byte[2];
+					stream.mark();
+					byte[] value;
 					try {
-						stream.read(value);
+						value = stream.read(2);
 					} catch (IOException e) {
+						break;
 					}
 					SwEnum sw = SwEnum.getSW(value);
 					if (sw != null) {
 						buf.append(getSpaces(0));
 						buf.append(BytesUtils.bytesToString(value)).append(" -- ");
 						buf.append(sw.getDetail());
+						appendDecoded(buf, TagValueDecoder.decodeStatusWord(value), 0);
 						continue;
 					}
 					stream.reset();
@@ -333,10 +426,19 @@ public final class TlvUtil {
 				TLV tlv = TlvUtil.getNextTLV(stream);
 
 				if (tlv == null) {
-					buf.setLength(0);
+					// A response that held at least one known data object keeps
+					// what was read of it, the line of the unreadable object
+					// alone is dropped. Bytes that never looked like BER-TLV
+					// lose their tree, but the status word that closes the
+					// response is still worth showing
+					buf.setLength(recognised ? mark : 0);
+					if (!recognised) {
+						appendStatusWord(buf, data, pDepth);
+					}
 					LOGGER.debug("TLV format error");
 					break;
 				}
+				recognised = recognised || EmvTags.find(tlv.getTagBytes()) != null;
 
 				byte[] tagBytes = tlv.getTagBytes();
 				byte[] lengthBytes = tlv.getRawEncodedLengthBytes();
@@ -355,7 +457,7 @@ public final class TlvUtil {
 				if (tag.isConstructed()) {
 					// indentLength += extraIndent; //TODO check this
 					// Recursion
-					buf.append(prettyPrintAPDUResponse(valueBytes, indentLength + extraIndent));
+					buf.append(prettyPrintAPDUResponse(valueBytes, indentLength + extraIndent, pDepth + 1));
 				} else {
 					buf.append("\n");
 					if (tag.getTagValueType() == TagValueTypeEnum.DOL) {
@@ -366,18 +468,61 @@ public final class TlvUtil {
 						buf.append(" (");
 						buf.append(TlvUtil.getTagValueAsString(tag, valueBytes));
 						buf.append(")");
+						appendDecoded(buf, TagValueDecoder.decode(tag, valueBytes), indentLength + extraIndent);
 					}
 				}
 			}
 		} catch (IOException e) {
+			// reset() reports a missing mark this way, it cannot happen here
 			LOGGER.error(e.getMessage(), e);
-		} catch (TlvException exce) {
-			buf.setLength(0);
-			LOGGER.debug(exce.getMessage(), exce);
-		} finally {
-			IOUtils.closeQuietly(stream);
 		}
 		return buf.toString();
+	}
+
+	/**
+	 * Method used to append the status word closing a response whose data field
+	 * could not be read as BER-TLV, a transaction log record for instance. The
+	 * two last bytes of a response are its status word, which is the very
+	 * assumption the reading of a two bytes response already makes.
+	 *
+	 * @param pBuf
+	 *            response being rendered
+	 * @param pData
+	 *            the whole response
+	 * @param pDepth
+	 *            nesting of the data object being rendered, the status word
+	 *            closes the response and not a template
+	 */
+	private static void appendStatusWord(final StringBuilder pBuf, final byte[] pData, final int pDepth) {
+		if (pDepth != 0 || pData == null || pData.length <= 2) {
+			return;
+		}
+		byte[] value = new byte[] { pData[pData.length - 2], pData[pData.length - 1] };
+		SwEnum sw = SwEnum.getSW(value);
+		if (sw != null) {
+			pBuf.append("\n").append(BytesUtils.bytesToString(value)).append(" -- ").append(sw.getDetail());
+			appendDecoded(pBuf, TagValueDecoder.decodeStatusWord(value), 0);
+		}
+	}
+
+	/**
+	 * Method used to append the decoded value of a data object under its
+	 * hexadecimal dump. Each line begins with "&gt; " so that it is told apart
+	 * from the continuation lines of a value long enough to be wrapped, which
+	 * start in the very same column.
+	 *
+	 * @param pBuf
+	 *            response being rendered
+	 * @param pLines
+	 *            decoded lines, may be empty
+	 * @param pIndent
+	 *            number of spaces to indent each line with
+	 */
+	private static void appendDecoded(final StringBuilder pBuf, final List<String> pLines, final int pIndent) {
+		String indent = getSpaces(pIndent);
+		for (String line : pLines) {
+			pBuf.append("\n").append(indent).append("> ").append(line);
+		}
 	}
 
 	public static String getSpaces(final int length) {

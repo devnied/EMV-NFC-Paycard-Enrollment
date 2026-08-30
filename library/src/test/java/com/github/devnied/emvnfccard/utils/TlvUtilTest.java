@@ -23,46 +23,58 @@ public class TlvUtilTest {
 	@Test
 	public void testPrettyPrint() {
 
-		String expResult = "\n"//
+		String expResult = "\n" //
 				+ "70 63 -- Record Template (EMV Proprietary)\n" //
 				+ "      61 13 -- Application Template\n" //
 				+ "            4F 09 -- Application Identifier (AID) - card\n" //
 				+ "                  A0 00 00 03 15 10 10 05 28 (BINARY)\n" //
+				+ "                  > RID A0 00 00 03 15, PIX 10 10 05 28\n" //
 				+ "            50 03 -- Application Label\n" //
 				+ "                  50 49 4E (=PIN)\n" //
-				+ "            87 01 -- Application Priority Indicator\n"//
+				+ "            87 01 -- Application Priority Indicator\n" //
 				+ "                  01 (BINARY)\n" //
-				+ "      61 15 -- Application Template\n"//
-				+ "            4F 07 -- Application Identifier (AID) - card\n"//
+				+ "                  > priority 1 of 15, 1 being the highest\n" //
+				+ "      61 15 -- Application Template\n" //
+				+ "            4F 07 -- Application Identifier (AID) - card\n" //
 				+ "                  A0 00 00 00 04 30 60 (BINARY)\n" //
-				+ "            50 07 -- Application Label\n"//
+				+ "                  > RID A0 00 00 00 04, PIX 30 60, Master card\n" //
+				+ "            50 07 -- Application Label\n" //
 				+ "                  4D 41 45 53 54 52 4F (=MAESTRO)\n" //
-				+ "            87 01 -- Application Priority Indicator\n"//
+				+ "            87 01 -- Application Priority Indicator\n" //
 				+ "                  02 (BINARY)\n" //
-				+ "      61 1D -- Application Template\n"//
-				+ "            4F 07 -- Application Identifier (AID) - card\n"//
+				+ "                  > priority 2 of 15, 1 being the highest\n" //
+				+ "      61 1D -- Application Template\n" //
+				+ "            4F 07 -- Application Identifier (AID) - card\n" //
 				+ "                  A0 00 00 00 04 80 02 (BINARY)\n" //
-				+ "            50 0F -- Application Label\n"//
+				+ "                  > RID A0 00 00 00 04, PIX 80 02, Master card\n" //
+				+ "            50 0F -- Application Label\n" //
 				+ "                  53 65 63 75 72 65 43 6F 64 65 20 41 75 74 68 (=SecureCode Auth)\n" //
 				+ "            87 01 -- Application Priority Indicator\n" //
-				+ "                  00 (BINARY)\n"//
+				+ "                  00 (BINARY)\n" //
+				+ "                  > no priority assigned\n" //
 				+ "      61 16 -- Application Template\n" //
-				+ "            4F 07 -- Application Identifier (AID) - card\n"//
+				+ "            4F 07 -- Application Identifier (AID) - card\n" //
 				+ "                  A0 00 00 03 15 60 20 (BINARY)\n" //
-				+ "            50 08 -- Application Label\n"//
-				+ "                  43 68 69 70 6B 6E 69 70 (=Chipknip)\n"//
+				+ "                  > RID A0 00 00 03 15, PIX 60 20, Chipknip\n" //
+				+ "            50 08 -- Application Label\n" //
+				+ "                  43 68 69 70 6B 6E 69 70 (=Chipknip)\n" //
 				+ "            87 01 -- Application Priority Indicator\n" //
 				+ "                  00 (BINARY)\n" //
+				+ "                  > no priority assigned\n" //
 				+ "90 00 -- Command successfully executed (OK)";
 
 		Assertions.assertThat(TlvUtil.prettyPrintAPDUResponse(DATA)).isEqualTo(expResult);
 	}
 
+	/**
+	 * A transaction log record follows the Log Format and holds no tag at all:
+	 * none of its bytes is printed as a data object. The status word that
+	 * closes the response is not part of the record and is still reported.
+	 */
 	@Test
 	public void testPrettyPrintTransactionRecord() {
-		// Assertions.assertThat(TlvUtil.prettyPrintAPDUResponse(BytesUtils.fromString(""))).isEqualTo("");
 		Assertions.assertThat(TlvUtil.prettyPrintAPDUResponse(BytesUtils.fromString("00 00 00 00 46 00 40 02 50 09 78 14 03 16 20 90 00")))
-		.isEqualTo("");
+		.isEqualTo("\n90 00 -- Command successfully executed (OK)");
 	}
 
 	/**
@@ -72,9 +84,9 @@ public class TlvUtilTest {
 	@Test
 	public void testSearchTagById() throws Exception {
 
-		ITag tag = (ITag) ReflectionTestUtils.invokeMethod(TlvUtil.class, "searchTagById", 0x9F6B);
+		ITag tag = (ITag) ReflectionTestUtils.invokeMethod(TlvUtil.class, "searchTagById", (Object) BytesUtils.fromString("9F6B"));
 		Assertions.assertThat(tag).isEqualTo(EmvTags.TRACK2_DATA);
-		tag = (ITag) ReflectionTestUtils.invokeMethod(TlvUtil.class, "searchTagById", 0xFFFF);
+		tag = (ITag) ReflectionTestUtils.invokeMethod(TlvUtil.class, "searchTagById", (Object) BytesUtils.fromString("FFFF"));
 		Assertions.assertThat(tag.getName()).isEqualTo("[UNKNOWN TAG]");
 		Assertions.assertThat(tag.getDescription()).isEqualTo("");
 		Assertions.assertThat(tag.getTagBytes()).isEqualTo(BytesUtils.fromString("FFFF"));
@@ -92,10 +104,10 @@ public class TlvUtilTest {
 	public void testSearchTagByIdIn() throws Exception {
 
 
-		ITag tag = ReflectionTestUtils.invokeMethod(TlvUtil.class, "searchTagById", 0x9F6B);
+		ITag tag = ReflectionTestUtils.invokeMethod(TlvUtil.class, "searchTagById", (Object) BytesUtils.fromString("9F6B"));
 		Assertions.assertThat(tag).isEqualTo(EmvTags.TRACK2_DATA);
 
-		tag = (ITag) ReflectionTestUtils.invokeMethod(TlvUtil.class, "searchTagById", 0xFFFF);
+		tag = (ITag) ReflectionTestUtils.invokeMethod(TlvUtil.class, "searchTagById", (Object) BytesUtils.fromString("FFFF"));
 		Assertions.assertThat(tag.getName()).isEqualTo("[UNKNOWN TAG]");
 		Assertions.assertThat(tag.getDescription()).isEqualTo("");
 		Assertions.assertThat(tag.getTagBytes()).isEqualTo(BytesUtils.fromString("FFFF"));
@@ -122,6 +134,22 @@ public class TlvUtilTest {
 	@Test
 	public void testParseTagAndLength() throws Exception {
 		Assertions.assertThat(TlvUtil.parseTagAndLength(null)).isEqualTo(new ArrayList<TagAndLength>());
+	}
+
+	/**
+	 * Every entry of a data object list is a tag followed by a length (EMV 4.3
+	 * Book 3 section 5.4). A card padding its PDOL with a trailing byte must
+	 * not make the whole reading fail: the entries already parsed are kept.
+	 */
+	@Test
+	public void testParseTruncatedTagAndLength() throws Exception {
+		List<TagAndLength> list = TlvUtil.parseTagAndLength(BytesUtils.fromString("9F6604 9F0206 00"));
+
+		Assertions.assertThat(list).hasSize(2);
+		Assertions.assertThat(list.get(0).getTag()).isEqualTo(EmvTags.TERMINAL_TRANSACTION_QUALIFIERS);
+		Assertions.assertThat(list.get(0).getLength()).isEqualTo(4);
+		Assertions.assertThat(list.get(1).getTag()).isEqualTo(EmvTags.AMOUNT_AUTHORISED_NUMERIC);
+		Assertions.assertThat(TlvUtil.parseTagAndLength(BytesUtils.fromString("00"))).isEmpty();
 	}
 
 	@Test

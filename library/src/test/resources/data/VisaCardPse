@@ -1,10 +1,36 @@
+# Contact read of a CB/Visa card through its Payment System Environment.
+#
+# THIS CARD DOES NOT FOLLOW THE SPECIFICATION, and the capture is kept exactly
+# as it was recorded rather than adjusted to keep a test passing.
+#
+# It served the directory at P1='00' and answered '6985' at P1='01':
+#  - ISO/IEC 7816-4:2005 section 7.3.2 : "Each record number or identifier is a
+#    number from one to 254, encoded by a value of P1 from '01' to 'FE'. Zero
+#    (encoded '00') is reserved for special purposes." P1='00' is therefore not
+#    a record number at all, it designates the current record, and selecting by
+#    short EF identifier has just reset the record pointer.
+#  - EMV 4.3 and 4.4 Book 1 section 12.3.2 step 2 : the terminal "reads all the
+#    records in the Payment System Directory beginning with record number 1 and
+#    continuing with successive records until the card returns SW1 SW2 =
+#    '6A83'". Answering '6985' for record 1 is neither the record nor the end
+#    of the directory.
+#  - EMV 4.3 Book 1 section 12.3.2 step 1 gives the terminal its conduct: on
+#    any other status word it clears the candidate list and restarts with the
+#    List of AIDs method of section 12.3.3.
+#
+# The session below was recorded by an earlier, 0 based reading. A conforming
+# terminal asks record 1 first, receives the '6985' and never reaches the
+# directory entry, so this trace can no longer drive a full read. It is used to
+# assert exactly that give up, see EmvParserTest#testPSE.
+#
 #CPLC
 send: 80 CA 9F 7F 00
 resp: 9F 7F 2A 47 90 50 37 16 71 92 59 48 04 10 46 95 00 07 54 71 49 47 92 02 17 16 73 92 64 16 74 12 91 00 00 00 74 00 00 00 00 00 00 00 00 90 00
 # Select PSE
 send: 00 A4 04 00 0E 31 50 41 59 2E 53 59 53 2E 44 44 46 30 31 00
 resp: 6F 1E 84 0E 31 50 41 59 2E 53 59 53 2E 44 44 46 30 31 A5 0C 88 01 01 9F 11 01 01 5F 2D 02 66 72 90 00
-# Select first record
+# The card serves the directory here, at a record number the specification
+# reserves. A conforming terminal never sends this command.
 send: 00 B2 00 0C 00
 resp: 70 23 61 21 4F 07 A0 00 00 00 42 10 10 50 02 43 42 9F 12 0E 54 52 41 4E 53 41 43 54 49 4F 4E 20 43 42 87 01 01 90 00
 # Select second record

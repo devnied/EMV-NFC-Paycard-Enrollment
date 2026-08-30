@@ -1,7 +1,9 @@
 package com.github.devnied.emvnfccard.utils;
 
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Date;
 
 import org.fest.assertions.Assertions;
@@ -29,7 +31,7 @@ public final class CPLCUtilsTest {
 	
 	@Test
 	public void testRawDataCPLC(){
-		SimpleDateFormat dayMonthFormat = new SimpleDateFormat("dd/MM");
+		SimpleDateFormat dayMonthFormat = new SimpleDateFormat("dd/MM", Locale.US);
 		// interpret as raw data
 		CPLC cplc = CPLCUtils.parse(BytesUtils.fromString("47 90 50 40 47 91 81 02 31 00 83 58 00 11 68 91 45 81 48 12 83 65 00 00 00 00 01 2F 31 30 31 31 36 38 00 00 00 00 00 00 00 00 90 00"));		
 		Assertions.assertThat(cplc).isNotNull();
@@ -84,7 +86,7 @@ public final class CPLCUtilsTest {
 	 * Helper method to extract the year from a Date without using deprecated methods
 	 */
 	private static int getYear(Date date) {
-		Calendar cal = Calendar.getInstance();
+		Calendar cal = new GregorianCalendar();
 		cal.setTime(date);
 		return cal.get(Calendar.YEAR);
 	}

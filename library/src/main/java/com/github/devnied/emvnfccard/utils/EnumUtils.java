@@ -41,14 +41,34 @@ public final class EnumUtils {
 	 *            Enum class
 	 * @return Enum instance of the specified key or null otherwise
 	 */
-	@SuppressWarnings("unchecked")
 	public static <T extends IKeyEnum> T getValue(final int pKey, final Class<T> pClass) {
+		T ret = find(pKey, pClass);
+		if (ret == null) {
+			LOGGER.error("Unknow value:" + pKey + " for Enum:" + pClass.getName());
+		}
+		return ret;
+	}
+
+	/**
+	 * Get the value of an enum from his key, without logging when the key is
+	 * unknown.<br>
+	 * The EMV specification reserves ranges of values in most of its code
+	 * tables, a card using one of them is valid and must not be reported as an
+	 * error.
+	 *
+	 * @param pKey
+	 *            key to find
+	 * @param pClass
+	 *            Enum class
+	 * @return Enum instance of the specified key or null otherwise
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T extends IKeyEnum> T find(final int pKey, final Class<T> pClass) {
 		for (IKeyEnum val : pClass.getEnumConstants()) {
 			if (val.getKey() == pKey) {
 				return (T) val;
 			}
 		}
-		LOGGER.error("Unknow value:" + pKey + " for Enum:" + pClass.getName());
 		return null;
 	}
 

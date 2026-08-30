@@ -75,7 +75,18 @@ public class CommandApdu {
 		mLeUsed = true;
 	}
 
+	/**
+	 * Highest data length a short APDU can carry, Lc is a single byte
+	 */
+	public static final int MAX_DATA_LENGTH = 255;
+
 	public byte[] toBytes() {
+		// Lc is written on one byte, a longer data field would be silently
+		// truncated into a command the card would misread
+		if (mData != null && mData.length > MAX_DATA_LENGTH) {
+			throw new IllegalArgumentException(
+					"A short APDU carries at most " + MAX_DATA_LENGTH + " bytes of data, got " + mData.length);
+		}
 		int length = 4; // CLA, INS, P1, P2
 		if (mData != null && mData.length != 0) {
 			length += 1; // LC

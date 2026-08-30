@@ -192,17 +192,33 @@ public class AnnotationData implements Comparable<AnnotationData>, Cloneable {
 		}
 	}
 
+	/**
+	 * Default constructor
+	 */
+	public AnnotationData() {
+	}
+
+	/**
+	 * Copy constructor
+	 *
+	 * @param pData
+	 *            annotation to copy
+	 */
+	public AnnotationData(final AnnotationData pData) {
+		dateStandard = pData.dateStandard;
+		field = pData.field;
+		// String is immutable, and copying a null one would fail
+		format = pData.format;
+		index = pData.index;
+		readHexa = pData.readHexa;
+		size = pData.size;
+		skip = pData.skip;
+		tag = pData.tag;
+	}
+
 	@Override
-	protected Object clone() throws CloneNotSupportedException {
-		AnnotationData data = new AnnotationData();
-		data.dateStandard = dateStandard;
-		data.field = field;
-		data.format = new String(format);
-		data.index = index;
-		data.readHexa = readHexa;
-		data.size = size;
-		data.tag = tag;
-		return data;
+	public Object clone() throws CloneNotSupportedException {
+		return new AnnotationData(this);
 	}
 
 	/**

@@ -38,8 +38,28 @@ public class TerminalTransactionQualifiers {
 		return BytesUtils.matchBitByBitIndex(data[0], 7);
 	}
 
+	/**
+	 * Byte 1 bit 7 of the Terminal Transaction Qualifiers.
+	 * <p>
+	 * The legacy VCPS gave this bit to the contactless VSDC support, it is
+	 * reserved for future use in the current versions of the specification and
+	 * must be left to 0.
+	 * </p>
+	 *
+	 * @return true if the bit is set
+	 */
 	public boolean contactlessVSDCsupported() {
 		return BytesUtils.matchBitByBitIndex(data[0], 6);
+	}
+
+	/**
+	 * Byte 1 bit 1: Offline Data Authentication for Online Authorizations
+	 * supported (fDDA).
+	 *
+	 * @return true if the reader supports it
+	 */
+	public boolean offlineDataAuthenticationForOnlineAuthorizationsSupported() {
+		return BytesUtils.matchBitByBitIndex(data[0], 0);
 	}
 
 	public boolean contactlessEMVmodeSupported() {
@@ -115,6 +135,17 @@ public class TerminalTransactionQualifiers {
 
 	public void setSignatureSupported(final boolean value) {
 		data[0] = BytesUtils.setBit(data[0], 1, value);
+	}
+
+	/**
+	 * Setter for byte 1 bit 1: Offline Data Authentication for Online
+	 * Authorizations supported (fDDA).
+	 *
+	 * @param value
+	 *            value to set
+	 */
+	public void setOfflineDataAuthenticationForOnlineAuthorizationsSupported(final boolean value) {
+		data[0] = BytesUtils.setBit(data[0], 0, value);
 	}
 
 	public void setOnlineCryptogramRequired(final boolean value) {

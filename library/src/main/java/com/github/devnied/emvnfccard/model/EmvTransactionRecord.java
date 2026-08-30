@@ -17,6 +17,8 @@ package com.github.devnied.emvnfccard.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import com.github.devnied.emvnfccard.model.enums.CountryCodeEnum;
 import com.github.devnied.emvnfccard.model.enums.CurrencyEnum;
@@ -79,6 +81,54 @@ public class EmvTransactionRecord extends AbstractByteBean<EmvTransactionRecord>
 	 */
 	@Data(index = 7, size = 24, dateStandard = DataFactory.BCD_DATE, format = "HHmmss", tag = "9f21")
 	private Date time;
+	/**
+	 * Data field of the log record (status bytes removed) this transaction
+	 * was parsed from. Null when unknown.
+	 */
+	private byte[] raw;
+
+	/**
+	 * Record number in the log file, or {@link AbstractData#UNKNOWN}
+	 */
+	private int recordNumber = UNKNOWN;
+
+	/**
+	 * Value of every Log Format (tag '9F4F') entry not mapped to a field of
+	 * this bean (anything but '9F02', '9F27', '9F1A', '5F2A', '9A', '9C'
+	 * and '9F21'), keyed by upper-case hexadecimal tag, in Log Format
+	 * order: e.g. '9F36' ATC, '9F26', '9F10', '9F52', 'DF3E', '9F7C',
+	 * '9F4E', '9F37', '9F03', '9F34'. Never null.
+	 */
+	private Map<String, byte[]> otherTags = new LinkedHashMap<String, byte[]>();
+
+	/**
+	 * Amount Authorised (tag '9F02') as decoded, before the correction of
+	 * the Visa artefact (an amount of 1500000000 or more rewritten); equal
+	 * to {@link #getAmount()} when nothing was corrected. Null when absent.
+	 */
+	private Float originalAmount;
+
+	/**
+	 * Numeric ISO 4217 code of the Transaction Currency Code (tag '5F2A')
+	 * as sent, even when the currency enumeration has no value for it
+	 * ({@link #getCurrency()} is then XXX). {@link AbstractData#UNKNOWN}
+	 * when absent.
+	 */
+	private int currencyCode = UNKNOWN;
+
+	/**
+	 * Numeric ISO 3166 code of the Terminal Country Code (tag '9F1A') as
+	 * sent, or {@link AbstractData#UNKNOWN}
+	 */
+	private int terminalCountryCodeNumeric = UNKNOWN;
+
+	/**
+	 * Value of the Transaction Type (tag '9C') as sent ({@link
+	 * #getTransactionType()} may be null for an unknown code), or {@link
+	 * AbstractData#UNKNOWN}
+	 */
+	private int transactionTypeCode = UNKNOWN;
+
 
 	/**
 	 * Method used to get the field amount
@@ -211,6 +261,152 @@ public class EmvTransactionRecord extends AbstractByteBean<EmvTransactionRecord>
 	 */
 	public void setTime(final Date time) {
 		this.time = time;
+	}
+
+	/**
+	 * Data field of the log record (status bytes removed) this transaction
+	 * was parsed from. Null when unknown.
+	 *
+	 * @return the raw record, or null
+	 */
+	public byte[] getRaw() {
+		return raw;
+	}
+
+	/**
+	 * Setter for the field raw
+	 *
+	 * @param raw
+	 *            the raw to set
+	 */
+	public void setRaw(final byte[] raw) {
+		this.raw = raw;
+	}
+
+	/**
+	 * Record number in the log file, or {@link AbstractData#UNKNOWN}
+	 *
+	 * @return the record number, or {@link AbstractData#UNKNOWN}
+	 */
+	public int getRecordNumber() {
+		return recordNumber;
+	}
+
+	/**
+	 * Setter for the field recordNumber
+	 *
+	 * @param recordNumber
+	 *            the recordNumber to set
+	 */
+	public void setRecordNumber(final int recordNumber) {
+		this.recordNumber = recordNumber;
+	}
+
+	/**
+	 * Value of every Log Format (tag '9F4F') entry not mapped to a field of
+	 * this bean (anything but '9F02', '9F27', '9F1A', '5F2A', '9A', '9C'
+	 * and '9F21'), keyed by upper-case hexadecimal tag, in Log Format
+	 * order: e.g. '9F36' ATC, '9F26', '9F10', '9F52', 'DF3E', '9F7C',
+	 * '9F4E', '9F37', '9F03', '9F34'. Never null.
+	 *
+	 * @return the other logged data objects, never null
+	 */
+	public Map<String, byte[]> getOtherTags() {
+		return otherTags;
+	}
+
+	/**
+	 * Setter for the field otherTags
+	 *
+	 * @param otherTags
+	 *            the otherTags to set, null resets to an empty map
+	 */
+	public void setOtherTags(final Map<String, byte[]> otherTags) {
+		this.otherTags = otherTags != null ? otherTags : new LinkedHashMap<String, byte[]>();
+	}
+
+	/**
+	 * Amount Authorised (tag '9F02') as decoded, before the correction of
+	 * the Visa artefact (an amount of 1500000000 or more rewritten); equal
+	 * to {@link #getAmount()} when nothing was corrected. Null when absent.
+	 *
+	 * @return the amount as decoded, or null
+	 */
+	public Float getOriginalAmount() {
+		return originalAmount;
+	}
+
+	/**
+	 * Setter for the field originalAmount
+	 *
+	 * @param originalAmount
+	 *            the originalAmount to set
+	 */
+	public void setOriginalAmount(final Float originalAmount) {
+		this.originalAmount = originalAmount;
+	}
+
+	/**
+	 * Numeric ISO 4217 code of the Transaction Currency Code (tag '5F2A')
+	 * as sent, even when the currency enumeration has no value for it
+	 * ({@link #getCurrency()} is then XXX). {@link AbstractData#UNKNOWN}
+	 * when absent.
+	 *
+	 * @return the numeric currency code, or {@link AbstractData#UNKNOWN}
+	 */
+	public int getCurrencyCode() {
+		return currencyCode;
+	}
+
+	/**
+	 * Setter for the field currencyCode
+	 *
+	 * @param currencyCode
+	 *            the currencyCode to set
+	 */
+	public void setCurrencyCode(final int currencyCode) {
+		this.currencyCode = currencyCode;
+	}
+
+	/**
+	 * Numeric ISO 3166 code of the Terminal Country Code (tag '9F1A') as
+	 * sent, or {@link AbstractData#UNKNOWN}
+	 *
+	 * @return the numeric terminal country code, or {@link AbstractData#UNKNOWN}
+	 */
+	public int getTerminalCountryCodeNumeric() {
+		return terminalCountryCodeNumeric;
+	}
+
+	/**
+	 * Setter for the field terminalCountryCodeNumeric
+	 *
+	 * @param terminalCountryCodeNumeric
+	 *            the terminalCountryCodeNumeric to set
+	 */
+	public void setTerminalCountryCodeNumeric(final int terminalCountryCodeNumeric) {
+		this.terminalCountryCodeNumeric = terminalCountryCodeNumeric;
+	}
+
+	/**
+	 * Value of the Transaction Type (tag '9C') as sent ({@link
+	 * #getTransactionType()} may be null for an unknown code), or {@link
+	 * AbstractData#UNKNOWN}
+	 *
+	 * @return the transaction type code, or {@link AbstractData#UNKNOWN}
+	 */
+	public int getTransactionTypeCode() {
+		return transactionTypeCode;
+	}
+
+	/**
+	 * Setter for the field transactionTypeCode
+	 *
+	 * @param transactionTypeCode
+	 *            the transactionTypeCode to set
+	 */
+	public void setTransactionTypeCode(final int transactionTypeCode) {
+		this.transactionTypeCode = transactionTypeCode;
 	}
 
 }

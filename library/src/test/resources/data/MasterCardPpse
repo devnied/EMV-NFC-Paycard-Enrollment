@@ -13,6 +13,14 @@ resp: 77 12 82 02 19 80 94 0C 10 01 01 01 18 01 01 00 20 01 02 00 90 00
 # AFL
 send: 00 B2 01 14 00
 resp: 77 38 9F 10 07 06 01 1A 23 80 40 04 57 13 55 99 99 99 99 99 99 99 D1 50 92 FF FF FF FF FF FF FF 0F 82 02 20 00 9F 36 02 02 8F 9F 26 08 FF FF FF FF FF FF FF FF 9F 6C 02 10 00 90 00
+# Records of the AFL that were not part of the captured trace.
+# 6A83 = 'record not found', so no card content is made up here.
+send: 00 B2 01 1C 00
+resp: 6A 83
+send: 00 B2 01 24 00
+resp: 6A 83
+send: 00 B2 02 24 00
+resp: 6A 83
 # PIN try
 send: 80 CA 9F 17 00
 resp: 9F 17 01 03 90 00
@@ -28,6 +36,14 @@ resp: 77 12 82 02 19 80 94 0C 10 01 01 01 18 01 01 00 20 01 02 00 90 00
 # AFL
 send: 00 B2 01 14 00
 resp: 77 38 9F 10 07 06 01 1A 23 80 40 04 57 13 55 99 99 99 99 99 99 99 D1 50 92 FF FF FF FF FF FF FF 0F 82 02 20 00 9F 36 02 02 8F 9F 26 08 FF FF FF FF FF FF FF FF 9F 6C 02 10 00 90 00
+# Records of the AFL that were not part of the captured trace.
+# 6A83 = 'record not found', so no card content is made up here.
+send: 00 B2 01 1C 00
+resp: 6A 83
+send: 00 B2 01 24 00
+resp: 6A 83
+send: 00 B2 02 24 00
+resp: 6A 83
 # PIN try
 send: 80 CA 9F 17 00
 resp: 9F 17 01 02 90 00

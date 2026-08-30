@@ -22,7 +22,11 @@ import fr.devnied.bitlib.BitUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
+import java.util.GregorianCalendar;
 import java.util.Date;
 
 /**
@@ -55,6 +59,33 @@ public final class DataFactory {
 	public static final String BCD_FORMAT = "BCD_Format";
 
 	/**
+	 * Highest integer a float holds exactly, its mantissa being 24 bits wide.
+	 * An amount above it is rounded, so the raw record stays the reference.
+	 */
+	private static final long EXACT_FLOAT_LIMIT = 1L << 24;
+
+	/**
+	 * Method used to read a date written in the parameter pattern, on a fixed
+	 * locale so that the calendar of the device never shifts the year.
+	 *
+	 * @param pValue
+	 *            the digits the card wrote
+	 * @param pPattern
+	 *            pattern of the date
+	 * @return the date, or null when the value is not one
+	 */
+	private static Date parseDate(final String pValue, final String pPattern) {
+		SimpleDateFormat format = new SimpleDateFormat(pPattern, Locale.US);
+		format.setCalendar(new GregorianCalendar());
+		try {
+			return format.parse(pValue);
+		} catch (ParseException e) {
+			LOGGER.warn("Unparsable date {} with the pattern {}", pValue, pPattern);
+			return null;
+		}
+	}
+
+	/**
 	 * Method to get a date from the bytes array
 	 *
 	 * @param pAnnotation
@@ -66,7 +97,11 @@ public final class DataFactory {
 	private static Date getDate(final AnnotationData pAnnotation, final BitUtils pBit) {
 		Date date = null;
 		if (pAnnotation.getDateStandard() == BCD_DATE) {
-			date = pBit.getNextDate(pAnnotation.getSize(), pAnnotation.getFormat(), true);
+			// Not pBit.getNextDate: it parses with the default locale of the
+			// device, which selects a Buddhist calendar in Thailand and an
+			// imperial one in Japan, and reads the year of the card as a year
+			// of another era
+			date = parseDate(pBit.getNextHexaString(pAnnotation.getSize()), pAnnotation.getFormat());
 		} else if (pAnnotation.getDateStandard() == CPCL_DATE) {
 			date = calculateCplcDate(pBit.getNextByte(pAnnotation.getSize()));
 		} else {
@@ -93,8 +128,11 @@ public final class DataFactory {
 		if (dateBytes[0] == 0 && dateBytes[1] == 0){
 			return null;
 		}
-		// current time
-		Calendar now = Calendar.getInstance();
+		// current time. A Gregorian calendar, like EmvDataUtils.parseDate: the
+		// default one of the device may be another (Buddhist in Thailand,
+		// imperial in Japan) and would read the year of the card as a year of
+		// another era, shifting the date by centuries
+		Calendar now = new GregorianCalendar();
 
 		int currenctYear = now.get(Calendar.YEAR);
 		int startYearOfCurrentDecade = currenctYear - (currenctYear % 10);
@@ -106,7 +144,7 @@ public final class DataFactory {
 					"Invalid date (or are we parsing it wrong??)");
 		}
 
-		Calendar calculatedDate = Calendar.getInstance();
+		Calendar calculatedDate = new GregorianCalendar();
 		calculatedDate.clear();
 		int year = startYearOfCurrentDecade + (0xF & dateBytes[0] >>> 4);
 		calculatedDate.set(Calendar.YEAR, year);
@@ -173,7 +211,22 @@ public final class DataFactory {
 		Float ret = null;
 
 		if (BCD_FORMAT.equals(pAnnotation.getFormat())) {
-			ret = Float.parseFloat(pBit.getNextHexaString(pAnnotation.getSize()));
+			String value = pBit.getNextHexaString(pAnnotation.getSize());
+			try {
+				ret = Float.parseFloat(value);
+			} catch (NumberFormatException e) {
+				// An erased slot of a cyclic log file holds 'FF' bytes, which
+				// are not a number. The field is left empty, the record it
+				// belongs to is still read
+				LOGGER.warn("Not a packed BCD amount, the field is left empty: {}", value);
+				return null;
+			}
+			// A float holds 24 bits of mantissa, a 12 digits amount does not
+			// fit in it. The exact digits stay available in the raw record
+			if (ret != null && ret.longValue() >= EXACT_FLOAT_LIMIT) {
+				LOGGER.warn("Amount {} is beyond what a float represents exactly, read the raw record for the digits",
+						value);
+			}
 		} else {
 			ret = (float) getInteger(pAnnotation, pBit);
 		}

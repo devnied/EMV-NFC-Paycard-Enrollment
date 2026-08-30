@@ -18,7 +18,7 @@ package com.github.devnied.emvnfccard.model;
 import java.io.Serializable;
 
 import org.apache.commons.lang3.SystemUtils;
-import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
@@ -46,7 +46,10 @@ public abstract class AbstractData implements Serializable {
 
 	@Override
 	public String toString() {
-		return ToStringBuilder.reflectionToString(this, CUSTOM_STYLE);
+		// Transient fields are included: the parsed data object lists (PDOL,
+		// CDOL1...) are transient because a tag and length pair is not
+		// serializable, yet they belong in the debug dump
+		return ReflectionToStringBuilder.toString(this, CUSTOM_STYLE, true, false);
 	}
 
 	/**

@@ -54,7 +54,13 @@ public class TestProvider implements IProvider {
 			br = new BufferedReader(new InputStreamReader(in));
 			// Extract line
 			while ((line = br.readLine()) != null) {
-				if (!line.startsWith("#")) {
+				// A comment may also be glued at the end of a line, its text
+				// must not be mistaken for hexadecimal digits
+				int comment = line.indexOf('#');
+				if (comment >= 0) {
+					line = line.substring(0, comment);
+				}
+				if (StringUtils.isNotBlank(line)) {
 					queue.add(line.replaceAll("[^0-9A-F]+", ""));
 				}
 			}
@@ -79,7 +85,15 @@ public class TestProvider implements IProvider {
 		// Get response
 		String response = queue.poll();
 		if (StringUtils.isBlank(response)) {
-			throw new CommunicationException("No response found");
+			// The trace is over. The parser keeps looking for what the card
+			// may still hold (the other AIDs of the list, the GET DATA of an
+			// application that exposed no account number...): such a command
+			// is answered the way a card that holds nothing more would, any
+			// other command past the end of the trace is a failure
+			response = pastTheEnd(pCommand);
+			if (response == null) {
+				throw new CommunicationException("No response found");
+			}
 		}
 		byte[] ret = BytesUtils.fromString(response);
 		LOGGER.debug("resp: " + BytesUtils.bytesToString(ret));
@@ -90,6 +104,32 @@ public class TestProvider implements IProvider {
 		return ret;
 	}
 	
+	/**
+	 * Method used to answer a command sent once the trace is exhausted, for
+	 * the commands a reader sends to look for data the card may not hold.
+	 *
+	 * @param pCommand
+	 *            command sent
+	 * @return '6A82' (file not found) for a SELECT, '6A83' (record not
+	 *         found) for a READ RECORD, '6A88' (referenced data not found)
+	 *         for a GET DATA, null for any other command
+	 */
+	private static String pastTheEnd(final byte[] pCommand) {
+		if (pCommand == null || pCommand.length < 2) {
+			return null;
+		}
+		switch (pCommand[1] & 0xFF) {
+		case 0xA4:
+			return "6A82";
+		case 0xB2:
+			return "6A83";
+		case 0xCA:
+			return "6A88";
+		default:
+			return null;
+		}
+	}
+
 	@Override
 	public byte[] getAt() {
 		return BytesUtils.fromString("3B 65 00 00 20 63 CB A0 00");

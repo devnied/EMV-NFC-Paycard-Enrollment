@@ -15,13 +15,20 @@
  */
 package com.github.devnied.emvnfccard.model;
 
+import java.io.Serializable;
+
 /**
  * Class used to describe Application file locator
  * 
  * @author MILLAU Julien
  * 
  */
-public class Afl {
+public class Afl implements Serializable {
+
+	/**
+	 * Generated serial UID
+	 */
+	private static final long serialVersionUID = -6174118920873566497L;
 
 	/**
 	 * SFI
@@ -39,9 +46,10 @@ public class Afl {
 	private int lastRecord;
 
 	/**
-	 * Offline authentication
+	 * Number of records, starting from {@link #firstRecord}, that take part in
+	 * the offline data authentication (4th byte of the AFL entry)
 	 */
-	private boolean offlineAuthentication;
+	private int offlineAuthenticationRecords;
 
 	/**
 	 * Method used to get the field sfi
@@ -101,22 +109,61 @@ public class Afl {
 	}
 
 	/**
-	 * Method used to get the field offlineAuthentication
-	 * 
-	 * @return the offlineAuthentication
+	 * Method used to know if any of the records of this AFL entry takes part in
+	 * the offline data authentication.
+	 *
+	 * @return true if {@link #getOfflineAuthenticationRecords()} is not zero
 	 */
 	public boolean isOfflineAuthentication() {
-		return offlineAuthentication;
+		return offlineAuthenticationRecords > 0;
 	}
 
 	/**
 	 * Setter for the field offlineAuthentication
-	 * 
+	 *
 	 * @param offlineAuthentication
 	 *            the offlineAuthentication to set
+	 * @deprecated the 4th byte of an AFL entry is the number of records taking
+	 *             part in the offline data authentication, not a flag (EMV 4.3
+	 *             Book 3 section 10.2). Use
+	 *             {@link #setOfflineAuthenticationRecords(int)} instead, this
+	 *             method keeps no more than the fact that the count is not
+	 *             zero.
 	 */
+	@Deprecated
 	public void setOfflineAuthentication(final boolean offlineAuthentication) {
-		this.offlineAuthentication = offlineAuthentication;
+		setOfflineAuthenticationRecords(offlineAuthentication ? 1 : 0);
+	}
+
+	/**
+	 * Method used to get the field offlineAuthenticationRecords
+	 *
+	 * @return the number of records taking part in the offline data
+	 *         authentication
+	 */
+	public int getOfflineAuthenticationRecords() {
+		return offlineAuthenticationRecords;
+	}
+
+	/**
+	 * Setter for the field offlineAuthenticationRecords
+	 *
+	 * @param offlineAuthenticationRecords
+	 *            the offlineAuthenticationRecords to set
+	 */
+	public void setOfflineAuthenticationRecords(final int offlineAuthenticationRecords) {
+		this.offlineAuthenticationRecords = offlineAuthenticationRecords;
+	}
+
+	/**
+	 * Method used to know if the AFL entry is valid: EMV 4.3 Book 3 section
+	 * 10.2 restricts the SFI to the range 1 to 30 and asks for a record range
+	 * that is not empty.
+	 *
+	 * @return true if the entry describes a readable range of records
+	 */
+	public boolean isValid() {
+		return sfi >= 1 && sfi <= 30 && firstRecord >= 1 && lastRecord >= firstRecord;
 	}
 
 }

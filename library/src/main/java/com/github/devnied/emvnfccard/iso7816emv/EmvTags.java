@@ -43,16 +43,16 @@ public final class EmvTags {
 	public static final ITag ISSUER_IDENTIFICATION_NUMBER = new TagImpl("42", TagValueTypeEnum.NUMERIC, "Issuer Identification Number (IIN)", "The number that identifies the major industry and the card issuer and that forms the first part of the Primary Account Number (PAN)");
 
 	// 7816-4 Interindustry data objects for application identification and selection
-	public static final ITag AID_CARD = new TagImpl("4f", TagValueTypeEnum.BINARY, "Application Identifier (AID) - card", "Identifies the application as described in ISO/IEC 7816-5");
-	public static final ITag APPLICATION_LABEL = new TagImpl("50", TagValueTypeEnum.TEXT, "Application Label", "Mnemonic associated with the AID according to ISO/IEC 7816-5");
-	public static final ITag PATH = new TagImpl("51", TagValueTypeEnum.BINARY, "File reference data element", "ISO-7816 Path");
+	public static final ITag AID_CARD = new TagImpl("4f", TagValueTypeEnum.BINARY, "Application Identifier (AID) - card", "Identifies the application as described in ISO/IEC 7816-4");
+	public static final ITag APPLICATION_LABEL = new TagImpl("50", TagValueTypeEnum.TEXT, "Application Label", "Mnemonic associated with the AID according to ISO/IEC 7816-4");
+	public static final ITag PATH = new TagImpl("51", TagValueTypeEnum.BINARY, "File reference data element", "References a file. Its length gives its nature: empty it references the MF, one byte a short EF identifier, two bytes a file identifier, more than two bytes a path (ISO/IEC 7816-4)");
 	public static final ITag COMMAND_APDU = new TagImpl("52", TagValueTypeEnum.BINARY, "Command APDU", "");
 	public static final ITag DISCRETIONARY_DATA_OR_TEMPLATE = new TagImpl("53", TagValueTypeEnum.BINARY, "Discretionary data (or template)", "");
-	public static final ITag APPLICATION_TEMPLATE = new TagImpl("61", TagValueTypeEnum.BINARY, "Application Template", "Contains one or more data objects relevant to an application directory entry according to ISO/IEC 7816-5");
+	public static final ITag APPLICATION_TEMPLATE = new TagImpl("61", TagValueTypeEnum.BINARY, "Application Template", "Contains one or more data objects relevant to an application directory entry according to ISO/IEC 7816-4");
 	public static final ITag FCI_TEMPLATE = new TagImpl("6f", TagValueTypeEnum.BINARY, "File Control Information (FCI) Template", "Set of file control parameters and file management data (according to ISO/IEC 7816-4)");
-	public static final ITag DD_TEMPLATE = new TagImpl("73", TagValueTypeEnum.BINARY, "Directory Discretionary Template", "Issuer discretionary part of the directory according to ISO/IEC 7816-5");
+	public static final ITag DD_TEMPLATE = new TagImpl("73", TagValueTypeEnum.BINARY, "Directory Discretionary Template", "Issuer discretionary part of the directory according to ISO/IEC 7816-4");
 	public static final ITag DEDICATED_FILE_NAME = new TagImpl("84", TagValueTypeEnum.BINARY, "Dedicated File (DF) Name", "Identifies the name of the DF as described in ISO/IEC 7816-4");
-	public static final ITag SFI = new TagImpl("88", TagValueTypeEnum.BINARY, "Short File Identifier (SFI)", "Identifies the SFI to be used in the commands related to a given AEF or DDF. The SFI data object is a binary field with the three high order bits set to zero");
+	public static final ITag SFI = new TagImpl("88", TagValueTypeEnum.BINARY, "Short File Identifier (SFI)", "Identifies the AEF referenced in commands related to a given ADF or DDF. It is a binary data object having a value in the range 1 - 30 and with the three high order bits set to zero");
 
 	public static final ITag FCI_PROPRIETARY_TEMPLATE = new TagImpl("a5", TagValueTypeEnum.BINARY, "File Control Information (FCI) Proprietary Template", "Identifies the data object proprietary to this specification in the FCI template according to ISO/IEC 7816-4");
 	public static final ITag ISSUER_URL = new TagImpl("5f50", TagValueTypeEnum.TEXT, "Issuer URL", "The URL provides the location of the Issuerâ€™s Library Server on the Internet");
@@ -82,7 +82,7 @@ public final class EmvTags {
 	public static final ITag SIGNED_STATIC_APP_DATA = new TagImpl("93", TagValueTypeEnum.BINARY, "Signed Static Application Data", "Digital signature on critical application parameters for SDA");
 	public static final ITag APPLICATION_FILE_LOCATOR = new TagImpl("94", TagValueTypeEnum.BINARY, "Application File Locator (AFL)", "Indicates the location (SFI, range of records) of the AEFs related to a given application");
 	public static final ITag TERMINAL_VERIFICATION_RESULTS = new TagImpl("95", TagValueTypeEnum.BINARY, "Terminal Verification Results (TVR)", "Status of the different functions as seen from the terminal");
-	public static final ITag TDOL = new TagImpl("97", TagValueTypeEnum.BINARY, "Transaction Certificate Data Object List (TDOL)", "List of data objects (tag and length) to be used by the terminal in generating the TC Hash Value");
+	public static final ITag TDOL = new TagImpl("97", TagValueTypeEnum.DOL, "Transaction Certificate Data Object List (TDOL)", "List of data objects (tag and length) to be used by the terminal in generating the TC Hash Value");
 	public static final ITag TC_HASH_VALUE = new TagImpl("98", TagValueTypeEnum.BINARY, "Transaction Certificate (TC) Hash Value", "Result of a hash function specified in Book 2, Annex B3.1");
 	public static final ITag TRANSACTION_PIN_DATA = new TagImpl("99", TagValueTypeEnum.BINARY, "Transaction Personal Identification Number (PIN) Data", "Data entered by the cardholder for the purpose of the PIN verification");
 	public static final ITag TRANSACTION_DATE = new TagImpl("9a", TagValueTypeEnum.NUMERIC, "Transaction Date", "Local date that the transaction was authorised");
@@ -94,7 +94,7 @@ public final class EmvTags {
 	public static final ITag APP_EXPIRATION_DATE = new TagImpl("5f24", TagValueTypeEnum.NUMERIC, "Application Expiration Date", "Date after which application expires");
 	public static final ITag APP_EFFECTIVE_DATE = new TagImpl("5f25", TagValueTypeEnum.NUMERIC, "Application Effective Date", "Date from which the application may be used");
 	public static final ITag ISSUER_COUNTRY_CODE = new TagImpl("5f28", TagValueTypeEnum.NUMERIC, "Issuer Country Code", "Indicates the country of the issuer according to ISO 3166");
-	public static final ITag TRANSACTION_CURRENCY_CODE = new TagImpl("5f2a", TagValueTypeEnum.TEXT, "Transaction Currency Code", "Indicates the currency code of the transaction according to ISO 4217");
+	public static final ITag TRANSACTION_CURRENCY_CODE = new TagImpl("5f2a", TagValueTypeEnum.NUMERIC, "Transaction Currency Code", "Indicates the currency code of the transaction according to ISO 4217");
 	public static final ITag LANGUAGE_PREFERENCE = new TagImpl("5f2d", TagValueTypeEnum.TEXT, "Language Preference", "1â€“4 languages stored in order of preference, each represented by 2 alphabetical characters according to ISO 639");
 	public static final ITag SERVICE_CODE = new TagImpl("5f30", TagValueTypeEnum.NUMERIC, "Service Code", "Service code as defined in ISO/IEC 7813 for track 1 and track 2");
 	public static final ITag PAN_SEQUENCE_NUMBER = new TagImpl("5f34", TagValueTypeEnum.NUMERIC, "Application Primary Account Number (PAN) Sequence Number", "Identifies and differentiates cards with the same PAN");
@@ -103,16 +103,22 @@ public final class EmvTags {
 	public static final ITag BANK_IDENTIFIER_CODE = new TagImpl("5f54", TagValueTypeEnum.MIXED, "Bank Identifier Code (BIC)", "Uniquely identifies a bank as defined in ISO 9362");
 	public static final ITag ISSUER_COUNTRY_CODE_ALPHA2 = new TagImpl("5f55", TagValueTypeEnum.TEXT, "Issuer Country Code (alpha2 format)", "Indicates the country of the issuer as defined in ISO 3166 (using a 2 character alphabetic code)");
 	public static final ITag ISSUER_COUNTRY_CODE_ALPHA3 = new TagImpl("5f56", TagValueTypeEnum.TEXT, "Issuer Country Code (alpha3 format)", "Indicates the country of the issuer as defined in ISO 3166 (using a 3 character alphabetic code)");
+	public static final ITag ACCOUNT_TYPE = new TagImpl("5f57", TagValueTypeEnum.NUMERIC, "Account Type", "Indicates the type of account selected on the terminal, coded as specified in Annex G of EMV Book 3");
+	public static final ITag APPLICATION_SELECTION_REGISTERED_PROPRIETARY_DATA = new TagImpl("9f0a", TagValueTypeEnum.BINARY, "Application Selection Registered Proprietary Data (ASRPD)", "Proprietary data allowing for proprietary processing during application selection");
+	public static final ITag TOKEN_REQUESTOR_ID = new TagImpl("9f19", TagValueTypeEnum.NUMERIC, "Token Requestor ID", "Uniquely identifies the pair token requestor and token domain, present on the tokenized credentials of the mobile wallets");
+	public static final ITag PAYMENT_ACCOUNT_REFERENCE = new TagImpl("9f24", TagValueTypeEnum.TEXT, "Payment Account Reference (PAR)", "Non financial reference linking every token and PAN issued for the same underlying account");
+	public static final ITag LAST_4_DIGITS_OF_PAN = new TagImpl("9f25", TagValueTypeEnum.NUMERIC, "Last 4 Digits of PAN", "The last four digits of the PAN of the card the token was issued for");
 	public static final ITag ACQUIRER_IDENTIFIER = new TagImpl("9f01", TagValueTypeEnum.NUMERIC, "Acquirer Identifier", "Uniquely identifies the acquirer within each payment system");
 	public static final ITag AMOUNT_AUTHORISED_NUMERIC = new TagImpl("9f02", TagValueTypeEnum.NUMERIC, "Amount, Authorised (Numeric)", "Authorised amount of the transaction (excluding adjustments)");
 	public static final ITag AMOUNT_OTHER_NUMERIC = new TagImpl("9f03", TagValueTypeEnum.NUMERIC, "Amount, Other (Numeric)", "Secondary amount associated with the transaction representing a cashback amount");
-	public static final ITag AMOUNT_OTHER_BINARY = new TagImpl("9f04", TagValueTypeEnum.NUMERIC, "Amount, Other (Binary)", "Secondary amount associated with the transaction representing a cashback amount");
+	public static final ITag AMOUNT_OTHER_BINARY = new TagImpl("9f04", TagValueTypeEnum.BINARY, "Amount, Other (Binary)", "Secondary amount associated with the transaction representing a cashback amount, coded as a binary number (format b)");
 	public static final ITag APP_DISCRETIONARY_DATA = new TagImpl("9f05", TagValueTypeEnum.BINARY, "Application Discretionary Data", "Issuer or payment system specified data relating to the application");
 	public static final ITag AID_TERMINAL = new TagImpl("9f06", TagValueTypeEnum.BINARY, "Application Identifier (AID) - terminal", "Identifies the application as described in ISO/IEC 7816-5");
 	public static final ITag APP_USAGE_CONTROL = new TagImpl("9f07", TagValueTypeEnum.BINARY, "Application Usage Control", "Indicates issuerâ€™s specified restrictions on the geographic usage and services allowed for the application");
 	public static final ITag APP_VERSION_NUMBER_CARD = new TagImpl("9f08", TagValueTypeEnum.BINARY, "Application Version Number - card", "Version number assigned by the payment system for the application");
 	public static final ITag APP_VERSION_NUMBER_TERMINAL = new TagImpl("9f09", TagValueTypeEnum.BINARY, "Application Version Number - terminal", "Version number assigned by the payment system for the application");
 	public static final ITag CARDHOLDER_NAME_EXTENDED = new TagImpl("9f0b", TagValueTypeEnum.TEXT, "Cardholder Name Extended", "Indicates the whole cardholder name when greater than 26 characters using the same coding convention as in ISO 7813");
+	public static final ITag ISSUER_IDENTIFICATION_NUMBER_EXTENDED = new TagImpl("9f0c", TagValueTypeEnum.NUMERIC, "Issuer Identification Number Extended (IINE)", "The number that identifies the major industry and the card issuer and that forms the first part (6 or 8 digits) of the Primary Account Number (PAN)");
 	public static final ITag ISSUER_ACTION_CODE_DEFAULT = new TagImpl("9f0d", TagValueTypeEnum.BINARY, "Issuer Action Code - Default", "Specifies the issuerâ€™s conditions that cause a transaction to be rejected if it might have been approved online, but the terminal is unable to process the transaction online");
 	public static final ITag ISSUER_ACTION_CODE_DENIAL = new TagImpl("9f0e", TagValueTypeEnum.BINARY, "Issuer Action Code - Denial", "Specifies the issuerâ€™s conditions that cause the denial of a transaction without attempt to go online");
 	public static final ITag ISSUER_ACTION_CODE_ONLINE = new TagImpl("9f0f", TagValueTypeEnum.BINARY, "Issuer Action Code - Online", "Specifies the issuerâ€™s conditions that cause a transaction to be transmitted online");
@@ -125,13 +131,13 @@ public final class EmvTags {
 	public static final ITag MERCHANT_IDENTIFIER = new TagImpl("9f16", TagValueTypeEnum.TEXT, "Merchant Identifier", "When concatenated with the Acquirer Identifier, uniquely identifies a given merchant");
 	public static final ITag PIN_TRY_COUNTER = new TagImpl("9f17", TagValueTypeEnum.BINARY, "Personal Identification Number (PIN) Try Counter", "Number of PIN tries remaining");
 	public static final ITag ISSUER_SCRIPT_IDENTIFIER = new TagImpl("9f18", TagValueTypeEnum.BINARY, "Issuer Script Identifier", "Identification of the Issuer Script");
-	public static final ITag TERMINAL_COUNTRY_CODE = new TagImpl("9f1a", TagValueTypeEnum.TEXT, "Terminal Country Code", "Indicates the country of the terminal, represented according to ISO 3166");
+	public static final ITag TERMINAL_COUNTRY_CODE = new TagImpl("9f1a", TagValueTypeEnum.NUMERIC, "Terminal Country Code", "Indicates the country of the terminal, represented according to ISO 3166");
 	public static final ITag TERMINAL_FLOOR_LIMIT = new TagImpl("9f1b", TagValueTypeEnum.BINARY, "Terminal Floor Limit", "Indicates the floor limit in the terminal in conjunction with the AID");
 	public static final ITag TERMINAL_IDENTIFICATION = new TagImpl("9f1c", TagValueTypeEnum.TEXT, "Terminal Identification", "Designates the unique location of a terminal at a merchant");
 	public static final ITag TERMINAL_RISK_MANAGEMENT_DATA = new TagImpl("9f1d", TagValueTypeEnum.BINARY, "Terminal Risk Management Data", "Application-specific value used by the card for risk management purposes");
 	public static final ITag INTERFACE_DEVICE_SERIAL_NUMBER = new TagImpl("9f1e", TagValueTypeEnum.TEXT, "Interface Device (IFD) Serial Number", "Unique and permanent serial number assigned to the IFD by the manufacturer");
 	public static final ITag TRACK1_DISCRETIONARY_DATA = new TagImpl("9f1f", TagValueTypeEnum.TEXT, "[Magnetic Stripe] Track 1 Discretionary Data", "Discretionary part of track 1 according to ISO/IEC 7813");
-	public static final ITag TRACK2_DISCRETIONARY_DATA = new TagImpl("9f20", TagValueTypeEnum.TEXT, "[Magnetic Stripe] Track 2 Discretionary Data", "Discretionary part of track 2 according to ISO/IEC 7813");
+	public static final ITag TRACK2_DISCRETIONARY_DATA = new TagImpl("9f20", TagValueTypeEnum.NUMERIC, "[Magnetic Stripe] Track 2 Discretionary Data", "Discretionary part of track 2 according to ISO/IEC 7813, coded cn like the rest of the track");
 	public static final ITag TRANSACTION_TIME = new TagImpl("9f21", TagValueTypeEnum.NUMERIC, "Transaction Time (HHMMSS)", "Local time that the transaction was authorised");
 	public static final ITag CA_PUBLIC_KEY_INDEX_TERMINAL = new TagImpl("9f22", TagValueTypeEnum.BINARY, "Certification Authority Public Key Index - Terminal", "Identifies the certification authorityâ€™s public key in conjunction with the RID");
 	public static final ITag UPPER_CONSEC_OFFLINE_LIMIT = new TagImpl("9f23", TagValueTypeEnum.BINARY, "Upper Consecutive Offline Limit", "Issuer-specified preference for the maximum number of consecutive offline transactions for this ICC application allowed in a terminal without online capability");
@@ -196,7 +202,12 @@ public final class EmvTags {
 	// 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30
 	public static final ITag TRACK1_DATA = new TagImpl("56", TagValueTypeEnum.BINARY, "Track 1 Data", "Track 1 Data contains the data objects of the track 1 according to [ISO/IEC 7813] Structure B, excluding start sentinel, end sentinel and LRC.");
 
-	public static final ITag TERMINAL_TRANSACTION_QUALIFIERS = new TagImpl("9f66", TagValueTypeEnum.BINARY, "Terminal Transaction Qualifiers", "Provided by the reader in the GPO command and used by the card to determine processing choices based on reader functionality");
+	// '9F66' is the Terminal Transaction Qualifiers of the Visa (Kernel 3) applications, sent by the reader on 4 bytes
+	// (Book C-3 v2.12 Annex A Table A-2). The MasterCard (Kernel 2) applications use the same tag for PUNATC(Track2),
+	// a 2 bytes personalisation bitmap they return to the reader in a record (Book C-2 v2.11 A.1.128)
+	// 9f66 02 07f0
+	// 9f66 02 1e0e
+	public static final ITag TERMINAL_TRANSACTION_QUALIFIERS = new TagImpl("9f66", TagValueTypeEnum.BINARY, "Terminal Transaction Qualifiers (Visa) / PUNATC Track 2 (MasterCard)", "Provided by the reader in the GPO command and used by the card to determine processing choices based on reader functionality, or indicates to the Kernel 2 the positions in the discretionary data field of Track 2 Data where the Unpredictable Number (Numeric) digits and Application Transaction Counter digits have to be copied");
 	// The Track 2 Data is present in the file read using the READ RECORD command
 	// during a mag-stripe mode transaction. It is made up of the following
 	// sub-fields (same as tag 57):
@@ -214,11 +225,14 @@ public final class EmvTags {
 
 	// 9f6b 13 BB BB BB BB BB BB BB BB dY YM M2 01 00 00 00 00 00 00 0f
 	public static final ITag TRACK2_DATA = new TagImpl("9f6b", TagValueTypeEnum.BINARY, "Track 2 Data", "Track 2 Data contains the data objects of the track 2 according to [ISO/IEC 7813] Structure B, excluding start sentinel, end sentinel and LRC.");
-	public static final ITag VLP_ISSUER_AUTHORISATION_CODE = new TagImpl("9f6e", TagValueTypeEnum.BINARY, "Visa Low-Value Payment (VLP) Issuer Authorisation Code", "");
+	// '9F6E' has one meaning per kernel: Form Factor Indicator for Visa (Kernel 3), Third Party Data for MasterCard (Kernel 2),
+	// and the legacy Visa Low-Value Payment Issuer Authorisation Code. The Form Factor Indicator is the one a contactless
+	// credential carries today: it tells whether the tapped device is a card, a phone, a watch or another wearable.
+	public static final ITag VLP_ISSUER_AUTHORISATION_CODE = new TagImpl("9f6e", TagValueTypeEnum.BINARY, "Form Factor Indicator (Visa) / Third Party Data (MasterCard) / VLP Issuer Authorisation Code", "Describes the form factor of the device and its payment technology, or holds the third party data of the Kernel 2 cards");
 
 	// These are specified in EMV Contactless (Book B)
-	public static final ITag EXTENDED_SELECTION = new TagImpl("9f29", TagValueTypeEnum.BINARY, "Indicates the card's preference for the kernel on which the contactless application can be processed", "");
-	public static final ITag KERNEL_IDENTIFIER = new TagImpl("9f2a", TagValueTypeEnum.BINARY, "The value to be appended to the ADF Name in the data field of the SELECT command, if the Extended Selection Support flag is present and set to 1", "");
+	public static final ITag EXTENDED_SELECTION = new TagImpl("9f29", TagValueTypeEnum.BINARY, "Extended Selection", "The value to be appended to the ADF Name in the data field of the SELECT command, if the Extended Selection Support flag is present and set to 1");
+	public static final ITag KERNEL_IDENTIFIER = new TagImpl("9f2a", TagValueTypeEnum.BINARY, "Kernel Identifier", "Indicates the card's preference for the kernel on which the contactless application can be processed");
 	// MasterCard Tags
 
 	public static final ITag MASTERCARD_UPPER_OFFLINE_AMOUNT = new TagImpl("9f52", TagValueTypeEnum.BINARY, "Upper Cumulative Domestic Offline Transaction Amount", "Issuer specified data element indicating the required maximum cumulative offline amount allowed for the application before the transaction goes online.");
@@ -235,7 +249,9 @@ public final class EmvTags {
 	public static final ITag TAG_9f56 = new TagImpl("9f56", TagValueTypeEnum.BINARY, "?", "");
 
 	// Example: BER-TLV[9f6c, 02 (raw 02), 0001]
-	public static final ITag MAG_STRIPE_APP_VERSION_NUMBER_CARD = new TagImpl("9f6c", TagValueTypeEnum.BINARY, "Mag Stripe Application Version Number (Card)", "Must be personalized with the value 0x0001");
+	// '9F6C' is the Card Transaction Qualifiers on the Visa (Kernel 3) applications, the answer of the card to the Terminal
+	// Transaction Qualifiers, and the Mag Stripe Application Version Number on the MasterCard (Kernel 2) ones
+	public static final ITag MAG_STRIPE_APP_VERSION_NUMBER_CARD = new TagImpl("9f6c", TagValueTypeEnum.BINARY, "Card Transaction Qualifiers (Visa) / Mag Stripe Application Version Number (MasterCard)", "States what the card requires from the transaction (online PIN, signature, CDCVM, going online), or the mag stripe application version");
 
 	// Transaction log data
 	// df3e 01 01
@@ -279,7 +295,9 @@ public final class EmvTags {
 	public static final ITag DSDOL = new TagImpl("9f5b", TagValueTypeEnum.BINARY, "DSDOL", "");
 	public static final ITag DS_REQUESTED_OPERATOR_ID = new TagImpl("9f5c", TagValueTypeEnum.BINARY, "DS Requested Operator ID", "");
 	// 9f5d 01 01
-	public static final ITag APPLICATION_CAPABILITIES_INFORMATION = new TagImpl("9f5d", TagValueTypeEnum.BINARY, "Application Capabilities Information", "Lists a number of card features beyond regular payment");
+	// '9F5D' is the Application Capabilities Information (3 bytes) on the MasterCard (Kernel 2) applications and the Available
+	// Offline Spending Amount (6 bytes, an amount) on the Visa (Kernel 3) ones: the length tells the two apart
+	public static final ITag APPLICATION_CAPABILITIES_INFORMATION = new TagImpl("9f5d", TagValueTypeEnum.BINARY, "Application Capabilities Information (MasterCard) / Available Offline Spending Amount (Visa)", "Lists a number of card features beyond regular payment, or holds the amount still available for offline spending");
 	public static final ITag DS_ID = new TagImpl("9f5e", TagValueTypeEnum.BINARY, "Data Storage Identifier", "Constructed as follows: Application PAN (without any 'F' padding) || Application PAN Sequence Number (+ zero padding)");
 	public static final ITag DS_SLOT_AVAILABILITY = new TagImpl("9f5f", TagValueTypeEnum.BINARY, "DS Slot Availability", "");
 	public static final ITag CVC3_TRACK1 = new TagImpl("9f60", TagValueTypeEnum.BINARY, "CVC3 (Track1)", "The CVC3 (Track1) is a 2-byte cryptogram returned by the Card in the response to the COMPUTE CRYPTOGRAPHIC CHECKSUM command.");
@@ -289,33 +307,39 @@ public final class EmvTags {
 	public static final ITag PCVC3_TRACK1 = new TagImpl("9f62", TagValueTypeEnum.BINARY, "Track 1 bit map for CVC3", "PCVC3(Track1) indicates to the Kernel the positions in the discretionary data field of the Track 1 Data where the CVC3 (Track1) digits must be copied");
 	// 9f63 06 00 00 00 00 07 f0
 	// 9f63 06 00 00 00 00 07 8e
-	public static final ITag PUNTAC_TRACK1 = new TagImpl("9f63", TagValueTypeEnum.BINARY, "Track 1 bit map for UN and ATC", "PUNATC(Track1) indicates to the Kernel the positions in the discretionary data field of Track 1 Data where the Unpredictable Number (Numeric) digits and Application Transaction Counter digits have to be copied.");
+	public static final ITag PUNATC_TRACK1 = new TagImpl("9f63", TagValueTypeEnum.BINARY, "Track 1 bit map for UN and ATC", "PUNATC(Track1) indicates to the Kernel the positions in the discretionary data field of Track 1 Data where the Unpredictable Number (Numeric) digits and Application Transaction Counter digits have to be copied.");
+	/** @deprecated misspelled, use {@link #PUNATC_TRACK1}. Kept so that the callers naming it still compile. */
+	@Deprecated
+	public static final ITag PUNTAC_TRACK1 = PUNATC_TRACK1;
 	// 9f64 01 03
 	// 9f64 01 04
 	public static final ITag NATC_TRACK1 = new TagImpl("9f64", TagValueTypeEnum.BINARY, "Track 1 number of ATC digits", "The value of NATC(Track1) represents the number of digits of the Application Transaction Counter to be included in the discretionary data field of Track 1 Data");
 	// 9f65 02 000e
 	// 9f65 02 0070
-	public static final ITag PCVC_TRACK2 = new TagImpl("9f65", TagValueTypeEnum.BINARY, "Track 2 bit map for CVC3", "PCVC3(Track2) indicates to the Kernel the positions in the discretionary data field of the Track 2 Data where the CVC3 (Track2) digits must be copied");
-	// 9f66 02 07f0
-	// 9f66 02 1e0e
+	public static final ITag PCVC3_TRACK2 = new TagImpl("9f65", TagValueTypeEnum.BINARY, "Track 2 bit map for CVC3", "PCVC3(Track2) indicates to the Kernel the positions in the discretionary data field of the Track 2 Data where the CVC3 (Track2) digits must be copied");
+	/** @deprecated misspelled, use {@link #PCVC3_TRACK2}. Kept so that the callers naming it still compile. */
+	@Deprecated
+	public static final ITag PCVC_TRACK2 = PCVC3_TRACK2;
 	public static final ITag NATC_TRACK2 = new TagImpl("9f67", TagValueTypeEnum.BINARY, "Track 2 number of ATC digits", "The value of NATC(Track2) represents the number of digits of the Application Transaction Counter to be included in the discretionary data field of Track 2 Data");
-	public static final ITag UDOL = new TagImpl("9f69", TagValueTypeEnum.BINARY, "UDOL", "");
+	// '9F69' is the UDOL of the MasterCard (Kernel 2) applications and the Card Authentication Related Data of the Visa
+	// (Kernel 3) ones. Both are returned by the card in a record, so only the kernel tells the two readings apart
+	public static final ITag UDOL = new TagImpl("9f69", TagValueTypeEnum.BINARY, "UDOL (MasterCard) / Card Authentication Related Data (Visa)", "The UDOL is the DOL that specifies the data objects to be included in the data field of the COMPUTE CRYPTOGRAPHIC CHECKSUM command. The UDOL must at least include the Unpredictable Number (Numeric). The UDOL is not mandatory for the Card. If it is not present in the Card, then the Default UDOL is used");
 	public static final ITag UNPREDICTABLE_NUMBER_NUMERIC = new TagImpl("9f6a", TagValueTypeEnum.BINARY, "Unpredictable Number (Numeric)", "");
 	public static final ITag MAG_STRIPE_APP_VERSION_NUMBER_READER = new TagImpl("9f6d", TagValueTypeEnum.BINARY, "Mag-stripe Application Version Number (Reader)", "");
 	public static final ITag DS_SLOT_MANAGEMENT_CONTROL = new TagImpl("9f6f", TagValueTypeEnum.BINARY, "DS Slot Management Control", "");
-	public static final ITag PROTECTED_DATA_ENVELOPE_1 = new TagImpl("9f70", TagValueTypeEnum.BINARY, "Protected Data Envelope 1", "");
-	public static final ITag PROTECTED_DATA_ENVELOPE_2 = new TagImpl("9f71", TagValueTypeEnum.BINARY, "Protected Data Envelope 2", "");
-	public static final ITag PROTECTED_DATA_ENVELOPE_3 = new TagImpl("9f72", TagValueTypeEnum.BINARY, "Protected Data Envelope 3", "");
-	public static final ITag PROTECTED_DATA_ENVELOPE_4 = new TagImpl("9f73", TagValueTypeEnum.BINARY, "Protected Data Envelope 4", "");
-	public static final ITag PROTECTED_DATA_ENVELOPE_5 = new TagImpl("9f74", TagValueTypeEnum.BINARY, "Protected Data Envelope 5", "");
-	public static final ITag UNPROTECTED_DATA_ENVELOPE_1 = new TagImpl("9f75", TagValueTypeEnum.BINARY, "Unprotected Data Envelope 1", "");
-	public static final ITag UNPROTECTED_DATA_ENVELOPE_2 = new TagImpl("9f76", TagValueTypeEnum.BINARY, "Unprotected Data Envelope 2", "");
-	public static final ITag UNPROTECTED_DATA_ENVELOPE_3 = new TagImpl("9f77", TagValueTypeEnum.BINARY, "Unprotected Data Envelope 3", "");
-	public static final ITag UNPROTECTED_DATA_ENVELOPE_4 = new TagImpl("9f78", TagValueTypeEnum.BINARY, "Unprotected Data Envelope 4", "");
-	public static final ITag UNPROTECTED_DATA_ENVELOPE_5 = new TagImpl("9f79", TagValueTypeEnum.BINARY, "Unprotected Data Envelope 5", "");
+	public static final ITag PROTECTED_DATA_ENVELOPE_1 = new TagImpl("9f70", TagValueTypeEnum.BINARY, "Protected Data Envelope 1", "The Protected Data Envelopes contain proprietary information from the issuer, payment system or third party. The Protected Data Envelope can be retrieved with the GET DATA command. Updating the Protected Data Envelope with the PUT DATA command requires secure messaging and is outside the scope of this specification. Format b, length var. up to 192 (EMV Contactless Book C-2 v2.12 A.1.107)");
+	public static final ITag PROTECTED_DATA_ENVELOPE_2 = new TagImpl("9f71", TagValueTypeEnum.BINARY, "Protected Data Envelope 2", "Same as Protected Data Envelope 1 (EMV Contactless Book C-2 v2.12 A.1.108)");
+	public static final ITag PROTECTED_DATA_ENVELOPE_3 = new TagImpl("9f72", TagValueTypeEnum.BINARY, "Protected Data Envelope 3", "Same as Protected Data Envelope 1 (EMV Contactless Book C-2 v2.12 A.1.109)");
+	public static final ITag PROTECTED_DATA_ENVELOPE_4 = new TagImpl("9f73", TagValueTypeEnum.BINARY, "Protected Data Envelope 4", "Same as Protected Data Envelope 1 (EMV Contactless Book C-2 v2.12 A.1.110)");
+	public static final ITag PROTECTED_DATA_ENVELOPE_5 = new TagImpl("9f74", TagValueTypeEnum.BINARY, "Protected Data Envelope 5", "Same as Protected Data Envelope 1 (EMV Contactless Book C-2 v2.12 A.1.111)");
+	public static final ITag UNPROTECTED_DATA_ENVELOPE_1 = new TagImpl("9f75", TagValueTypeEnum.BINARY, "Unprotected Data Envelope 1", "The Unprotected Data Envelopes contain proprietary information from the issuer, payment system or third party. Unprotected Data Envelopes can be retrieved with the GET DATA command and can be updated with the PUT DATA (CLA='80') command without secure messaging. Format b, length var. up to 192 (EMV Contactless Book C-2 v2.12 A.1.159)");
+	public static final ITag UNPROTECTED_DATA_ENVELOPE_2 = new TagImpl("9f76", TagValueTypeEnum.BINARY, "Unprotected Data Envelope 2", "Same as Unprotected Data Envelope 1 (EMV Contactless Book C-2 v2.12 A.1.160)");
+	public static final ITag UNPROTECTED_DATA_ENVELOPE_3 = new TagImpl("9f77", TagValueTypeEnum.BINARY, "Unprotected Data Envelope 3", "Same as Unprotected Data Envelope 1 (EMV Contactless Book C-2 v2.12 A.1.161)");
+	public static final ITag UNPROTECTED_DATA_ENVELOPE_4 = new TagImpl("9f78", TagValueTypeEnum.BINARY, "Unprotected Data Envelope 4", "Same as Unprotected Data Envelope 1. The SDS Scheme Indicator of the Application Capabilities Information (tag '9F5D') has a value reading \"All SDS tags 32 bytes except '9F78' which is 64 bytes\" (EMV Contactless Book C-2 v2.12 A.1.162)");
+	public static final ITag UNPROTECTED_DATA_ENVELOPE_5 = new TagImpl("9f79", TagValueTypeEnum.BINARY, "Unprotected Data Envelope 5", "Same as Unprotected Data Envelope 1. The same tag is the Electronic Cash Balance of the applications that implement electronic cash (EMV Contactless Book C-2 v2.12 A.1.163)");
 	public static final ITag MERCHANT_CUSTOM_DATA = new TagImpl("9f7c", TagValueTypeEnum.BINARY, "Merchant Custom Data", "");
 	public static final ITag DS_SUMMARY_1 = new TagImpl("9f7d", TagValueTypeEnum.BINARY, "DS Summary 1", "");
-	public static final ITag DS_UNPREDICTABLE_NUMBER = new TagImpl("9f7f", TagValueTypeEnum.BINARY, "DS Unpredictable Number", "");
+	public static final ITag DS_UNPREDICTABLE_NUMBER = new TagImpl("9f7f", TagValueTypeEnum.BINARY, "DS Unpredictable Number (Kernel 2) / Card Production Life Cycle Data (GlobalPlatform)", "Unpredictable number of the data storage of the Kernel 2, or, when the card answers 42 bytes to a GET DATA, the card production life cycle data of the GlobalPlatform Card Specification");
 
 	public static final ITag POS_CARDHOLDER_INTERACTION_INFORMATION = new TagImpl("df4b", TagValueTypeEnum.BINARY, "POS Cardholder Interaction Information", "");
 	public static final ITag DS_DIGEST_H = new TagImpl("df61", TagValueTypeEnum.BINARY, "DS Digest H", "");
@@ -399,9 +423,18 @@ public final class EmvTags {
 	}
 
 	private static void addTag(final ITag tag) {
+		if (tag == null) {
+			return;
+		}
 		// Use 'wrapper around', since the underlaying byte-array will not be changed in this case
 		ByteArrayWrapper baw = ByteArrayWrapper.wrapperAround(tag.getTagBytes());
-		if (tags.containsKey(baw)) {
+		ITag existing = tags.get(baw);
+		if (existing != null) {
+			// A deprecated field kept for the callers that still name it points
+			// at the very same tag, it does not declare a second one
+			if (existing == tag) {
+				return;
+			}
 			throw new IllegalArgumentException("Tag already added " + tag);
 		}
 		tags.put(baw, tag);

@@ -39,14 +39,16 @@ public enum CommandEnum {
 	GPO(0x80, 0xA8, 0x00, 0x00),
 
 	/**
-	 * GPO Command
+	 * GET DATA command
 	 */
 	GET_DATA(0x80, 0xCA, 0x00, 0x00),
-	
+
 	/**
-	 * GET RESPONSE command
+	 * GET RESPONSE command, used to read the data the card announced with the
+	 * procedure bytes '61xx' (EMV 4.3 Book 1 section 9.3.1.3 Table 32 and
+	 * ISO/IEC 7816-4 GET RESPONSE: CLA '00' INS 'C0' P1 '00' P2 '00')
 	 */
-	GET_RESPONSE(0x00, 0x0C, 0x00, 0x00);
+	GET_RESPONSE(0x00, 0xC0, 0x00, 0x00);
 
 	/**
 	 * Class byte

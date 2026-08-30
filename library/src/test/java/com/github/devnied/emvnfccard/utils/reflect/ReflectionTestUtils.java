@@ -44,7 +44,7 @@ public class ReflectionTestUtils {
             return (T) methodInvoker.invoke();
         }
         catch (Exception ex) {
-            throw new IllegalStateException("Should never get here");
+            throw new IllegalStateException("Should never get here", ex);
         }
     }
 }

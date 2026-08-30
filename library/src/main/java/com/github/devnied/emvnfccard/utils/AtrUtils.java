@@ -64,7 +64,7 @@ public final class AtrUtils {
 			String currentATR = null;
 			while ((line = br.readLine()) != null) {
 				++lineNumber;
-				if (line.startsWith("#") || line.trim().length() == 0 || line.contains("http")) { // comment ^#/ empty line ^$/
+				if (line.startsWith("#") || line.trim().length() == 0 || isReference(line)) { // comment ^#/ empty line ^$/
 					continue;
 				} else if (line.startsWith("\t") && currentATR != null ) {
 					MAP.put(currentATR, line.replace("\t", "").trim());
@@ -140,6 +140,31 @@ public final class AtrUtils {
 			}
 		}
 		return ret;
+	}
+
+	/**
+	 * Method used to recognise the lines of the list that are a reference to a
+	 * document rather than the description of a card.
+	 * <p>
+	 * The list holds both, indented the same way, so they can only be told
+	 * apart by their content: a reference is a bare link and nothing else. The
+	 * test used to be whether the line contained "http" anywhere, which also
+	 * discarded the descriptions that quote a link inside their text, such as
+	 * the Navigo pass of the Paris transport network or the Feitian FTJCOS, and
+	 * left the three cards whose every description quotes one without any
+	 * description at all.
+	 * </p>
+	 *
+	 * @param pLine
+	 *            line of the list
+	 * @return true when the line is a bare link
+	 */
+	private static boolean isReference(final String pLine) {
+		String value = pLine.trim();
+		// A link followed by anything else is a description that happens to
+		// quote a source, only a line made of the link alone is dropped
+		return (value.startsWith("http://") || value.startsWith("https://"))
+				&& !StringUtils.containsWhitespace(value);
 	}
 
 	/**

@@ -15,12 +15,13 @@
  */
 package com.github.devnied.emvnfccard.utils;
 
+import java.util.Arrays;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.devnied.emvnfccard.enums.TagValueTypeEnum;
+import com.github.devnied.emvnfccard.iso7816emv.EmvTags;
 import com.github.devnied.emvnfccard.iso7816emv.ITag;
-import com.github.devnied.emvnfccard.iso7816emv.impl.TagImpl;
 import com.github.devnied.emvnfccard.model.CPLC;
 
 
@@ -35,21 +36,39 @@ public final class CPLCUtils {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CPLCUtils.class);
 	
 	/**
-	 * CPLC TAG
+	 * CPLC TAG. The dictionary is the only place where a tag is named, so the
+	 * constant of {@link EmvTags} is used rather than another instance holding
+	 * another name for the very same bytes.
 	 */
-	private static final ITag CPLC_TAG = new TagImpl("9f7f", TagValueTypeEnum.BINARY, "Card Production Life Cycle Data", "");
+	private static final ITag CPLC_TAG = EmvTags.DS_UNPREDICTABLE_NUMBER;
 
 	/**
-	 * Method used to parse and extract CPLC data
-	 * @param raw raw data
-	 * @return CPLC data 
+	 * Method used to parse and extract CPLC data.
+	 * <p>
+	 * The 42 bytes of the value are kept in {@link CPLC#getRaw()}. A date
+	 * field the card filled with an invalid day of year (Global Platform codes
+	 * the dates as YDDD, with DDD at most 366) does not lose the fields decoded
+	 * before it: the CPLC is returned partially filled, the fields after the
+	 * failing one left null, and the error kept in
+	 * {@link CPLC#getParseError()}.
+	 * </p>
+	 *
+	 * @param raw
+	 *            the 42 bytes of the value, that value followed by a status
+	 *            word, or the whole data object (tag, length, value and status
+	 *            word)
+	 * @return CPLC data, or null when the data is not a CPLC
 	 */
 	public static CPLC parse(byte[] raw) {
 		CPLC ret = null;
 		if (raw != null) {
 			byte[] cplc = null;
+			// the value of the tag alone, as a TLV parser hands it over
+			if (raw.length == CPLC.SIZE) {
+				cplc = raw;
+			}
 			// try to interpret as raw data (not TLV)
-			if (raw.length == CPLC.SIZE + 2) {
+			else if (raw.length == CPLC.SIZE + 2) {
 				cplc = raw;
 			}
 			// or maybe it's prepended with CPLC tag:
@@ -59,8 +78,23 @@ public final class CPLCUtils {
 				LOGGER.error("CPLC data not valid");
 				return null;
 			}
+			// The length is right but the data may not hold the tag '9F7F', a
+			// card is free to answer anything to a GET DATA
+			if (cplc == null) {
+				LOGGER.error("CPLC data does not hold the tag " + CPLC_TAG.getName());
+				return null;
+			}
 			ret = new CPLC();
-			ret.parse(cplc,null);
+			// Keep the value as read, the SW of the raw form left out
+			ret.setRaw(Arrays.copyOf(cplc, Math.min(cplc.length, CPLC.SIZE)));
+			try {
+				ret.parse(cplc, null);
+			} catch (IllegalArgumentException e) {
+				// A date of the CPLC does not hold a valid day of year: the
+				// fields decoded so far are kept, the raw bytes hold the rest
+				LOGGER.warn("CPLC data partially decoded: {}", e.getMessage());
+				ret.setParseError(e.getMessage());
+			}
 		}
 		return ret;
 	}

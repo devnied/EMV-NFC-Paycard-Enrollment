@@ -94,6 +94,20 @@ public class CPLC extends AbstractByteBean<CPLC> implements Serializable {
 	
 	@Data(index = 18, size = 32)
 	private Integer perso_equipment;
+	/**
+	 * The 42 bytes of the Card Production Life Cycle data (value of the tag
+	 * '9F7F', Global Platform Card Specification), as parsed. Null when not
+	 * set.
+	 */
+	private byte[] raw;
+
+	/**
+	 * Message of the exception a CPLC date field raised (invalid day of
+	 * year); null when every field decoded. The fields after the failing
+	 * one stay null, {@link #getRaw()} holds their bytes.
+	 */
+	private String parseError;
+
 	
 	
 
@@ -239,6 +253,48 @@ public class CPLC extends AbstractByteBean<CPLC> implements Serializable {
 	 */
 	public Integer getPersoEquipment() {
 		return perso_equipment;
+	}
+
+	/**
+	 * The 42 bytes of the Card Production Life Cycle data (value of the tag
+	 * '9F7F', Global Platform Card Specification), as parsed. Null when not
+	 * set.
+	 *
+	 * @return the raw CPLC, or null
+	 */
+	public byte[] getRaw() {
+		return raw;
+	}
+
+	/**
+	 * Setter for the field raw
+	 *
+	 * @param raw
+	 *            the raw to set
+	 */
+	public void setRaw(final byte[] raw) {
+		this.raw = raw;
+	}
+
+	/**
+	 * Message of the exception a CPLC date field raised (invalid day of
+	 * year); null when every field decoded. The fields after the failing
+	 * one stay null, {@link #getRaw()} holds their bytes.
+	 *
+	 * @return the parse error message, or null when every field decoded
+	 */
+	public String getParseError() {
+		return parseError;
+	}
+
+	/**
+	 * Setter for the field parseError
+	 *
+	 * @param parseError
+	 *            the parseError to set
+	 */
+	public void setParseError(final String parseError) {
+		this.parseError = parseError;
 	}
 
 }

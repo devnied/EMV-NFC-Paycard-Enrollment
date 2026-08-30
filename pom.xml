@@ -70,7 +70,7 @@
 			<dependency>
 				<groupId>com.github.devnied</groupId>
 				<artifactId>bit-lib4j</artifactId>
-				<version>1.6.0</version>
+				<version>1.7.0</version>
 			</dependency>
 
 			<!-- Apache commons -->
@@ -90,12 +90,6 @@
 				<groupId>commons-io</groupId>
 				<artifactId>commons-io</artifactId>
 				<version>2.18.0</version>
-			</dependency>
-
-			<dependency>
-				<groupId>net.sf.scuba</groupId>
-				<artifactId>scuba-smartcards</artifactId>
-				<version>0.0.20</version>
 			</dependency>
 
 			<!-- Tests -->
@@ -138,11 +132,8 @@
 				<version>3.11.2</version>
 				<configuration>
 					<detectJavaApiLink>false</detectJavaApiLink>
-					<release>8</release>
+					<source>8</source>
 					<doclint>none</doclint>
-					<!-- Ensure javax.smartcardio is available to javadoc on Java 9+ -->
-					<additionalJOption>--add-modules</additionalJOption>
-					<additionalJOption>java.smartcardio</additionalJOption>
 				</configuration>
 			</plugin>
 			<plugin>

@@ -949,6 +949,27 @@ public enum CountryCodeEnum implements IKeyEnum {
 		return numeric;
 	}
 
+	/**
+	 * Find a country from its ISO 3166-1 alpha-2 code, the form of the tag
+	 * '5F55' (Issuer Country Code alpha2 format)
+	 *
+	 * @param alpha2
+	 *            two letters code, the case is not significant
+	 * @return the country or null when the code is not an ISO 3166-1 one
+	 */
+	public static CountryCodeEnum getCountryByAlpha2(final String alpha2) {
+		CountryCodeEnum ret = null;
+
+		for (CountryCodeEnum country : values()) {
+			if (country.getAlpha2().equalsIgnoreCase(alpha2)) {
+				ret = country;
+				break;
+			}
+		}
+
+		return ret;
+	}
+
 	public static CountryCodeEnum getCountry(final String alpha3) {
 		CountryCodeEnum ret = null;
 

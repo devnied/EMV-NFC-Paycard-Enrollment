@@ -15,6 +15,22 @@ send: 00 B2 01 0C 00
 resp: 6C 4F
 send: 00 B2 01 0C 4F
 resp: 70 35 57 13 57 72 82 91 93 25 34 72 D1 40 82 01 74 12 57 75 80 00 0F 9F 1F 18 37 34 31 32 35 37 37 35 38 30 30 30 30 30 30 37 35 38 30 30 30 30 30 30 5F 20 02 20 2F 90 00
+# Records of the AFL that were not part of the captured trace.
+# 6A83 = 'record not found', so no card content is made up here.
+send: 00 B2 01 14 00
+resp: 6A 83
+send: 00 B2 02 14 00
+resp: 6A 83
+send: 00 B2 03 14 00
+resp: 6A 83
+send: 00 B2 04 14 00
+resp: 6A 83
+send: 00 B2 05 14 00
+resp: 6A 83
+send: 00 B2 01 1C 00
+resp: 6A 83
+send: 00 B2 02 1C 00
+resp: 6A 83
 send: 80 CA 9F 4F 00
 resp: 9F 4F 10 9F 02 06 9F 27 01 9F 1A 02 5F 2A 02 9A 03 9C 01 90 00
 # Logs
@@ -58,3 +74,7 @@ resp: 9F 17 01 03 90 00
 # ATC
 send: 80 CA 9F 36 00
 resp: 9F 36 02 06 2C 90 00
+# EMV Book 1 12.3.2: enumerate the applications matching the partial AID.
+# 6A82 = 'file not found', the card has no further occurrence.
+send: 00 A4 04 02 05 A0 00 00 00 03 00
+resp: 6A 82

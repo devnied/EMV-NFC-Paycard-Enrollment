@@ -12,6 +12,14 @@ send:
 resp: 80 0E 7C 00 08 01 01 00 10 01 01 01 18 01 02 00 90 00
 send: 00 B2 01 0C 00
 resp: 77 38 9F 10 07 06 01 1A 23 80 40 04 57 13 49 99 99 99 99 99 99 99 D1 50 92 FF FF FF FF FF FF FF 0F 82 02 20 00 9F 36 02 02 8F 9F 26 08 FF FF FF FF FF FF FF FF 9F 6C 02 10 00 90 00
+# Records of the AFL that were not part of the captured trace.
+# 6A83 = 'record not found', so no card content is made up here.
+send: 00 B2 01 14 00
+resp: 6A 83
+send: 00 B2 01 1C 00
+resp: 6A 83
+send: 00 B2 02 1C 00
+resp: 6A 83
 # Log format
 send: 80 CA 9F 4F 00
 resp:9F 4F 10 9F 02 06 9F 27 01 9F 1A 02 5F 2A 02 9A 03 9C 01 90 00
@@ -64,6 +72,14 @@ send:
 resp: 80 0E 7C 00 08 01 01 00 10 01 01 01 18 01 02 00 90 00
 send: 00 B2 01 0C 00
 resp: 77 38 9F 10 07 06 01 1A 23 80 40 04 57 13 49 99 99 99 99 99 99 99 D1 50 92 FF FF FF FF FF FF FF 0F 82 02 20 00 9F 36 02 02 8F 9F 26 08 FF FF FF FF FF FF FF FF 9F 6C 02 10 00 90 00
+# Records of the AFL that were not part of the captured trace.
+# 6A83 = 'record not found', so no card content is made up here.
+send: 00 B2 01 14 00
+resp: 6A 83
+send: 00 B2 01 1C 00
+resp: 6A 83
+send: 00 B2 02 1C 00
+resp: 6A 83
 # Log format
 send: 80 CA 9F 4F 00
 resp: 9F 4F 10 9F 02 06 9F 27 01 9F 1A 02 5F 2A 02 9A 03 9C 01 90 00

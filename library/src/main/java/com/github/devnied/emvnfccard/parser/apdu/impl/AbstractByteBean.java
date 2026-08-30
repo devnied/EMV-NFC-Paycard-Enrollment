@@ -63,12 +63,16 @@ public abstract class AbstractByteBean<T> extends AbstractData implements IFile 
 			for (TagAndLength tal : pTags) {
 				AnnotationData ann = data.get(tal.getTag());
 				if (ann != null) {
-					ann.setSize(tal.getLength() * BitUtils.BYTE_SIZE);
+					// The annotation comes from a singleton shared by the
+					// whole process, the size the current card asks for is
+					// applied to a copy: mutating the original would corrupt
+					// a parsing running on another thread
+					ann = new AnnotationData(ann);
 				} else {
 					ann = new AnnotationData();
 					ann.setSkip(true);
-					ann.setSize(tal.getLength() * BitUtils.BYTE_SIZE);
 				}
+				ann.setSize(tal.getLength() * BitUtils.BYTE_SIZE);
 				ret.add(ann);
 			}
 		} else {
@@ -79,7 +83,7 @@ public abstract class AbstractByteBean<T> extends AbstractData implements IFile 
 
 	/**
 	 * Method to parse byte data
-	 * 
+	 *
 	 * @param pData
 	 *            byte to parse
 	 * @param pTags
