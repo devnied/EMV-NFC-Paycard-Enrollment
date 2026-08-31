@@ -1,0 +1,45 @@
+# Payment System Environment of a UnionPay contact card, read over T=0.
+#
+# Source: https://github.com/binaryfoo/emv-bertlv, file
+# src/test/resources/cases/contact-upi-in.txt (commit 971777b, 2015-03-16).
+# Copyright (c) 2014 Will Currie, MIT License. Only the payment system
+# directory part of that capture is reproduced here, verbatim.
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+# It is the reference for the record numbering of EMV 4.3 Book 1 section
+# 12.3.2: the terminal reads the directory from the record 1 and stops when the
+# card answers '6A83'. The card is a UnionPay IC card certification test card,
+# its records carry the label "for test use only".
+#
+# Select PSE, the directory is in the SFI 1
+send: 00 A4 04 00 0E 31 50 41 59 2E 53 59 53 2E 44 44 46 30 31 00
+resp: 6F 15 84 0E 31 50 41 59 2E 53 59 53 2E 44 44 46 30 31 A5 03 88 01 01 90 00
+# Record 1
+send: 00 B2 01 0C 00
+resp: 70 1C 61 1A 4F 08 A0 00 00 03 33 01 01 02 50 0B 55 49 43 43 20 43 52 45 44 49 54 87 01 01 90 00
+# Record 2
+send: 00 B2 02 0C 00
+resp: 70 1B 61 19 4F 08 A0 00 00 03 33 01 01 01 50 0A 55 49 43 43 20 44 45 42 49 54 87 01 02 90 00
+# Record 3
+send: 00 B2 03 0C 00
+resp: 70 21 61 1F 4F 08 A0 00 00 03 33 01 01 03 50 10 55 49 43 43 20 51 55 41 53 49 43 52 45 44 49 54 87 01 03 90 00
+# Record 4 does not exist, the directory ends here
+send: 00 B2 04 0C 00
+resp: 6A 83
