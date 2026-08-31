@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Text data objects decoded with the character set asked for by the Issuer Code Table Index (`9F11`).
 - Four configuration options: `setReadAllRecords`, `setReadExtendedData`, `setExtendedSelectionSupported` and `setTerminalCountryCode`.
 - Five domestic schemes in `EmvCardScheme` (girocard, Elo, Troy, Chipknip, Diners Club), plus `getCountry()` and `isDomestic()`.
+- Humo, the Uzbek scheme, in `EmvCardScheme`, and the card number ranges of Mir (2200-2204) and Humo (9860).
 - Eight tags in `EmvTags`, and `TagValueDecoder` to render the raw value of a data object.
 - `BerTlvInputStream`, the BER-TLV reader EMV needs, written against the specification.
 
@@ -37,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - GET RESPONSE was built with the instruction byte `0C` instead of `C0`, so the data announced by a `61xx` was never read.
 - A date or an amount a card encodes out of specification is logged and left empty instead of aborting the read.
 - A bare URL in the ATR list is no longer taken for a card description.
+- The Meeza card number pattern matched every 13 or 16 digit number starting with 50, so a Maestro, Dankort or Verve card read without its AID was reported as Meeza.
 
 ### Removed
 - The `net.sf.scuba:scuba-smartcards` dependency, replaced by `BerTlvInputStream`.

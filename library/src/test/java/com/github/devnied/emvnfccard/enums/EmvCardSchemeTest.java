@@ -57,6 +57,10 @@ public class EmvCardSchemeTest {
 		Assertions.assertThat(EmvCardScheme.MIR.getCountry()).isEqualTo(CountryCodeEnum.RU);
 		Assertions.assertThat(EmvCardScheme.getCardTypeByAid("A0000003156020")).isEqualTo(EmvCardScheme.CHIPKNIP);
 		Assertions.assertThat(EmvCardScheme.CHIPKNIP.getCountry()).isEqualTo(CountryCodeEnum.NL);
+		Assertions.assertThat(EmvCardScheme.getCardTypeByAid("A0860001000001")).isEqualTo(EmvCardScheme.HUMO);
+		Assertions.assertThat(EmvCardScheme.HUMO.getCountry()).isEqualTo(CountryCodeEnum.UZ);
+		Assertions.assertThat(EmvCardScheme.getCardTypeByAid("A000000732100123")).isEqualTo(EmvCardScheme.MEEZA);
+		Assertions.assertThat(EmvCardScheme.MEEZA.getCountry()).isEqualTo(CountryCodeEnum.EG);
 		// International schemes are not tied to a country
 		Assertions.assertThat(EmvCardScheme.VISA.getCountry()).isNull();
 		Assertions.assertThat(EmvCardScheme.VISA.isDomestic()).isFalse();
@@ -73,6 +77,28 @@ public class EmvCardSchemeTest {
 		Assertions.assertThat(EmvCardScheme.getCardTypeByAid("A0000000046000")).isEqualTo(EmvCardScheme.MASTER_CARD);
 		Assertions.assertThat(EmvCardScheme.getCardTypeByAid("A0000000042203")).isEqualTo(EmvCardScheme.MASTER_CARD);
 		Assertions.assertThat(EmvCardScheme.getCardTypeByAid("A0000001524010")).isEqualTo(EmvCardScheme.DINERS_CLUB);
+	}
+
+	@Test
+	public void testDomesticCardNumberRanges() throws Exception {
+		// Mir owns 2200-2204, cards are 16 to 19 digit long
+		Assertions.assertThat(EmvCardScheme.getCardTypeByCardNumber("2200000000000000")).isEqualTo(EmvCardScheme.MIR);
+		Assertions.assertThat(EmvCardScheme.getCardTypeByCardNumber("2204000000000000000")).isEqualTo(EmvCardScheme.MIR);
+		// 2205 is BORICA, not Mir
+		Assertions.assertThat(EmvCardScheme.getCardTypeByCardNumber("2205000000000000")).isNull();
+		// Humo cards start with 9860, 860 being the country code of Uzbekistan
+		Assertions.assertThat(EmvCardScheme.getCardTypeByCardNumber("9860000000000000")).isEqualTo(EmvCardScheme.HUMO);
+		// Uzcard, the other Uzbek scheme, is not declared
+		Assertions.assertThat(EmvCardScheme.getCardTypeByCardNumber("8600000000000000")).isNull();
+		// Meeza is issued in the 5078xx range of the Egyptian Banks Company
+		Assertions.assertThat(EmvCardScheme.getCardTypeByCardNumber("5078030000000000")).isEqualTo(EmvCardScheme.MEEZA);
+		Assertions.assertThat(EmvCardScheme.getCardTypeByCardNumber("5078100000000000")).isEqualTo(EmvCardScheme.MEEZA);
+		// The neighbours of that range must not be swallowed by Meeza: 5018,
+		// 5020 and 5038 are Maestro, 5019 is Dankort and 507865-507964 is Verve
+		Assertions.assertThat(EmvCardScheme.getCardTypeByCardNumber("5018000000000000")).isNull();
+		Assertions.assertThat(EmvCardScheme.getCardTypeByCardNumber("5019000000000000")).isNull();
+		Assertions.assertThat(EmvCardScheme.getCardTypeByCardNumber("5038000000000000")).isNull();
+		Assertions.assertThat(EmvCardScheme.getCardTypeByCardNumber("5078650000000000")).isNull();
 	}
 
 	@Test

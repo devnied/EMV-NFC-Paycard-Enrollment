@@ -73,10 +73,12 @@ public enum EmvCardScheme {
 	ETRANZACT("eTranzact", null, CountryCodeEnum.NG, "A0 00 00 04 54"), //
 	GOOGLE("Google", null, null, "A0 00 00 04 76 6C"), //
 	INTER_SWITCH("InterSwitch", null, CountryCodeEnum.NG, "A0 00 00 03 71 00 01"),
-	MIR("МИР", null, CountryCodeEnum.RU, "A0 00 00 06 58 20 10", "A0 00 00 06 58 10 10", "A0 00 00 06 58 10 11"),
+	MIR("МИР", "^220[0-4][0-9]{12,15}$", CountryCodeEnum.RU, "A0 00 00 06 58 20 10", "A0 00 00 06 58 10 10",
+			"A0 00 00 06 58 10 11"),
 	PROSTIR("Простiр", null, CountryCodeEnum.UA, "D8 04 00 00 01 30 10"),
 	TROY("Troy", null, CountryCodeEnum.TR, "A0 00 00 06 72 30 10", "A0 00 00 06 72 30 20"), //
-	MEEZA("Meeza", "^50[0-9]{11}(?:[0-9]{3})?$", CountryCodeEnum.EG, "A0 00 00 07 32 10 01 23");
+	HUMO("Humo", "^9860[0-9]{12}$", CountryCodeEnum.UZ, "A0 86 00 01 00 00 01"), //
+	MEEZA("Meeza", "^5078(?:[0-5][0-9]|6[0-4])[0-9]{10}$", CountryCodeEnum.EG, "A0 00 00 07 32 10 01 23");
 
 	/**
 	 * array of Card AID or partial AID (RID)
